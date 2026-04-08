@@ -1,0 +1,5 @@
+*.geojson
+sixth_borough_mockup.html
+node_modules/
+__pycache__/
+.DS_Store

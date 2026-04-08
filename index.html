@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIXTH BOROUGH</title>
+<script src="https://unpkg.com/deck.gl@latest/dist.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; overflow: hidden; font-family: 'Courier New', monospace; color: #ddd; }
+  #map { width: 100vw; height: 100vh; }
+
+  /* ── Title ── */
+  #title-bar {
+    position: fixed; top: 24px; left: 24px; z-index: 10;
+    pointer-events: none;
+  }
+  #title-bar h1 { font-size: 26px; letter-spacing: 4px; color: #fff; }
+  #title-bar .sub { font-size: 11px; color: #555; letter-spacing: 1px; margin-top: 4px; }
+
+  /* ── Legend ── */
+  #legend {
+    position: fixed; top: 24px; right: 24px; z-index: 10;
+    background: rgba(0,0,0,0.85); border: 1px solid #282828; padding: 14px 16px;
+  }
+  #legend h3 { font-size: 11px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 10px; }
+  .leg { display: flex; align-items: center; margin: 3px 0; font-size: 11px; color: #888; }
+  .sw { width: 10px; height: 10px; margin-right: 8px; border: 1px solid #333; }
+
+  /* ── Timeline controls ── */
+  #controls {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 10;
+    background: rgba(0,0,0,0.92); border: 1px solid #282828; padding: 18px 44px;
+    text-align: center; min-width: 520px;
+  }
+  #controls .label { font-size: 11px; letter-spacing: 4px; color: #00b8d4; }
+  #year-display { font-size: 56px; font-weight: bold; color: #fff; margin: 6px 0; font-variant-numeric: tabular-nums; }
+  #era-label { font-size: 11px; color: #666; letter-spacing: 2px; margin-bottom: 14px; }
+  #slider {
+    width: 100%; -webkit-appearance: none; height: 3px;
+    background: #282828; outline: none; cursor: pointer;
+  }
+  #slider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px;
+    background: #00b8d4; border-radius: 50%; cursor: pointer;
+  }
+  #stats { margin-top: 8px; font-size: 10px; color: #555; }
+  #play-btn {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: none; border: 1px solid #333; color: #888; font-family: inherit;
+    font-size: 11px; padding: 6px 12px; cursor: pointer; letter-spacing: 1px;
+  }
+  #play-btn:hover { color: #00b8d4; border-color: #00b8d4; }
+
+  /* ── Story card (scaffold) ── */
+  #story-card {
+    position: fixed; bottom: 120px; right: 24px; z-index: 10;
+    background: rgba(0,0,0,0.92); border: 1px solid #282828;
+    width: 320px; display: none;
+  }
+  #story-card .card-header {
+    padding: 12px 16px; border-bottom: 1px solid #1a1a1a;
+    font-size: 10px; letter-spacing: 3px; color: #00b8d4;
+  }
+  #story-card .card-title {
+    padding: 12px 16px 4px; font-size: 16px; color: #fff; line-height: 1.3;
+  }
+  #story-card .card-year {
+    padding: 0 16px; font-size: 11px; color: #555;
+  }
+  #story-card .card-body {
+    padding: 10px 16px 16px; font-size: 12px; color: #999; line-height: 1.6;
+  }
+  #story-card .card-close {
+    position: absolute; top: 8px; right: 12px; background: none; border: none;
+    color: #555; font-size: 16px; cursor: pointer; font-family: inherit;
+  }
+  #story-card .card-close:hover { color: #fff; }
+  #story-card .card-footer {
+    padding: 8px 16px 12px; border-top: 1px solid #1a1a1a;
+    font-size: 9px; color: #333; letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div id="title-bar">
+  <h1>SIXTH BOROUGH</h1>
+  <div class="sub">MANHATTAN / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
+</div>
+
+<div id="legend">
+  <h3>ERA</h3>
+  <div class="leg"><div class="sw" style="background:rgb(80,60,50)"></div>Pre-1800</div>
+  <div class="leg"><div class="sw" style="background:rgb(120,85,60)"></div>1800-1860</div>
+  <div class="leg"><div class="sw" style="background:rgb(160,110,70)"></div>1860-1900</div>
+  <div class="leg"><div class="sw" style="background:rgb(180,140,80)"></div>1900-1930</div>
+  <div class="leg"><div class="sw" style="background:rgb(100,130,160)"></div>1930-1945</div>
+  <div class="leg"><div class="sw" style="background:rgb(130,130,130)"></div>1945-1970</div>
+  <div class="leg"><div class="sw" style="background:rgb(90,110,90)"></div>1970-2000</div>
+  <div class="leg"><div class="sw" style="background:rgb(60,180,200)"></div>2000+</div>
+</div>
+
+<div id="controls">
+  <div class="label">TIMELINE</div>
+  <div id="year-display">2026</div>
+  <div id="era-label">GLASS TOWER ERA</div>
+  <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
+  <div id="stats"><span id="visible-count">--</span> buildings visible</div>
+  <button id="play-btn">PLAY</button>
+</div>
+
+<!-- Story card scaffold -- Carson/James decide layout, fonts, tone -->
+<div id="story-card">
+  <button class="card-close" onclick="closeCard()">&times;</button>
+  <div class="card-header">SITE HISTORY</div>
+  <div class="card-title" id="card-title">--</div>
+  <div class="card-year" id="card-year">--</div>
+  <div class="card-body" id="card-body">--</div>
+  <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
+</div>
+
+<div id="map"></div>
+
+<script>
+const { Deck, PolygonLayer } = deck;
+
+// ── Era classification + colors ──
+const ERA_DEFS = [
+  { max: 1800, label: 'COLONIAL ERA',            color: [80, 60, 50] },
+  { max: 1860, label: 'ANTEBELLUM',              color: [120, 85, 60] },
+  { max: 1900, label: 'GILDED AGE',              color: [160, 110, 70] },
+  { max: 1930, label: 'GOLDEN AGE',              color: [180, 140, 80] },
+  { max: 1945, label: 'ART DECO / DEPRESSION',   color: [100, 130, 160] },
+  { max: 1970, label: 'BRUTALISM / MIDCENTURY',   color: [130, 130, 130] },
+  { max: 2000, label: 'POSTMODERN',              color: [90, 110, 90] },
+  { max: 9999, label: 'GLASS TOWER ERA',         color: [60, 180, 200] },
+];
+
+function getEra(year) {
+  for (const e of ERA_DEFS) { if (year < e.max) return e; }
+  return ERA_DEFS[ERA_DEFS.length - 1];
+}
+
+// ── Marquee sites (hand-curated, expand with James) ──
+const MARQUEE = {
+  '1001389': { title: 'Empire State Building', year: 1931, body: 'Placeholder. James + Nemotron write the real narrative at the hackathon.' },
+  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Placeholder. Click any building to see this card. Carson/James: decide layout, animation, tone.' },
+  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Placeholder. The card system is scaffolded -- content, style, and interaction are open for the team.' },
+};
+
+// ── State ──
+let buildings = [];
+let currentYear = 2026;
+let playing = false;
+let playInterval = null;
+let deckgl = null;
+
+// ── Load data ──
+fetch('data/manhattan_compact.json')
+  .then(r => r.json())
+  .then(data => {
+    buildings = data;
+    document.getElementById('total-count').textContent = buildings.length.toLocaleString();
+    updateVisibleCount();
+    initDeck();
+  });
+
+function initDeck() {
+  deckgl = new Deck({
+    parent: document.getElementById('map'),
+    initialViewState: {
+      latitude: 40.758,
+      longitude: -73.985,
+      zoom: 14,
+      pitch: 55,
+      bearing: -20,
+      maxZoom: 18,
+      minZoom: 10,
+    },
+    controller: true,
+    layers: [buildLayer()],
+    getTooltip: ({object}) => {
+      if (!object) return null;
+      const era = getEra(object.y);
+      return {
+        html: `<b>${era.label}</b><br>Built: ${object.y || '?'}<br>Height: ${object.h}m<br>BIN: ${object.b}`,
+        style: { backgroundColor: 'rgba(0,0,0,0.9)', color: '#ddd', fontFamily: "'Courier New', monospace", fontSize: '11px', padding: '8px 12px', borderLeft: '2px solid #00b8d4' }
+      };
+    },
+    onClick: ({object}) => {
+      if (!object) return;
+      showCard(object);
+    },
+  });
+}
+
+function buildLayer() {
+  return new PolygonLayer({
+    id: 'buildings',
+    data: buildings,
+    getPolygon: d => d.p,
+    // Height grow: buildings built after currentYear get 0 height.
+    // Buildings built AT currentYear get partial height (grow effect within a 3-year window).
+    getElevation: d => {
+      if (d.y === 0) return d.h;  // unknown year, always show
+      if (d.y > currentYear) return 0;
+      // Grow over a 3-year window ending at construction year
+      const growStart = d.y - 3;
+      if (currentYear < growStart) return 0;
+      if (currentYear >= d.y) return d.h;
+      // Lerp: fraction of the 3-year grow window
+      const t = (currentYear - growStart) / 3;
+      return d.h * t;
+    },
+    getFillColor: d => {
+      if (d.y > currentYear && d.y !== 0) return [0, 0, 0, 0]; // invisible future
+      const era = getEra(d.y || 1800);
+      // Fade in during grow window
+      let alpha = 200;
+      if (d.y !== 0 && d.y > 0) {
+        const growStart = d.y - 3;
+        if (currentYear < d.y && currentYear >= growStart) {
+          alpha = Math.floor(80 + 120 * ((currentYear - growStart) / 3));
+        }
+      }
+      return [...era.color, alpha];
+    },
+    extruded: true,
+    wireframe: false,
+    pickable: true,
+    elevationScale: 1,
+    material: {
+      ambient: 0.4,
+      diffuse: 0.6,
+      shininess: 10,
+      specularColor: [30, 30, 30],
+    },
+    updateTriggers: {
+      getElevation: currentYear,
+      getFillColor: currentYear,
+    },
+    transitions: {
+      getElevation: { duration: 200, easing: t => t },
+    },
+  });
+}
+
+// ── Slider ──
+const slider = document.getElementById('slider');
+const yearDisplay = document.getElementById('year-display');
+const eraLabel = document.getElementById('era-label');
+
+slider.addEventListener('input', () => {
+  currentYear = parseInt(slider.value);
+  yearDisplay.textContent = currentYear;
+  eraLabel.textContent = getEra(currentYear).label;
+  updateVisibleCount();
+  if (deckgl) deckgl.setProps({ layers: [buildLayer()] });
+});
+
+function updateVisibleCount() {
+  const count = buildings.filter(b => b.y === 0 || b.y <= currentYear).length;
+  document.getElementById('visible-count').textContent = count.toLocaleString();
+}
+
+// ── Play button (auto-scroll through time) ──
+const playBtn = document.getElementById('play-btn');
+playBtn.addEventListener('click', () => {
+  if (playing) {
+    clearInterval(playInterval);
+    playBtn.textContent = 'PLAY';
+    playing = false;
+  } else {
+    if (currentYear >= 2026) {
+      currentYear = 1719;
+      slider.value = currentYear;
+    }
+    playing = true;
+    playBtn.textContent = 'STOP';
+    playInterval = setInterval(() => {
+      currentYear += 1;
+      if (currentYear > 2026) {
+        clearInterval(playInterval);
+        playBtn.textContent = 'PLAY';
+        playing = false;
+        return;
+      }
+      slider.value = currentYear;
+      yearDisplay.textContent = currentYear;
+      eraLabel.textContent = getEra(currentYear).label;
+      updateVisibleCount();
+      deckgl.setProps({ layers: [buildLayer()] });
+    }, 50); // ~20 years/second
+  }
+});
+
+// ── Story card ──
+function showCard(building) {
+  const card = document.getElementById('story-card');
+  const marquee = MARQUEE[building.b];
+  if (marquee) {
+    document.getElementById('card-title').textContent = marquee.title;
+    document.getElementById('card-year').textContent = `Built ${marquee.year}`;
+    document.getElementById('card-body').textContent = marquee.body;
+  } else {
+    const era = getEra(building.y);
+    document.getElementById('card-title').textContent = `BIN ${building.b}`;
+    document.getElementById('card-year').textContent = building.y ? `Built ${building.y} / ${era.label}` : 'Construction year unknown';
+    document.getElementById('card-body').textContent = `${building.h}m tall. ${era.label.toLowerCase()} construction. At the hackathon, clicking any building triggers Nemotron to generate a site-specific narrative using the building's metadata + surrounding historical context.`;
+  }
+  card.style.display = 'block';
+}
+
+function closeCard() {
+  document.getElementById('story-card').style.display = 'none';
+}
+</script>
+</body>
+</html>
