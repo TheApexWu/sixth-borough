@@ -46,12 +46,184 @@
     background: #00b8d4; border-radius: 50%; cursor: pointer;
   }
   #stats { margin-top: 8px; font-size: 10px; color: #555; }
+  #slider-wrap { position: relative; width: 100%; height: 24px; display: flex; align-items: center; }
+  #slider-wrap input { position: relative; z-index: 2; }
+  .era-dot {
+    position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 50%;
+    border: 1.5px solid #444; background: #111; cursor: pointer;
+    transform: translateX(-50%);
+    transition: border-color 0.3s, background 0.3s, transform 0.2s;
+  }
+  .era-dot:hover { border-color: #00b8d4; background: #00b8d4; transform: translateX(-50%) scale(1.3); }
+  .era-dot-label {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    font-size: 8px; color: #333; letter-spacing: 1px; white-space: nowrap;
+    pointer-events: none; opacity: 0; transition: opacity 0.3s, color 0.3s;
+  }
+  .era-dot:hover .era-dot-label { opacity: 1; color: #666; }
   #play-btn {
     position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
     background: none; border: 1px solid #333; color: #888; font-family: inherit;
     font-size: 11px; padding: 6px 12px; cursor: pointer; letter-spacing: 1px;
   }
   #play-btn:hover { color: #00b8d4; border-color: #00b8d4; }
+
+  /* ── Mode toggle ── */
+  #mode-toggle {
+    position: fixed; bottom: 28px; left: 24px; z-index: 10;
+    background: rgba(0,0,0,0.92); border: 1px solid #282828;
+    color: #888; font-family: inherit; font-size: 10px; letter-spacing: 2px;
+    padding: 10px 16px; cursor: pointer;
+  }
+  #mode-toggle:hover { color: #00b8d4; border-color: #00b8d4; }
+  #mode-toggle.active { color: #00b8d4; border-color: #00b8d4; }
+
+  /* ── Station bar (guided mode) ── */
+  #station-bar {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 10;
+    background: rgba(0,0,0,0.92); border: 1px solid #282828; padding: 18px 44px;
+    text-align: center; min-width: 520px; display: none;
+  }
+  #station-bar .label { font-size: 11px; letter-spacing: 4px; color: #00b8d4; margin-bottom: 14px; }
+  .station-track {
+    display: flex; align-items: center; justify-content: center; gap: 0; margin: 16px 0 8px;
+    position: relative;
+  }
+  .station-line {
+    height: 2px; background: #282828; flex: 1;
+  }
+  .station-dot {
+    width: 16px; height: 16px; border-radius: 50%; border: 2px solid #444;
+    background: #111; cursor: pointer; position: relative; z-index: 1;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .station-dot:hover { border-color: #00b8d4; }
+  .station-dot.active { border-color: #00b8d4; background: #00b8d4; }
+  .station-label {
+    font-size: 9px; color: #555; letter-spacing: 1px; margin-top: 6px;
+  }
+  .station-item { display: flex; flex-direction: column; align-items: center; }
+  #station-nav {
+    margin-top: 10px; font-size: 10px; color: #555;
+  }
+
+  /* ── Cutscene overlay ── */
+  #cutscene {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 20;
+    background: rgba(0,0,0,0); pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #cutscene.active {
+    background: rgba(0,0,0,0.85); pointer-events: auto;
+  }
+  #cutscene-inner {
+    max-width: 620px; width: 90%;
+  }
+
+  /* Staggered reveal for cutscene children */
+  .cs-reveal {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  #cutscene.active .cs-reveal { opacity: 1; transform: translateY(0); }
+  #cutscene.active .cs-reveal:nth-child(1) { transition-delay: 0.15s; }
+  #cutscene.active .cs-reveal:nth-child(2) { transition-delay: 0.25s; }
+  #cutscene.active .cs-reveal:nth-child(3) { transition-delay: 0.35s; }
+  #cutscene.active .cs-reveal:nth-child(4) { transition-delay: 0.50s; }
+  #cutscene.active .cs-reveal:nth-child(5) { transition-delay: 0.65s; }
+  #cutscene.active .cs-reveal:nth-child(6) { transition-delay: 0.80s; }
+  #cutscene.active .cs-reveal:nth-child(7) { transition-delay: 0.95s; }
+
+  .cs-era {
+    font-size: 11px; letter-spacing: 6px; margin-bottom: 8px;
+  }
+  .cs-title {
+    font-size: 38px; font-weight: bold; color: #fff; line-height: 1.15; margin-bottom: 2px;
+  }
+  .cs-years {
+    font-size: 13px; color: #555; letter-spacing: 3px; margin-bottom: 32px;
+  }
+  .cs-photos {
+    display: flex; gap: 10px; margin-bottom: 28px; overflow: hidden;
+  }
+  .cs-photo {
+    flex: 1; height: 180px; background: #111; border: 1px solid #1e1e1e;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #2a2a2a; letter-spacing: 1px;
+    overflow: hidden; position: relative;
+  }
+  /* Ken Burns drift on photo placeholders */
+  @keyframes kenBurns {
+    0%   { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.08) translate(-2%, -1%); }
+  }
+  #cutscene.active .cs-photo {
+    animation: kenBurns 12s ease-in-out alternate infinite;
+  }
+  #cutscene.active .cs-photo:nth-child(2) { animation-delay: -4s; animation-direction: alternate-reverse; }
+  #cutscene.active .cs-photo:nth-child(3) { animation-delay: -8s; }
+
+  .cs-quote {
+    border-left: 2px solid; padding: 14px 24px; margin-bottom: 28px;
+    font-size: 15px; color: #ccc; font-style: italic; line-height: 1.65;
+  }
+  .cs-attribution {
+    font-size: 10px; color: #555; font-style: normal; margin-top: 10px; letter-spacing: 1px;
+  }
+  .cs-body {
+    font-size: 12px; color: #777; line-height: 1.8; margin-bottom: 32px;
+  }
+  .cs-buttons {
+    display: flex; gap: 12px;
+  }
+  .cs-btn {
+    background: none; border: 1px solid #333; color: #888; font-family: inherit;
+    font-size: 10px; letter-spacing: 2px; padding: 10px 20px; cursor: pointer;
+    transition: color 0.3s, border-color 0.3s, transform 0.15s;
+  }
+  .cs-btn:hover { color: #00b8d4; border-color: #00b8d4; transform: translateY(-1px); }
+  .cs-btn:active { transform: translateY(0); }
+  .cs-btn.primary { border-color: #00b8d4; color: #00b8d4; }
+
+  /* ── Dev tools panel ── */
+  #dev-toggle {
+    position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 30;
+    background: rgba(0,0,0,0.92); border: 1px solid #282828;
+    color: #444; font-family: inherit; font-size: 9px; letter-spacing: 2px;
+    padding: 5px 12px; cursor: pointer;
+  }
+  #dev-toggle:hover { color: #888; border-color: #444; }
+  #dev-panel {
+    position: fixed; top: 50px; left: 50%; transform: translateX(-50%); z-index: 30;
+    background: rgba(0,0,0,0.95); border: 1px solid #333; padding: 16px 20px;
+    display: none; min-width: 260px;
+  }
+  #dev-panel h4 {
+    font-size: 10px; letter-spacing: 3px; color: #555; margin-bottom: 12px;
+    border-bottom: 1px solid #1a1a1a; padding-bottom: 8px;
+  }
+  .flag-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 0; border-bottom: 1px solid #111;
+  }
+  .flag-label { font-size: 11px; color: #888; }
+  .flag-toggle {
+    position: relative; width: 32px; height: 16px; cursor: pointer;
+  }
+  .flag-toggle input { opacity: 0; width: 0; height: 0; }
+  .flag-slider {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: #222; border-radius: 8px; transition: background 0.3s;
+  }
+  .flag-slider::before {
+    content: ''; position: absolute; left: 2px; top: 2px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #555; transition: transform 0.3s, background 0.3s;
+  }
+  .flag-toggle input:checked + .flag-slider { background: #0a3d47; }
+  .flag-toggle input:checked + .flag-slider::before { transform: translateX(16px); background: #00b8d4; }
 
   /* ── Story card (scaffold) ── */
   #story-card {
@@ -106,7 +278,9 @@
   <div class="label">TIMELINE</div>
   <div id="year-display">2026</div>
   <div id="era-label">GLASS TOWER ERA</div>
-  <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
+  <div id="slider-wrap">
+    <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
+  </div>
   <div id="stats"><span id="visible-count">--</span> buildings visible</div>
   <button id="play-btn">PLAY</button>
 </div>
@@ -121,10 +295,97 @@
   <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
 </div>
 
+<button id="dev-toggle" onclick="document.getElementById('dev-panel').style.display = document.getElementById('dev-panel').style.display === 'block' ? 'none' : 'block'">DEV</button>
+<div id="dev-panel">
+  <h4>FEATURE FLAGS</h4>
+</div>
+
+<button id="mode-toggle" onclick="toggleMode()">GUIDED TOUR</button>
+
+<div id="station-bar">
+  <div class="label">GUIDED TOUR</div>
+  <div class="station-track" id="station-track"></div>
+  <div id="station-nav"></div>
+</div>
+
+<!-- Cutscene overlay -->
+<div id="cutscene">
+  <div id="cutscene-inner">
+    <div class="cs-reveal"><div class="cs-era" id="cs-era">ERA</div></div>
+    <div class="cs-reveal"><div class="cs-title" id="cs-title">--</div></div>
+    <div class="cs-reveal"><div class="cs-years" id="cs-years">--</div></div>
+    <div class="cs-reveal"><div class="cs-photos" id="cs-photos"></div></div>
+    <div class="cs-reveal"><div class="cs-quote" id="cs-quote">--</div></div>
+    <div class="cs-reveal"><div class="cs-body" id="cs-body">--</div></div>
+    <div class="cs-reveal cs-buttons">
+      <button class="cs-btn" onclick="exitCutscene()">EXPLORE THIS ERA</button>
+      <button class="cs-btn primary" id="cs-next-btn" onclick="nextStation()">NEXT STATION →</button>
+    </div>
+  </div>
+</div>
+
 <div id="map"></div>
 
 <script>
 const { Deck, PolygonLayer } = deck;
+
+// ── Feature Flags ──
+const FLAGS = {
+  eraDots:      { label: 'Era Dots on Timeline', default: true },
+  cutscenes:    { label: 'Cutscene Overlays', default: true },
+  guidedMode:   { label: 'Guided Tour Mode', default: true },
+  storyCards:   { label: 'Story Cards', default: true },
+  legend:       { label: 'Era Legend', default: true },
+};
+
+// Load from localStorage, fall back to defaults
+const featureFlags = {};
+for (const [key, def] of Object.entries(FLAGS)) {
+  const stored = localStorage.getItem('ff_' + key);
+  featureFlags[key] = stored !== null ? stored === 'true' : def.default;
+}
+
+function setFlag(key, val) {
+  featureFlags[key] = val;
+  localStorage.setItem('ff_' + key, val);
+  applyFlags();
+}
+
+function applyFlags() {
+  // Era dots
+  document.querySelectorAll('.era-dot').forEach(d => d.style.display = featureFlags.eraDots ? '' : 'none');
+  // Guided mode toggle button
+  document.getElementById('mode-toggle').style.display = featureFlags.guidedMode ? '' : 'none';
+  if (!featureFlags.guidedMode && guidedMode) toggleMode(); // force back to free scrub
+  // Legend
+  document.getElementById('legend').style.display = featureFlags.legend ? '' : 'none';
+  // Story cards — handled in showCard()
+}
+
+function buildDevPanel() {
+  const panel = document.getElementById('dev-panel');
+  for (const [key, def] of Object.entries(FLAGS)) {
+    const row = document.createElement('div');
+    row.className = 'flag-row';
+    const label = document.createElement('span');
+    label.className = 'flag-label';
+    label.textContent = def.label;
+    const toggle = document.createElement('label');
+    toggle.className = 'flag-toggle';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = featureFlags[key];
+    input.addEventListener('change', () => setFlag(key, input.checked));
+    const slider = document.createElement('span');
+    slider.className = 'flag-slider';
+    toggle.appendChild(input);
+    toggle.appendChild(slider);
+    row.appendChild(label);
+    row.appendChild(toggle);
+    panel.appendChild(row);
+  }
+}
+buildDevPanel();
 
 // ── Era classification + colors ──
 const ERA_DEFS = [
@@ -165,6 +426,8 @@ fetch('data/manhattan_compact.json')
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
     initDeck();
+    buildEraDots();
+    applyFlags();
   });
 
 function initDeck() {
@@ -298,6 +561,7 @@ playBtn.addEventListener('click', () => {
 
 // ── Story card ──
 function showCard(building) {
+  if (!featureFlags.storyCards) return;
   const card = document.getElementById('story-card');
   const marquee = MARQUEE[building.b];
   if (marquee) {
@@ -315,6 +579,328 @@ function showCard(building) {
 
 function closeCard() {
   document.getElementById('story-card').style.display = 'none';
+}
+
+// ── Era dots on timeline ──
+function buildEraDots() {
+  const wrap = document.getElementById('slider-wrap');
+  const min = 1719, max = 2026;
+  STATIONS.forEach((s, i) => {
+    const pct = ((s.targetYear - min) / (max - min)) * 100;
+    const dot = document.createElement('div');
+    dot.className = 'era-dot';
+    dot.style.left = pct + '%';
+    dot.title = s.label;
+    dot.innerHTML = '<span class="era-dot-label">' + s.label + '</span>';
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToStation(i);
+    });
+    wrap.appendChild(dot);
+  });
+}
+
+// ── Guided Tour Mode ──
+const STATIONS = [
+  {
+    id: 'colonial',
+    label: 'COLONIAL',
+    targetYear: 1760,
+    camera: { latitude: 40.7033, longitude: -74.0170, zoom: 15.5, pitch: 45, bearing: 30 },
+    cutscene: {
+      era: 'STATION 01',
+      title: 'Colonial Manhattan',
+      years: 'Pre-1800',
+      eraColor: '#503c32',
+      photos: ['Castello Plan of New Amsterdam, 1660', 'Fort George at the Battery, 1735', 'Broad Street waterfront, 1797'],
+      quote: 'The island of Mannahata is the key to all the trade of the North River.',
+      attribution: '— Dutch West India Company report, 1626',
+      body: 'Before it was New York, it was New Amsterdam — a trading post at the southern tip of an island the Lenape called Mannahata. The Dutch drew the first grid. The English took it without a shot. By 1760, the city barely reached north of Wall Street. Everything above was farmland, forest, and marsh.'
+    }
+  },
+  {
+    id: 'antebellum',
+    label: 'ANTEBELLUM',
+    targetYear: 1840,
+    camera: { latitude: 40.7128, longitude: -74.0060, zoom: 15.0, pitch: 48, bearing: 0 },
+    cutscene: {
+      era: 'STATION 02',
+      title: 'Antebellum New York',
+      years: '1800 – 1860',
+      eraColor: '#785540',
+      photos: ['Five Points intersection, 1827', 'Broadway at City Hall, 1850', 'Croton Aqueduct celebration, 1842'],
+      quote: 'The Five Points is the great place of debauchery, and is a perfect sink of iniquity.',
+      attribution: '— Charles Dickens, American Notes, 1842',
+      body: 'The city pushed north. The Erie Canal turned New York into America\'s commercial capital. Five Points became the most notorious slum in the Western world — and also the birthplace of tap dance, where Irish and African American cultures collided in dance halls. The grid plan of 1811 was being carved into the island, block by block.'
+    }
+  },
+  {
+    id: 'gilded',
+    label: 'GILDED AGE',
+    targetYear: 1885,
+    camera: { latitude: 40.7155, longitude: -73.9880, zoom: 15.2, pitch: 50, bearing: 15 },
+    cutscene: {
+      era: 'STATION 03',
+      title: 'The Gilded Age',
+      years: '1860 – 1900',
+      eraColor: '#a06e46',
+      photos: ['Mulberry Bend, 1888', 'Hester Street market, 1895', 'Tenement rear window, 1890'],
+      quote: 'We were seven to a room on Mott Street. The children slept crosswise on the floor. In summer the roof was our parlor, our dining room, our bedroom.',
+      attribution: '— Jacob Riis, How the Other Half Lives, 1890',
+      body: 'Between 1860 and 1900, the Lower East Side became the most densely populated place on Earth. Tenements stacked families five and six stories high in rooms without windows. Over two million immigrants — Italian, Jewish, Irish, German — poured through Castle Garden and later Ellis Island into these blocks. The buildings you see rising here are not architecture. They are survival made physical.'
+    }
+  },
+  {
+    id: 'golden',
+    label: 'GOLDEN AGE',
+    targetYear: 1925,
+    camera: { latitude: 40.7484, longitude: -73.9856, zoom: 14.8, pitch: 55, bearing: -30 },
+    cutscene: {
+      era: 'STATION 04',
+      title: 'The Golden Age',
+      years: '1900 – 1930',
+      eraColor: '#b48c50',
+      photos: ['Woolworth Building, 1913', 'Times Square at night, 1925', 'Chrysler Building construction, 1929'],
+      quote: 'The city seen from the Queensboro Bridge is always the city seen for the first time, in its first wild promise of all the mystery and the beauty in the world.',
+      attribution: '— F. Scott Fitzgerald, The Great Gatsby, 1925',
+      body: 'Manhattan pointed itself at the sky. The Woolworth Building, the Chrysler Building, the race to be tallest — each one a monument to ambition and capital. Below the towers, speakeasies and jazz clubs rewired the culture. The subway connected everything. If the Gilded Age packed people in, the Golden Age stacked them up. The skyline you recognize was mostly built in these thirty years.'
+    }
+  },
+  {
+    id: 'deco',
+    label: 'ART DECO',
+    targetYear: 1938,
+    camera: { latitude: 40.7484, longitude: -73.9857, zoom: 15.0, pitch: 60, bearing: -60 },
+    cutscene: {
+      era: 'STATION 05',
+      title: 'Art Deco & Depression',
+      years: '1930 – 1945',
+      eraColor: '#6482a0',
+      photos: ['Empire State under construction, 1930', 'Rockefeller Center ice rink, 1936', 'Hooverville in Central Park, 1933'],
+      quote: 'I\'d rather be a lamppost in New York than the mayor of Chicago.',
+      attribution: '— Jimmy Walker, Mayor of New York, 1932',
+      body: 'The Depression slowed everything except ambition. The Empire State Building went up in 410 days — and stood half-empty for a decade, nicknamed the "Empty State Building." Robert Moses began reshaping the city with parks and highways. The WPA put artists to work painting murals in post offices. New York was broke and building monuments at the same time.'
+    }
+  },
+  {
+    id: 'midcentury',
+    label: 'MIDCENTURY',
+    targetYear: 1960,
+    camera: { latitude: 40.7505, longitude: -73.9935, zoom: 15.2, pitch: 50, bearing: 20 },
+    cutscene: {
+      era: 'STATION 06',
+      title: 'Brutalism & Midcentury',
+      years: '1945 – 1970',
+      eraColor: '#828282',
+      photos: ['Old Penn Station demolition, 1963', 'Lincoln Center construction, 1960', 'Cross Bronx Expressway, 1955'],
+      quote: 'Until the first blow fell, no one was convinced that Penn Station really would be demolished. Any more than anyone is convinced that now we\'ll never have it again.',
+      attribution: '— Ada Louise Huxtable, New York Times, 1963',
+      body: 'Robert Moses tore the city apart and rebuilt it for cars. Penn Station — a cathedral of pink granite and iron — was demolished for Madison Square Garden. Lincoln Center displaced thousands of Puerto Rican families from San Juan Hill. The Cross Bronx Expressway gutted entire neighborhoods. This was the era of urban renewal, which the people who lived through it called urban removal.'
+    }
+  },
+  {
+    id: 'postmodern',
+    label: 'POSTMODERN',
+    targetYear: 1985,
+    camera: { latitude: 40.7580, longitude: -73.9855, zoom: 14.6, pitch: 50, bearing: -10 },
+    cutscene: {
+      era: 'STATION 07',
+      title: 'Postmodern New York',
+      years: '1970 – 2000',
+      eraColor: '#5a6e5a',
+      photos: ['Times Square grindhouse row, 1978', 'Subway car graffiti, 1981', 'Tompkins Square riot, 1988'],
+      quote: 'The South Bronx is burning.',
+      attribution: '— Howard Cosell, 1977 World Series broadcast',
+      body: 'New York nearly went bankrupt in 1975. The federal government told the city to drop dead. Landlords torched buildings for insurance. Subway cars were covered in graffiti. Times Square was a grindhouse district. But in the wreckage: hip-hop was born in the Bronx, the downtown art scene exploded in abandoned SoHo lofts, and punk carved itself into CBGB\'s walls. The city that almost died became the most creatively productive place on the planet.'
+    }
+  },
+  {
+    id: 'glass',
+    label: 'GLASS TOWER',
+    targetYear: 2020,
+    camera: { latitude: 40.7536, longitude: -74.0003, zoom: 14.5, pitch: 55, bearing: -45 },
+    cutscene: {
+      era: 'STATION 08',
+      title: 'Glass Tower Era',
+      years: '2000 – Present',
+      eraColor: '#3cb4c8',
+      photos: ['One World Trade Center, 2014', 'Hudson Yards from the High Line, 2019', 'Billionaires\' Row supertalls, 2021'],
+      quote: 'Imagine a city where greed is good, where the weights and measures of success are all calibrated in the same direction, toward profit.',
+      attribution: '— E.B. White (adapted), Here Is New York',
+      body: 'After September 11th, the skyline was rebuilt in glass and steel. The Freedom Tower rose where the Twin Towers fell. Billionaires\' Row sent pencil-thin supertalls into the clouds — apartments no one lives in, casting shadows across Central Park. Hudson Yards built a new neighborhood on a platform over a rail yard. The city that was once tenements and pushcarts became a luxury product. The question the Sixth Borough asks: who is the city being built for now?'
+    }
+  }
+];
+
+let guidedMode = false;
+let activeStationIndex = -1;
+let cutsceneOpen = false;
+
+function toggleMode() {
+  guidedMode = !guidedMode;
+  const toggle = document.getElementById('mode-toggle');
+  const controls = document.getElementById('controls');
+  const stationBar = document.getElementById('station-bar');
+
+  if (guidedMode) {
+    toggle.classList.add('active');
+    toggle.textContent = 'FREE SCRUB';
+    controls.style.display = 'none';
+    stationBar.style.display = 'block';
+    buildStationTrack();
+    // Stop play if running
+    if (playing) {
+      clearInterval(playInterval);
+      playBtn.textContent = 'PLAY';
+      playing = false;
+    }
+  } else {
+    toggle.classList.remove('active');
+    toggle.textContent = 'GUIDED TOUR';
+    controls.style.display = 'block';
+    stationBar.style.display = 'none';
+    exitCutscene();
+    activeStationIndex = -1;
+  }
+}
+
+function buildStationTrack() {
+  const track = document.getElementById('station-track');
+  track.innerHTML = '';
+  STATIONS.forEach((s, i) => {
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.className = 'station-line';
+      track.appendChild(line);
+    }
+    const item = document.createElement('div');
+    item.className = 'station-item';
+    const dot = document.createElement('div');
+    dot.className = 'station-dot';
+    dot.dataset.index = i;
+    dot.onclick = () => goToStation(i);
+    const label = document.createElement('div');
+    label.className = 'station-label';
+    label.textContent = s.label;
+    item.appendChild(dot);
+    item.appendChild(label);
+    track.appendChild(item);
+    if (i < STATIONS.length - 1) {
+      const line2 = document.createElement('div');
+      line2.className = 'station-line';
+      track.appendChild(line2);
+    }
+  });
+}
+
+function goToStation(index) {
+  const station = STATIONS[index];
+  activeStationIndex = index;
+  closeCard();
+
+  // Update station dot highlights
+  document.querySelectorAll('.station-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === index);
+  });
+
+  // Animate year toward target during fly-to
+  const startYear = currentYear;
+  const endYear = station.targetYear;
+  const duration = 2500;
+  const startTime = performance.now();
+
+  function animateYear(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    // Ease out cubic
+    const eased = 1 - Math.pow(1 - t, 3);
+    currentYear = Math.round(startYear + (endYear - startYear) * eased);
+    yearDisplay.textContent = currentYear;
+    eraLabel.textContent = getEra(currentYear).label;
+    slider.value = currentYear;
+    updateVisibleCount();
+    deckgl.setProps({ layers: [buildLayer()] });
+    if (t < 1) requestAnimationFrame(animateYear);
+  }
+  requestAnimationFrame(animateYear);
+
+  // Camera fly-to
+  deckgl.setProps({
+    initialViewState: {
+      ...station.camera,
+      transitionDuration: duration,
+      transitionInterpolator: new deck.FlyToInterpolator(),
+    }
+  });
+
+  // Open cutscene after fly completes (if enabled)
+  if (featureFlags.cutscenes) {
+    setTimeout(() => openCutscene(station), duration + 300);
+  }
+}
+
+function openCutscene(station) {
+  cutsceneOpen = true;
+  const cs = station.cutscene;
+  const el = document.getElementById('cutscene');
+
+  document.getElementById('cs-era').textContent = cs.era;
+  document.getElementById('cs-era').style.color = cs.eraColor;
+  document.getElementById('cs-title').textContent = cs.title;
+  document.getElementById('cs-years').textContent = cs.years;
+
+  // Photos (placeholders)
+  const photosEl = document.getElementById('cs-photos');
+  photosEl.innerHTML = '';
+  cs.photos.forEach(label => {
+    const div = document.createElement('div');
+    div.className = 'cs-photo';
+    div.textContent = label;
+    photosEl.appendChild(div);
+  });
+
+  // Quote
+  const quoteEl = document.getElementById('cs-quote');
+  quoteEl.style.borderColor = cs.eraColor;
+  quoteEl.innerHTML = cs.quote + '<div class="cs-attribution">' + cs.attribution + '</div>';
+
+  document.getElementById('cs-body').textContent = cs.body;
+
+  // Next button
+  const nextBtn = document.getElementById('cs-next-btn');
+  if (activeStationIndex >= STATIONS.length - 1) {
+    nextBtn.textContent = 'BACK TO START';
+  } else {
+    nextBtn.textContent = 'NEXT STATION →';
+  }
+
+  el.classList.add('active');
+}
+
+function exitCutscene() {
+  cutsceneOpen = false;
+  const el = document.getElementById('cutscene');
+  el.classList.remove('active');
+  // Reset reveal states after fade-out so they re-animate on next open
+  setTimeout(() => {
+    if (!cutsceneOpen) {
+      el.querySelectorAll('.cs-reveal').forEach(r => {
+        r.style.transitionDelay = '0s';
+        r.offsetHeight; // force reflow
+        r.style.transitionDelay = '';
+      });
+    }
+  }, 600);
+}
+
+function nextStation() {
+  exitCutscene();
+  const next = activeStationIndex + 1;
+  if (next >= STATIONS.length) {
+    // Loop back to first
+    setTimeout(() => goToStation(0), 400);
+  } else {
+    setTimeout(() => goToStation(next), 400);
+  }
 }
 </script>
 </body>
