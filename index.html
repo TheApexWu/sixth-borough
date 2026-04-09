@@ -494,9 +494,11 @@
 const { Deck, PolygonLayer } = deck;
 
 // ── Sketch Overlay Feature Gate ──
+// Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
 const FEATURES = {
   sketchOverlay: false,  // Sobel edge-detection blueprint overlay
 };
+// Will be set to true/false after FLAGS init — see sketchOverlay sync block below
 
 // ── Feature Flags ──
 const FLAGS = {
@@ -505,6 +507,7 @@ const FLAGS = {
   storyCards:   { label: 'Story Cards', desc: 'Info card on building click', group: 'ui', default: true },
   legend:       { label: 'Era Legend', desc: 'Interactive era bar above timeline', group: 'ui', default: true },
   hoverTooltip: { label: 'Hover Tooltip', desc: 'Show building era/info on hover', group: 'ui', default: false },
+  sketchOverlay:{ label: 'Sketch Overlay', desc: 'Sobel edge-detection blueprint overlay', group: 'effects', default: false },
 };
 
 // Cutscene modes — only one active at a time
@@ -520,6 +523,8 @@ for (const [key, def] of Object.entries(FLAGS)) {
   const stored = localStorage.getItem('ff_' + key);
   featureFlags[key] = stored !== null ? stored === 'true' : def.default;
 }
+// Sync FEATURES gate with featureFlags
+FEATURES.sketchOverlay = featureFlags.sketchOverlay;
 let cutsceneMode = localStorage.getItem('ff_cutsceneMode') || 'overlay';
 
 function setFlag(key, val) {
@@ -563,6 +568,13 @@ function applyFlags() {
   document.getElementById('mode-toggle').style.display = featureFlags.guidedMode ? '' : 'none';
   if (!featureFlags.guidedMode && guidedMode) toggleMode();
   document.getElementById('legend').style.display = featureFlags.legend ? '' : 'none';
+  // Sync sketch overlay gate and init/teardown
+  FEATURES.sketchOverlay = featureFlags.sketchOverlay;
+  if (FEATURES.sketchOverlay) {
+    initSketchOverlay();
+  } else {
+    teardownSketchOverlay();
+  }
 }
 
 function toggleDevPanel() {
@@ -613,37 +625,46 @@ function buildDevPanel() {
   const body = document.getElementById('dev-panel-body');
   body.innerHTML = '';
 
-  // UI toggles section
-  const uiSection = document.createElement('div');
-  uiSection.className = 'flag-section';
-  uiSection.innerHTML = '<div class="flag-section-title">Interface</div>';
+  // Group flags by their group property
+  const groups = {};
   for (const [key, def] of Object.entries(FLAGS)) {
-    const row = document.createElement('div');
-    row.className = 'flag-row';
-    const labelWrap = document.createElement('div');
-    const label = document.createElement('div');
-    label.className = 'flag-label';
-    label.textContent = def.label;
-    const desc = document.createElement('div');
-    desc.className = 'flag-desc';
-    desc.textContent = def.desc;
-    labelWrap.appendChild(label);
-    labelWrap.appendChild(desc);
-    const toggle = document.createElement('label');
-    toggle.className = 'flag-toggle';
-    const input = document.createElement('input');
-    input.type = 'checkbox';
-    input.checked = featureFlags[key];
-    input.addEventListener('change', () => setFlag(key, input.checked));
-    const slider = document.createElement('span');
-    slider.className = 'flag-slider';
-    toggle.appendChild(input);
-    toggle.appendChild(slider);
-    row.appendChild(labelWrap);
-    row.appendChild(toggle);
-    uiSection.appendChild(row);
+    const g = def.group || 'ui';
+    if (!groups[g]) groups[g] = [];
+    groups[g].push([key, def]);
   }
-  body.appendChild(uiSection);
+  const groupTitles = { ui: 'Interface', effects: 'Effects' };
+  for (const [groupKey, entries] of Object.entries(groups)) {
+    const section = document.createElement('div');
+    section.className = 'flag-section';
+    section.innerHTML = '<div class="flag-section-title">' + (groupTitles[groupKey] || groupKey) + '</div>';
+    for (const [key, def] of entries) {
+      const row = document.createElement('div');
+      row.className = 'flag-row';
+      const labelWrap = document.createElement('div');
+      const label = document.createElement('div');
+      label.className = 'flag-label';
+      label.textContent = def.label;
+      const desc = document.createElement('div');
+      desc.className = 'flag-desc';
+      desc.textContent = def.desc;
+      labelWrap.appendChild(label);
+      labelWrap.appendChild(desc);
+      const toggle = document.createElement('label');
+      toggle.className = 'flag-toggle';
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.checked = featureFlags[key];
+      input.addEventListener('change', () => setFlag(key, input.checked));
+      const slider = document.createElement('span');
+      slider.className = 'flag-slider';
+      toggle.appendChild(input);
+      toggle.appendChild(slider);
+      row.appendChild(labelWrap);
+      row.appendChild(toggle);
+      section.appendChild(row);
+    }
+    body.appendChild(section);
+  }
 
   // Cutscene modes section
   const csSection = document.createElement('div');
@@ -1546,6 +1567,191 @@ function prevStation() {
   if (activeStationIndex <= 0) return;
   navigateStation(activeStationIndex - 1);
 }
+
+// ── Sobel Edge-Detection Sketch Overlay ──
+// Functions are always defined; they no-op when FEATURES.sketchOverlay is false.
+// initSketchOverlay / teardownSketchOverlay are called from applyFlags().
+
+let _sketchOverlayCanvas = null;
+let _sketchResizeHandler = null;
+
+function _syncSketchOverlaySize() {
+  const overlay = _sketchOverlayCanvas;
+  if (!overlay) return;
+  const mapEl = document.getElementById('map');
+  const srcCanvas = mapEl && mapEl.querySelector('canvas');
+  if (srcCanvas) {
+    overlay.width = srcCanvas.width;
+    overlay.height = srcCanvas.height;
+    overlay.style.width = srcCanvas.clientWidth + 'px';
+    overlay.style.height = srcCanvas.clientHeight + 'px';
+  } else {
+    overlay.width = window.innerWidth;
+    overlay.height = window.innerHeight;
+    overlay.style.width = window.innerWidth + 'px';
+    overlay.style.height = window.innerHeight + 'px';
+  }
+}
+
+function _getSketchThreshold() {
+  const eraIdx = getEraIndex(currentYear);
+  // 0=Colonial(heaviest, 0.12) … 7=Glass Tower(thinnest, 0.05)
+  return 0.12 - (eraIdx / 7) * 0.07;
+}
+
+function _parseSketchColor(str) {
+  if (str && str.startsWith('#')) {
+    const hex = str.slice(1);
+    if (hex.length === 3) {
+      return {
+        r: parseInt(hex[0] + hex[0], 16),
+        g: parseInt(hex[1] + hex[1], 16),
+        b: parseInt(hex[2] + hex[2], 16),
+      };
+    }
+    return {
+      r: parseInt(hex.slice(0, 2), 16),
+      g: parseInt(hex.slice(2, 4), 16),
+      b: parseInt(hex.slice(4, 6), 16),
+    };
+  }
+  return { r: 0, g: 184, b: 212 }; // fallback cyan
+}
+
+function initSketchOverlay() {
+  if (_sketchOverlayCanvas) return; // already initialized
+  const overlay = document.createElement('canvas');
+  overlay.id = 'sketch-overlay';
+  document.body.appendChild(overlay);
+  _sketchOverlayCanvas = overlay;
+
+  _sketchResizeHandler = _syncSketchOverlaySize;
+  window.addEventListener('resize', _sketchResizeHandler);
+  setTimeout(_syncSketchOverlaySize, 500);
+}
+
+function teardownSketchOverlay() {
+  if (!_sketchOverlayCanvas) return;
+  if (_sketchResizeHandler) {
+    window.removeEventListener('resize', _sketchResizeHandler);
+    _sketchResizeHandler = null;
+  }
+  _sketchOverlayCanvas.remove();
+  _sketchOverlayCanvas = null;
+}
+
+/**
+ * generateSketchOverlay(eraColor)
+ * Captures the deck.gl canvas, runs Sobel edge detection,
+ * renders architectural line drawing with the given ink color.
+ */
+window.generateSketchOverlay = function(eraColor) {
+  if (!FEATURES.sketchOverlay || !_sketchOverlayCanvas) return;
+  _syncSketchOverlaySize();
+  const overlay = _sketchOverlayCanvas;
+  const mapEl = document.getElementById('map');
+  const srcCanvas = mapEl && mapEl.querySelector('canvas');
+  if (!srcCanvas) return;
+
+  const w = srcCanvas.width;
+  const h = srcCanvas.height;
+  if (w === 0 || h === 0) return;
+
+  // Read source pixels from WebGL or 2D canvas
+  const srcCtx = srcCanvas.getContext('webgl2') || srcCanvas.getContext('webgl');
+  let srcPixels;
+  if (srcCtx && (srcCtx instanceof WebGLRenderingContext || srcCtx instanceof WebGL2RenderingContext)) {
+    srcPixels = new Uint8Array(w * h * 4);
+    srcCtx.readPixels(0, 0, w, h, srcCtx.RGBA, srcCtx.UNSIGNED_BYTE, srcPixels);
+    // WebGL readPixels gives bottom-up rows; flip vertically
+    const rowSize = w * 4;
+    const tmp = new Uint8Array(rowSize);
+    for (let y = 0; y < Math.floor(h / 2); y++) {
+      const topOff = y * rowSize;
+      const botOff = (h - 1 - y) * rowSize;
+      tmp.set(srcPixels.subarray(topOff, topOff + rowSize));
+      srcPixels.copyWithin(topOff, botOff, botOff + rowSize);
+      srcPixels.set(tmp, botOff);
+    }
+  } else {
+    const ctx2d = srcCanvas.getContext('2d');
+    srcPixels = ctx2d.getImageData(0, 0, w, h).data;
+  }
+
+  // Convert to grayscale luminance
+  const gray = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) {
+    const off = i * 4;
+    gray[i] = 0.299 * srcPixels[off] + 0.587 * srcPixels[off + 1] + 0.114 * srcPixels[off + 2];
+  }
+
+  // Apply 3x3 Sobel kernels
+  const edges = new Float32Array(w * h);
+  let maxMag = 0;
+  for (let y = 1; y < h - 1; y++) {
+    for (let x = 1; x < w - 1; x++) {
+      const tl = gray[(y - 1) * w + (x - 1)];
+      const tc = gray[(y - 1) * w + x];
+      const tr = gray[(y - 1) * w + (x + 1)];
+      const ml = gray[y * w + (x - 1)];
+      const mr = gray[y * w + (x + 1)];
+      const bl = gray[(y + 1) * w + (x - 1)];
+      const bc = gray[(y + 1) * w + x];
+      const br = gray[(y + 1) * w + (x + 1)];
+
+      const gx = -tl + tr - 2 * ml + 2 * mr - bl + br;
+      const gy = -tl - 2 * tc - tr + bl + 2 * bc + br;
+      const mag = Math.sqrt(gx * gx + gy * gy);
+      edges[y * w + x] = mag;
+      if (mag > maxMag) maxMag = mag;
+    }
+  }
+
+  // Render: dark background (#0a0a0a) with era-colored ink lines
+  const ink = _parseSketchColor(eraColor);
+  const threshold = maxMag * _getSketchThreshold();
+  const outCtx = overlay.getContext('2d');
+  const out = outCtx.createImageData(w, h);
+  const bg = { r: 10, g: 10, b: 10 };
+
+  for (let i = 0; i < w * h; i++) {
+    const off = i * 4;
+    const mag = edges[i];
+    if (mag > threshold && maxMag > 0) {
+      const alpha = Math.min(((mag - threshold) / (maxMag - threshold)) * 0.7, 0.7);
+      out.data[off]     = Math.round(bg.r * (1 - alpha) + ink.r * alpha);
+      out.data[off + 1] = Math.round(bg.g * (1 - alpha) + ink.g * alpha);
+      out.data[off + 2] = Math.round(bg.b * (1 - alpha) + ink.b * alpha);
+    } else {
+      out.data[off]     = bg.r;
+      out.data[off + 1] = bg.g;
+      out.data[off + 2] = bg.b;
+    }
+    out.data[off + 3] = 255;
+  }
+
+  outCtx.putImageData(out, 0, 0);
+};
+
+/**
+ * showSketchOverlay() — GSAP fade in
+ */
+window.showSketchOverlay = function() {
+  if (!FEATURES.sketchOverlay || !_sketchOverlayCanvas) return;
+  _sketchOverlayCanvas.style.display = 'block';
+  gsap.fromTo(_sketchOverlayCanvas, { opacity: 0 }, { opacity: 1, duration: 0.8, ease: 'power2.out' });
+};
+
+/**
+ * hideSketchOverlay() — GSAP fade out
+ */
+window.hideSketchOverlay = function() {
+  if (!_sketchOverlayCanvas) return;
+  gsap.to(_sketchOverlayCanvas, {
+    opacity: 0, duration: 0.6, ease: 'power2.in',
+    onComplete: () => { if (_sketchOverlayCanvas) _sketchOverlayCanvas.style.display = 'none'; }
+  });
+};
 </script>
 </body>
 </html>
