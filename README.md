@@ -57,23 +57,12 @@ Click any building for info. 3 marquee sites (Empire State, Flatiron, One WTC) h
 ### Timeline
 Range 1719-2026. PLAY button auto-scrolls at ~20 years/second.
 
-## Hackathon Prep (Pre-Hack Tasks)
+## Current State
 
-### James (by Apr 9)
-- Story card template (layout, typography, tone)
-- Color language (era palettes, particle colors)
-- 3-5 gold-standard hand-written narratives
-- Slide deck + opener script (lock Saturday night)
-
-### Carson (by Apr 9)
-- Prototype PS2 shader pipeline in wgpu/Bevy
-- Test aarch64 cross-compile for GB10
-- Test mesh loading + camera controls
-
-### Alex (done)
-- Manhattan buildings downloaded + validated (45,194, 100% height, 98% year)
-- 3D deck.gl mockup with timeline slider + story card scaffold
-- Manhattan PLUTO downloaded (78MB, 42,600 lots)
+- Manhattan buildings downloaded + validated (45,194, 100% height_roof, 98% construction_year)
+- deck.gl 3D mockup with height-grow timeline slider + era coloring + story card scaffold
+- Manhattan PLUTO downloaded (78MB, 42,600 lots with yearbuilt/landuse)
+- 3 marquee story cards scaffolded (Empire State, Flatiron, One WTC) with placeholder text
 
 ## GB10 Notes
 
