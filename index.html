@@ -572,8 +572,16 @@ function applyFlags() {
   FEATURES.sketchOverlay = featureFlags.sketchOverlay;
   if (FEATURES.sketchOverlay) {
     initSketchOverlay();
+    // Auto-generate and show after a short delay to let the canvas attach
+    setTimeout(() => {
+      const era = getEra(currentYear);
+      const color = `rgb(${era.color.join(',')})`;
+      window.generateSketchOverlay(color);
+      window.showSketchOverlay();
+    }, 300);
   } else {
-    teardownSketchOverlay();
+    if (_sketchOverlayCanvas) window.hideSketchOverlay();
+    setTimeout(teardownSketchOverlay, 700); // wait for fade-out
   }
 }
 
@@ -815,6 +823,7 @@ function initDeck() {
       minZoom: 10,
     },
     controller: true,
+    _gl: { preserveDrawingBuffer: true },
     layers: [buildLayer()],
     getTooltip: ({object}) => {
       if (!object || !featureFlags.hoverTooltip) return null;
@@ -1614,6 +1623,10 @@ function _parseSketchColor(str) {
       g: parseInt(hex.slice(2, 4), 16),
       b: parseInt(hex.slice(4, 6), 16),
     };
+  }
+  if (str && str.startsWith('rgb')) {
+    const m = str.match(/(\d+)/g);
+    if (m && m.length >= 3) return { r: +m[0], g: +m[1], b: +m[2] };
   }
   return { r: 0, g: 184, b: 212 }; // fallback cyan
 }
