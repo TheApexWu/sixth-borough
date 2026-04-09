@@ -1072,7 +1072,7 @@ const STATIONS = [
       photos: [
         { src: 'data/photos/gilded/1.jpg', caption: 'Bandit\'s Roost, Jacob Riis, 1888' },
         { src: 'data/photos/gilded/2.jpg', caption: 'Mulberry Street, c.1900' },
-        { src: 'data/photos/gilded/3.jpg', caption: 'Lower East Side, c.1900' },
+        { src: 'data/photos/gilded/3.jpg', caption: 'Lodgers in a Bayard Street tenement, Jacob Riis, c.1890' },
       ],
       quote: 'We were seven to a room on Mott Street. The children slept crosswise on the floor. In summer the roof was our parlor, our dining room, our bedroom.',
       attribution: '— Jacob Riis, How the Other Half Lives, 1890',
@@ -1310,9 +1310,9 @@ function goToStation(index) {
   });
 
   if (cutsceneMode === 'overlay') {
-    stationTimeline.call(() => openCutscene(station), null, `>+0.3`);
+    stationTimeline.call(() => openCutscene(station), null, `>+0.12`);
   } else if (cutsceneMode === 'vignette') {
-    stationTimeline.call(() => openVignette(station), null, `>+0.3`);
+    stationTimeline.call(() => openVignette(station), null, `>+0.12`);
   }
 }
 
@@ -1339,7 +1339,8 @@ function openCutscene(station) {
     const img = document.createElement('img');
     img.src = typeof photo === 'string' ? '' : photo.src;
     img.alt = typeof photo === 'string' ? photo : photo.caption;
-    img.loading = 'lazy';
+    img.loading = 'eager';
+    img.decoding = 'async';
     const cap = document.createElement('div');
     cap.className = 'photo-caption';
     cap.textContent = typeof photo === 'string' ? photo : photo.caption;
@@ -1372,10 +1373,10 @@ function openCutscene(station) {
   // Compose the entrance timeline
   cutsceneTl = gsap.timeline();
 
-  // Backdrop fade
+  // Backdrop fade (map “fades out” behind overlay)
   cutsceneTl.to(el, {
     backgroundColor: 'rgba(0,0,0,0.88)',
-    duration: 1,
+    duration: 0.48,
     ease: 'power2.out',
     onStart: () => {
       el.style.pointerEvents = 'auto';
@@ -1383,23 +1384,23 @@ function openCutscene(station) {
     }
   });
 
-  // Left column reveals (era, title, years, quote)
+  // Column + chrome reveals
   cutsceneTl.to(reveals, {
     opacity: 1,
     y: 0,
-    duration: 0.6,
-    stagger: 0.12,
+    duration: 0.38,
+    stagger: 0.05,
     ease: 'power2.out',
-  }, '-=0.5');
+  }, '-=0.32');
 
-  // Photos: cinematic Ken Burns zoom-settle + fade
+  // Photos: Ken Burns + fade (overlap so they don’t wait on full text stagger)
   cutsceneTl.to(imgs, {
     scale: 1,
     opacity: 1,
-    duration: 1.4,
-    stagger: 0.2,
-    ease: 'power3.out',
-  }, '-=0.8');
+    duration: 0.58,
+    stagger: 0.05,
+    ease: 'power2.out',
+  }, '-=0.52');
 }
 
 function exitCutscene() {
