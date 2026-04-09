@@ -182,23 +182,26 @@
     overflow: hidden;
   }
   .cs-photo {
-    height: 160px; background: #0d0d0d; border: 1px solid #1a1a1a;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px; color: #222; letter-spacing: 1px;
+    height: 160px; background: #0a0a0a; border: 1px solid #1a1a1a;
     overflow: hidden; position: relative;
   }
   .cs-photo:first-child {
-    grid-column: 1 / 3; height: 200px;
+    grid-column: 1 / 3; height: 220px;
   }
-  @keyframes kenBurns {
-    0%   { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.08) translate(-2%, -1%); }
+  .cs-photo img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(0.3) contrast(1.1);
+    transition: filter 1.2s ease;
   }
-  #cutscene.active .cs-photo {
-    animation: kenBurns 12s ease-in-out alternate infinite;
+  .cs-photo:hover img {
+    filter: grayscale(0) contrast(1);
   }
-  #cutscene.active .cs-photo:nth-child(2) { animation-delay: -4s; animation-direction: alternate-reverse; }
-  #cutscene.active .cs-photo:nth-child(3) { animation-delay: -8s; }
+  .cs-photo .photo-caption {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 10px 6px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    font-size: 9px; color: #666; letter-spacing: 1px;
+  }
 
   .cs-body {
     font-size: 12px; color: #666; line-height: 1.85; max-width: 440px;
@@ -398,6 +401,12 @@
     padding: 8px 16px 12px; border-top: 1px solid #1a1a1a;
     font-size: 9px; color: #333; letter-spacing: 1px;
   }
+
+  /* ── Sketch overlay (Sobel edge detection) ── */
+  #sketch-overlay {
+    position: fixed; top: 0; left: 0; z-index: 19;
+    pointer-events: none; display: none;
+  }
 </style>
 </head>
 <body>
@@ -444,8 +453,9 @@
   <div class="vignette-era-label" id="vignette-era-label"><span class="vignette-era-sub" id="vignette-era-sub"></span></div>
   <div class="vignette-items" id="vignette-items"></div>
   <div class="vignette-nav">
+    <button class="cs-btn" id="vignette-prev-btn" onclick="prevStation()">← PREV ERA</button>
     <button class="cs-btn" onclick="exitVignette()">EXPLORE THIS ERA</button>
-    <button class="cs-btn primary" id="vignette-next-btn" onclick="nextStation()">NEXT STATION →</button>
+    <button class="cs-btn primary" id="vignette-next-btn" onclick="nextStation()">NEXT ERA →</button>
   </div>
 </div>
 
@@ -471,8 +481,9 @@
       <div class="cs-reveal"><div class="cs-body" id="cs-body">--</div></div>
     </div>
     <div class="cs-bottom cs-reveal">
+      <button class="cs-btn" id="cs-prev-btn" onclick="prevStation()">← PREV ERA</button>
       <button class="cs-btn" onclick="exitCutscene()">EXPLORE THIS ERA</button>
-      <button class="cs-btn primary" id="cs-next-btn" onclick="nextStation()">NEXT STATION →</button>
+      <button class="cs-btn primary" id="cs-next-btn" onclick="nextStation()">NEXT ERA →</button>
     </div>
   </div>
 </div>
@@ -481,6 +492,11 @@
 
 <script>
 const { Deck, PolygonLayer } = deck;
+
+// ── Sketch Overlay Feature Gate ──
+const FEATURES = {
+  sketchOverlay: false,  // Sobel edge-detection blueprint overlay
+};
 
 // ── Feature Flags ──
 const FLAGS = {
@@ -964,7 +980,11 @@ const STATIONS = [
       title: 'Colonial Manhattan',
       years: 'Pre-1800',
       eraColor: '#503c32',
-      photos: ['Castello Plan of New Amsterdam, 1660', 'Fort George at the Battery, 1735', 'Broad Street waterfront, 1797'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Castelloplan.jpg', caption: 'Castello Plan of New Amsterdam, 1660' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/b/b9/Fort_New_Amsterdam_on_the_Manhatans_%28New_York%29_print_c1626.jpg', caption: 'Fort New Amsterdam, c.1626' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/4/42/Ratzer_map_of_New_York_City.jpg', caption: 'Ratzer Map of New York, 1767' },
+      ],
       quote: 'The island of Mannahata is the key to all the trade of the North River.',
       attribution: '— Dutch West India Company report, 1626',
       body: 'Before it was New York, it was New Amsterdam — a trading post at the southern tip of an island the Lenape called Mannahata. The Dutch drew the first grid. The English took it without a shot. By 1760, the city barely reached north of Wall Street. Everything above was farmland, forest, and marsh.'
@@ -986,7 +1006,11 @@ const STATIONS = [
       title: 'Antebellum New York',
       years: '1800 – 1860',
       eraColor: '#785540',
-      photos: ['Five Points intersection, 1827', 'Broadway at City Hall, 1850', 'Croton Aqueduct celebration, 1842'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/6/64/The_Five_Points_MET_DP265419.jpg', caption: 'The Five Points, Metropolitan Museum' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/94/Broadway%2C_looking_north_from_Broome_Street%2C_Manhattan_%28circa_1853-1855%29.jpg', caption: 'Broadway from Broome Street, c.1853' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/4/4b/The_Old_and_New_Croton_Aqueduct_System_1887.jpg', caption: 'Croton Aqueduct System, 1887' },
+      ],
       quote: 'The Five Points is the great place of debauchery, and is a perfect sink of iniquity.',
       attribution: '— Charles Dickens, American Notes, 1842',
       body: 'The city pushed north. The Erie Canal turned New York into America\'s commercial capital. Five Points became the most notorious slum in the Western world — and also the birthplace of tap dance, where Irish and African American cultures collided in dance halls. The grid plan of 1811 was being carved into the island, block by block.'
@@ -1008,7 +1032,11 @@ const STATIONS = [
       title: 'The Gilded Age',
       years: '1860 – 1900',
       eraColor: '#a06e46',
-      photos: ['Mulberry Bend, 1888', 'Hester Street market, 1895', 'Tenement rear window, 1890'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/9a/Bandits_Roost%2C_59_and_a_half_Mulberry_Street.jpg', caption: 'Bandit\'s Roost, Jacob Riis, 1888' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/6/67/Mulberry_Street_NYC_c1900_LOC_3g04637u_edit.jpg', caption: 'Mulberry Street, c.1900' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/8/8e/NYC_Mulberry_Street_3g04637u.jpg', caption: 'Lower East Side, c.1900' },
+      ],
       quote: 'We were seven to a room on Mott Street. The children slept crosswise on the floor. In summer the roof was our parlor, our dining room, our bedroom.',
       attribution: '— Jacob Riis, How the Other Half Lives, 1890',
       body: 'Between 1860 and 1900, the Lower East Side became the most densely populated place on Earth. Tenements stacked families five and six stories high in rooms without windows. Over two million immigrants — Italian, Jewish, Irish, German — poured through Castle Garden and later Ellis Island into these blocks. The buildings you see rising here are not architecture. They are survival made physical.'
@@ -1030,7 +1058,11 @@ const STATIONS = [
       title: 'The Golden Age',
       years: '1900 – 1930',
       eraColor: '#b48c50',
-      photos: ['Woolworth Building, 1913', 'Times Square at night, 1925', 'Chrysler Building construction, 1929'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/2/27/View_of_Woolworth_Building_fixed.jpg', caption: 'Woolworth Building, 1913' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Times_Square_with_Father_Duffy%27s_statue_still_wrapped_up%2C_1937_-_crop.jpg', caption: 'Times Square, 1937' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/3/30/Chrysler_Building_-_05.jpg', caption: 'Chrysler Building' },
+      ],
       quote: 'The city seen from the Queensboro Bridge is always the city seen for the first time, in its first wild promise of all the mystery and the beauty in the world.',
       attribution: '— F. Scott Fitzgerald, The Great Gatsby, 1925',
       body: 'Manhattan pointed itself at the sky. The Woolworth Building, the Chrysler Building, the race to be tallest — each one a monument to ambition and capital. Below the towers, speakeasies and jazz clubs rewired the culture. The subway connected everything. If the Gilded Age packed people in, the Golden Age stacked them up. The skyline you recognize was mostly built in these thirty years.'
@@ -1052,7 +1084,11 @@ const STATIONS = [
       title: 'Art Deco & Depression',
       years: '1930 – 1945',
       eraColor: '#6482a0',
-      photos: ['Empire State under construction, 1930', 'Rockefeller Center ice rink, 1936', 'Hooverville in Central Park, 1933'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Icarus%2C_Empire_State_Building_MET_DP106525.jpg', caption: 'Icarus, Lewis Hine, 1930' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Rockefeller_Center%2C_December_1933.jpg', caption: 'Rockefeller Center, 1933' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Nightview%2C_Berenice_Abbott.jpg', caption: 'Nightview, Berenice Abbott, c.1932' },
+      ],
       quote: 'I\'d rather be a lamppost in New York than the mayor of Chicago.',
       attribution: '— Jimmy Walker, Mayor of New York, 1932',
       body: 'The Depression slowed everything except ambition. The Empire State Building went up in 410 days — and stood half-empty for a decade, nicknamed the "Empty State Building." Robert Moses began reshaping the city with parks and highways. The WPA put artists to work painting murals in post offices. New York was broke and building monuments at the same time.'
@@ -1074,7 +1110,11 @@ const STATIONS = [
       title: 'Brutalism & Midcentury',
       years: '1945 – 1970',
       eraColor: '#828282',
-      photos: ['Old Penn Station demolition, 1963', 'Lincoln Center construction, 1960', 'Cross Bronx Expressway, 1955'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Penn_Station%2C_Interior%2C_Manhattan_%28NYPL_b13668355-482562%29.jpg', caption: 'Penn Station Interior, NYPL' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Old_Penn_Station_NY_exterior.jpg', caption: 'Old Penn Station Exterior' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Lincoln_Center_Plaza%2C_New_York_City%2C_NY.jpg', caption: 'Lincoln Center Plaza' },
+      ],
       quote: 'Until the first blow fell, no one was convinced that Penn Station really would be demolished. Any more than anyone is convinced that now we\'ll never have it again.',
       attribution: '— Ada Louise Huxtable, New York Times, 1963',
       body: 'Robert Moses tore the city apart and rebuilt it for cars. Penn Station — a cathedral of pink granite and iron — was demolished for Madison Square Garden. Lincoln Center displaced thousands of Puerto Rican families from San Juan Hill. The Cross Bronx Expressway gutted entire neighborhoods. This was the era of urban renewal, which the people who lived through it called urban removal.'
@@ -1096,7 +1136,11 @@ const STATIONS = [
       title: 'Postmodern New York',
       years: '1970 – 2000',
       eraColor: '#5a6e5a',
-      photos: ['Times Square grindhouse row, 1978', 'Subway car graffiti, 1981', 'Tompkins Square riot, 1988'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/1/18/42nd_Street%2C_just_west_of_Seventh_Avenue%2C_New_York._-_NARA_-_554297.jpg', caption: '42nd Street, NARA, 1970s' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/GRAFFITI_ON_A_SUBWAY_CAR_ON_THE_LEXINGTON_AVENUE_LINE_IN_NEW_YORK_CITY._IN_1973_TRANSIT_AUTHORITY_POLICE_ARRESTED..._-_NARA_-_556811.jpg', caption: 'Subway Graffiti, NARA, 1973' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/d/da/CBGB_club_facade.jpg', caption: 'CBGB, Bowery' },
+      ],
       quote: 'The South Bronx is burning.',
       attribution: '— Howard Cosell, 1977 World Series broadcast',
       body: 'New York nearly went bankrupt in 1975. The federal government told the city to drop dead. Landlords torched buildings for insurance. Subway cars were covered in graffiti. Times Square was a grindhouse district. But in the wreckage: hip-hop was born in the Bronx, the downtown art scene exploded in abandoned SoHo lofts, and punk carved itself into CBGB\'s walls. The city that almost died became the most creatively productive place on the planet.'
@@ -1118,7 +1162,11 @@ const STATIONS = [
       title: 'Glass Tower Era',
       years: '2000 – Present',
       eraColor: '#3cb4c8',
-      photos: ['One World Trade Center, 2014', 'Hudson Yards from the High Line, 2019', 'Billionaires\' Row supertalls, 2021'],
+      photos: [
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/9/93/One_WTC_NY1.jpg', caption: 'One World Trade Center, 2014' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/5/56/Hudson_Yards_from_Hudson_Commons_%2895131p%29.jpg', caption: 'Hudson Yards' },
+        { src: 'https://upload.wikimedia.org/wikipedia/commons/e/ef/Midtown_Manhattan_from_Weehawken_September_2021_HDR.jpg', caption: 'Midtown Manhattan, 2021' },
+      ],
       quote: 'Imagine a city where greed is good, where the weights and measures of success are all calibrated in the same direction, toward profit.',
       attribution: '— E.B. White (adapted), Here Is New York',
       body: 'After September 11th, the skyline was rebuilt in glass and steel. The Freedom Tower rose where the Twin Towers fell. Billionaires\' Row sent pencil-thin supertalls into the clouds — apartments no one lives in, casting shadows across Central Park. Hudson Yards built a new neighborhood on a platform over a rail yard. The city that was once tenements and pushcarts became a luxury product. The question the Sixth Borough asks: who is the city being built for now?'
@@ -1245,13 +1293,21 @@ function openCutscene(station) {
   document.getElementById('cs-title').textContent = cs.title;
   document.getElementById('cs-years').textContent = cs.years;
 
-  // Photos (placeholders)
+  // Photos
   const photosEl = document.getElementById('cs-photos');
   photosEl.innerHTML = '';
-  cs.photos.forEach(label => {
+  cs.photos.forEach(photo => {
     const div = document.createElement('div');
     div.className = 'cs-photo';
-    div.textContent = label;
+    const img = document.createElement('img');
+    img.src = typeof photo === 'string' ? '' : photo.src;
+    img.alt = typeof photo === 'string' ? photo : photo.caption;
+    img.loading = 'lazy';
+    const cap = document.createElement('div');
+    cap.className = 'photo-caption';
+    cap.textContent = typeof photo === 'string' ? photo : photo.caption;
+    div.appendChild(img);
+    div.appendChild(cap);
     photosEl.appendChild(div);
   });
 
@@ -1262,28 +1318,27 @@ function openCutscene(station) {
 
   document.getElementById('cs-body').textContent = cs.body;
 
-  // Next button
-  const nextBtn = document.getElementById('cs-next-btn');
-  if (activeStationIndex >= STATIONS.length - 1) {
-    nextBtn.textContent = 'BACK TO START';
-  } else {
-    nextBtn.textContent = 'NEXT STATION →';
-  }
+  // Nav buttons
+  document.getElementById('cs-prev-btn').style.visibility = activeStationIndex <= 0 ? 'hidden' : '';
+  document.getElementById('cs-next-btn').textContent = activeStationIndex >= STATIONS.length - 1 ? 'BACK TO START' : 'NEXT ERA →';
 
   // Kill previous cutscene animation
   if (cutsceneTl) cutsceneTl.kill();
 
   // Reset reveals to hidden
   const reveals = el.querySelectorAll('.cs-reveal');
+  const photos = el.querySelectorAll('.cs-photo');
+  const imgs = el.querySelectorAll('.cs-photo img');
   gsap.set(reveals, { opacity: 0, y: 16 });
+  gsap.set(imgs, { scale: 1.15, opacity: 0 });
 
   // Compose the entrance timeline
   cutsceneTl = gsap.timeline();
 
   // Backdrop fade
   cutsceneTl.to(el, {
-    backgroundColor: 'rgba(0,0,0,0.85)',
-    duration: 0.8,
+    backgroundColor: 'rgba(0,0,0,0.88)',
+    duration: 1,
     ease: 'power2.out',
     onStart: () => {
       el.style.pointerEvents = 'auto';
@@ -1291,14 +1346,23 @@ function openCutscene(station) {
     }
   });
 
-  // Staggered content reveal
+  // Left column reveals (era, title, years, quote)
   cutsceneTl.to(reveals, {
     opacity: 1,
     y: 0,
-    duration: 0.5,
-    stagger: 0.1,
+    duration: 0.6,
+    stagger: 0.12,
     ease: 'power2.out',
-  }, '-=0.3');
+  }, '-=0.5');
+
+  // Photos: cinematic Ken Burns zoom-settle + fade
+  cutsceneTl.to(imgs, {
+    scale: 1,
+    opacity: 1,
+    duration: 1.4,
+    stagger: 0.2,
+    ease: 'power3.out',
+  }, '-=0.8');
 }
 
 function exitCutscene() {
@@ -1307,6 +1371,7 @@ function exitCutscene() {
   if (featureFlags.legend) document.getElementById('legend').style.display = '';
   const el = document.getElementById('cutscene');
   const reveals = el.querySelectorAll('.cs-reveal');
+  const imgs = el.querySelectorAll('.cs-photo img');
 
   if (cutsceneTl) cutsceneTl.kill();
 
@@ -1318,21 +1383,30 @@ function exitCutscene() {
     }
   });
 
-  // Reveals fade out fast
+  // Images zoom out slightly as they fade
+  cutsceneTl.to(imgs, {
+    scale: 1.08,
+    opacity: 0,
+    duration: 0.4,
+    stagger: 0.06,
+    ease: 'power2.in',
+  });
+
+  // Reveals fade out
   cutsceneTl.to(reveals, {
     opacity: 0,
     y: -10,
     duration: 0.3,
     stagger: 0.04,
     ease: 'power2.in',
-  });
+  }, '-=0.3');
 
   // Backdrop fade
   cutsceneTl.to(el, {
     backgroundColor: 'rgba(0,0,0,0)',
     duration: 0.5,
     ease: 'power2.in',
-  }, '-=0.15');
+  }, '-=0.2');
 }
 
 // ── 3D Vignette mode ──
@@ -1383,7 +1457,8 @@ function openVignette(station) {
 
   // Next button
   const nextBtn = document.getElementById('vignette-next-btn');
-  nextBtn.textContent = activeStationIndex >= STATIONS.length - 1 ? 'BACK TO START' : 'NEXT STATION →';
+  document.getElementById('vignette-prev-btn').style.visibility = activeStationIndex <= 0 ? 'hidden' : '';
+  nextBtn.textContent = activeStationIndex >= STATIONS.length - 1 ? 'BACK TO START' : 'NEXT ERA →';
 
   el.classList.add('active');
   if (vignetteTl) vignetteTl.kill();
@@ -1458,25 +1533,18 @@ function exitVignette() {
 }
 
 // ── Next station (handles both modes) ──
-function nextStation() {
-  const next = (activeStationIndex + 1) % STATIONS.length;
+function navigateStation(targetIndex) {
+  clearAllOverlays();
+  setTimeout(() => goToStation(targetIndex), 100);
+}
 
-  if (cutsceneMode === 'vignette') {
-    exitVignette();
-    vignetteTl.eventCallback('onComplete', () => {
-      document.getElementById('vignette').classList.remove('active');
-      goToStation(next);
-    });
-  } else {
-    exitCutscene();
-    cutsceneTl.eventCallback('onComplete', () => {
-      const el = document.getElementById('cutscene');
-      el.classList.remove('active');
-      el.style.pointerEvents = 'none';
-      el.style.backgroundColor = '';
-      goToStation(next);
-    });
-  }
+function nextStation() {
+  navigateStation((activeStationIndex + 1) % STATIONS.length);
+}
+
+function prevStation() {
+  if (activeStationIndex <= 0) return;
+  navigateStation(activeStationIndex - 1);
 }
 </script>
 </body>
