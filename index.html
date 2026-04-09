@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>SIXTH BOROUGH</title>
+<script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://unpkg.com/deck.gl@9.1.4/dist.min.js"></script>
 <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
@@ -19,18 +20,38 @@
   #title-bar h1 { font-size: 26px; letter-spacing: 4px; color: #fff; }
   #title-bar .sub { font-size: 11px; color: #555; letter-spacing: 1px; margin-top: 4px; }
 
-  /* ── Legend ── */
+  /* ── Era legend (vertical, right side) ── */
   #legend {
-    position: fixed; top: 24px; right: 24px; z-index: 10;
+    position: fixed; top: 24px; right: 24px; z-index: 25;
     background: rgba(0,0,0,0.85); border: 1px solid #282828; padding: 14px 16px;
   }
   #legend h3 { font-size: 11px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 10px; }
-  .leg { display: flex; align-items: center; margin: 3px 0; font-size: 11px; color: #888; }
-  .sw { width: 10px; height: 10px; margin-right: 8px; border: 1px solid #333; }
+  .leg {
+    display: flex; align-items: center; margin: 2px 0; padding: 4px 6px;
+    cursor: pointer; transition: background 0.3s;
+    border-radius: 2px;
+  }
+  .leg:hover { background: rgba(255,255,255,0.04); }
+  .leg.active { background: rgba(255,255,255,0.07); }
+  .leg .sw {
+    width: 10px; height: 10px; margin-right: 8px; border: 1px solid #333;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .leg:hover .sw { transform: scale(1.2); }
+  .leg.active .sw { transform: scale(1.3); box-shadow: 0 0 6px currentColor; }
+  .leg .leg-label {
+    font-size: 11px; color: #888; transition: color 0.3s;
+  }
+  .leg.active .leg-label { color: #ccc; }
+  .leg .leg-years {
+    font-size: 10px; color: #444; margin-left: auto; padding-left: 12px;
+    transition: color 0.3s;
+  }
+  .leg.active .leg-years { color: #666; }
 
   /* ── Timeline controls ── */
   #controls {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 10;
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 25;
     background: rgba(0,0,0,0.92); border: 1px solid #282828; padding: 18px 44px;
     text-align: center; min-width: 520px;
   }
@@ -46,17 +67,17 @@
     background: #00b8d4; border-radius: 50%; cursor: pointer;
   }
   #stats { margin-top: 8px; font-size: 10px; color: #555; }
-  #slider-wrap { position: relative; width: 100%; height: 24px; display: flex; align-items: center; }
-  #slider-wrap input { position: relative; z-index: 2; }
+  #slider-wrap { position: relative; width: 100%; height: 24px; }
+  #slider-wrap input { position: absolute; top: 50%; left: 0; width: 100%; transform: translateY(-50%); z-index: 2; }
   .era-dot {
     position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 50%;
     border: 1.5px solid #444; background: #111; cursor: pointer;
-    transform: translateX(-50%);
+    top: 50%; transform: translate(-50%, -50%);
     transition: border-color 0.3s, background 0.3s, transform 0.2s;
   }
-  .era-dot:hover { border-color: #00b8d4; background: #00b8d4; transform: translateX(-50%) scale(1.3); }
+  .era-dot:hover { border-color: #00b8d4; background: #00b8d4; transform: translate(-50%, -50%) scale(1.3); }
   .era-dot-label {
-    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
     font-size: 8px; color: #333; letter-spacing: 1px; white-space: nowrap;
     pointer-events: none; opacity: 0; transition: opacity 0.3s, color 0.3s;
   }
@@ -112,29 +133,16 @@
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 20;
     background: rgba(0,0,0,0); pointer-events: none;
     display: flex; align-items: center; justify-content: center;
-    transition: background 1.2s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  #cutscene.active {
-    background: rgba(0,0,0,0.85); pointer-events: auto;
   }
   #cutscene-inner {
     max-width: 620px; width: 90%;
   }
 
-  /* Staggered reveal for cutscene children */
+  /* GSAP controls reveal animation — set initial hidden state */
   .cs-reveal {
     opacity: 0; transform: translateY(16px);
-    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
   }
-  #cutscene.active .cs-reveal { opacity: 1; transform: translateY(0); }
-  #cutscene.active .cs-reveal:nth-child(1) { transition-delay: 0.15s; }
-  #cutscene.active .cs-reveal:nth-child(2) { transition-delay: 0.25s; }
-  #cutscene.active .cs-reveal:nth-child(3) { transition-delay: 0.35s; }
-  #cutscene.active .cs-reveal:nth-child(4) { transition-delay: 0.50s; }
-  #cutscene.active .cs-reveal:nth-child(5) { transition-delay: 0.65s; }
-  #cutscene.active .cs-reveal:nth-child(6) { transition-delay: 0.80s; }
-  #cutscene.active .cs-reveal:nth-child(7) { transition-delay: 0.95s; }
 
   .cs-era {
     font-size: 11px; letter-spacing: 6px; margin-bottom: 8px;
@@ -188,29 +196,51 @@
   .cs-btn.primary { border-color: #00b8d4; color: #00b8d4; }
 
   /* ── Dev tools panel ── */
+  #dev-panel {
+    position: fixed; top: 0; right: 0; z-index: 40;
+    width: 280px; height: 100vh;
+    background: rgba(6,6,6,0.96); border-left: 1px solid #222;
+    transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto; padding: 0;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  #dev-panel.open { transform: translateX(0); }
+  #dev-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px; border-bottom: 1px solid #1a1a1a;
+    position: sticky; top: 0; background: rgba(6,6,6,0.98); z-index: 1;
+  }
+  #dev-panel-header h4 {
+    font-size: 10px; letter-spacing: 3px; color: #555; margin: 0;
+  }
+  #dev-close {
+    background: none; border: none; color: #444; font-size: 16px;
+    cursor: pointer; font-family: inherit; padding: 0;
+  }
+  #dev-close:hover { color: #888; }
   #dev-toggle {
-    position: fixed; top: 24px; left: 50%; transform: translateX(-50%); z-index: 30;
-    background: rgba(0,0,0,0.92); border: 1px solid #282828;
+    position: fixed; top: 16px; right: 16px; z-index: 35;
+    background: rgba(0,0,0,0.8); border: 1px solid #282828;
     color: #444; font-family: inherit; font-size: 9px; letter-spacing: 2px;
-    padding: 5px 12px; cursor: pointer;
+    padding: 6px 10px; cursor: pointer;
+    transition: color 0.3s, border-color 0.3s;
   }
   #dev-toggle:hover { color: #888; border-color: #444; }
-  #dev-panel {
-    position: fixed; top: 50px; left: 50%; transform: translateX(-50%); z-index: 30;
-    background: rgba(0,0,0,0.95); border: 1px solid #333; padding: 16px 20px;
-    display: none; min-width: 260px;
+  .flag-section {
+    padding: 14px 18px 8px; border-bottom: 1px solid #111;
   }
-  #dev-panel h4 {
-    font-size: 10px; letter-spacing: 3px; color: #555; margin-bottom: 12px;
-    border-bottom: 1px solid #1a1a1a; padding-bottom: 8px;
+  .flag-section-title {
+    font-size: 9px; letter-spacing: 2px; color: #333; margin-bottom: 10px;
+    text-transform: uppercase;
   }
   .flag-row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 0; border-bottom: 1px solid #111;
+    padding: 5px 0;
   }
   .flag-label { font-size: 11px; color: #888; }
+  .flag-desc { font-size: 9px; color: #333; margin-top: 2px; }
   .flag-toggle {
-    position: relative; width: 32px; height: 16px; cursor: pointer;
+    position: relative; width: 32px; height: 16px; cursor: pointer; flex-shrink: 0;
   }
   .flag-toggle input { opacity: 0; width: 0; height: 0; }
   .flag-slider {
@@ -224,6 +254,67 @@
   }
   .flag-toggle input:checked + .flag-slider { background: #0a3d47; }
   .flag-toggle input:checked + .flag-slider::before { transform: translateX(16px); background: #00b8d4; }
+
+  /* Radio-style mode selector */
+  .mode-option {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; cursor: pointer;
+  }
+  .mode-option:hover .mode-name { color: #ccc; }
+  .mode-radio {
+    width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #444;
+    background: #111; flex-shrink: 0; margin-top: 1px;
+    transition: border-color 0.3s, background 0.3s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mode-radio::after {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: transparent; transition: background 0.3s;
+  }
+  .mode-option.active .mode-radio { border-color: #00b8d4; }
+  .mode-option.active .mode-radio::after { background: #00b8d4; }
+  .mode-name { font-size: 11px; color: #888; transition: color 0.2s; }
+  .mode-desc { font-size: 9px; color: #444; margin-top: 2px; line-height: 1.4; }
+
+  /* ── 3D Vignette overlay ── */
+  #vignette {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 20;
+    pointer-events: none; display: flex; align-items: flex-end;
+    padding: 0 60px 140px;
+  }
+  #vignette.active { pointer-events: auto; }
+  .vignette-items {
+    display: flex; gap: 24px; align-items: flex-end; width: 100%;
+    justify-content: center;
+  }
+  .vignette-card {
+    width: 160px; background: rgba(0,0,0,0.7); border: 1px solid #222;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    padding: 12px; opacity: 0; transform: translateY(30px) scale(0.95);
+    will-change: opacity, transform;
+  }
+  .vignette-card .vc-icon {
+    width: 100%; height: 120px; background: #111; border: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 10px; color: #333;
+  }
+  .vignette-card .vc-label {
+    font-size: 9px; letter-spacing: 1px; color: #666; text-align: center;
+  }
+  .vignette-card .vc-year {
+    font-size: 8px; color: #333; text-align: center; margin-top: 3px;
+  }
+  .vignette-era-label {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 11px; letter-spacing: 8px; color: #333;
+    opacity: 0; will-change: opacity;
+    pointer-events: none;
+  }
+  .vignette-nav {
+    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
+    z-index: 21; display: flex; gap: 12px; opacity: 0;
+    will-change: opacity;
+  }
 
   /* ── Story card (scaffold) ── */
   #story-card {
@@ -262,17 +353,7 @@
   <div class="sub">MANHATTAN / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
 </div>
 
-<div id="legend">
-  <h3>ERA</h3>
-  <div class="leg"><div class="sw" style="background:rgb(80,60,50)"></div>Pre-1800</div>
-  <div class="leg"><div class="sw" style="background:rgb(120,85,60)"></div>1800-1860</div>
-  <div class="leg"><div class="sw" style="background:rgb(160,110,70)"></div>1860-1900</div>
-  <div class="leg"><div class="sw" style="background:rgb(180,140,80)"></div>1900-1930</div>
-  <div class="leg"><div class="sw" style="background:rgb(100,130,160)"></div>1930-1945</div>
-  <div class="leg"><div class="sw" style="background:rgb(130,130,130)"></div>1945-1970</div>
-  <div class="leg"><div class="sw" style="background:rgb(90,110,90)"></div>1970-2000</div>
-  <div class="leg"><div class="sw" style="background:rgb(60,180,200)"></div>2000+</div>
-</div>
+<div id="legend"></div>
 
 <div id="controls">
   <div class="label">TIMELINE</div>
@@ -295,9 +376,23 @@
   <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
 </div>
 
-<button id="dev-toggle" onclick="document.getElementById('dev-panel').style.display = document.getElementById('dev-panel').style.display === 'block' ? 'none' : 'block'">DEV</button>
+<button id="dev-toggle" onclick="toggleDevPanel()">DEV</button>
 <div id="dev-panel">
-  <h4>FEATURE FLAGS</h4>
+  <div id="dev-panel-header">
+    <h4>FEATURE FLAGS</h4>
+    <button id="dev-close" onclick="toggleDevPanel()">&times;</button>
+  </div>
+  <div id="dev-panel-body"></div>
+</div>
+
+<!-- 3D Vignette overlay (alternative to cutscene) -->
+<div id="vignette">
+  <div class="vignette-era-label" id="vignette-era-label"></div>
+  <div class="vignette-items" id="vignette-items"></div>
+  <div class="vignette-nav">
+    <button class="cs-btn" onclick="exitVignette()">EXPLORE THIS ERA</button>
+    <button class="cs-btn primary" id="vignette-next-btn" onclick="nextStation()">NEXT STATION →</button>
+  </div>
 </div>
 
 <button id="mode-toggle" onclick="toggleMode()">GUIDED TOUR</button>
@@ -331,11 +426,17 @@ const { Deck, PolygonLayer } = deck;
 
 // ── Feature Flags ──
 const FLAGS = {
-  eraDots:      { label: 'Era Dots on Timeline', default: true },
-  cutscenes:    { label: 'Cutscene Overlays', default: true },
-  guidedMode:   { label: 'Guided Tour Mode', default: true },
-  storyCards:   { label: 'Story Cards', default: true },
-  legend:       { label: 'Era Legend', default: true },
+  eraDots:      { label: 'Era Dots', desc: 'Clickable dots on timeline rail', group: 'ui', default: true },
+  guidedMode:   { label: 'Guided Tour Mode', desc: 'Station bar with sequential navigation', group: 'ui', default: true },
+  storyCards:   { label: 'Story Cards', desc: 'Info card on building click', group: 'ui', default: true },
+  legend:       { label: 'Era Legend', desc: 'Interactive era bar above timeline', group: 'ui', default: true },
+};
+
+// Cutscene modes — only one active at a time
+const CUTSCENE_MODES = {
+  overlay:  { label: 'Overlay Cutscene', desc: 'Full-screen overlay with photos, quotes, and text. Covers the map.' },
+  vignette: { label: '3D Vignette', desc: 'Floating artifact cards appear in-world over the map. No overlay — the city stays visible.' },
+  off:      { label: 'Off', desc: 'No cutscene after flying to a station.' },
 };
 
 // Load from localStorage, fall back to defaults
@@ -344,6 +445,7 @@ for (const [key, def] of Object.entries(FLAGS)) {
   const stored = localStorage.getItem('ff_' + key);
   featureFlags[key] = stored !== null ? stored === 'true' : def.default;
 }
+let cutsceneMode = localStorage.getItem('ff_cutsceneMode') || 'overlay';
 
 function setFlag(key, val) {
   featureFlags[key] = val;
@@ -351,25 +453,46 @@ function setFlag(key, val) {
   applyFlags();
 }
 
+function setCutsceneMode(mode) {
+  cutsceneMode = mode;
+  localStorage.setItem('ff_cutsceneMode', mode);
+  // Update radio UI
+  document.querySelectorAll('.mode-option').forEach(el => {
+    el.classList.toggle('active', el.dataset.mode === mode);
+  });
+}
+
 function applyFlags() {
-  // Era dots
   document.querySelectorAll('.era-dot').forEach(d => d.style.display = featureFlags.eraDots ? '' : 'none');
-  // Guided mode toggle button
   document.getElementById('mode-toggle').style.display = featureFlags.guidedMode ? '' : 'none';
-  if (!featureFlags.guidedMode && guidedMode) toggleMode(); // force back to free scrub
-  // Legend
+  if (!featureFlags.guidedMode && guidedMode) toggleMode();
   document.getElementById('legend').style.display = featureFlags.legend ? '' : 'none';
-  // Story cards — handled in showCard()
+}
+
+function toggleDevPanel() {
+  document.getElementById('dev-panel').classList.toggle('open');
 }
 
 function buildDevPanel() {
-  const panel = document.getElementById('dev-panel');
+  const body = document.getElementById('dev-panel-body');
+  body.innerHTML = '';
+
+  // UI toggles section
+  const uiSection = document.createElement('div');
+  uiSection.className = 'flag-section';
+  uiSection.innerHTML = '<div class="flag-section-title">Interface</div>';
   for (const [key, def] of Object.entries(FLAGS)) {
     const row = document.createElement('div');
     row.className = 'flag-row';
-    const label = document.createElement('span');
+    const labelWrap = document.createElement('div');
+    const label = document.createElement('div');
     label.className = 'flag-label';
     label.textContent = def.label;
+    const desc = document.createElement('div');
+    desc.className = 'flag-desc';
+    desc.textContent = def.desc;
+    labelWrap.appendChild(label);
+    labelWrap.appendChild(desc);
     const toggle = document.createElement('label');
     toggle.className = 'flag-toggle';
     const input = document.createElement('input');
@@ -380,10 +503,37 @@ function buildDevPanel() {
     slider.className = 'flag-slider';
     toggle.appendChild(input);
     toggle.appendChild(slider);
-    row.appendChild(label);
+    row.appendChild(labelWrap);
     row.appendChild(toggle);
-    panel.appendChild(row);
+    uiSection.appendChild(row);
   }
+  body.appendChild(uiSection);
+
+  // Cutscene modes section
+  const csSection = document.createElement('div');
+  csSection.className = 'flag-section';
+  csSection.innerHTML = '<div class="flag-section-title">Era Presentation</div>';
+  for (const [mode, def] of Object.entries(CUTSCENE_MODES)) {
+    const option = document.createElement('div');
+    option.className = 'mode-option' + (cutsceneMode === mode ? ' active' : '');
+    option.dataset.mode = mode;
+    option.addEventListener('click', () => setCutsceneMode(mode));
+    const radio = document.createElement('div');
+    radio.className = 'mode-radio';
+    const textWrap = document.createElement('div');
+    const name = document.createElement('div');
+    name.className = 'mode-name';
+    name.textContent = def.label;
+    const desc = document.createElement('div');
+    desc.className = 'mode-desc';
+    desc.textContent = def.desc;
+    textWrap.appendChild(name);
+    textWrap.appendChild(desc);
+    option.appendChild(radio);
+    option.appendChild(textWrap);
+    csSection.appendChild(option);
+  }
+  body.appendChild(csSection);
 }
 buildDevPanel();
 
@@ -399,9 +549,89 @@ const ERA_DEFS = [
   { max: 9999, label: 'GLASS TOWER ERA',         color: [60, 180, 200] },
 ];
 
+// Era ranges for legend display (min is inclusive, max from ERA_DEFS is exclusive)
+const ERA_RANGES = [
+  { min: 0,    max: 1800, label: 'COLONIAL',    shortYears: 'PRE-1800' },
+  { min: 1800, max: 1860, label: 'ANTEBELLUM',  shortYears: '1800–1860' },
+  { min: 1860, max: 1900, label: 'GILDED AGE',  shortYears: '1860–1900' },
+  { min: 1900, max: 1930, label: 'GOLDEN AGE',  shortYears: '1900–1930' },
+  { min: 1930, max: 1945, label: 'ART DECO',    shortYears: '1930–1945' },
+  { min: 1945, max: 1970, label: 'MIDCENTURY',  shortYears: '1945–1970' },
+  { min: 1970, max: 2000, label: 'POSTMODERN',  shortYears: '1970–2000' },
+  { min: 2000, max: 9999, label: 'GLASS TOWER', shortYears: '2000+' },
+];
+
 function getEra(year) {
   for (const e of ERA_DEFS) { if (year < e.max) return e; }
   return ERA_DEFS[ERA_DEFS.length - 1];
+}
+
+function getEraIndex(year) {
+  for (let i = 0; i < ERA_DEFS.length; i++) { if (year < ERA_DEFS[i].max) return i; }
+  return ERA_DEFS.length - 1;
+}
+
+// ── Interactive era legend ──
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  legend.innerHTML = '<h3>ERA</h3>';
+  ERA_DEFS.forEach((era, i) => {
+    const range = ERA_RANGES[i];
+    const leg = document.createElement('div');
+    leg.className = 'leg';
+    leg.dataset.eraIndex = i;
+
+    const sw = document.createElement('div');
+    sw.className = 'sw';
+    sw.style.background = `rgb(${era.color.join(',')})`;
+    sw.style.color = `rgb(${era.color.join(',')})`;
+
+    const label = document.createElement('span');
+    label.className = 'leg-label';
+    label.textContent = range.label;
+
+    const years = document.createElement('span');
+    years.className = 'leg-years';
+    years.textContent = range.shortYears;
+
+    leg.appendChild(sw);
+    leg.appendChild(label);
+    leg.appendChild(years);
+
+    leg.addEventListener('click', () => {
+      const stationIdx = findStationForEra(i);
+      if (stationIdx !== -1) {
+        goToStation(stationIdx);
+      } else {
+        const midYear = range.max === 9999 ? 2020 : Math.round((range.min + range.max) / 2);
+        const proxy = { year: currentYear };
+        gsap.to(proxy, {
+          year: midYear,
+          duration: 1.5,
+          ease: 'power3.out',
+          onUpdate: () => syncYear(proxy.year),
+        });
+      }
+    });
+
+    legend.appendChild(leg);
+  });
+  updateLegendHighlight();
+}
+
+function findStationForEra(eraIndex) {
+  const range = ERA_RANGES[eraIndex];
+  for (let i = 0; i < STATIONS.length; i++) {
+    if (STATIONS[i].targetYear >= range.min && STATIONS[i].targetYear < range.max) return i;
+  }
+  return -1;
+}
+
+function updateLegendHighlight() {
+  const activeIdx = getEraIndex(currentYear);
+  document.querySelectorAll('#legend .leg').forEach((leg, i) => {
+    leg.classList.toggle('active', i === activeIdx);
+  });
 }
 
 // ── Marquee sites (hand-curated, expand with James) ──
@@ -415,7 +645,6 @@ const MARQUEE = {
 let buildings = [];
 let currentYear = 2026;
 let playing = false;
-let playInterval = null;
 let deckgl = null;
 
 // ── Load data ──
@@ -427,6 +656,7 @@ fetch('data/manhattan_compact.json')
     updateVisibleCount();
     initDeck();
     buildEraDots();
+    buildLegend();
     applyFlags();
   });
 
@@ -520,6 +750,7 @@ slider.addEventListener('input', () => {
   yearDisplay.textContent = currentYear;
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
+  updateLegendHighlight();
   if (deckgl) deckgl.setProps({ layers: [buildLayer()] });
 });
 
@@ -528,34 +759,42 @@ function updateVisibleCount() {
   document.getElementById('visible-count').textContent = count.toLocaleString();
 }
 
-// ── Play button (auto-scroll through time) ──
+// ── Play button (GSAP-driven timeline scrub) ──
 const playBtn = document.getElementById('play-btn');
+let playTween = null;
+
+function syncYear(year) {
+  currentYear = Math.round(year);
+  slider.value = currentYear;
+  yearDisplay.textContent = currentYear;
+  eraLabel.textContent = getEra(currentYear).label;
+  updateVisibleCount();
+  updateLegendHighlight();
+  if (deckgl) deckgl.setProps({ layers: [buildLayer()] });
+}
+
 playBtn.addEventListener('click', () => {
   if (playing) {
-    clearInterval(playInterval);
+    playTween.kill();
     playBtn.textContent = 'PLAY';
     playing = false;
   } else {
-    if (currentYear >= 2026) {
-      currentYear = 1719;
-      slider.value = currentYear;
-    }
+    const startFrom = currentYear >= 2026 ? 1719 : currentYear;
+    const yearsToGo = 2026 - startFrom;
+    const duration = yearsToGo / 20; // ~20 years/second
     playing = true;
     playBtn.textContent = 'STOP';
-    playInterval = setInterval(() => {
-      currentYear += 1;
-      if (currentYear > 2026) {
-        clearInterval(playInterval);
+    const proxy = { year: startFrom };
+    playTween = gsap.to(proxy, {
+      year: 2026,
+      duration,
+      ease: 'none',
+      onUpdate: () => syncYear(proxy.year),
+      onComplete: () => {
         playBtn.textContent = 'PLAY';
         playing = false;
-        return;
       }
-      slider.value = currentYear;
-      yearDisplay.textContent = currentYear;
-      eraLabel.textContent = getEra(currentYear).label;
-      updateVisibleCount();
-      deckgl.setProps({ layers: [buildLayer()] });
-    }, 50); // ~20 years/second
+    });
   }
 });
 
@@ -607,6 +846,12 @@ const STATIONS = [
     label: 'COLONIAL',
     targetYear: 1760,
     camera: { latitude: 40.7033, longitude: -74.0170, zoom: 15.5, pitch: 45, bearing: 30 },
+    vignette: [
+      { icon: '⚓', label: 'Dutch Trade Ship', year: '1626' },
+      { icon: '🏴', label: 'British Flag', year: '1664' },
+      { icon: '📜', label: 'Castello Plan', year: '1660' },
+      { icon: '🕯', label: 'Tallow Candle', year: '~1700' },
+    ],
     cutscene: {
       era: 'STATION 01',
       title: 'Colonial Manhattan',
@@ -623,6 +868,12 @@ const STATIONS = [
     label: 'ANTEBELLUM',
     targetYear: 1840,
     camera: { latitude: 40.7128, longitude: -74.0060, zoom: 15.0, pitch: 48, bearing: 0 },
+    vignette: [
+      { icon: '🎩', label: 'Top Hat', year: '1830s' },
+      { icon: '🪗', label: 'Street Organ', year: '1840s' },
+      { icon: '🧱', label: 'Brownstone Brick', year: '1850' },
+      { icon: '📰', label: 'NY Herald Tribune', year: '1835' },
+    ],
     cutscene: {
       era: 'STATION 02',
       title: 'Antebellum New York',
@@ -639,6 +890,12 @@ const STATIONS = [
     label: 'GILDED AGE',
     targetYear: 1885,
     camera: { latitude: 40.7155, longitude: -73.9880, zoom: 15.2, pitch: 50, bearing: 15 },
+    vignette: [
+      { icon: '🪔', label: 'Gas Lamp', year: '1880' },
+      { icon: '🛒', label: 'Pushcart', year: '1895' },
+      { icon: '🧵', label: 'Garment Shears', year: '1890' },
+      { icon: '📷', label: 'Riis Camera', year: '1888' },
+    ],
     cutscene: {
       era: 'STATION 03',
       title: 'The Gilded Age',
@@ -655,6 +912,12 @@ const STATIONS = [
     label: 'GOLDEN AGE',
     targetYear: 1925,
     camera: { latitude: 40.7484, longitude: -73.9856, zoom: 14.8, pitch: 55, bearing: -30 },
+    vignette: [
+      { icon: '🎷', label: 'Jazz Saxophone', year: '1925' },
+      { icon: '🍸', label: 'Speakeasy Glass', year: '1928' },
+      { icon: '🏗', label: 'Steel Rivet', year: '1930' },
+      { icon: '📻', label: 'Cathedral Radio', year: '1927' },
+    ],
     cutscene: {
       era: 'STATION 04',
       title: 'The Golden Age',
@@ -671,6 +934,12 @@ const STATIONS = [
     label: 'ART DECO',
     targetYear: 1938,
     camera: { latitude: 40.7484, longitude: -73.9857, zoom: 15.0, pitch: 60, bearing: -60 },
+    vignette: [
+      { icon: '🔺', label: 'Chrysler Eagle', year: '1930' },
+      { icon: '📻', label: 'FDR Fireside Chat', year: '1933' },
+      { icon: '🎭', label: 'WPA Theatre Mask', year: '1936' },
+      { icon: '⛸', label: 'Rockefeller Skate', year: '1936' },
+    ],
     cutscene: {
       era: 'STATION 05',
       title: 'Art Deco & Depression',
@@ -687,6 +956,12 @@ const STATIONS = [
     label: 'MIDCENTURY',
     targetYear: 1960,
     camera: { latitude: 40.7505, longitude: -73.9935, zoom: 15.2, pitch: 50, bearing: 20 },
+    vignette: [
+      { icon: '🔨', label: 'Wrecking Ball', year: '1963' },
+      { icon: '🚗', label: 'Tail Fin Cadillac', year: '1959' },
+      { icon: '📺', label: 'TV Set', year: '1955' },
+      { icon: '✊', label: 'Protest Sign', year: '1964' },
+    ],
     cutscene: {
       era: 'STATION 06',
       title: 'Brutalism & Midcentury',
@@ -703,6 +978,12 @@ const STATIONS = [
     label: 'POSTMODERN',
     targetYear: 1985,
     camera: { latitude: 40.7580, longitude: -73.9855, zoom: 14.6, pitch: 50, bearing: -10 },
+    vignette: [
+      { icon: '🎤', label: 'Boombox Mic', year: '1979' },
+      { icon: '🎨', label: 'Spray Can', year: '1981' },
+      { icon: '🎸', label: 'CBGB Guitar', year: '1977' },
+      { icon: '🚇', label: 'Tagged Subway', year: '1982' },
+    ],
     cutscene: {
       era: 'STATION 07',
       title: 'Postmodern New York',
@@ -719,6 +1000,12 @@ const STATIONS = [
     label: 'GLASS TOWER',
     targetYear: 2020,
     camera: { latitude: 40.7536, longitude: -74.0003, zoom: 14.5, pitch: 55, bearing: -45 },
+    vignette: [
+      { icon: '🏙', label: 'Freedom Tower', year: '2014' },
+      { icon: '📱', label: 'Smartphone', year: '2010' },
+      { icon: '🪟', label: 'Glass Curtain Wall', year: '2019' },
+      { icon: '🛗', label: 'Supertall Elevator', year: '2021' },
+    ],
     cutscene: {
       era: 'STATION 08',
       title: 'Glass Tower Era',
@@ -745,19 +1032,17 @@ function toggleMode() {
   if (guidedMode) {
     toggle.classList.add('active');
     toggle.textContent = 'FREE SCRUB';
-    controls.style.display = 'none';
     stationBar.style.display = 'block';
     buildStationTrack();
     // Stop play if running
-    if (playing) {
-      clearInterval(playInterval);
+    if (playing && playTween) {
+      playTween.kill();
       playBtn.textContent = 'PLAY';
       playing = false;
     }
   } else {
     toggle.classList.remove('active');
     toggle.textContent = 'GUIDED TOUR';
-    controls.style.display = 'block';
     stationBar.style.display = 'none';
     exitCutscene();
     activeStationIndex = -1;
@@ -793,7 +1078,13 @@ function buildStationTrack() {
   });
 }
 
+let stationTimeline = null;
+
 function goToStation(index) {
+  // Kill any in-flight station animation
+  if (stationTimeline) stationTimeline.kill();
+  if (playTween) { playTween.kill(); playBtn.textContent = 'PLAY'; playing = false; }
+
   const station = STATIONS[index];
   activeStationIndex = index;
   closeCard();
@@ -803,40 +1094,36 @@ function goToStation(index) {
     d.classList.toggle('active', i === index);
   });
 
-  // Animate year toward target during fly-to
-  const startYear = currentYear;
-  const endYear = station.targetYear;
-  const duration = 2500;
-  const startTime = performance.now();
+  const flyDuration = 2.5;
+  const proxy = { year: currentYear };
 
-  function animateYear(now) {
-    const t = Math.min((now - startTime) / duration, 1);
-    // Ease out cubic
-    const eased = 1 - Math.pow(1 - t, 3);
-    currentYear = Math.round(startYear + (endYear - startYear) * eased);
-    yearDisplay.textContent = currentYear;
-    eraLabel.textContent = getEra(currentYear).label;
-    slider.value = currentYear;
-    updateVisibleCount();
-    deckgl.setProps({ layers: [buildLayer()] });
-    if (t < 1) requestAnimationFrame(animateYear);
-  }
-  requestAnimationFrame(animateYear);
-
-  // Camera fly-to
+  // Camera fly-to (deck.gl handles its own interpolation)
   deckgl.setProps({
     initialViewState: {
       ...station.camera,
-      transitionDuration: duration,
+      transitionDuration: flyDuration * 1000,
       transitionInterpolator: new deck.FlyToInterpolator(),
     }
   });
 
-  // Open cutscene after fly completes (if enabled)
-  if (featureFlags.cutscenes) {
-    setTimeout(() => openCutscene(station), duration + 300);
+  // GSAP timeline: year tween synced to camera, then cutscene
+  stationTimeline = gsap.timeline();
+
+  stationTimeline.to(proxy, {
+    year: station.targetYear,
+    duration: flyDuration,
+    ease: 'power3.out',
+    onUpdate: () => syncYear(proxy.year),
+  });
+
+  if (cutsceneMode === 'overlay') {
+    stationTimeline.call(() => openCutscene(station), null, `>+0.3`);
+  } else if (cutsceneMode === 'vignette') {
+    stationTimeline.call(() => openVignette(station), null, `>+0.3`);
   }
 }
+
+let cutsceneTl = null;
 
 function openCutscene(station) {
   cutsceneOpen = true;
@@ -873,33 +1160,189 @@ function openCutscene(station) {
     nextBtn.textContent = 'NEXT STATION →';
   }
 
-  el.classList.add('active');
+  // Kill previous cutscene animation
+  if (cutsceneTl) cutsceneTl.kill();
+
+  // Reset reveals to hidden
+  const reveals = el.querySelectorAll('.cs-reveal');
+  gsap.set(reveals, { opacity: 0, y: 16 });
+
+  // Compose the entrance timeline
+  cutsceneTl = gsap.timeline();
+
+  // Backdrop fade
+  cutsceneTl.to(el, {
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    duration: 0.8,
+    ease: 'power2.out',
+    onStart: () => {
+      el.style.pointerEvents = 'auto';
+      el.classList.add('active');
+    }
+  });
+
+  // Staggered content reveal
+  cutsceneTl.to(reveals, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    stagger: 0.1,
+    ease: 'power2.out',
+  }, '-=0.3');
 }
 
 function exitCutscene() {
   cutsceneOpen = false;
   const el = document.getElementById('cutscene');
-  el.classList.remove('active');
-  // Reset reveal states after fade-out so they re-animate on next open
-  setTimeout(() => {
-    if (!cutsceneOpen) {
-      el.querySelectorAll('.cs-reveal').forEach(r => {
-        r.style.transitionDelay = '0s';
-        r.offsetHeight; // force reflow
-        r.style.transitionDelay = '';
-      });
+  const reveals = el.querySelectorAll('.cs-reveal');
+
+  if (cutsceneTl) cutsceneTl.kill();
+
+  cutsceneTl = gsap.timeline({
+    onComplete: () => {
+      el.classList.remove('active');
+      el.style.pointerEvents = 'none';
+      el.style.backgroundColor = '';
     }
-  }, 600);
+  });
+
+  // Reveals fade out fast
+  cutsceneTl.to(reveals, {
+    opacity: 0,
+    y: -10,
+    duration: 0.3,
+    stagger: 0.04,
+    ease: 'power2.in',
+  });
+
+  // Backdrop fade
+  cutsceneTl.to(el, {
+    backgroundColor: 'rgba(0,0,0,0)',
+    duration: 0.5,
+    ease: 'power2.in',
+  }, '-=0.15');
 }
 
-function nextStation() {
-  exitCutscene();
-  const next = activeStationIndex + 1;
-  if (next >= STATIONS.length) {
-    // Loop back to first
-    setTimeout(() => goToStation(0), 400);
+// ── 3D Vignette mode ──
+let vignetteTl = null;
+
+function openVignette(station) {
+  cutsceneOpen = true;
+  const el = document.getElementById('vignette');
+  const items = document.getElementById('vignette-items');
+  const eraLabel = document.getElementById('vignette-era-label');
+  const nav = el.querySelector('.vignette-nav');
+  const cs = station.cutscene;
+
+  // Build artifact cards
+  items.innerHTML = '';
+  (station.vignette || []).forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'vignette-card';
+    card.innerHTML = `
+      <div class="vc-icon">${v.icon}</div>
+      <div class="vc-label">${v.label}</div>
+      <div class="vc-year">${v.year}</div>
+    `;
+    items.appendChild(card);
+  });
+
+  // Era label
+  eraLabel.textContent = cs.title.toUpperCase();
+  eraLabel.style.color = cs.eraColor;
+
+  // Next button
+  const nextBtn = document.getElementById('vignette-next-btn');
+  if (activeStationIndex >= STATIONS.length - 1) {
+    nextBtn.textContent = 'BACK TO START';
   } else {
-    setTimeout(() => goToStation(next), 400);
+    nextBtn.textContent = 'NEXT STATION →';
+  }
+
+  el.classList.add('active');
+
+  // Kill previous
+  if (vignetteTl) vignetteTl.kill();
+
+  const cards = items.querySelectorAll('.vignette-card');
+  gsap.set(cards, { opacity: 0, y: 30, scale: 0.95 });
+  gsap.set(eraLabel, { opacity: 0 });
+  gsap.set(nav, { opacity: 0 });
+
+  vignetteTl = gsap.timeline();
+
+  // Era name fades in center
+  vignetteTl.to(eraLabel, {
+    opacity: 0.6,
+    duration: 1,
+    ease: 'power2.out',
+  });
+
+  // Cards rise one by one
+  vignetteTl.to(cards, {
+    opacity: 1, y: 0, scale: 1,
+    duration: 0.6,
+    stagger: 0.25,
+    ease: 'power2.out',
+  }, '-=0.5');
+
+  // Era label fades down
+  vignetteTl.to(eraLabel, {
+    opacity: 0.15,
+    duration: 0.8,
+    ease: 'power2.out',
+  }, '-=0.3');
+
+  // Nav appears
+  vignetteTl.to(nav, {
+    opacity: 1,
+    duration: 0.4,
+    ease: 'power2.out',
+  }, '-=0.3');
+}
+
+function exitVignette() {
+  cutsceneOpen = false;
+  const el = document.getElementById('vignette');
+  const cards = el.querySelectorAll('.vignette-card');
+  const eraLabel = document.getElementById('vignette-era-label');
+  const nav = el.querySelector('.vignette-nav');
+
+  if (vignetteTl) vignetteTl.kill();
+
+  vignetteTl = gsap.timeline({
+    onComplete: () => {
+      el.classList.remove('active');
+    }
+  });
+
+  vignetteTl.to(nav, { opacity: 0, duration: 0.2, ease: 'power2.in' });
+  vignetteTl.to(cards, {
+    opacity: 0, y: -15, scale: 0.95,
+    duration: 0.3, stagger: 0.06, ease: 'power2.in',
+  }, '-=0.1');
+  vignetteTl.to(eraLabel, { opacity: 0, duration: 0.3, ease: 'power2.in' }, '-=0.2');
+}
+
+// ── Next station (handles both modes) ──
+function nextStation() {
+  const next = (activeStationIndex + 1) % STATIONS.length;
+
+  if (cutsceneMode === 'vignette') {
+    exitVignette();
+    vignetteTl.eventCallback('onComplete', () => {
+      document.getElementById('vignette').classList.remove('active');
+      goToStation(next);
+    });
+  } else {
+    exitCutscene();
+    cutsceneTl.eventCallback('onComplete', () => {
+      const el = document.getElementById('cutscene');
+      el.classList.remove('active');
+      el.style.pointerEvents = 'none';
+      el.style.backgroundColor = '';
+      goToStation(next);
+    });
   }
 }
 </script>
