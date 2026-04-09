@@ -27,27 +27,12 @@
   }
   #legend h3 { font-size: 11px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 10px; }
   .leg {
-    display: flex; align-items: center; margin: 2px 0; padding: 4px 6px;
-    cursor: pointer; transition: background 0.3s;
-    border-radius: 2px;
+    display: flex; align-items: center; margin: 3px 0; font-size: 11px; color: #888;
+    cursor: pointer;
   }
-  .leg:hover { background: rgba(255,255,255,0.04); }
-  .leg.active { background: rgba(255,255,255,0.07); }
-  .leg .sw {
-    width: 10px; height: 10px; margin-right: 8px; border: 1px solid #333;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .leg:hover .sw { transform: scale(1.2); }
-  .leg.active .sw { transform: scale(1.3); box-shadow: 0 0 6px currentColor; }
-  .leg .leg-label {
-    font-size: 11px; color: #888; transition: color 0.3s;
-  }
-  .leg.active .leg-label { color: #ccc; }
-  .leg .leg-years {
-    font-size: 10px; color: #444; margin-left: auto; padding-left: 12px;
-    transition: color 0.3s;
-  }
-  .leg.active .leg-years { color: #666; }
+  .leg:hover { color: #ccc; }
+  .leg.active { color: #ccc; }
+  .leg .sw { width: 10px; height: 10px; margin-right: 8px; border: 1px solid #333; }
 
   /* ── Timeline controls ── */
   #controls {
@@ -61,23 +46,36 @@
   #slider {
     width: 100%; -webkit-appearance: none; height: 3px;
     background: #282828; outline: none; cursor: pointer;
+    margin: 0; padding: 0;
   }
   #slider::-webkit-slider-thumb {
     -webkit-appearance: none; width: 14px; height: 14px;
     background: #00b8d4; border-radius: 50%; cursor: pointer;
   }
-  #stats { margin-top: 8px; font-size: 10px; color: #555; }
-  #slider-wrap { position: relative; width: 100%; height: 24px; }
-  #slider-wrap input { position: absolute; top: 50%; left: 0; width: 100%; transform: translateY(-50%); z-index: 2; }
-  .era-dot {
-    position: absolute; z-index: 3; width: 10px; height: 10px; border-radius: 50%;
-    border: 1.5px solid #444; background: #111; cursor: pointer;
-    top: 50%; transform: translate(-50%, -50%);
-    transition: border-color 0.3s, background 0.3s, transform 0.2s;
+  #slider::-moz-range-thumb {
+    width: 14px; height: 14px;
+    background: #00b8d4; border-radius: 50%; cursor: pointer; border: none;
   }
-  .era-dot:hover { border-color: #00b8d4; background: #00b8d4; transform: translate(-50%, -50%) scale(1.3); }
+  #stats { margin-top: 8px; font-size: 10px; color: #555; }
+  #slider-wrap { position: relative; width: 100%; height: 14px; }
+  #slider-wrap input {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2; margin: 0;
+  }
+  .era-dot {
+    position: absolute; z-index: 3;
+    top: -2px;
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 3px solid #444; background: transparent; cursor: pointer;
+    transform: translateX(-50%);
+    transition: border-color 0.3s, width 0.2s, height 0.2s, top 0.2s;
+  }
+  .era-dot:hover {
+    border-color: #666;
+    width: 22px; height: 22px; top: -4px;
+  }
   .era-dot-label {
-    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
     font-size: 8px; color: #333; letter-spacing: 1px; white-space: nowrap;
     pointer-events: none; opacity: 0; transition: opacity 0.3s, color 0.3s;
   }
@@ -132,37 +130,66 @@
   #cutscene {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 20;
     background: rgba(0,0,0,0); pointer-events: none;
-    display: flex; align-items: center; justify-content: center;
   }
   #cutscene-inner {
-    max-width: 620px; width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    gap: 0 48px;
+    width: 100%; height: 100%;
+    padding: 60px 60px 40px;
+    box-sizing: border-box;
   }
 
-  /* GSAP controls reveal animation — set initial hidden state */
   .cs-reveal {
     opacity: 0; transform: translateY(16px);
     will-change: opacity, transform;
   }
 
+  /* Left column: type stack */
+  .cs-left {
+    grid-column: 1; grid-row: 1 / 3;
+    display: flex; flex-direction: column; justify-content: center;
+    padding-right: 24px;
+  }
   .cs-era {
-    font-size: 11px; letter-spacing: 6px; margin-bottom: 8px;
+    font-size: 10px; letter-spacing: 6px; margin-bottom: 16px;
   }
   .cs-title {
-    font-size: 38px; font-weight: bold; color: #fff; line-height: 1.15; margin-bottom: 2px;
+    font-size: 48px; font-weight: bold; color: #fff; line-height: 1.08;
+    margin-bottom: 8px;
   }
   .cs-years {
-    font-size: 13px; color: #555; letter-spacing: 3px; margin-bottom: 32px;
+    font-size: 12px; color: #444; letter-spacing: 3px; margin-bottom: 40px;
+  }
+  .cs-quote {
+    border-left: 2px solid; padding: 16px 24px; margin-bottom: 0;
+    font-size: 16px; color: #bbb; font-style: italic; line-height: 1.7;
+    max-width: 420px;
+  }
+  .cs-attribution {
+    font-size: 10px; color: #444; font-style: normal; margin-top: 12px; letter-spacing: 1px;
+  }
+
+  /* Right column: photos + body */
+  .cs-right {
+    grid-column: 2; grid-row: 1 / 3;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 16px;
   }
   .cs-photos {
-    display: flex; gap: 10px; margin-bottom: 28px; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    overflow: hidden;
   }
   .cs-photo {
-    flex: 1; height: 180px; background: #111; border: 1px solid #1e1e1e;
+    height: 160px; background: #0d0d0d; border: 1px solid #1a1a1a;
     display: flex; align-items: center; justify-content: center;
-    font-size: 9px; color: #2a2a2a; letter-spacing: 1px;
+    font-size: 9px; color: #222; letter-spacing: 1px;
     overflow: hidden; position: relative;
   }
-  /* Ken Burns drift on photo placeholders */
+  .cs-photo:first-child {
+    grid-column: 1 / 3; height: 200px;
+  }
   @keyframes kenBurns {
     0%   { transform: scale(1) translate(0, 0); }
     100% { transform: scale(1.08) translate(-2%, -1%); }
@@ -173,18 +200,15 @@
   #cutscene.active .cs-photo:nth-child(2) { animation-delay: -4s; animation-direction: alternate-reverse; }
   #cutscene.active .cs-photo:nth-child(3) { animation-delay: -8s; }
 
-  .cs-quote {
-    border-left: 2px solid; padding: 14px 24px; margin-bottom: 28px;
-    font-size: 15px; color: #ccc; font-style: italic; line-height: 1.65;
-  }
-  .cs-attribution {
-    font-size: 10px; color: #555; font-style: normal; margin-top: 10px; letter-spacing: 1px;
-  }
   .cs-body {
-    font-size: 12px; color: #777; line-height: 1.8; margin-bottom: 32px;
+    font-size: 12px; color: #666; line-height: 1.85; max-width: 440px;
   }
-  .cs-buttons {
-    display: flex; gap: 12px;
+
+  /* Bottom: buttons span full width */
+  .cs-bottom {
+    grid-column: 1 / 3; grid-row: 3;
+    display: flex; justify-content: flex-end; align-items: flex-end;
+    gap: 12px; padding-top: 16px;
   }
   .cs-btn {
     background: none; border: 1px solid #333; color: #888; font-family: inherit;
@@ -194,6 +218,25 @@
   .cs-btn:hover { color: #00b8d4; border-color: #00b8d4; transform: translateY(-1px); }
   .cs-btn:active { transform: translateY(0); }
   .cs-btn.primary { border-color: #00b8d4; color: #00b8d4; }
+
+  /* Timeline collapses during overlay cutscene */
+  #controls.cutscene-active {
+    padding: 8px 24px; min-width: auto;
+  }
+  #controls.cutscene-active .label,
+  #controls.cutscene-active #era-label,
+  #controls.cutscene-active #stats,
+  #controls.cutscene-active #play-btn,
+  #controls.cutscene-active #slider-wrap {
+    display: none;
+  }
+  #controls.cutscene-active #year-display {
+    font-size: 18px; margin: 0;
+  }
+  /* Timeline stays full and above vignette */
+  #controls.vignette-active {
+    z-index: 28;
+  }
 
   /* ── Dev tools panel ── */
   #dev-panel {
@@ -222,10 +265,11 @@
     position: fixed; top: 16px; right: 16px; z-index: 35;
     background: rgba(0,0,0,0.8); border: 1px solid #282828;
     color: #444; font-family: inherit; font-size: 9px; letter-spacing: 2px;
-    padding: 6px 10px; cursor: pointer;
+    padding: 6px 10px; cursor: grab; user-select: none;
     transition: color 0.3s, border-color 0.3s;
   }
   #dev-toggle:hover { color: #888; border-color: #444; }
+  #dev-toggle.dragging { cursor: grabbing; opacity: 0.8; }
   .flag-section {
     padding: 14px 18px 8px; border-bottom: 1px solid #111;
   }
@@ -278,41 +322,51 @@
 
   /* ── 3D Vignette overlay ── */
   #vignette {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 20;
-    pointer-events: none; display: flex; align-items: flex-end;
-    padding: 0 60px 140px;
-  }
-  #vignette.active { pointer-events: auto; }
-  .vignette-items {
-    display: flex; gap: 24px; align-items: flex-end; width: 100%;
-    justify-content: center;
-  }
-  .vignette-card {
-    width: 160px; background: rgba(0,0,0,0.7); border: 1px solid #222;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    padding: 12px; opacity: 0; transform: translateY(30px) scale(0.95);
-    will-change: opacity, transform;
-  }
-  .vignette-card .vc-icon {
-    width: 100%; height: 120px; background: #111; border: 1px solid #1a1a1a;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px; margin-bottom: 10px; color: #333;
-  }
-  .vignette-card .vc-label {
-    font-size: 9px; letter-spacing: 1px; color: #666; text-align: center;
-  }
-  .vignette-card .vc-year {
-    font-size: 8px; color: #333; text-align: center; margin-top: 3px;
-  }
-  .vignette-era-label {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    font-size: 11px; letter-spacing: 8px; color: #333;
-    opacity: 0; will-change: opacity;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 26;
     pointer-events: none;
   }
+  #vignette.active { pointer-events: auto; }
+
+  .vignette-items {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+
+  /* Each card is absolutely positioned — JS places them in a composed layout */
+  .vignette-card {
+    position: absolute;
+    background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    opacity: 0; will-change: opacity, transform;
+  }
+  .vignette-card .vc-icon {
+    width: 100%; aspect-ratio: 1; background: rgba(10,10,10,0.8);
+    border: 1px solid #1a1a1a;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .vignette-card .vc-label {
+    font-size: 10px; letter-spacing: 2px; color: #777;
+    text-align: center; padding: 12px 8px 4px;
+  }
+  .vignette-card .vc-year {
+    font-size: 9px; color: #444; text-align: center; padding-bottom: 10px;
+  }
+
+  .vignette-era-label {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 72px; font-weight: bold; letter-spacing: 12px;
+    color: #fff; opacity: 0; will-change: opacity;
+    pointer-events: none; text-align: center; line-height: 1;
+  }
+  .vignette-era-sub {
+    font-size: 12px; letter-spacing: 6px; font-weight: normal;
+    display: block; margin-top: 12px; color: #555;
+  }
+
   .vignette-nav {
-    position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%);
-    z-index: 21; display: flex; gap: 12px; opacity: 0;
+    position: fixed; bottom: 100px; right: 60px;
+    z-index: 27; display: flex; gap: 12px; opacity: 0;
     will-change: opacity;
   }
 
@@ -357,10 +411,10 @@
 
 <div id="controls">
   <div class="label">TIMELINE</div>
-  <div id="year-display">2026</div>
-  <div id="era-label">GLASS TOWER ERA</div>
+  <div id="year-display">1925</div>
+  <div id="era-label">GOLDEN AGE</div>
   <div id="slider-wrap">
-    <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
+    <input type="range" id="slider" min="1719" max="2026" value="1925" step="1">
   </div>
   <div id="stats"><span id="visible-count">--</span> buildings visible</div>
   <button id="play-btn">PLAY</button>
@@ -376,7 +430,7 @@
   <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
 </div>
 
-<button id="dev-toggle" onclick="toggleDevPanel()">DEV</button>
+<button id="dev-toggle">DEV</button>
 <div id="dev-panel">
   <div id="dev-panel-header">
     <h4>FEATURE FLAGS</h4>
@@ -387,7 +441,7 @@
 
 <!-- 3D Vignette overlay (alternative to cutscene) -->
 <div id="vignette">
-  <div class="vignette-era-label" id="vignette-era-label"></div>
+  <div class="vignette-era-label" id="vignette-era-label"><span class="vignette-era-sub" id="vignette-era-sub"></span></div>
   <div class="vignette-items" id="vignette-items"></div>
   <div class="vignette-nav">
     <button class="cs-btn" onclick="exitVignette()">EXPLORE THIS ERA</button>
@@ -406,13 +460,17 @@
 <!-- Cutscene overlay -->
 <div id="cutscene">
   <div id="cutscene-inner">
-    <div class="cs-reveal"><div class="cs-era" id="cs-era">ERA</div></div>
-    <div class="cs-reveal"><div class="cs-title" id="cs-title">--</div></div>
-    <div class="cs-reveal"><div class="cs-years" id="cs-years">--</div></div>
-    <div class="cs-reveal"><div class="cs-photos" id="cs-photos"></div></div>
-    <div class="cs-reveal"><div class="cs-quote" id="cs-quote">--</div></div>
-    <div class="cs-reveal"><div class="cs-body" id="cs-body">--</div></div>
-    <div class="cs-reveal cs-buttons">
+    <div class="cs-left">
+      <div class="cs-reveal"><div class="cs-era" id="cs-era">ERA</div></div>
+      <div class="cs-reveal"><div class="cs-title" id="cs-title">--</div></div>
+      <div class="cs-reveal"><div class="cs-years" id="cs-years">--</div></div>
+      <div class="cs-reveal"><div class="cs-quote" id="cs-quote">--</div></div>
+    </div>
+    <div class="cs-right">
+      <div class="cs-reveal"><div class="cs-photos" id="cs-photos"></div></div>
+      <div class="cs-reveal"><div class="cs-body" id="cs-body">--</div></div>
+    </div>
+    <div class="cs-bottom cs-reveal">
       <button class="cs-btn" onclick="exitCutscene()">EXPLORE THIS ERA</button>
       <button class="cs-btn primary" id="cs-next-btn" onclick="nextStation()">NEXT STATION →</button>
     </div>
@@ -430,6 +488,7 @@ const FLAGS = {
   guidedMode:   { label: 'Guided Tour Mode', desc: 'Station bar with sequential navigation', group: 'ui', default: true },
   storyCards:   { label: 'Story Cards', desc: 'Info card on building click', group: 'ui', default: true },
   legend:       { label: 'Era Legend', desc: 'Interactive era bar above timeline', group: 'ui', default: true },
+  hoverTooltip: { label: 'Hover Tooltip', desc: 'Show building era/info on hover', group: 'ui', default: false },
 };
 
 // Cutscene modes — only one active at a time
@@ -454,12 +513,33 @@ function setFlag(key, val) {
 }
 
 function setCutsceneMode(mode) {
+  // Clear any active cutscene/vignette before switching
+  clearAllOverlays();
   cutsceneMode = mode;
   localStorage.setItem('ff_cutsceneMode', mode);
-  // Update radio UI
   document.querySelectorAll('.mode-option').forEach(el => {
     el.classList.toggle('active', el.dataset.mode === mode);
   });
+}
+
+function clearAllOverlays() {
+  const cutscene = document.getElementById('cutscene');
+  cutscene.classList.remove('active');
+  cutscene.style.pointerEvents = 'none';
+  cutscene.style.backgroundColor = '';
+  gsap.set(cutscene.querySelectorAll('.cs-reveal'), { opacity: 0, y: 16 });
+
+  const vignette = document.getElementById('vignette');
+  vignette.classList.remove('active');
+  vignette.querySelector('.vignette-items').innerHTML = '';
+  gsap.set(document.getElementById('vignette-era-label'), { opacity: 0 });
+  gsap.set(vignette.querySelector('.vignette-nav'), { opacity: 0 });
+
+  document.getElementById('controls').classList.remove('cutscene-active', 'vignette-active');
+  if (featureFlags.legend) document.getElementById('legend').style.display = '';
+  cutsceneOpen = false;
+  if (cutsceneTl) { cutsceneTl.kill(); cutsceneTl = null; }
+  if (vignetteTl) { vignetteTl.kill(); vignetteTl = null; }
 }
 
 function applyFlags() {
@@ -472,6 +552,46 @@ function applyFlags() {
 function toggleDevPanel() {
   document.getElementById('dev-panel').classList.toggle('open');
 }
+
+// ── Draggable DEV button ──
+(function() {
+  const btn = document.getElementById('dev-toggle');
+  let dragging = false, hasMoved = false;
+  let startX, startY, startLeft, startTop;
+
+  btn.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    hasMoved = false;
+    btn.classList.add('dragging');
+    btn.setPointerCapture(e.pointerId);
+    const rect = btn.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    startLeft = rect.left;
+    startTop = rect.top;
+    // Switch from right-anchored to left-anchored for dragging
+    btn.style.right = 'auto';
+    btn.style.left = startLeft + 'px';
+    btn.style.top = startTop + 'px';
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) hasMoved = true;
+    btn.style.left = (startLeft + dx) + 'px';
+    btn.style.top = (startTop + dy) + 'px';
+  });
+
+  window.addEventListener('pointerup', () => {
+    if (!dragging) return;
+    dragging = false;
+    btn.classList.remove('dragging');
+    // Only toggle panel if it was a click, not a drag
+    if (!hasMoved) toggleDevPanel();
+  });
+})();
 
 function buildDevPanel() {
   const body = document.getElementById('dev-panel-body');
@@ -584,19 +704,9 @@ function buildLegend() {
     const sw = document.createElement('div');
     sw.className = 'sw';
     sw.style.background = `rgb(${era.color.join(',')})`;
-    sw.style.color = `rgb(${era.color.join(',')})`;
-
-    const label = document.createElement('span');
-    label.className = 'leg-label';
-    label.textContent = range.label;
-
-    const years = document.createElement('span');
-    years.className = 'leg-years';
-    years.textContent = range.shortYears;
 
     leg.appendChild(sw);
-    leg.appendChild(label);
-    leg.appendChild(years);
+    leg.appendChild(document.createTextNode(range.shortYears));
 
     leg.addEventListener('click', () => {
       const stationIdx = findStationForEra(i);
@@ -605,12 +715,7 @@ function buildLegend() {
       } else {
         const midYear = range.max === 9999 ? 2020 : Math.round((range.min + range.max) / 2);
         const proxy = { year: currentYear };
-        gsap.to(proxy, {
-          year: midYear,
-          duration: 1.5,
-          ease: 'power3.out',
-          onUpdate: () => syncYear(proxy.year),
-        });
+        gsap.to(proxy, { year: midYear, duration: 1.5, ease: 'power3.out', onUpdate: () => syncYear(proxy.year) });
       }
     });
 
@@ -643,7 +748,7 @@ const MARQUEE = {
 
 // ── State ──
 let buildings = [];
-let currentYear = 2026;
+let currentYear = 1925;
 let playing = false;
 let deckgl = null;
 
@@ -675,7 +780,7 @@ function initDeck() {
     controller: true,
     layers: [buildLayer()],
     getTooltip: ({object}) => {
-      if (!object) return null;
+      if (!object || !featureFlags.hoverTooltip) return null;
       const era = getEra(object.y);
       return {
         html: `<b>${era.label}</b><br>Built: ${object.y || '?'}<br>Height: ${object.h}m<br>BIN: ${object.b}`,
@@ -824,11 +929,13 @@ function closeCard() {
 function buildEraDots() {
   const wrap = document.getElementById('slider-wrap');
   const min = 1719, max = 2026;
+  const thumbHalf = 7; // half of 14px thumb
   STATIONS.forEach((s, i) => {
     const pct = ((s.targetYear - min) / (max - min)) * 100;
     const dot = document.createElement('div');
     dot.className = 'era-dot';
-    dot.style.left = pct + '%';
+    // Map percentage into the slider's usable track range (thumbHalf to 100% - thumbHalf)
+    dot.style.left = `calc(${thumbHalf}px + ${pct} * (100% - ${thumbHalf * 2}px) / 100)`;
     dot.title = s.label;
     dot.innerHTML = '<span class="era-dot-label">' + s.label + '</span>';
     dot.addEventListener('click', (e) => {
@@ -1081,7 +1188,8 @@ function buildStationTrack() {
 let stationTimeline = null;
 
 function goToStation(index) {
-  // Kill any in-flight station animation
+  // Clean up any active overlays and animations
+  clearAllOverlays();
   if (stationTimeline) stationTimeline.kill();
   if (playTween) { playTween.kill(); playBtn.textContent = 'PLAY'; playing = false; }
 
@@ -1127,6 +1235,8 @@ let cutsceneTl = null;
 
 function openCutscene(station) {
   cutsceneOpen = true;
+  document.getElementById('controls').classList.add('cutscene-active');
+  document.getElementById('legend').style.display = 'none';
   const cs = station.cutscene;
   const el = document.getElementById('cutscene');
 
@@ -1193,6 +1303,8 @@ function openCutscene(station) {
 
 function exitCutscene() {
   cutsceneOpen = false;
+  document.getElementById('controls').classList.remove('cutscene-active');
+  if (featureFlags.legend) document.getElementById('legend').style.display = '';
   const el = document.getElementById('cutscene');
   const reveals = el.querySelectorAll('.cs-reveal');
 
@@ -1226,83 +1338,104 @@ function exitCutscene() {
 // ── 3D Vignette mode ──
 let vignetteTl = null;
 
+// Composed positions for 4 artifacts — asymmetric gallery layout
+const VIGNETTE_LAYOUTS = [
+  // [left%, top%, width_px, rotation_deg]
+  { left: '6%',  top: '8%',   width: 220, rotate: -3 },   // top-left, large
+  { left: '72%', top: '5%',   width: 180, rotate: 2 },    // top-right
+  { left: '2%',  top: '52%',  width: 160, rotate: 1.5 },  // bottom-left
+  { left: '65%', top: '48%',  width: 240, rotate: -1.5 }, // bottom-right, hero
+];
+
 function openVignette(station) {
   cutsceneOpen = true;
+  document.getElementById('controls').classList.add('vignette-active');
+  document.getElementById('legend').style.display = 'none';
   const el = document.getElementById('vignette');
   const items = document.getElementById('vignette-items');
   const eraLabel = document.getElementById('vignette-era-label');
+  const eraSub = document.getElementById('vignette-era-sub');
   const nav = el.querySelector('.vignette-nav');
   const cs = station.cutscene;
 
-  // Build artifact cards
+  // Build artifact cards at composed positions
   items.innerHTML = '';
-  (station.vignette || []).forEach(v => {
+  const artifacts = station.vignette || [];
+  artifacts.forEach((v, i) => {
+    const layout = VIGNETTE_LAYOUTS[i % VIGNETTE_LAYOUTS.length];
     const card = document.createElement('div');
     card.className = 'vignette-card';
+    card.style.left = layout.left;
+    card.style.top = layout.top;
+    card.style.width = layout.width + 'px';
     card.innerHTML = `
-      <div class="vc-icon">${v.icon}</div>
+      <div class="vc-icon" style="font-size:${Math.round(layout.width * 0.35)}px">${v.icon}</div>
       <div class="vc-label">${v.label}</div>
       <div class="vc-year">${v.year}</div>
     `;
     items.appendChild(card);
   });
 
-  // Era label
-  eraLabel.textContent = cs.title.toUpperCase();
+  // Era label — large, atmospheric
+  eraLabel.childNodes[0].textContent = cs.title.toUpperCase();
   eraLabel.style.color = cs.eraColor;
+  eraSub.textContent = cs.years;
 
   // Next button
   const nextBtn = document.getElementById('vignette-next-btn');
-  if (activeStationIndex >= STATIONS.length - 1) {
-    nextBtn.textContent = 'BACK TO START';
-  } else {
-    nextBtn.textContent = 'NEXT STATION →';
-  }
+  nextBtn.textContent = activeStationIndex >= STATIONS.length - 1 ? 'BACK TO START' : 'NEXT STATION →';
 
   el.classList.add('active');
-
-  // Kill previous
   if (vignetteTl) vignetteTl.kill();
 
   const cards = items.querySelectorAll('.vignette-card');
-  gsap.set(cards, { opacity: 0, y: 30, scale: 0.95 });
-  gsap.set(eraLabel, { opacity: 0 });
+
+  // Set initial states
+  cards.forEach((card, i) => {
+    const layout = VIGNETTE_LAYOUTS[i % VIGNETTE_LAYOUTS.length];
+    gsap.set(card, { opacity: 0, y: 60, scale: 0.85, rotation: 0 });
+  });
+  gsap.set(eraLabel, { opacity: 0, scale: 0.95 });
   gsap.set(nav, { opacity: 0 });
 
   vignetteTl = gsap.timeline();
 
-  // Era name fades in center
+  // 1. Era title sweeps in large
   vignetteTl.to(eraLabel, {
-    opacity: 0.6,
-    duration: 1,
-    ease: 'power2.out',
+    opacity: 0.5, scale: 1,
+    duration: 1.2,
+    ease: 'power3.out',
   });
 
-  // Cards rise one by one
-  vignetteTl.to(cards, {
-    opacity: 1, y: 0, scale: 1,
-    duration: 0.6,
-    stagger: 0.25,
-    ease: 'power2.out',
-  }, '-=0.5');
+  // 2. Artifacts rise one by one with rotation, staggered long
+  cards.forEach((card, i) => {
+    const layout = VIGNETTE_LAYOUTS[i % VIGNETTE_LAYOUTS.length];
+    vignetteTl.to(card, {
+      opacity: 0.9, y: 0, scale: 1, rotation: layout.rotate,
+      duration: 0.8,
+      ease: 'power2.out',
+    }, `-=${i === 0 ? 0.6 : 0.5}`);
+  });
 
-  // Era label fades down
+  // 3. Era title recedes to ghost
   vignetteTl.to(eraLabel, {
-    opacity: 0.15,
-    duration: 0.8,
+    opacity: 0.12,
+    duration: 1,
     ease: 'power2.out',
-  }, '-=0.3');
+  }, '-=0.4');
 
-  // Nav appears
+  // 4. Nav fades in
   vignetteTl.to(nav, {
     opacity: 1,
-    duration: 0.4,
+    duration: 0.5,
     ease: 'power2.out',
-  }, '-=0.3');
+  }, '-=0.5');
 }
 
 function exitVignette() {
   cutsceneOpen = false;
+  document.getElementById('controls').classList.remove('vignette-active');
+  if (featureFlags.legend) document.getElementById('legend').style.display = '';
   const el = document.getElementById('vignette');
   const cards = el.querySelectorAll('.vignette-card');
   const eraLabel = document.getElementById('vignette-era-label');
@@ -1318,8 +1451,8 @@ function exitVignette() {
 
   vignetteTl.to(nav, { opacity: 0, duration: 0.2, ease: 'power2.in' });
   vignetteTl.to(cards, {
-    opacity: 0, y: -15, scale: 0.95,
-    duration: 0.3, stagger: 0.06, ease: 'power2.in',
+    opacity: 0, y: -30, scale: 0.9, rotation: 0,
+    duration: 0.4, stagger: 0.08, ease: 'power2.in',
   }, '-=0.1');
   vignetteTl.to(eraLabel, { opacity: 0, duration: 0.3, ease: 'power2.in' }, '-=0.2');
 }
