@@ -1,0 +1,287 @@
+{
+  "_meta": {
+    "name": "Bronx hip-hop birthplace cultural events seed",
+    "description": "Hand-curated cultural events for the Sixth Borough demo. Focus: Bronx, 1965-1985, hip-hop birthplace lens. Coordinates are approximate and should be refined Sat morning.",
+    "version": "0.1.0",
+    "last_updated": "2026-04-10",
+    "neighborhood": "Bronx",
+    "era_window": [1965, 1985],
+    "primary_niche": "hip-hop",
+    "coordinate_system": "WGS84",
+    "source_provenance": "Wikipedia, Cornell Hip Hop Collection, Bronx Historical Society public domain references. Verify and refine before submission.",
+    "schema_version": "see docs/STACK.md cultural events schema"
+  },
+
+  "niches": {
+    "hip-hop": {
+      "label": "Hip-hop heads",
+      "description": "The birthplace and early years of hip-hop in the Bronx",
+      "voice": "grounded insider, present-tense, names dropped without explanation",
+      "fully_populated": true
+    },
+    "immigration": {
+      "label": "Immigration flow",
+      "description": "Demographic shifts, migration waves, displacement",
+      "voice": "documentary, weight without sentimentality",
+      "fully_populated": false
+    },
+    "demolished-theaters": {
+      "label": "Demolished theaters",
+      "description": "Movie houses and performance venues that no longer exist",
+      "voice": "elegiac but specific",
+      "fully_populated": false
+    },
+    "queer-history": {
+      "label": "Queer history",
+      "description": "LGBTQ spaces and moments",
+      "voice": "insider, unapologetic",
+      "fully_populated": false
+    },
+    "jazz": {
+      "label": "Jazz",
+      "description": "Bronx jazz lineage and venues",
+      "voice": "lineage-aware, names players",
+      "fully_populated": false
+    }
+  },
+
+  "events": [
+    {
+      "id": "bronx-1973-08-11-sedgwick",
+      "coordinate": [40.8378, -73.9202],
+      "start_year": 1973,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Kool Herc invents the breakbeat",
+      "narration_seed": "August 11, 1973. Cindy Campbell's birthday party in the rec room of 1520 Sedgwick Avenue. Her brother, Clive Campbell, who calls himself DJ Kool Herc, plugs in two turntables and learns to isolate the percussion break of two records, switching between them to extend the section dancers love most. The technique has no name yet. Hip-hop is born thirty feet from where you're standing.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "source_url": "https://en.wikipedia.org/wiki/1520_Sedgwick_Avenue",
+      "importance_score": 100
+    },
+    {
+      "id": "bronx-1974-cedar-park",
+      "coordinate": [40.8542, -73.9097],
+      "start_year": 1974,
+      "end_year": 1976,
+      "niche_tags": ["hip-hop"],
+      "title": "Kool Herc moves outside to Cedar Park",
+      "narration_seed": "Kool Herc graduates from rec rooms to outdoor jams at Cedar Park, plugged into the streetlight. The crowds get too big for any indoor venue. The merry-go-round technique becomes the breakbeat, and the breakbeat becomes a thing the dancers wait for.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "source_url": "https://en.wikipedia.org/wiki/DJ_Kool_Herc",
+      "importance_score": 85
+    },
+    {
+      "id": "bronx-1975-bronx-river-houses",
+      "coordinate": [40.8267, -73.8775],
+      "start_year": 1975,
+      "end_year": 1980,
+      "niche_tags": ["hip-hop"],
+      "title": "Afrika Bambaataa starts the Zulu Nation",
+      "narration_seed": "At the Bronx River Houses community center, Afrika Bambaataa, ex-Black Spades warlord, decides the gang energy of the borough has to go somewhere. He starts holding parties. The crew that forms around him becomes the Universal Zulu Nation, and the parties become the second axis of early hip-hop alongside Herc's. The breakbeat now has a politics.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "source_url": "https://en.wikipedia.org/wiki/Afrika_Bambaataa",
+      "importance_score": 95
+    },
+    {
+      "id": "bronx-1975-t-connection",
+      "coordinate": [40.8895, -73.8625],
+      "start_year": 1975,
+      "end_year": 1985,
+      "niche_tags": ["hip-hop"],
+      "title": "T-Connection becomes a hip-hop venue",
+      "narration_seed": "The T-Connection on White Plains Road in the North Bronx becomes one of the first clubs that books hip-hop DJs as headliners rather than as a novelty. Cold Crush Brothers, Funky 4 + 1, the early MC battles all happen here. The club matters because it makes hip-hop a thing you go OUT to see, not just a thing that happens in the park.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "source_url": "https://en.wikipedia.org/wiki/T-Connection_(nightclub)",
+      "importance_score": 80
+    },
+    {
+      "id": "bronx-1976-grandmaster-flash-quick-mix",
+      "coordinate": [40.8210, -73.9034],
+      "start_year": 1976,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Grandmaster Flash invents the quick mix theory",
+      "narration_seed": "Joseph Saddler, who calls himself Grandmaster Flash, working out of his apartment in the South Bronx, develops what he calls the Quick Mix Theory. He times the breakbeat by marking the records with crayon, and learns to cut between two copies of the same break with frame accuracy. The DJ stops being someone who plays records and becomes someone who plays the turntable as an instrument.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "source_url": "https://en.wikipedia.org/wiki/Grandmaster_Flash",
+      "importance_score": 95
+    },
+    {
+      "id": "bronx-1977-blackout-jul-13",
+      "coordinate": [40.8200, -73.9000],
+      "start_year": 1977,
+      "end_year": null,
+      "niche_tags": ["hip-hop", "immigration"],
+      "title": "The 1977 NYC blackout — looted turntables proliferate",
+      "narration_seed": "July 13, 1977. The lights go out in New York City for 25 hours. By the time they come back on, every electronics store in the South Bronx that wasn't bolted down has been emptied. Hundreds of new aspiring DJs suddenly have turntables, mixers, speakers. Hip-hop's barrier to entry collapses overnight. The DJs you've heard of, and a thousand more you haven't, learned on equipment that came home that night.",
+      "era_visual_mode": "1970s-bronx-burning",
+      "source_url": "https://en.wikipedia.org/wiki/New_York_City_blackout_of_1977",
+      "importance_score": 90
+    },
+    {
+      "id": "bronx-1978-disco-fever",
+      "coordinate": [40.8300, -73.9180],
+      "start_year": 1978,
+      "end_year": 1986,
+      "niche_tags": ["hip-hop"],
+      "title": "Disco Fever opens — the first true hip-hop club",
+      "narration_seed": "The Disco Fever on Jerome Avenue is the club where hip-hop stops being a Bronx thing and starts being a music industry thing. Sal Abbatiello's club hosts every name in the borough. Sugar Hill Records signs acts they hear here. The room has a ceiling and a sound system, and for a few years it is the center of the world.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Disco_Fever",
+      "importance_score": 90
+    },
+    {
+      "id": "bronx-1979-rappers-delight",
+      "coordinate": [40.8867, -74.0123],
+      "start_year": 1979,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Rapper's Delight crosses over",
+      "narration_seed": "Sugar Hill Records, run out of Englewood, New Jersey, releases Rapper's Delight by the Sugarhill Gang. None of the three guys on the record are from the Bronx scene, and most of the Bronx scene resents the song for years. But it's the first hip-hop record to chart, the first one that civilians outside New York hear, and the moment hip-hop stops being a Bronx scene and starts being a national music.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Rapper%27s_Delight",
+      "importance_score": 85
+    },
+    {
+      "id": "bronx-1980-cold-crush-brothers",
+      "coordinate": [40.8400, -73.9100],
+      "start_year": 1980,
+      "end_year": 1984,
+      "niche_tags": ["hip-hop"],
+      "title": "Cold Crush Brothers vs Fantastic 5 era",
+      "narration_seed": "The early MC era is dominated by crew battles. Cold Crush Brothers — Charlie Chase, Tony Tone, Grandmaster Caz, JDL, Almighty Kay-Gee, Easy AD — versus the Fantastic 5. Routines, harmonies, choreographed call-and-response. This is hip-hop before solo MCs, when an emcee crew was a band and the DJ was the bandleader.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Cold_Crush_Brothers",
+      "importance_score": 80
+    },
+    {
+      "id": "bronx-1981-the-message",
+      "coordinate": [40.8210, -73.9034],
+      "start_year": 1981,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Grandmaster Flash and the Furious Five release 'The Message'",
+      "narration_seed": "Grandmaster Flash and the Furious Five release 'The Message.' Melle Mel's verse turns hip-hop from a party music into a journalism. The song describes the South Bronx of 1981 — the rats, the broken glass, the kids growing up around it — and it becomes the first hip-hop record that mainstream critics treat as serious art. The Bronx is exporting its own diagnosis.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/The_Message_(Grandmaster_Flash_and_the_Furious_Five_song)",
+      "importance_score": 90
+    },
+    {
+      "id": "bronx-1982-wild-style-filming",
+      "coordinate": [40.8050, -73.9230],
+      "start_year": 1982,
+      "end_year": 1983,
+      "niche_tags": ["hip-hop"],
+      "title": "Wild Style filming locations",
+      "narration_seed": "Charlie Ahearn films Wild Style across the Bronx — at the East River Park amphitheater, in the tunnels and lots and rooftops where graffiti writers actually worked. The movie casts Lee Quinones, Lady Pink, Fab 5 Freddy, the Cold Crush Brothers, the Rock Steady Crew. It's the first feature film about hip-hop made by people inside the scene. When it screens in Tokyo and Paris, it exports the entire culture in 82 minutes.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Wild_Style",
+      "importance_score": 85
+    },
+    {
+      "id": "bronx-1982-planet-rock",
+      "coordinate": [40.8267, -73.8775],
+      "start_year": 1982,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Planet Rock — Bambaataa goes electronic",
+      "narration_seed": "Afrika Bambaataa and the Soulsonic Force release 'Planet Rock.' Built on a Roland TR-808 drum machine and a melody borrowed from Kraftwerk's 'Trans-Europe Express,' it splices German electronic music to a Bronx party rhythm and creates electro. Every kid making music with a 808 since 1982 traces back to this record.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Planet_Rock_(song)",
+      "importance_score": 85
+    },
+    {
+      "id": "bronx-1983-rock-steady-roxy",
+      "coordinate": [40.7530, -74.0042],
+      "start_year": 1983,
+      "end_year": 1985,
+      "niche_tags": ["hip-hop"],
+      "title": "Rock Steady Crew at the Roxy — hip-hop crosses to Manhattan",
+      "narration_seed": "The Roxy roller rink in Chelsea starts hosting hip-hop nights. The Rock Steady Crew breaks for downtown art crowds. Jean-Michel Basquiat, Andy Warhol, the Mudd Club refugees mix with the Bronx kids who took the train down. For two years the Roxy is the bridge between the boroughs and the avant-garde, and hip-hop stops being a borough thing forever.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Rock_Steady_Crew",
+      "importance_score": 80
+    },
+    {
+      "id": "bronx-1984-fashion-moda",
+      "coordinate": [40.8155, -73.9215],
+      "start_year": 1978,
+      "end_year": 1993,
+      "niche_tags": ["hip-hop", "queer-history"],
+      "title": "Fashion Moda gallery, South Bronx",
+      "narration_seed": "Fashion Moda on Third Avenue in the South Bronx. Stefan Eins runs it as a storefront art space where downtown artists, graffiti writers, and Bronx kids show in the same room. John Ahearn's portrait casts of neighborhood residents are made here. The gallery is the only place in the city in 1980 where Lee Quinones and Joseph Beuys are colleagues.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Fashion_Moda",
+      "importance_score": 75
+    },
+    {
+      "id": "bronx-1984-beat-street",
+      "coordinate": [40.8200, -73.9050],
+      "start_year": 1984,
+      "end_year": null,
+      "niche_tags": ["hip-hop"],
+      "title": "Beat Street films across the Bronx",
+      "narration_seed": "Stan Lathan's Beat Street, produced by Harry Belafonte, films across the Bronx. It's a slicker, more commercial cousin to Wild Style — a major studio movie about graffiti writers, breakdancers, and DJs. By 1984 hip-hop is no longer underground anywhere in the world. The Bronx scene that started at one rec room party eleven years ago is now exporting itself by feature film.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "source_url": "https://en.wikipedia.org/wiki/Beat_Street",
+      "importance_score": 70
+    },
+
+    {
+      "id": "bronx-1959-cross-bronx-expressway-displacement",
+      "coordinate": [40.8400, -73.8900],
+      "start_year": 1959,
+      "end_year": 1972,
+      "niche_tags": ["immigration"],
+      "title": "Cross Bronx Expressway displaces 60,000 residents",
+      "narration_seed": "Robert Moses cuts the Cross Bronx Expressway through the middle of the borough, displacing roughly 60,000 mostly Italian and Jewish working-class residents. Block after block of tenements are demolished. The neighborhoods don't recover. By the time the road is finished in 1972 the demographic of the South Bronx has been forcibly rewritten.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "source_url": "https://en.wikipedia.org/wiki/Cross_Bronx_Expressway",
+      "importance_score": 90
+    },
+    {
+      "id": "bronx-1965-puerto-rican-migration",
+      "coordinate": [40.8200, -73.9100],
+      "start_year": 1948,
+      "end_year": 1975,
+      "niche_tags": ["immigration"],
+      "title": "Puerto Rican migration wave to the South Bronx",
+      "narration_seed": "Operation Bootstrap industrializes Puerto Rico in the late 1940s, displacing rural workers, and the cheap flight from San Juan to New York becomes the corridor. By 1970 the South Bronx is majority Puerto Rican. The salsa scene, the bodega economy, and half of what becomes hip-hop's bilingual cadence comes through this single migration arc.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "source_url": "https://en.wikipedia.org/wiki/Puerto_Ricans_in_New_York_City",
+      "importance_score": 85
+    },
+
+    {
+      "id": "bronx-1923-loews-paradise",
+      "coordinate": [40.8616, -73.8975],
+      "start_year": 1929,
+      "end_year": 1994,
+      "niche_tags": ["demolished-theaters"],
+      "title": "Loew's Paradise Theatre — the Wonder Theatre of the Bronx",
+      "narration_seed": "The Loew's Paradise on the Grand Concourse opens in 1929 with 4,000 seats, a ceiling that simulates the night sky with moving clouds, and an Italianate baroque interior so over-the-top that going to the movies here was the closest thing to a cathedral most of the borough's residents would ever see. It dies as a single-screen palace in 1981, gets chopped into a multiplex, then closes for good in 1994.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "source_url": "https://en.wikipedia.org/wiki/Loew%27s_Paradise_Theatre",
+      "importance_score": 75
+    },
+    {
+      "id": "bronx-1968-bronx-opera-house",
+      "coordinate": [40.8290, -73.9270],
+      "start_year": 1913,
+      "end_year": 1971,
+      "niche_tags": ["demolished-theaters"],
+      "title": "Bronx Opera House torn down",
+      "narration_seed": "The Bronx Opera House on East 149th Street, built in 1913 as a vaudeville and opera venue, hosts everyone from Houdini to the Marx Brothers in its first decades. By the 1960s it's a wrestling and burlesque house. It's torn down in 1971 with no preservation campaign. Almost no one remembers it now.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "source_url": "https://en.wikipedia.org/wiki/Bronx_Opera_House",
+      "importance_score": 60
+    }
+  ],
+
+  "_notes": [
+    "Coordinates marked approximate — refine Sat morning before demo.",
+    "All narration_seeds are written in present tense and grounded voice. Nemotron will expand them at runtime conditioned on the active niche.",
+    "The hip-hop section is the demo cinematic. Other niches are placeholders that prove the architecture.",
+    "Add more events as time permits but lock the file by Sat noon — late additions risk inconsistency."
+  ]
+}
