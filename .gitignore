@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+*.egg-info/
+.pytest_cache/
 
 # Node
 node_modules/
@@ -10,6 +12,7 @@ dist/
 
 # Rust
 target/
+**/Cargo.lock
 
 # OS
 .DS_Store
@@ -19,3 +22,20 @@ target/
 
 # Local notes
 NOTES.local.md
+
+# Asset files - these sync via shared storage, not git
+# Manifests + previews ARE committed (see assets/pointclouds/.gitignore)
+assets/pointclouds/*.ply
+assets/pointclouds/*.glb
+assets/pointclouds/*.splat
+!assets/pointclouds/MANIFEST.json
+!assets/pointclouds/*.preview.png
+
+# Model weights (live on the GN100, not in git)
+models/
+*.gguf
+
+# Built artifacts
+build/
+*.so
+*.dylib
