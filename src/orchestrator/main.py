@@ -33,9 +33,12 @@ from src.data.schema import NarrationRequest, NarrationResponse
 NARRATION_MODE = os.environ.get("NARRATION_MODE", "stub").lower()
 
 if NARRATION_MODE == "real":
-    from src.orchestrator.narration_real import generate_narration  # GN100 only
+    from src.orchestrator.narration_real import generate_narration, NarrationBackendError  # GN100 only
 else:
     from src.orchestrator.narration_stub import generate_narration
+
+    class NarrationBackendError(RuntimeError):  # noqa: E303 – stub never raises this
+        pass
 
 app = FastAPI(
     title="Sixth Borough Orchestrator",
@@ -94,9 +97,12 @@ def narrate(req: NarrationRequest) -> NarrationResponse:
             status_code=404,
             detail=f"event_id '{req.event_id}' not found in seed",
         )
-    return generate_narration(
-        event=event,
-        year=req.year,
-        niche=req.niche,
-        nearby_titles=req.nearby_event_titles,
-    )
+    try:
+        return generate_narration(
+            event=event,
+            year=req.year,
+            niche=req.niche,
+            nearby_titles=req.nearby_event_titles,
+        )
+    except NarrationBackendError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
