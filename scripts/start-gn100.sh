@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
-# Sixth Borough — start the Nemotron narration server
-# Run this AFTER ./scripts/setup.sh has completed.
+# Sixth Borough — start the Nemotron narration server (GN100 only)
+#
+# !!! THIS SCRIPT IS FOR THE GN100 BOX ONLY !!!
+# Requires Nemotron-3-Nano-30B-A3B (~38 GB) + llama.cpp built with sm_121
+# CUDA arch flags. Run scripts/setup-gn100.sh first.
+#
+# If you're a teammate developing on your laptop, use scripts/dev-stub.sh
+# instead - the stub serves the same OpenAI-compatible API on the same
+# port (:30000), so the renderer code never has to know which backend is
+# wired.
 
 set -euo pipefail
 
@@ -9,13 +17,13 @@ MODEL_PATH="${HOME}/models/nemotron3-gguf/Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL.ggu
 
 if [ ! -f "${MODEL_PATH}" ]; then
   echo "ERROR: Model not found at ${MODEL_PATH}"
-  echo "Run ./scripts/setup.sh first."
+  echo "Run ./scripts/setup-gn100.sh first."
   exit 1
 fi
 
 if [ ! -x "${LLAMA_DIR}/build/bin/llama-server" ]; then
   echo "ERROR: llama-server binary not found at ${LLAMA_DIR}/build/bin/llama-server"
-  echo "Run ./scripts/setup.sh first."
+  echo "Run ./scripts/setup-gn100.sh first."
   exit 1
 fi
 

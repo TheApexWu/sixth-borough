@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
-# Sixth Borough — quick smoke test for the narration server
-# Assumes start.sh is running in another terminal.
+# Sixth Borough — smoke test the raw llama.cpp narration server (GN100 only).
+#
+# Assumes scripts/start-gn100.sh is running in another terminal.
+# This test hits the underlying llama.cpp /v1/chat/completions endpoint
+# directly, NOT the orchestrator's /narrate endpoint. Use it only to
+# verify that Nemotron itself is responding.
+#
+# For testing the orchestrator's stub or real /narrate path from your
+# laptop, see scripts/dev-stub.sh + scripts/dev-test.sh instead.
 
 set -euo pipefail
 

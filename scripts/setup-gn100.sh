@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-# Sixth Borough — one-shot setup script for the Acer Veriton GN100 (DGX Spark / GB10)
+# Sixth Borough — GN100-only setup script (DGX Spark / GB10 Grace Blackwell)
+#
+# !!! THIS SCRIPT IS FOR THE GN100 BOX ONLY !!!
+# It downloads a 38 GB model and builds llama.cpp with sm_121 CUDA architecture
+# flags that only work on a Blackwell GPU. If you're a teammate developing on
+# your laptop, DO NOT run this script. Use scripts/dev-stub.sh instead.
+#
 # Run this AFTER checking out the box and connecting to wifi.
 # Approximate time: 15-20 minutes (mostly the 38 GB Nemotron download)
 
@@ -56,4 +62,4 @@ ls -lh "${LLAMA_DIR}/build/bin/llama-server"
 
 echo ""
 echo "==> Setup complete."
-echo "==> Next: ./scripts/start.sh"
+echo "==> Next: ./scripts/start-gn100.sh"
