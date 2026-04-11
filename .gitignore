@@ -8,3 +8,6 @@ plan.md
 
 # Large assets hosted externally (Google Drive, etc.)
 cultural-content/liberty-island.zip
+
+# oldnyc (NYPL Milstein) raw dump — too large to commit, re-download with build script
+cultural-content/oldnyc/raw/
