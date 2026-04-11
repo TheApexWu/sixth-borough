@@ -12,9 +12,13 @@ This document is the **single source of truth** for what tech we are using and w
 | Narration runtime | **llama.cpp** built from source with `-DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="121"` | Ollama (slower but easier) |
 | Narration API | OpenAI-compatible `/v1/chat/completions` on port `:30000` | Same |
 | Vision model (optional) | **Live VLM WebUI** + Ollama backend (Gemma 3 or Llama Vision) | Drop the vision pipeline entirely |
-| Renderer | **Rust + wgpu** (Carson) | **WebGL + Three.js** sketch-overlay branch (James) |
+| Renderer (primary) | **Bevy 0.16** (Rust + wgpu) (Carson) | **WebGL + Three.js** sketch-overlay branch (James) |
 | Renderer post-process | Sobel + vignette + palette quantization | Same in both paths |
-| Orchestrator | Python (FastAPI) or Node | Either works |
+| Static point clouds | **`bevy_pointcloud`** plugin (Potree-based, stable Rust, PLY ingest) | Custom WGSL fallback if plugin compat breaks |
+| Animated point clouds | **OpenVAT** (Blender addon) → glb with embedded vertex animation texture, sampled in custom WGSL | glTF morph targets (lower vertex count, simpler) |
+| Asset authoring (3D / point clouds) | **Blender** (Marvens) | — |
+| Asset interop format | **glTF / glb** (vanilla Blender exporter) + **PLY** (binary, little-endian) for static point clouds | Blenvy addon for Bevy-component-from-Blender workflow (optional, evaluated Sat morning) |
+| Orchestrator | **Python (FastAPI)** | Node if Python deps fail |
 | OS / runtime on box | DGX OS on the Acer Veriton GN100 | Provided, can't swap |
 
 ---
@@ -129,6 +133,41 @@ The vision pipeline lets the narration model "see" the rendered scene. Instead o
 
 ---
 
+## Renderer asset pipeline (Bevy + Blender + point clouds)
+
+The renderer is **Bevy 0.16** (Rust, built on wgpu). Bevy was chosen over raw wgpu because the built-in animation graph (since 0.14), the mature glTF loader, the ECS, and the plugin ecosystem make Marvens's Blender work integrate cleanly without writing scene-graph plumbing from scratch.
+
+### Why Bevy 0.16, not 0.18
+
+Bevy 0.18 (released January 2026) is the latest, but the third-party plugin ecosystem — especially `bevy_pointcloud` — is most reliably aligned with **Bevy 0.16** (released mid-2025). 0.16 is well past the dependency-age cutoff (Mar 27 2026), is documented and stable, and avoids the "newest version, broken plugins" trap. If Carson confirms 0.17 plugin compatibility on his machine, 0.17 is acceptable. **Do not bump to 0.18 mid-build.**
+
+### Blender → Bevy gold path
+
+1. **Marvens authors in Blender.** City geometry, character placeholders, animated camera moves, point cloud ghosts — all in Blender.
+2. **Vanilla glTF export** for everything except static point clouds. `.glb` (binary) for production, `.gltf` (JSON + sidecar) only for inspection. Material constraint: **Principled BSDF only**, no procedural materials.
+3. **Static point clouds** export as **PLY** (binary, little-endian). Loaded via the `bevy_pointcloud` plugin (Potree-based renderer, stable Rust, no nightly required).
+4. **Animated point clouds** (Marvens's ODESZA-tour technique) use **OpenVAT** — a Blender-native addon that captures vertex animation from Blender's evaluated dependency graph (Geometry Nodes, modifiers, shapekeys, simulations all work) and encodes the per-frame vertex positions into a Vertex Animation Texture. The base mesh + VAT texture export as `.glb`, and a custom WGSL vertex shader on the Bevy side samples the VAT to drive the animation. GPU-side, fast, the AAA standard for non-skeletal animation.
+5. **Drop into `assets/pointclouds/`** (or `assets/scenes/` for full scenes). Add an entry to `assets/pointclouds/MANIFEST.json` with slug + era + niche tags + `animated: bool` flag. Large binary files are gitignored; manifest entries + preview PNGs are committed; the actual assets sync via shared storage.
+6. **Carson reads from `MANIFEST.json`** in the Bevy ECS startup system, spawns one entity per ghost, attaches the right component (`StaticPointCloud` or `AnimatedPointCloud`), and the rendering systems handle the rest.
+
+### Why this collaboration model works
+
+Marvens never touches Rust. Carson never touches Blender. The contract between them is the file format spec in `pointcloud-pipeline/README.md`. They sync **once** Friday night to lock the contract (vertex count targets, file naming, MANIFEST schema), then they can iterate independently for the rest of the weekend. Marvens drops a new ghost into shared storage + bumps the manifest, Carson pulls and the renderer ingests it on next launch. Real-time hot reload is a Sat-night stretch goal.
+
+### Bevy plugin shopping list (all stable Rust, all >2 weeks old)
+
+| Plugin | Purpose | Notes |
+|---|---|---|
+| `bevy_gltf` | First-party glTF loader | Built into Bevy core |
+| `bevy_animation` | First-party animation graph | Built into Bevy core (0.14+) |
+| `bevy_pointcloud` (rlamarche) | Static PLY point cloud rendering | Potree-based, stable Rust |
+| OpenVAT (Blender addon, Marvens-side) | Vertex animation texture authoring | Blender extension |
+| `bevy_mod_picking` | Click-to-select for pin interaction | Mature, well-maintained |
+
+**Explicitly NOT using `bevy_gaussian_splatting`** for the hackathon. It exists, it's interesting, but it requires nightly Rust for default features and adds risk we don't need. Save it for V1 if we want the more "neural rendering" aesthetic.
+
+---
+
 ## llama.cpp on the GN100 — gotchas
 
 - The `-DCMAKE_CUDA_ARCHITECTURES="121"` flag is critical. The GB10 reports as sm_121. Other values won't compile correctly.
@@ -236,6 +275,13 @@ This template gives Nemotron enough structure that the niche voice stays consist
 | Nemotron-3-Nano GGUF Q8_K_XL (unsloth) | 4 months ago | ✅ Pass |
 | Live VLM WebUI | Nov 4 2025 (~5 months) | ✅ Pass |
 | Rust + wgpu | Years old | ✅ Pass |
+| Bevy 0.16 | Released mid-2025 (~10 months) | ✅ Pass |
+| `bevy_pointcloud` (rlamarche) | Months old | ✅ Pass |
+| OpenVAT Blender addon (sharpen3d) | Months old | ✅ Pass |
+| Blender (point cloud authoring) | 20+ years old | ✅ Pass |
+| glTF / glb format | 2017 spec, years of tooling | ✅ Pass |
+| AliceVision Meshroom (photogrammetry) | Years old | ✅ Pass |
+| COLMAP (SfM/MVS) | Years old | ✅ Pass |
 | Three.js (James's branch) | Years old | ✅ Pass |
 | Ollama | Years old | ✅ Pass |
 | GSAP | Years old | ✅ Pass |

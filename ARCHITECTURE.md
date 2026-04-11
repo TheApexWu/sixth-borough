@@ -13,14 +13,14 @@
         │                                 │                                 │
         ▼                                 ▼                                 ▼
 ┌──────────────────┐          ┌──────────────────┐               ┌──────────────────┐
-│  RUST + wgpu     │          │  llama.cpp       │               │  Live VLM WebUI  │
+│  BEVY 0.16       │          │  llama.cpp       │               │  Live VLM WebUI  │
 │  RENDERER        │          │  NARRATION       │               │  VISION (opt)    │
-│                  │          │  SERVER          │               │                  │
-│  PS2 post-proc:  │  scene   │                  │  caption      │  Ollama backend  │
-│  - Sobel edges   │  bytes   │  Nemotron-3-Nano │  request      │  Gemma 3 / Llama │
-│  - Vignette      │ ───────► │  30B-A3B Q8 GGUF │ ◄──────────── │  Vision          │
-│  - Palette quant │          │                  │               │                  │
-│  - Era cutscenes │          │  :30000          │               │  :8090           │
+│  (Rust + wgpu)   │          │  SERVER          │               │                  │
+│                  │          │                  │               │  Ollama backend  │
+│  PS2 post-proc   │  scene   │  Nemotron-3-Nano │  caption      │  Gemma 3 / Llama │
+│  bevy_pointcloud │  bytes   │  30B-A3B Q8 GGUF │  request      │  Vision          │
+│  OpenVAT shader  │ ───────► │                  │ ◄──────────── │                  │
+│  Era cutscenes   │          │  :30000          │               │  :8090           │
 │                  │          │  OpenAI API      │               │  WebRTC stream   │
 └──────────────────┘          └──────────────────┘               └──────────────────┘
         ▲                                 ▲                                 ▲
@@ -83,11 +83,47 @@ If we need to drop the VLM, the system still works narration-only.
 
 | Failure | Detection | Fallback |
 |---|---|---|
-| Rust/wgpu renderer doesn't compile or crashes | By Sat 4 PM Progress Checkin | Pivot to James's WebGL Sobel pipeline as primary visual |
+| Bevy renderer doesn't compile or crashes | By Sat 4 PM Progress Checkin | Pivot to James's WebGL Sobel pipeline as primary visual |
+| `bevy_pointcloud` plugin incompatible with chosen Bevy version | Friday night plugin install | Bump Bevy to 0.17 OR drop to a hand-rolled minimal point cloud renderer (~150 lines WGSL) |
+| OpenVAT vertex animation texture shader doesn't sample correctly in Bevy | Saturday morning shader test | Fall back to glTF morph targets for animated ghosts (lower vertex count, simpler) |
 | Nemotron-3-Nano-30B doesn't fit in memory or runs too slow | Test Friday night | Drop to Q4_K_M quantization (smaller download, lower quality) |
 | Nemotron download (38 GB) fails on venue wifi | Watch download progress | Use phone hotspot, or fall back to a smaller Ollama model already on disk |
 | Live VLM doesn't run alongside Nemotron | Memory check | Drop the vision pipeline entirely, narration-only is still a complete pitch |
 | Demo crashes on stage | Rehearsal | Have a 30-second pre-recorded clip of the working loop ready as backup |
+
+## Renderer asset pipeline
+
+The renderer is **Bevy 0.16** (Rust, built on wgpu). The Blender → Bevy contract:
+
+```
+MARVENS (Blender)                                CARSON (Bevy)
+─────────────────                                ────────────
+
+City geometry, scene props ────► .glb ─────────► bevy_gltf (built-in)
+
+Static point cloud ghosts ─────► .ply ─────────► bevy_pointcloud plugin
+                                                 (Potree-based, stable Rust)
+
+Animated point cloud ghosts ───► .glb +
+(ODESZA technique via OpenVAT)   embedded VAT ─► custom WGSL vertex
+                                 texture          shader samples VAT
+                                                  per frame
+
+                                 ┌──────────────────────────┐
+                                 │  assets/pointclouds/     │
+                                 │    MANIFEST.json (small, │
+                                 │      committed)          │
+                                 │    *.preview.png         │
+                                 │      (committed)         │
+                                 │    *.ply / *.glb         │
+                                 │      (gitignored, sync   │
+                                 │       via shared storage)│
+                                 └──────────────────────────┘
+```
+
+Marvens never touches Rust. Carson never touches Blender. The contract between them is `pointcloud-pipeline/README.md`. They pair Friday night to lock the format spec, then iterate independently.
+
+---
 
 ## The 4-pillar map (where each pillar lives in the architecture)
 

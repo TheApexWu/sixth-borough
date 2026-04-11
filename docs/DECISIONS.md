@@ -119,4 +119,32 @@ Append-only log of build decisions made during the hackathon. When you make a no
 
 ---
 
+## 2026-04-10 evening — Renderer engine: Bevy 0.16 (Rust + wgpu)
+
+**Decision:** The Rust renderer is built on **Bevy 0.16**, not raw wgpu. Static point clouds ingest through the `bevy_pointcloud` plugin (Potree-based, stable Rust, PLY format). Animated point clouds use **OpenVAT** (Blender addon) → glb with embedded vertex animation texture, sampled by a custom WGSL vertex shader on the Bevy side.
+**Alternatives considered:**
+- Raw wgpu with hand-rolled scene graph (more control, but rebuilding what Bevy gives free; no time)
+- Bevy 0.18 (latest, January 2026 release, but plugin ecosystem hasn't caught up — `bevy_pointcloud` plugin compat is the binding constraint)
+- `bevy_gaussian_splatting` plugin (more "neural rendering" aesthetic, but requires nightly Rust for default features and adds risk)
+- glTF morph targets only for animated point clouds (works but caps at low vertex counts; OpenVAT scales further)
+**Why:** Bevy gives us a built-in animation graph (since 0.14, animation masks + additive blending added in 0.15), the mature first-party glTF loader, an ECS for the niche-filtered event entities, and a plugin ecosystem that includes static point cloud rendering out of the box. The key insight is that **Marvens authors everything in Blender** — city geometry, ghosts, animated point clouds — and Carson loads it via standard formats. Marvens never touches Rust; Carson never touches Blender. The contract between them is the file format spec in `pointcloud-pipeline/README.md`.
+
+OpenVAT specifically is the right choice for the animated point cloud ghost layer because it's Blender-native, captures any vertex-level animation including Marvens's Geometry Nodes / Simulations work, encodes the result as a GPU texture that any engine with a basic vertex shader can sample, and is the same family of technique Marvens has shipped to 2M+ concert attendees on the ODESZA tour. The ~50–100 lines of WGSL Carson writes to sample the VAT is the only net-new shader work.
+
+Bevy 0.16 (mid-2025) is pinned over 0.18 (January 2026) because the third-party plugin ecosystem — especially `bevy_pointcloud` — is most reliably aligned with 0.16. 0.18 is too new for safe hackathon plugin compat.
+**Owner:** Carson + Alex + Marvens.
+**Reversible by:** Friday midnight (engine pin), Sat morning (bump to 0.17 if Carson confirms plugin compat), not reversible after Sat morning.
+
+---
+
+## 2026-04-10 evening — Carson + Marvens paired ownership of asset format contract
+
+**Decision:** Carson (`renderer-rust` branch) and Marvens (`pointcloud-pipeline` branch) **pair Friday night** to lock the file format contract that lives in `pointcloud-pipeline/README.md`. Once locked, they iterate independently for the rest of the weekend — Marvens drops new ghosts into shared storage and bumps `assets/pointclouds/MANIFEST.json`, Carson's renderer ingests on next launch.
+**Alternatives considered:** treating Marvens as a passive asset producer who hands files over a wall (rejected — Marvens has shipped this exact technique at scale and his input on the format spec is high-value).
+**Why:** Carson explicitly said he wants to work with Marvens on integration, not after it. Pairing on the format spec Friday night removes the highest-risk part of the collaboration (ambiguity about what the file looks like) before either of them writes any code that depends on the assumption.
+**Owner:** Carson + Marvens (the contract), Alex (the meta-decision).
+**Reversible by:** N/A — this is a coordination model, not a build constraint.
+
+---
+
 ## (add new decisions below this line as they happen)
