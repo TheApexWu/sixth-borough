@@ -40,6 +40,22 @@ def parse_year(rec):
     return None
 
 
+def pick_caption(p):
+    # Prefer the short curated title when present; fall back to the first line
+    # of the longer `text` description (≈90% of records have text, only ~27%
+    # have title). Truncate long text so the photo-mode caption stays readable.
+    title = (p.get("title") or "").strip()
+    if title:
+        return title
+    text = (p.get("text") or "").strip()
+    if not text:
+        return ""
+    first_line = text.split("\n", 1)[0].strip().rstrip("+").strip()
+    if len(first_line) > 180:
+        first_line = first_line[:177].rstrip() + "…"
+    return first_line
+
+
 def even_sample(records, cap):
     if cap <= 0 or len(records) <= cap:
         return records
@@ -96,7 +112,7 @@ def main():
             "lat": loc["lat"],
             "lon": loc["lon"],
             "year": year,
-            "title": (p.get("title") or "").strip(),
+            "title": pick_caption(p),
             "image_url": p["image_url"],
             "nypl_url": p.get("nypl_url") or "",
         })

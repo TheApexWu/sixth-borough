@@ -36,10 +36,264 @@
 
   /* ── Timeline controls ── */
   #controls {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 25;
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 45;
     background: rgba(0,0,0,0.92); border: 1px solid #282828; padding: 18px 44px;
     text-align: center; min-width: 520px;
   }
+
+  /* ── Lightbox (card-scoped fullscreen photo viewer) ── */
+  /* Fully immersive: pure black, image fills the entire viewport, nav + caption
+     are floating overlays on top so the photo breathes corner-to-corner. */
+  #lightbox {
+    position: fixed; inset: 0; z-index: 48;
+    background: #000;
+    display: none;
+    animation: photoModeFadeIn 0.25s ease-out;
+  }
+  #lightbox.open { display: block; }
+  #lightbox-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.08) contrast(1.08);
+  }
+  #lightbox-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 36px;
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    color: #eee;
+    pointer-events: none;
+    max-width: 90vw;
+  }
+  #lightbox-title {
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  #lightbox-meta {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 3px;
+    display: flex;
+    gap: 22px;
+    justify-content: center;
+    align-items: center;
+  }
+  #lightbox-meta #lightbox-year {
+    color: #00b8d4;
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+  #lightbox-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 36px; height: 36px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-size: 22px;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+    z-index: 2;
+  }
+  #lightbox-close:hover {
+    color: rgba(255,255,255,0.9);
+  }
+  .lightbox-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px; height: 48px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.35);
+    font-size: 26px;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+    z-index: 2;
+  }
+  .lightbox-nav-btn:hover:not(:disabled) {
+    color: rgba(255,255,255,0.85);
+  }
+  .lightbox-nav-btn:disabled { opacity: 0.2; cursor: default; }
+  #lightbox-prev { left: 24px; }
+  #lightbox-next { right: 24px; }
+
+  /* ── Photo Mode (fullscreen archival viewer) ── */
+  /* Photo mode: fully immersive, image covers the entire viewport, controls
+     float on top with semi-transparent backgrounds. */
+  #photo-mode {
+    position: fixed; inset: 0; z-index: 40;
+    background: #000;
+    display: none;
+    cursor: zoom-out;
+    animation: photoModeFadeIn 0.3s ease-out;
+  }
+  #photo-mode.open { display: block; }
+  @keyframes photoModeFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  #photo-mode-img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.08) contrast(1.08);
+    cursor: default;
+  }
+  #photo-mode-caption {
+    position: absolute;
+    left: 50%;
+    bottom: 240px; /* clear the timeline sitting ~210px tall at the bottom */
+    transform: translateX(-50%);
+    padding: 14px 26px;
+    background: rgba(0,0,0,0.62);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    color: #eee;
+    max-width: 80vw;
+    cursor: default;
+  }
+  #photo-mode-title {
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  #photo-mode-meta {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 3px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+  #photo-mode-meta #photo-mode-year {
+    color: #00b8d4;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+  #photo-mode-year-scrubber {
+    position: absolute;
+    top: 28px; left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 22px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-family: 'Courier New', monospace;
+    z-index: 2;
+  }
+  #photo-mode-year-label {
+    color: #eee;
+    font-size: 15px;
+    letter-spacing: 2px;
+    min-width: 48px;
+    font-variant-numeric: tabular-nums;
+  }
+  #photo-mode-year-slider {
+    -webkit-appearance: none;
+    width: 320px;
+    height: 2px;
+    background: rgba(255,255,255,0.25);
+    outline: none;
+    cursor: pointer;
+    margin: 0;
+  }
+  #photo-mode-year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: #eee;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  #photo-mode-year-slider::-moz-range-thumb {
+    width: 12px; height: 12px;
+    background: #eee;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+  }
+  #photo-mode-hint {
+    position: absolute;
+    bottom: 210px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 14px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    color: #999;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    cursor: default;
+  }
+  /* Photo mode floating controls: same translucent-on-image feel as the lightbox. */
+  #photo-mode-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 36px; height: 36px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    font-size: 22px;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+    z-index: 2;
+  }
+  #photo-mode-close:hover {
+    color: rgba(255,255,255,0.9);
+  }
+  .photo-mode-nav-btn {
+    position: absolute;
+    top: calc(50% - 115px); /* pulled up so the timeline at the bottom has room */
+    transform: translateY(-50%);
+    width: 48px; height: 48px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.35);
+    font-size: 26px;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    z-index: 2;
+  }
+  .photo-mode-nav-btn:hover:not(:disabled) {
+    color: #00b8d4; border-color: #00b8d4; background: rgba(0,0,0,0.75);
+  }
+  .photo-mode-nav-btn:disabled { opacity: 0.2; cursor: default; }
+  #photo-mode-prev { left: 24px; }
+  #photo-mode-next { right: 24px; }
   #controls .label { font-size: 11px; letter-spacing: 4px; color: #00b8d4; }
   #year-display { font-size: 56px; font-weight: bold; color: #fff; margin: 6px 0; font-variant-numeric: tabular-nums; }
   #era-label { font-size: 11px; color: #666; letter-spacing: 2px; margin-bottom: 14px; }
@@ -80,13 +334,28 @@
     pointer-events: none; opacity: 0; transition: opacity 0.3s, color 0.3s;
   }
   .era-dot:hover .era-dot-label { opacity: 1; color: #666; }
-  #play-btn {
+  #controls-actions {
     position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    display: flex; align-items: center; gap: 8px;
+  }
+  #play-btn {
     background: none; border: 1px solid #333; color: #888; font-family: inherit;
-    font-size: 11px; padding: 6px 12px; cursor: pointer; letter-spacing: 1px;
+    width: 32px; height: 32px; padding: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
   }
   #play-btn:hover { color: #00b8d4; border-color: #00b8d4; }
-
+  #play-btn::before {
+    content: ''; display: block; width: 0; height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 9px solid currentColor;
+    margin-left: 2px;
+  }
+  #play-btn.playing::before {
+    content: ''; width: 9px; height: 10px;
+    border: none; margin-left: 0;
+    background: currentColor;
+  }
   /* ── Mode toggle ── */
   #mode-toggle {
     position: fixed; bottom: 28px; left: 24px; z-index: 10;
@@ -243,7 +512,7 @@
 
   /* ── Dev tools panel ── */
   #dev-panel {
-    position: fixed; top: 0; right: 0; z-index: 40;
+    position: fixed; top: 0; right: 0; z-index: 50;
     width: 280px; height: 100vh;
     background: rgba(6,6,6,0.96); border-left: 1px solid #222;
     transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -265,21 +534,85 @@
   }
   #dev-close:hover { color: #888; }
   #dev-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 35;
-    background: rgba(0,0,0,0.8); border: 1px solid #282828;
-    color: #444; font-family: inherit; font-size: 9px; letter-spacing: 2px;
-    padding: 6px 10px; cursor: grab; user-select: none;
-    transition: color 0.3s, border-color 0.3s;
+    position: fixed; bottom: 16px; left: 16px; z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(0,0,0,0.85); border: 1px solid #6a6a6a;
+    color: #e8e8e8; padding: 0; cursor: grab; user-select: none;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 2px 12px rgba(0,0,0,0.5);
+    transition: color 0.3s, border-color 0.3s, box-shadow 0.3s;
   }
-  #dev-toggle:hover { color: #888; border-color: #444; }
+  #dev-toggle svg { width: 18px; height: 18px; display: block; }
+  #dev-toggle:hover {
+    color: #fff; border-color: #9a9a9a;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 2px 16px rgba(0,0,0,0.6);
+  }
   #dev-toggle.dragging { cursor: grabbing; opacity: 0.8; }
+  #cinematic-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.82);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; opacity: 0; transition: opacity 0.6s ease;
+  }
+  #cinematic-overlay.active { display: flex; opacity: 1; }
+  #cinematic-video {
+    max-width: 78vw; max-height: 70vh;
+    border: 1px solid #222;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.04);
+    filter: contrast(1.15) brightness(0.92) sepia(0.15);
+  }
+  .cinematic-caption {
+    position: absolute; bottom: 6vh; left: 0; right: 0; text-align: center;
+    font-family: 'Courier New', monospace; color: #ddd; pointer-events: none;
+  }
+  .cinematic-caption-title {
+    font-size: 32px; letter-spacing: 10px; margin-bottom: 8px;
+  }
+  .cinematic-caption-sub {
+    font-size: 10px; letter-spacing: 3px; color: #888; text-transform: uppercase;
+  }
+  #cinematic-close {
+    position: absolute; top: 24px; right: 24px;
+    width: 36px; height: 36px; padding: 0;
+    background: rgba(0,0,0,0.6); border: 1px solid #333;
+    color: #888; font-family: inherit; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #cinematic-close:hover { color: #00b8d4; border-color: #00b8d4; }
+  #cinematic-close::before { content: '×'; font-size: 22px; line-height: 1; }
+  .cinematic-location {
+    position: absolute; top: 28px; left: 28px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px; letter-spacing: 3px; color: #666; text-transform: uppercase;
+    pointer-events: none;
+  }
+  .tweak-btn.cinematic-btn {
+    width: 100%; padding: 12px; margin-top: 4px;
+    font-size: 11px; letter-spacing: 2px;
+  }
+  .tweak-btn.cinematic-btn.playing {
+    background: #00b8d4; color: #000;
+  }
   .flag-section {
-    padding: 14px 18px 8px; border-bottom: 1px solid #111;
+    padding: 0; border-bottom: 1px solid #111;
   }
   .flag-section-title {
-    font-size: 9px; letter-spacing: 2px; color: #333; margin-bottom: 10px;
+    font-size: 9px; letter-spacing: 2px; color: #555; margin: 0;
     text-transform: uppercase;
+    padding: 14px 18px; cursor: pointer; user-select: none;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: color 0.15s;
   }
+  .flag-section-title:hover { color: #888; }
+  .flag-section-title::after {
+    content: '−'; font-size: 14px; color: #555; transition: transform 0.2s;
+    line-height: 1; display: inline-block; width: 10px; text-align: center;
+  }
+  .flag-section.collapsed .flag-section-title::after { content: '+'; }
+  .flag-section-body {
+    padding: 0 18px 12px; overflow: hidden;
+  }
+  .flag-section.collapsed .flag-section-body { display: none; }
   .flag-row {
     display: flex; align-items: center; justify-content: space-between;
     padding: 5px 0;
@@ -452,6 +785,57 @@
     font-size: 9px; color: #333; letter-spacing: 1px;
   }
 
+  /* ── Archival photo gallery inside story card ── */
+  #story-card .card-photo-wrap {
+    padding: 10px 16px 0; position: relative;
+  }
+  #story-card .card-photo {
+    width: 100%; max-height: 200px; object-fit: cover;
+    background: #0a0a0a; display: block;
+    border: 1px solid #1a1a1a; filter: grayscale(0.15) contrast(1.05);
+  }
+  #story-card .photo-fullscreen-btn {
+    position: absolute;
+    top: 18px; right: 24px;
+    width: 28px; height: 28px;
+    background: rgba(0,0,0,0.75);
+    border: 1px solid #333;
+    color: #bbb;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  #story-card .photo-fullscreen-btn:hover {
+    color: #00b8d4; border-color: #00b8d4; background: rgba(0,0,0,0.9);
+  }
+  #story-card .photo-caption {
+    padding: 6px 16px 0; font-size: 10px; color: #888; line-height: 1.5;
+  }
+  #story-card .photo-nav {
+    padding: 8px 16px 0; display: flex; align-items: center; gap: 8px;
+    font-size: 10px; color: #555; font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+  }
+  #story-card .photo-nav button {
+    background: none; border: 1px solid #333; color: #888;
+    font-family: inherit; font-size: 10px; padding: 3px 10px;
+    cursor: pointer; letter-spacing: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #story-card .photo-nav button:hover:not(:disabled) {
+    color: #00b8d4; border-color: #00b8d4;
+  }
+  #story-card .photo-nav button:disabled { opacity: 0.25; cursor: default; }
+  #story-card .photo-nav .photo-counter { margin-left: auto; color: #555; }
+  #story-card .photo-attribution {
+    padding: 4px 16px 0; font-size: 9px; color: #444;
+    font-style: italic; letter-spacing: 0.5px;
+  }
+  #story-card .card-body.has-photos { padding-top: 8px; }
+
   /* ── Sketch overlay (Sobel edge detection) ── */
   #sketch-overlay {
     position: fixed; top: 0; left: 0; z-index: 19;
@@ -480,7 +864,50 @@
     <input type="range" id="slider" min="1719" max="2026" value="1925" step="1">
   </div>
   <div id="stats"><span id="visible-count">--</span> buildings visible</div>
-  <button id="play-btn">PLAY</button>
+  <div id="controls-actions">
+    <button id="play-btn" title="Play / stop timeline scrub"></button>
+  </div>
+</div>
+
+<!-- Card-scoped lightbox: triggered from the story card's fullscreen button.
+     Cycles through _cardPhotos (same-period photos found near the clicked building).
+     Does NOT touch photo mode or the timeline. Close → back to card + map. -->
+<div id="lightbox">
+  <img id="lightbox-img" alt="archival photograph">
+  <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close">&times;</button>
+  <button id="lightbox-prev" class="lightbox-nav-btn" onclick="cycleLightbox(-1)" aria-label="Previous">&larr;</button>
+  <button id="lightbox-next" class="lightbox-nav-btn" onclick="cycleLightbox(1)" aria-label="Next">&rarr;</button>
+  <div id="lightbox-caption">
+    <div id="lightbox-title">--</div>
+    <div id="lightbox-meta">
+      <span id="lightbox-year">--</span>
+      <span id="lightbox-counter"></span>
+      <span>NYPL MILSTEIN · OLDNYC.ORG</span>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen archival photo viewer. Timeline remains visible above it. -->
+<div id="photo-mode" onclick="handlePhotoModeClick(event)">
+  <img id="photo-mode-img" alt="archival photograph">
+  <button id="photo-mode-close" onclick="closePhotoModeViaFlag()" aria-label="Close photo mode">&times;</button>
+  <button id="photo-mode-prev" class="photo-mode-nav-btn" onclick="stepPhotoMode(-1)" aria-label="Previous photo">&larr;</button>
+  <button id="photo-mode-next" class="photo-mode-nav-btn" onclick="stepPhotoMode(1)" aria-label="Next photo">&rarr;</button>
+  <div id="photo-mode-caption">
+    <div id="photo-mode-title">--</div>
+    <div id="photo-mode-meta">
+      <span id="photo-mode-year">--</span>
+      <span id="photo-mode-progress">--</span>
+      <span>NYPL MILSTEIN · OLDNYC.ORG</span>
+    </div>
+  </div>
+  <div id="photo-mode-year-scrubber">
+    <span id="photo-mode-year-label">1925</span>
+    <input type="range" id="photo-mode-year-slider" min="1719" max="2026" step="1" value="1925"
+           oninput="onPhotoModeYearScrub(this.value)"
+           onclick="event.stopPropagation()">
+  </div>
+  <div id="photo-mode-hint">← → OR DRAG YEAR · PLAY FOR SLIDESHOW · ESC TO EXIT</div>
 </div>
 
 <!-- Story card scaffold -- Carson/James decide layout, fonts, tone -->
@@ -489,17 +916,47 @@
   <div class="card-header">SITE HISTORY</div>
   <div class="card-title" id="card-title">--</div>
   <div class="card-year" id="card-year">--</div>
+  <!-- Photo gallery (oldnyc / NYPL Milstein). Hidden until a photo is wired. -->
+  <div class="card-photo-wrap" id="card-photo-wrap" style="display:none;">
+    <img class="card-photo" id="card-photo" alt="archival photograph">
+    <button class="photo-fullscreen-btn" onclick="openLightbox()" title="View fullscreen" aria-label="View fullscreen">⛶</button>
+  </div>
+  <div class="photo-caption" id="card-photo-caption" style="display:none;"></div>
+  <div class="photo-nav" id="card-photo-nav" style="display:none;">
+    <button id="card-photo-prev" onclick="cyclePhoto(-1)">&larr; PREV</button>
+    <button id="card-photo-next" onclick="cyclePhoto(1)">NEXT &rarr;</button>
+    <span class="photo-counter" id="card-photo-counter"></span>
+  </div>
+  <div class="photo-attribution" id="card-photo-attr" style="display:none;">NYPL Milstein Division via oldnyc.org</div>
   <div class="card-body" id="card-body">--</div>
   <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
 </div>
 
-<button id="dev-toggle">DEV</button>
+<button id="dev-toggle" aria-label="Toggle dev panel" title="Dev panel">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+</button>
 <div id="dev-panel">
   <div id="dev-panel-header">
     <h4>FEATURE FLAGS</h4>
     <button id="dev-close" onclick="toggleDevPanel()">&times;</button>
   </div>
   <div id="dev-panel-body"></div>
+</div>
+
+<!-- Cinematic video overlay -->
+<div id="cinematic-overlay">
+  <div class="cinematic-location">◉ Ellis Island · 40.6995°N 74.0391°W</div>
+  <button id="cinematic-close" title="Close (Esc)" onclick="stopCinematic()"></button>
+  <video id="cinematic-video" playsinline muted preload="metadata">
+    <source src="cultural-content/ellis-island-clips/ellis-island-1903-web.mp4" type="video/mp4">
+  </video>
+  <div class="cinematic-caption">
+    <div class="cinematic-caption-title">ARRIVAL</div>
+    <div class="cinematic-caption-sub">Ellis Island · 1903 · Edison Mfg. Co. · Library of Congress</div>
+  </div>
 </div>
 
 <!-- 3D Vignette overlay (alternative to cutscene) -->
@@ -545,7 +1002,7 @@
 <div id="map"></div>
 
 <script>
-const { Deck, PolygonLayer } = deck;
+const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer } = deck;
 
 // ── Sketch Overlay Feature Gate ──
 // Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
@@ -563,6 +1020,11 @@ const FLAGS = {
   hoverTooltip: { label: 'Hover Tooltip', desc: 'Show building era/info on hover', group: 'ui', default: false },
   sketchOverlay:{ label: 'Sketch Overlay', desc: 'Sobel edge-detection blueprint overlay', group: 'effects', default: false },
   radialBurn:   { label: 'Radial Burn', desc: 'Shader transition between overlay cutscenes on next/prev era.', group: 'effects', default: false },
+  ghostPointCloud:{ label: 'Ghost Point Cloud', desc: 'Penn Station (demolished 1963) as a point-cloud ghost after its demolition year.', group: 'effects', default: false },
+  libertyIsland:  { label: 'Liberty Island 3D', desc: 'Load photogrammetry mesh of Liberty Island into the harbor. Auto-flies camera when enabled.', group: 'effects', default: false },
+  oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
+  photoMode:      { label: 'Photo Mode', desc: 'Fullscreen archival-photo viewer. Timeline slider and era dots scrub through ~150 Manhattan photos in chronological order. Hit PLAY for a timed slideshow, ← → to step manually, ESC to exit.', group: 'ui', default: false },
+  freeCamera:     { label: 'Free Camera', desc: 'Unlock pitch and enable drag-rotate. Right-click + drag (or ctrl+drag) to orbit. Drag to pan, scroll to zoom.', group: 'ui', default: false },
 };
 
 // Cutscene modes — only one active at a time
@@ -588,6 +1050,38 @@ const RADIAL_BURN_TWEAKS = {
   edgeWarmth:    { label: 'Warmth', min: 0.0, max: 1.0, step: 0.02, default: 0.14, format: v => v.toFixed(2) },
 };
 
+const LIBERTY_MODES = {
+  mesh:   { label: 'Mesh', desc: 'Photogrammetry mesh with baked texture.' },
+  points: { label: 'Points', desc: 'PS2 memory aesthetic — vertex positions as a point cloud.' },
+  both:   { label: 'Mesh + Points', desc: 'Both at once. Points sit on top of the mesh.' },
+};
+
+const LIBERTY_TWEAKS = {
+  libertyPoints:    { label: 'Liberty Points',    min: 1000, max: 60000, step: 500, default: 20000, format: v => Math.round(v).toLocaleString() },
+  libertyPointSize: { label: 'Liberty Point Size',min: 0.5,  max: 6.0,   step: 0.1, default: 2.0,   format: v => v.toFixed(1) + 'px' },
+};
+
+const LIBERTY_TWEAK_PREFIX = 'liberty_';
+const libertyTweaks = {};
+for (const [key, def] of Object.entries(LIBERTY_TWEAKS)) {
+  const stored = localStorage.getItem(LIBERTY_TWEAK_PREFIX + key);
+  libertyTweaks[key] = stored !== null ? Number(stored) : def.default;
+}
+let libertyMode = localStorage.getItem('liberty_mode') || 'mesh';
+
+const GHOST_TWEAKS = {
+  pennPoints:     { label: 'Penn Points',     min: 500,  max: 20000, step: 250,  default: 6000, format: v => Math.round(v).toLocaleString() },
+  pennPointSize:  { label: 'Penn Point Size', min: 0.5,  max: 6.0,   step: 0.1,  default: 2.2,  format: v => v.toFixed(1) + 'px' },
+  pennShellRatio: { label: 'Shell Ratio',     min: 0.0,  max: 1.0,   step: 0.05, default: 0.55, format: v => Math.round(v * 100) + '%' },
+};
+
+const GHOST_TWEAK_PREFIX = 'ghost_';
+const ghostTweaks = {};
+for (const [key, def] of Object.entries(GHOST_TWEAKS)) {
+  const stored = localStorage.getItem(GHOST_TWEAK_PREFIX + key);
+  ghostTweaks[key] = stored !== null ? Number(stored) : def.default;
+}
+
 const RADIAL_BURN_CURRENT_PREFIX = 'rb_';
 const RADIAL_BURN_DEFAULT_PREFIX = 'rb_default_';
 let radialBurnStatusMessage = '';
@@ -610,6 +1104,38 @@ function setFlag(key, val) {
   featureFlags[key] = val;
   localStorage.setItem('ff_' + key, val);
   applyFlags();
+}
+
+function setLibertyTweak(key, val) {
+  libertyTweaks[key] = val;
+  localStorage.setItem(LIBERTY_TWEAK_PREFIX + key, String(val));
+  if (deckgl && featureFlags.libertyIsland) {
+    deckgl.setProps({ layers: buildLayers() });
+  }
+}
+
+function setLibertyMode(mode) {
+  libertyMode = mode;
+  localStorage.setItem('liberty_mode', mode);
+  document.querySelectorAll('.liberty-mode-option').forEach(el => {
+    el.classList.toggle('active', el.dataset.mode === mode);
+  });
+  if (deckgl && featureFlags.libertyIsland) {
+    // Kick off point load if switching to a mode that needs it
+    if ((mode === 'points' || mode === 'both') && !_libertyPointsCache) {
+      loadLibertyPoints();
+    }
+    deckgl.setProps({ layers: buildLayers() });
+  }
+}
+
+function setGhostTweak(key, val) {
+  ghostTweaks[key] = val;
+  localStorage.setItem(GHOST_TWEAK_PREFIX + key, String(val));
+  _ghostPointCache = null; // force regeneration with new budget / shell ratio
+  if (deckgl && featureFlags.ghostPointCloud) {
+    deckgl.setProps({ layers: buildLayers() });
+  }
 }
 
 function setRadialBurnTweak(key, val) {
@@ -677,6 +1203,13 @@ function applyFlags() {
   if (!featureFlags.guidedMode && guidedMode) toggleMode();
   document.getElementById('legend').style.display = featureFlags.legend ? '' : 'none';
   if (!featureFlags.radialBurn) hideRadialBurnOverlay();
+  if (featureFlags.photoMode) showPhotoMode(); else hidePhotoMode();
+  if (deckgl) deckgl.setProps({ layers: buildLayers(), controller: getControllerConfig() });
+  if (featureFlags.libertyIsland && !_libertyFlewThisToggle) {
+    _libertyFlewThisToggle = true;
+    flyToLibertyIsland();
+  }
+  if (!featureFlags.libertyIsland) _libertyFlewThisToggle = false;
   // Sync sketch overlay gate and init/teardown
   FEATURES.sketchOverlay = featureFlags.sketchOverlay;
   _sketchTeardownPending = false; // cancel any pending teardown
@@ -745,6 +1278,102 @@ function toggleDevPanel() {
   });
 })();
 
+function makeSection(title, defaultCollapsed = false) {
+  const key = 'section_' + title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+  const stored = localStorage.getItem(key);
+  const collapsed = stored !== null ? stored === 'true' : defaultCollapsed;
+
+  const section = document.createElement('div');
+  section.className = 'flag-section' + (collapsed ? ' collapsed' : '');
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'flag-section-title';
+  titleEl.textContent = title;
+  titleEl.addEventListener('click', () => {
+    section.classList.toggle('collapsed');
+    localStorage.setItem(key, String(section.classList.contains('collapsed')));
+  });
+  section.appendChild(titleEl);
+
+  const bodyEl = document.createElement('div');
+  bodyEl.className = 'flag-section-body';
+  section.appendChild(bodyEl);
+
+  return { section, body: bodyEl };
+}
+
+// ── Cinematic animation ──
+// Plays "Emigrants landing at Ellis Island" (1903, Edison Mfg. Co., shot by Alfred C.
+// Abadie). Public domain, sourced from the Library of Congress tile service and
+// transcoded to a web-friendly 720p MP4. The real scripted sequence (camera moves,
+// flow lines, geometry reveals) gets layered on top of this video playback.
+let cinematicPlaying = false;
+
+function updateCinematicButton() {
+  const btn = document.getElementById('cinematic-btn');
+  if (btn) {
+    btn.textContent = cinematicPlaying ? 'STOP IMMIGRATION' : 'PLAY IMMIGRATION';
+    btn.classList.toggle('playing', cinematicPlaying);
+  }
+}
+
+const ELLIS_ISLAND_VIEW = {
+  longitude: -74.0391,
+  latitude: 40.6995,
+  zoom: 15.2,
+  pitch: 55,
+  bearing: -18,
+};
+
+function flyToEllisIsland() {
+  if (!deckgl) return;
+  deckgl.setProps({
+    initialViewState: {
+      ...ELLIS_ISLAND_VIEW,
+      transitionDuration: 2200,
+      transitionInterpolator: new deck.FlyToInterpolator(),
+    },
+  });
+}
+
+function startCinematic() {
+  if (cinematicPlaying) return;
+  cinematicPlaying = true;
+  updateCinematicButton();
+
+  // Anchor the cinematic in space first — fly the camera to Ellis Island so the
+  // video plays over a map that's looking at the real location.
+  flyToEllisIsland();
+
+  // Let the fly-to begin visible, then fade the video in on top. The overlay is
+  // semi-transparent so the map behind stays dimly visible for context.
+  setTimeout(() => {
+    if (!cinematicPlaying) return;
+    const overlay = document.getElementById('cinematic-overlay');
+    const video = document.getElementById('cinematic-video');
+    if (!overlay || !video) return;
+    overlay.classList.add('active');
+    video.currentTime = 0;
+    video.onended = () => stopCinematic();
+    video.play().catch(err => console.error('Cinematic video play failed:', err));
+  }, 1600);
+}
+
+function stopCinematic() {
+  if (!cinematicPlaying) return;
+  cinematicPlaying = false;
+  const overlay = document.getElementById('cinematic-overlay');
+  const video = document.getElementById('cinematic-video');
+  if (video) { video.pause(); video.onended = null; }
+  if (overlay) overlay.classList.remove('active');
+  updateCinematicButton();
+}
+
+function toggleCinematic() {
+  if (cinematicPlaying) stopCinematic();
+  else startCinematic();
+}
+
 function buildDevPanel() {
   const body = document.getElementById('dev-panel-body');
   body.innerHTML = '';
@@ -758,9 +1387,7 @@ function buildDevPanel() {
   }
   const groupTitles = { ui: 'Interface', effects: 'Effects' };
   for (const [groupKey, entries] of Object.entries(groups)) {
-    const section = document.createElement('div');
-    section.className = 'flag-section';
-    section.innerHTML = '<div class="flag-section-title">' + (groupTitles[groupKey] || groupKey) + '</div>';
+    const { section, body: sectionBody } = makeSection(groupTitles[groupKey] || groupKey);
     for (const [key, def] of entries) {
       const row = document.createElement('div');
       row.className = 'flag-row';
@@ -778,6 +1405,7 @@ function buildDevPanel() {
       const input = document.createElement('input');
       input.type = 'checkbox';
       input.checked = featureFlags[key];
+      input.dataset.flagKey = key;
       input.addEventListener('change', () => setFlag(key, input.checked));
       const slider = document.createElement('span');
       slider.className = 'flag-slider';
@@ -785,15 +1413,13 @@ function buildDevPanel() {
       toggle.appendChild(slider);
       row.appendChild(labelWrap);
       row.appendChild(toggle);
-      section.appendChild(row);
+      sectionBody.appendChild(row);
     }
     body.appendChild(section);
   }
 
   // Cutscene modes section
-  const csSection = document.createElement('div');
-  csSection.className = 'flag-section';
-  csSection.innerHTML = '<div class="flag-section-title">Era Presentation</div>';
+  const { section: csSection, body: csBody } = makeSection('Era Presentation', true);
   for (const [mode, def] of Object.entries(CUTSCENE_MODES)) {
     const option = document.createElement('div');
     option.className = 'mode-option' + (cutsceneMode === mode ? ' active' : '');
@@ -812,13 +1438,11 @@ function buildDevPanel() {
     textWrap.appendChild(desc);
     option.appendChild(radio);
     option.appendChild(textWrap);
-    csSection.appendChild(option);
+    csBody.appendChild(option);
   }
   body.appendChild(csSection);
 
-  const burnSection = document.createElement('div');
-  burnSection.className = 'flag-section';
-  burnSection.innerHTML = '<div class="flag-section-title">Radial Burn Tuning</div>';
+  const { section: burnSection, body: burnBody } = makeSection('Radial Burn Tuning', true);
   for (const [key, def] of Object.entries(RADIAL_BURN_TWEAKS)) {
     const row = document.createElement('div');
     row.className = 'tweak-row';
@@ -849,7 +1473,7 @@ function buildDevPanel() {
 
     row.appendChild(head);
     row.appendChild(input);
-    burnSection.appendChild(row);
+    burnBody.appendChild(row);
   }
 
   const burnActions = document.createElement('div');
@@ -867,15 +1491,124 @@ function buildDevPanel() {
 
   burnActions.appendChild(saveBtn);
   burnActions.appendChild(resetBtn);
-  burnSection.appendChild(burnActions);
+  burnBody.appendChild(burnActions);
 
   const burnStatus = document.createElement('div');
   burnStatus.className = 'tweak-status';
   burnStatus.id = 'radial-burn-status';
   burnStatus.textContent = radialBurnStatusMessage;
-  burnSection.appendChild(burnStatus);
+  burnBody.appendChild(burnStatus);
 
   body.appendChild(burnSection);
+
+  // Ghost Point Cloud tuning
+  const { section: ghostSection, body: ghostBody } = makeSection('Ghost Point Cloud Tuning', true);
+  for (const [key, def] of Object.entries(GHOST_TWEAKS)) {
+    const row = document.createElement('div');
+    row.className = 'tweak-row';
+
+    const head = document.createElement('div');
+    head.className = 'tweak-head';
+    const label = document.createElement('div');
+    label.className = 'tweak-label';
+    label.textContent = def.label;
+    const value = document.createElement('div');
+    value.className = 'tweak-value';
+    value.textContent = def.format(ghostTweaks[key]);
+    head.appendChild(label);
+    head.appendChild(value);
+
+    const input = document.createElement('input');
+    input.className = 'tweak-slider';
+    input.type = 'range';
+    input.min = def.min;
+    input.max = def.max;
+    input.step = def.step;
+    input.value = ghostTweaks[key];
+    input.addEventListener('input', () => {
+      const next = Number(input.value);
+      value.textContent = def.format(next);
+      setGhostTweak(key, next);
+    });
+
+    row.appendChild(head);
+    row.appendChild(input);
+    ghostBody.appendChild(row);
+  }
+  body.appendChild(ghostSection);
+
+  // Liberty Island tuning
+  const { section: libertySection, body: libertyBody } = makeSection('Liberty Island Render', true);
+
+  for (const [mode, def] of Object.entries(LIBERTY_MODES)) {
+    const option = document.createElement('div');
+    option.className = 'mode-option liberty-mode-option' + (libertyMode === mode ? ' active' : '');
+    option.dataset.mode = mode;
+    option.addEventListener('click', () => setLibertyMode(mode));
+    const radio = document.createElement('div');
+    radio.className = 'mode-radio';
+    const textWrap = document.createElement('div');
+    const name = document.createElement('div');
+    name.className = 'mode-name';
+    name.textContent = def.label;
+    const desc = document.createElement('div');
+    desc.className = 'mode-desc';
+    desc.textContent = def.desc;
+    textWrap.appendChild(name);
+    textWrap.appendChild(desc);
+    option.appendChild(radio);
+    option.appendChild(textWrap);
+    libertyBody.appendChild(option);
+  }
+
+  for (const [key, def] of Object.entries(LIBERTY_TWEAKS)) {
+    const row = document.createElement('div');
+    row.className = 'tweak-row';
+    const head = document.createElement('div');
+    head.className = 'tweak-head';
+    const label = document.createElement('div');
+    label.className = 'tweak-label';
+    label.textContent = def.label;
+    const value = document.createElement('div');
+    value.className = 'tweak-value';
+    value.textContent = def.format(libertyTweaks[key]);
+    head.appendChild(label);
+    head.appendChild(value);
+    const input = document.createElement('input');
+    input.className = 'tweak-slider';
+    input.type = 'range';
+    input.min = def.min;
+    input.max = def.max;
+    input.step = def.step;
+    input.value = libertyTweaks[key];
+    input.addEventListener('input', () => {
+      const next = Number(input.value);
+      value.textContent = def.format(next);
+      setLibertyTweak(key, next);
+    });
+    row.appendChild(head);
+    row.appendChild(input);
+    libertyBody.appendChild(row);
+  }
+
+  body.appendChild(libertySection);
+
+  // Immigration cinematic section
+  const { section: cineSection, body: cineBody } = makeSection('Immigration Cinematic');
+  const cineBtn = document.createElement('button');
+  cineBtn.id = 'cinematic-btn';
+  cineBtn.className = 'tweak-btn cinematic-btn';
+  cineBtn.textContent = cinematicPlaying ? 'STOP IMMIGRATION' : 'PLAY IMMIGRATION';
+  if (cinematicPlaying) cineBtn.classList.add('playing');
+  cineBtn.addEventListener('click', toggleCinematic);
+  cineBody.appendChild(cineBtn);
+
+  const cineHint = document.createElement('div');
+  cineHint.className = 'tweak-status';
+  cineHint.textContent = 'Placeholder: slow 360° bearing orbit. Replace with the real scripted sequence.';
+  cineBody.appendChild(cineHint);
+
+  body.appendChild(cineSection);
 }
 buildDevPanel();
 
@@ -974,6 +1707,16 @@ let currentYear = 1925;
 let playing = false;
 let deckgl = null;
 
+// ── oldnyc (NYPL Milstein) photo index — see cultural-content/comments.md ──
+let oldnycPhotos = [];             // filtered to Manhattan on load (matches buildings scope)
+// Temporal tiers for pin rendering. Pins always show, but opacity/radius scale
+// by |year - currentYear| so scrubbing is continuous rather than binary.
+const PHOTO_TIER_LIVE = 3;         // ±N years: bright white + cyan ring
+const PHOTO_TIER_NEAR = 15;        // ±N years: dim white, no ring
+const PHOTO_YEAR_WINDOW_LOOKUP = 8; // building-hover/click prefer photos within ±N years
+const PHOTO_RADIUS_M = 140;        // building-to-photo max spatial distance for a match
+const PHOTO_FALLBACK_COUNT = 4;    // if no photos in window, show nearest N spatially
+
 // ── Load data ──
 fetch('data/manhattan_compact.json')
   .then(r => r.json())
@@ -987,6 +1730,62 @@ fetch('data/manhattan_compact.json')
     applyFlags();
   });
 
+let oldnycPhotosSorted = [];  // chronologically sorted for photo mode slideshow
+fetch('cultural-content/oldnyc/index.json')
+  .then(r => r.json())
+  .then(data => {
+    // manhattan_compact.json is Manhattan-only, so filter to match.
+    // Other borough records stay in the file for future branches.
+    oldnycPhotos = data.filter(p => p.boro === 'Manhattan');
+    // Photo mode slideshow spans all 5 boroughs (750 photos) — the Manhattan
+    // filter only applies to map pins, which match the building footprint scope.
+    oldnycPhotosSorted = [...data].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+    if (featureFlags.photoMode) syncPhotoModeToYear();
+  })
+  .catch(err => console.warn('oldnyc index failed to load:', err));
+
+// ── Geometry helpers for photo lookup ──
+// Approximate meters-per-degree at ~40.75°N: 111320 per lat degree, ~84500 per lng degree.
+function polygonCentroid(poly) {
+  let lng = 0, lat = 0;
+  for (const [x, y] of poly) { lng += x; lat += y; }
+  return [lng / poly.length, lat / poly.length];
+}
+function distMeters(aLng, aLat, bLng, bLat) {
+  const dx = (aLng - bLng) * 84500;
+  const dy = (aLat - bLat) * 111320;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+function findPhotosNear(lng, lat, year, radius = PHOTO_RADIUS_M, yearWindow = PHOTO_YEAR_WINDOW_LOOKUP) {
+  const hits = [];
+  for (const p of oldnycPhotos) {
+    const dy = Math.abs(p.year - year);
+    if (dy > yearWindow) continue;
+    const dm = distMeters(lng, lat, p.lon, p.lat);
+    if (dm > radius) continue;
+    hits.push({ photo: p, distMeters: dm, yearDelta: dy });
+  }
+  // Closest year first; break ties by spatial distance.
+  hits.sort((a, b) => a.yearDelta - b.yearDelta || a.distMeters - b.distMeters);
+  return hits;
+}
+
+// Fallback: if no photos are within the spatial radius OR within the year window,
+// return the nearest N photos spatially, ignoring year. Caller decides whether to
+// use this (typically only when findPhotosNear() is empty). Each result still
+// carries yearDelta so the UI can surface the temporal offset to the user.
+function findNearestPhotosSpatial(lng, lat, year, count = PHOTO_FALLBACK_COUNT, radius = 800) {
+  const hits = [];
+  for (const p of oldnycPhotos) {
+    const dm = distMeters(lng, lat, p.lon, p.lat);
+    if (dm > radius) continue;
+    hits.push({ photo: p, distMeters: dm, yearDelta: Math.abs(p.year - year) });
+  }
+  hits.sort((a, b) => a.distMeters - b.distMeters);
+  return hits.slice(0, count);
+}
+
 function initDeck() {
   deckgl = new Deck({
     parent: document.getElementById('map'),
@@ -999,20 +1798,320 @@ function initDeck() {
       maxZoom: 18,
       minZoom: 10,
     },
-    controller: true,
+    controller: getControllerConfig(),
     glOptions: { preserveDrawingBuffer: true },
-    layers: [buildLayer()],
-    getTooltip: ({object}) => {
-      if (!object || !featureFlags.hoverTooltip) return null;
+    layers: buildLayers(),
+    getTooltip: ({object, layer}) => {
+      if (!object) return null;
+      const tooltipStyle = { backgroundColor: 'rgba(0,0,0,0.9)', color: '#ddd', fontFamily: "'Courier New', monospace", fontSize: '11px', padding: '8px 12px', borderLeft: '2px solid #00b8d4' };
+      // oldnyc photo pin hover → title + year + attribution
+      if (layer && layer.id === 'oldnyc-photos') {
+        const yearTag = object.year === currentYear ? `${object.year}` : `${object.year} (${Math.abs(object.year - currentYear)}y off)`;
+        return {
+          html: `<b>📷 ${escapeHtml(object.title) || 'NYPL photo'}</b><br>${yearTag}<br><span style="color:#777">NYPL Milstein · click to open</span>`,
+          style: tooltipStyle,
+        };
+      }
+      if (!featureFlags.hoverTooltip) return null;
+      // Building hover → existing metadata + count of nearby photos within window
       const era = getEra(object.y);
+      let photoSuffix = '';
+      if (featureFlags.oldnycPhotos && object.p && oldnycPhotos.length) {
+        const [clng, clat] = polygonCentroid(object.p);
+        const nearby = findPhotosNear(clng, clat, currentYear);
+        if (nearby.length) {
+          photoSuffix = `<br><span style="color:#00b8d4">📷 ${nearby.length} photo${nearby.length > 1 ? 's' : ''} nearby</span>`;
+        }
+      }
       return {
-        html: `<b>${era.label}</b><br>Built: ${object.y || '?'}<br>Height: ${object.h}m<br>BIN: ${object.b}`,
-        style: { backgroundColor: 'rgba(0,0,0,0.9)', color: '#ddd', fontFamily: "'Courier New', monospace", fontSize: '11px', padding: '8px 12px', borderLeft: '2px solid #00b8d4' }
+        html: `<b>${era.label}</b><br>Built: ${object.y || '?'}<br>Height: ${object.h}m<br>BIN: ${object.b}${photoSuffix}`,
+        style: tooltipStyle,
       };
     },
-    onClick: ({object}) => {
+    onClick: ({object, layer}) => {
       if (!object) return;
+      if (layer && layer.id === 'oldnyc-photos') {
+        if (featureFlags.oldnycPhotos) showPhotoCard(object);
+        return;
+      }
       showCard(object);
+    },
+  });
+}
+
+// ── Ghost point cloud prototype ──
+// One demolished landmark: original Penn Station (McKim, Mead & White, 1910–1963).
+// Rectangular volume sampled uniformly, point alpha fades in once the slider passes
+// the demolition year. No external assets — all generated in-browser at load time.
+const GHOST_LANDMARKS = [
+  {
+    id: 'penn-station-1910',
+    name: 'Pennsylvania Station',
+    demolishedYear: 1963,
+    builtYear: 1910,
+    // Footprint: 31st–33rd St between 7th and 8th Ave, Manhattan
+    bounds: {
+      minLng: -73.9938, maxLng: -73.9908,
+      minLat:  40.7498, maxLat:  40.7517,
+    },
+    height: 45,     // meters — main cornice height of the original building
+    color: [0, 184, 212], // matches UI accent
+  },
+];
+
+let _ghostPointCache = null;
+let _libertyFlewThisToggle = false;
+function getGhostPoints() {
+  if (_ghostPointCache) return _ghostPointCache;
+  const out = [];
+  const pointCount = Math.round(ghostTweaks.pennPoints);
+  const shellRatio = ghostTweaks.pennShellRatio;
+  for (const lm of GHOST_LANDMARKS) {
+    const { bounds, height, color } = lm;
+    const lngSpan = bounds.maxLng - bounds.minLng;
+    const latSpan = bounds.maxLat - bounds.minLat;
+    for (let i = 0; i < pointCount; i++) {
+      const onShell = Math.random() < shellRatio;
+      let u = Math.random(), v = Math.random(), w = Math.random();
+      if (onShell) {
+        const face = Math.floor(Math.random() * 6);
+        if (face === 0) u = 0; else if (face === 1) u = 1;
+        else if (face === 2) v = 0; else if (face === 3) v = 1;
+        else if (face === 4) w = 0; else w = 1;
+      }
+      out.push({
+        position: [
+          bounds.minLng + u * lngSpan,
+          bounds.minLat + v * latSpan,
+          w * height,
+        ],
+        demolishedYear: lm.demolishedYear,
+        color,
+      });
+    }
+  }
+  _ghostPointCache = out;
+  return out;
+}
+
+function buildGhostLayer() {
+  if (!featureFlags.ghostPointCloud) return null;
+  const data = getGhostPoints();
+  return new PointCloudLayer({
+    id: 'ghost-pointcloud',
+    data,
+    coordinateSystem: deck.COORDINATE_SYSTEM.LNGLAT,
+    getPosition: d => d.position,
+    getColor: d => {
+      // Fade in over a 4-year window once the slider crosses the demolition year.
+      // Before demolition: invisible (the real polygon building is still standing).
+      // After demolition: the ghost is the only thing left.
+      const dy = currentYear - d.demolishedYear;
+      let alpha = 0;
+      if (dy >= 0 && dy < 4)      alpha = Math.floor((dy / 4) * 180);
+      else if (dy >= 4)           alpha = 180;
+      return [...d.color, alpha];
+    },
+    pointSize: ghostTweaks.pennPointSize,
+    sizeUnits: 'pixels',
+    opacity: 1,
+    pickable: false,
+    updateTriggers: {
+      getColor: currentYear,
+    },
+  });
+}
+
+// ── Liberty Island photogrammetry mesh ──
+// Google 3D Tiles export cleaned in Blender. Local ENU meter coords, origin at island center.
+// 85 MB GLB — lazy-loaded only when the flag is on. URL-encode the space in the filename.
+const LIBERTY_ISLAND = {
+  url: 'cultural-content/liberty-island/source/LIBERTY%20ISLAND.glb',
+  position: [-74.0445, 40.6892, 0],  // lng, lat, altitude
+  sizeScale: 1,
+  orientation: [0, 0, 90], // glTF Y-up → deck Z-up: rotate 90° around X
+  // Time-gate: the Statue of Liberty was dedicated Oct 28, 1886. Before that,
+  // the island is empty harbor. (If this is swapped for an Ellis Island model,
+  // use 1892 — first immigration station — or 1900 — post-fire main building.)
+  builtYear: 1886,
+};
+
+// Lazy-parse the GLB's POSITION buffer so we can render it as a point cloud.
+// GLB format: 12-byte header, then alternating (uint32 chunkLen, uint32 chunkType, bytes).
+// Chunk 0 is JSON (the glTF scene), chunk 1 is BIN (vertex data). We jump to the POSITION
+// accessor's byte offset inside BIN and read a Float32Array view directly — no copy.
+let _libertyPointsCache = null;
+let _libertyLoading = false;
+
+async function loadLibertyPoints() {
+  if (_libertyPointsCache || _libertyLoading) return _libertyPointsCache;
+  _libertyLoading = true;
+  try {
+    const res = await fetch(LIBERTY_ISLAND.url);
+    const buf = await res.arrayBuffer();
+    const dv = new DataView(buf);
+    if (dv.getUint32(0, true) !== 0x46546C67) throw new Error('not a GLB');
+
+    const jsonLen = dv.getUint32(12, true);
+    const jsonBytes = new Uint8Array(buf, 20, jsonLen);
+    const gltf = JSON.parse(new TextDecoder().decode(jsonBytes));
+
+    const binChunkOffset = 20 + jsonLen;
+    const binStart = binChunkOffset + 8;
+
+    const primitive = gltf.meshes[0].primitives[0];
+    const posAccIdx = primitive.attributes.POSITION;
+    const acc = gltf.accessors[posAccIdx];
+    const bv = gltf.bufferViews[acc.bufferView];
+    const byteOffset = binStart + (bv.byteOffset || 0) + (acc.byteOffset || 0);
+    const floats = new Float32Array(buf, byteOffset, acc.count * 3);
+
+    _libertyPointsCache = { floats, count: acc.count };
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  } catch (err) {
+    console.error('Failed to parse Liberty Island GLB:', err);
+  } finally {
+    _libertyLoading = false;
+  }
+  return _libertyPointsCache;
+}
+
+function buildLibertyPointLayer() {
+  if (!featureFlags.libertyIsland) return null;
+  if (currentYear < LIBERTY_ISLAND.builtYear) return null;
+  if (libertyMode !== 'points' && libertyMode !== 'both') return null;
+  if (!_libertyPointsCache) {
+    loadLibertyPoints();
+    return null;
+  }
+  const { floats, count } = _libertyPointsCache;
+  const targetCount = Math.min(Math.round(libertyTweaks.libertyPoints), count);
+  const stride = Math.max(1, Math.floor(count / targetCount));
+  const data = [];
+  // glTF is Y-up meters; deck METER_OFFSETS wants [east, north, up].
+  // Mapping: east = glTF_X, north = -glTF_Z, up = glTF_Y.
+  for (let i = 0; i < count; i += stride) {
+    const x = floats[i * 3];
+    const y = floats[i * 3 + 1];
+    const z = floats[i * 3 + 2];
+    data.push({ position: [x, -z, y] });
+  }
+  return new PointCloudLayer({
+    id: 'liberty-points',
+    data,
+    coordinateSystem: deck.COORDINATE_SYSTEM.METER_OFFSETS,
+    coordinateOrigin: [LIBERTY_ISLAND.position[0], LIBERTY_ISLAND.position[1], 0],
+    getPosition: d => d.position,
+    getColor: [210, 235, 255, 210],
+    pointSize: libertyTweaks.libertyPointSize,
+    sizeUnits: 'pixels',
+    pickable: false,
+  });
+}
+
+function buildLibertyLayer() {
+  if (!featureFlags.libertyIsland) return null;
+  if (currentYear < LIBERTY_ISLAND.builtYear) return null;
+  if (libertyMode !== 'mesh' && libertyMode !== 'both') return null;
+  return new ScenegraphLayer({
+    id: 'liberty-island',
+    data: [{ position: LIBERTY_ISLAND.position }],
+    scenegraph: LIBERTY_ISLAND.url,
+    getPosition: d => d.position,
+    getOrientation: () => LIBERTY_ISLAND.orientation,
+    sizeScale: LIBERTY_ISLAND.sizeScale,
+    _lighting: 'pbr',
+    pickable: false,
+  });
+}
+
+function flyToLibertyIsland() {
+  if (!deckgl) return;
+  deckgl.setProps({
+    initialViewState: {
+      longitude: LIBERTY_ISLAND.position[0],
+      latitude: LIBERTY_ISLAND.position[1],
+      zoom: 15.5,
+      pitch: 55,
+      bearing: -20,
+      transitionDuration: 2500,
+      transitionInterpolator: new deck.FlyToInterpolator(),
+    },
+  });
+}
+
+function getControllerConfig() {
+  if (featureFlags.freeCamera) {
+    return {
+      dragPan: true,
+      dragRotate: true,
+      scrollZoom: true,
+      doubleClickZoom: true,
+      touchZoom: true,
+      touchRotate: true,
+      keyboard: true,
+      minPitch: 0,
+      maxPitch: 85,
+    };
+  }
+  return true;
+}
+
+function buildLayers() {
+  const layers = [buildLayer()];
+  const ghost = buildGhostLayer();
+  if (ghost) layers.push(ghost);
+  const liberty = buildLibertyLayer();
+  if (liberty) layers.push(liberty);
+  const libertyPoints = buildLibertyPointLayer();
+  if (libertyPoints) layers.push(libertyPoints);
+  const photos = buildOldnycPhotosLayer();
+  if (photos) layers.push(photos);
+  return layers;
+}
+
+// Photo pins render every Manhattan oldnyc record continuously — radius, alpha and
+// stroke scale with |year - currentYear| so the map is never empty. Live-tier pins
+// (within ±PHOTO_TIER_LIVE years) get a cyan ring to signal "this photo matches
+// your current slider year." This matches the kickoff brief's "pins appear as the
+// slider passes their activation years" language while preserving visual density
+// in eras that Milstein under-covers.
+function buildOldnycPhotosLayer() {
+  if (!featureFlags.oldnycPhotos) return null;
+  if (!oldnycPhotos.length) return null;
+  return new ScatterplotLayer({
+    id: 'oldnyc-photos',
+    data: oldnycPhotos,
+    getPosition: p => [p.lon, p.lat],
+    radiusUnits: 'pixels',
+    lineWidthUnits: 'pixels',
+    getRadius: p => {
+      const dy = Math.abs(p.year - currentYear);
+      if (dy <= PHOTO_TIER_LIVE) return 7;
+      if (dy <= PHOTO_TIER_NEAR) return 4;
+      return 2;
+    },
+    getFillColor: p => {
+      const dy = Math.abs(p.year - currentYear);
+      if (dy <= PHOTO_TIER_LIVE) return [255, 255, 255, 230];
+      if (dy <= PHOTO_TIER_NEAR) {
+        // Linear fade 180 → 90 across the near tier
+        const t = (dy - PHOTO_TIER_LIVE) / (PHOTO_TIER_NEAR - PHOTO_TIER_LIVE);
+        return [240, 240, 240, Math.floor(180 - t * 90)];
+      }
+      return [200, 200, 200, 55];
+    },
+    getLineColor: p => {
+      const dy = Math.abs(p.year - currentYear);
+      return dy <= PHOTO_TIER_LIVE ? [0, 184, 212, 220] : [0, 0, 0, 0];
+    },
+    stroked: true,
+    lineWidthMinPixels: 1,
+    pickable: true,
+    updateTriggers: {
+      getRadius: currentYear,
+      getFillColor: currentYear,
+      getLineColor: currentYear,
     },
   });
 }
@@ -1079,13 +2178,19 @@ slider.addEventListener('input', () => {
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
-  if (deckgl) deckgl.setProps({ layers: [buildLayer()] });
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  if (featureFlags.photoMode) syncPhotoModeToYear();
 });
 
 function updateVisibleCount() {
   const count = buildings.filter(b => b.y === 0 || b.y <= currentYear).length;
   document.getElementById('visible-count').textContent = count.toLocaleString();
 }
+
+// Esc closes the cinematic overlay
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && cinematicPlaying) stopCinematic();
+});
 
 // ── Play button (GSAP-driven timeline scrub) ──
 const playBtn = document.getElementById('play-btn');
@@ -1098,20 +2203,21 @@ function syncYear(year) {
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
-  if (deckgl) deckgl.setProps({ layers: [buildLayer()] });
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  if (featureFlags.photoMode) syncPhotoModeToYear();
 }
 
 playBtn.addEventListener('click', () => {
   if (playing) {
     playTween.kill();
-    playBtn.textContent = 'PLAY';
+    playBtn.classList.remove('playing');
     playing = false;
   } else {
     const startFrom = currentYear >= 2026 ? 1719 : currentYear;
     const yearsToGo = 2026 - startFrom;
     const duration = yearsToGo / 20; // ~20 years/second
     playing = true;
-    playBtn.textContent = 'STOP';
+    playBtn.classList.add('playing');
     const proxy = { year: startFrom };
     playTween = gsap.to(proxy, {
       year: 2026,
@@ -1119,7 +2225,7 @@ playBtn.addEventListener('click', () => {
       ease: 'none',
       onUpdate: () => syncYear(proxy.year),
       onComplete: () => {
-        playBtn.textContent = 'PLAY';
+        playBtn.classList.remove('playing');
         playing = false;
       }
     });
@@ -1127,6 +2233,14 @@ playBtn.addEventListener('click', () => {
 });
 
 // ── Story card ──
+let _cardPhotos = [];    // array of oldnyc photo records currently attached to the card
+let _cardPhotoIdx = 0;
+let _cardPhotoBuildingYear = null;  // the building's construction year, for delta display
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 function showCard(building) {
   if (!featureFlags.storyCards) return;
   const card = document.getElementById('story-card');
@@ -1141,11 +2255,248 @@ function showCard(building) {
     document.getElementById('card-year').textContent = building.y ? `Built ${building.y} / ${era.label}` : 'Construction year unknown';
     document.getElementById('card-body').textContent = `${building.h}m tall. ${era.label.toLowerCase()} construction. At the hackathon, clicking any building triggers Nemotron to generate a site-specific narrative using the building's metadata + surrounding historical context.`;
   }
+  // Attach nearby oldnyc photos, if any. Primary: within ±8y and 140m.
+  // Fallback: nearest in space regardless of year, within 800m — so a click
+  // never surfaces an empty gallery when the user is off a photo's exact year.
+  _cardPhotos = [];
+  _cardPhotoBuildingYear = building.y || currentYear;
+  _cardPhotoIdx = 0;
+  if (featureFlags.oldnycPhotos && building.p && oldnycPhotos.length) {
+    const [clng, clat] = polygonCentroid(building.p);
+    let hits = findPhotosNear(clng, clat, currentYear);
+    if (!hits.length) {
+      hits = findNearestPhotosSpatial(clng, clat, currentYear);
+    }
+    _cardPhotos = hits.slice(0, 6).map(h => h.photo);
+  }
+  renderCardPhotos();
   card.style.display = 'block';
 }
 
+// Direct-from-photo-pin entry point: pin the card to one specific photo with no
+// building context. Used when the user clicks a dot in the oldnyc photo layer.
+function showPhotoCard(photo) {
+  if (!featureFlags.storyCards) return;
+  const card = document.getElementById('story-card');
+  document.getElementById('card-title').textContent = photo.title || `NYPL #${photo.id}`;
+  document.getElementById('card-year').textContent = `Photographed ${photo.year}`;
+  document.getElementById('card-body').textContent = 'Archival photograph from the NYPL Milstein Division tax-photo collection. Click-through to NYPL for the full record.';
+  _cardPhotos = [photo];
+  _cardPhotoIdx = 0;
+  renderCardPhotos();
+  card.style.display = 'block';
+}
+
+function renderCardPhotos() {
+  const wrap = document.getElementById('card-photo-wrap');
+  const img = document.getElementById('card-photo');
+  const caption = document.getElementById('card-photo-caption');
+  const nav = document.getElementById('card-photo-nav');
+  const attr = document.getElementById('card-photo-attr');
+  const counter = document.getElementById('card-photo-counter');
+  const prevBtn = document.getElementById('card-photo-prev');
+  const nextBtn = document.getElementById('card-photo-next');
+  const body = document.getElementById('card-body');
+
+  if (!_cardPhotos.length) {
+    wrap.style.display = 'none';
+    caption.style.display = 'none';
+    nav.style.display = 'none';
+    attr.style.display = 'none';
+    body.classList.remove('has-photos');
+    return;
+  }
+  const p = _cardPhotos[_cardPhotoIdx];
+  img.src = p.thumb;
+  img.alt = p.title || `NYPL photo ${p.id}`;
+  // Surface how far this photo is from the user's current slider year so a
+  // click at 1820 that returns a 1925 photo doesn't feel like a lie.
+  const dy = p.year - currentYear;
+  let offsetTag = '';
+  if (dy === 0) offsetTag = ' · exact year';
+  else if (dy > 0) offsetTag = ` · ${dy}y after ${currentYear}`;
+  else offsetTag = ` · ${-dy}y before ${currentYear}`;
+  caption.textContent = `${p.title || 'Untitled'} · ${p.year}${offsetTag}`;
+  wrap.style.display = 'block';
+  caption.style.display = 'block';
+  attr.style.display = 'block';
+  body.classList.add('has-photos');
+
+  if (_cardPhotos.length > 1) {
+    nav.style.display = 'flex';
+    counter.textContent = `${_cardPhotoIdx + 1} / ${_cardPhotos.length}`;
+    prevBtn.disabled = _cardPhotoIdx === 0;
+    nextBtn.disabled = _cardPhotoIdx === _cardPhotos.length - 1;
+  } else {
+    nav.style.display = 'none';
+  }
+}
+
+function cyclePhoto(delta) {
+  if (!_cardPhotos.length) return;
+  _cardPhotoIdx = Math.max(0, Math.min(_cardPhotos.length - 1, _cardPhotoIdx + delta));
+  renderCardPhotos();
+}
+
+// Keyboard priority: lightbox > photo mode > card gallery.
+window.addEventListener('keydown', (e) => {
+  if (_lightboxOpen) {
+    if (e.key === 'Escape')     { closeLightbox(); e.preventDefault(); return; }
+    if (e.key === 'ArrowLeft')  { cycleLightbox(-1); e.preventDefault(); return; }
+    if (e.key === 'ArrowRight') { cycleLightbox(1);  e.preventDefault(); return; }
+    return;
+  }
+  if (featureFlags.photoMode) {
+    if (e.key === 'Escape')     { closePhotoModeViaFlag(); e.preventDefault(); return; }
+    if (e.key === 'ArrowLeft')  { stepPhotoMode(-1); e.preventDefault(); return; }
+    if (e.key === 'ArrowRight') { stepPhotoMode(1);  e.preventDefault(); return; }
+  }
+  const card = document.getElementById('story-card');
+  if (!card || card.style.display !== 'block') return;
+  if (_cardPhotos.length < 2) return;
+  if (e.key === 'ArrowLeft')  { cyclePhoto(-1); e.preventDefault(); }
+  if (e.key === 'ArrowRight') { cyclePhoto(1);  e.preventDefault(); }
+});
+
 function closeCard() {
+  closeLightbox();
   document.getElementById('story-card').style.display = 'none';
+  _cardPhotos = [];
+  _cardPhotoIdx = 0;
+  _cardPhotoBuildingYear = null;
+}
+
+// ── Lightbox (fullscreen viewer; navigates the full Manhattan archive) ──
+// Opens anchored to whichever photo the user clicked on the card, but nav
+// keeps stepping through oldnycPhotosSorted (all ~150 Manhattan photos in
+// chronological order) — so the user can keep exploring the city through
+// time from any starting point. Close returns to map + card.
+let _lightboxOpen = false;
+let _lightboxIdx = 0;   // index into oldnycPhotosSorted
+
+function openLightbox() {
+  if (!oldnycPhotosSorted.length) return;
+  // Anchor to the currently-selected card photo's position in the sorted
+  // archive (or fall back to 0 if there's nothing to anchor from).
+  let startIdx = 0;
+  if (_cardPhotos.length) {
+    const anchor = _cardPhotos[_cardPhotoIdx];
+    const found = oldnycPhotosSorted.findIndex(p => p.id === anchor.id);
+    if (found >= 0) startIdx = found;
+  }
+  _lightboxIdx = startIdx;
+  _lightboxOpen = true;
+  document.getElementById('lightbox').classList.add('open');
+  renderLightbox();
+}
+
+function closeLightbox() {
+  _lightboxOpen = false;
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function renderLightbox() {
+  const p = oldnycPhotosSorted[_lightboxIdx];
+  if (!p) return;
+  document.getElementById('lightbox-img').src = p.thumb;
+  document.getElementById('lightbox-img').alt = p.title || '';
+  document.getElementById('lightbox-title').textContent = p.title || 'Untitled';
+  document.getElementById('lightbox-year').textContent = p.year;
+  const counter = document.getElementById('lightbox-counter');
+  const prev = document.getElementById('lightbox-prev');
+  const next = document.getElementById('lightbox-next');
+  counter.textContent = `${_lightboxIdx + 1} / ${oldnycPhotosSorted.length} · MANHATTAN ARCHIVE`;
+  // Nav is always visible — the full sorted archive is always browsable.
+  prev.style.display = '';
+  next.style.display = '';
+  prev.disabled = _lightboxIdx === 0;
+  next.disabled = _lightboxIdx === oldnycPhotosSorted.length - 1;
+}
+
+function cycleLightbox(delta) {
+  if (!oldnycPhotosSorted.length) return;
+  _lightboxIdx = Math.max(0, Math.min(oldnycPhotosSorted.length - 1, _lightboxIdx + delta));
+  renderLightbox();
+}
+
+// ── Photo Mode (fullscreen slideshow keyed to timeline year) ──
+let _photoModeIdx = 0;
+
+function showPhotoMode() {
+  const el = document.getElementById('photo-mode');
+  if (!el) return;
+  el.classList.add('open');
+  syncPhotoModeToYear();
+}
+
+function hidePhotoMode() {
+  const el = document.getElementById('photo-mode');
+  if (!el) return;
+  el.classList.remove('open');
+}
+
+// Find the chronologically-sorted photo closest to currentYear and render it.
+// Called whenever the slider moves OR photo mode is just opened.
+function syncPhotoModeToYear() {
+  if (!featureFlags.photoMode || !oldnycPhotosSorted.length) return;
+  let best = 0;
+  let bestDy = Infinity;
+  for (let i = 0; i < oldnycPhotosSorted.length; i++) {
+    const dy = Math.abs(oldnycPhotosSorted[i].year - currentYear);
+    if (dy < bestDy) { bestDy = dy; best = i; }
+  }
+  _photoModeIdx = best;
+  renderPhotoMode();
+}
+
+function renderPhotoMode() {
+  const p = oldnycPhotosSorted[_photoModeIdx];
+  if (!p) return;
+  const img = document.getElementById('photo-mode-img');
+  img.src = p.thumb;
+  img.alt = p.title || '';
+  document.getElementById('photo-mode-title').textContent = p.title || 'Untitled';
+  document.getElementById('photo-mode-year').textContent = p.year;
+  document.getElementById('photo-mode-progress').textContent = `${_photoModeIdx + 1} / ${oldnycPhotosSorted.length}`;
+  const prev = document.getElementById('photo-mode-prev');
+  const next = document.getElementById('photo-mode-next');
+  if (prev) prev.disabled = _photoModeIdx === 0;
+  if (next) next.disabled = _photoModeIdx === oldnycPhotosSorted.length - 1;
+  const yearSlider = document.getElementById('photo-mode-year-slider');
+  const yearLabel = document.getElementById('photo-mode-year-label');
+  if (yearSlider) yearSlider.value = currentYear;
+  if (yearLabel) yearLabel.textContent = currentYear;
+}
+
+// Year scrubber inside photo mode: drives the global year, which in turn
+// resyncs the displayed photo via the existing slider pipeline.
+function onPhotoModeYearScrub(val) {
+  const y = parseInt(val, 10);
+  syncYear(y);
+}
+
+// Arrow-key step: advance one photo in chronological order AND jump the slider
+// to that photo's year so timeline and viewer stay in lockstep.
+function stepPhotoMode(delta) {
+  if (!oldnycPhotosSorted.length) return;
+  _photoModeIdx = (_photoModeIdx + delta + oldnycPhotosSorted.length) % oldnycPhotosSorted.length;
+  const p = oldnycPhotosSorted[_photoModeIdx];
+  renderPhotoMode();
+  if (p && p.year) syncYear(p.year);
+}
+
+// Clicking the scrim (but not the image/caption) closes photo mode.
+function handlePhotoModeClick(e) {
+  if (e.target.id === 'photo-mode') {
+    closePhotoModeViaFlag();
+  }
+}
+
+// Turn the feature flag off cleanly — also updates localStorage + dev-panel UI via setFlag.
+function closePhotoModeViaFlag() {
+  const input = document.querySelector('[data-flag-key="photoMode"]');
+  if (input) input.checked = false;
+  setFlag('photoMode', false);
 }
 
 // ── Era dots on timeline ──
@@ -1433,7 +2784,7 @@ function toggleMode() {
     // Stop play if running
     if (playing && playTween) {
       playTween.kill();
-      playBtn.textContent = 'PLAY';
+      playBtn.classList.remove('playing');
       playing = false;
     }
   } else {
@@ -1480,7 +2831,7 @@ function goToStation(index) {
   // Clean up any active overlays and animations
   clearAllOverlays();
   if (stationTimeline) stationTimeline.kill();
-  if (playTween) { playTween.kill(); playBtn.textContent = 'PLAY'; playing = false; }
+  if (playTween) { playTween.kill(); playBtn.classList.remove('playing'); playing = false; }
 
   const station = STATIONS[index];
   activeStationIndex = index;

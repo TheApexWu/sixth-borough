@@ -9,5 +9,8 @@ plan.md
 # Large assets hosted externally (Google Drive, etc.)
 cultural-content/liberty-island.zip
 
+# LOC archival masters — web-optimized versions are committed alongside
+cultural-content/ellis-island-clips/emigrants-landing-ellis-island-1903.mp4
+
 # oldnyc (NYPL Milstein) raw dump — too large to commit, re-download with build script
 cultural-content/oldnyc/raw/
