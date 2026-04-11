@@ -147,4 +147,58 @@ Bevy 0.16 (mid-2025) is pinned over 0.18 (January 2026) because the third-party 
 
 ---
 
+## 2026-04-11 ~10:30 ET — Track A verified end-to-end
+
+**Decision:** Track A (real Nemotron narration on GN100 via llama.cpp) is the demo path. Track B (Super 120B / NemoClaw / Ollama) is parked and not part of the submission.
+**Alternatives considered:** holding Track B open as a parallel possibility (rejected — Carson's overnight smoke test on Nemotron-3-Nano-30B-A3B returned `backend:"real"` with period-accurate Bronx text on `bronx-1973-08-11-sedgwick`, so Track A is proven and Track B is now scope risk).
+**Why:** Carson grinded overnight, self-onboarded to GN100 via the handoff doc, debugged a real Nemotron-3-Nano quirk (reasoning model puts output in `reasoning_content` when `max_tokens` is tight), shipped the fix in `4ce1930` (`narration_real.py` reasoning_content fallback + `LLAMA_MAX_TOKENS` 220→1024 + `main.py` `NarrationBackendError` → HTTP 502). The smoke test produced a 26.8 sec hold of beautiful sensory text on the Sedgwick event. The path works.
+**Owner:** Carson (the fix), Alex (the lock).
+**Reversible by:** Sat afternoon ONLY IF Track A breaks. After Sat 4 PM, this is the demo.
+
+---
+
+## 2026-04-11 ~10:00 ET — Glb-only asset format (drops PLY, drops bevy_pointcloud)
+
+**Decision:** **glb is the single asset format** for static and animated point clouds. The earlier "PLY for static + glb for animated" dual-format contract is dropped.
+**Alternatives considered:**
+- Keeping PLY for static point clouds (rejected — adds surface area for no aesthetic gain on the Bronx demo)
+- Keeping `bevy_pointcloud` plugin in the dependency tree (rejected — was the binding constraint pinning Bevy to 0.16, no longer needed once PLY is gone)
+**Why:** Per Alex: "simple and better for the verts." Carson wrote the glb loader and made the call to drop PLY entirely (`d6470aa`). Two formats was always extra surface area. Single-format simplifies Marvens's authoring workflow (one Blender export, not two), simplifies Carson's renderer (one loader, not two), and unblocks a Bevy version bump if Carson wants it. `pointcloud-pipeline/README.md` already updated by Carson in `d6470aa` (removed PLY path, -65 lines).
+**Owner:** Carson (the engineering call), Alex (the product call), Marvens (the workflow side, to be confirmed at venue).
+**Reversible by:** N/A — already shipped to main and the dual-format scaffolding is gone.
+
+**Stale docs that still reference PLY+glb dual** (post-standup cleanup, not blocking):
+- `docs/DECISIONS.md` line ~124 (the Bevy 0.16 entry — the Bevy 0.16 pin reason is now stale, the plugin we pinned to is no longer in the build)
+- `CONTRIBUTING.md` (pointcloud-pipeline branch description)
+- `marvens-shot-list.md` (Alex's local doc, not in repo)
+
+---
+
+## 2026-04-11 morning — Pitch thesis locked: cultural memory infrastructure
+
+**Decision:** The pitch thesis is **"cultural memory infrastructure that runs on the community's own hardware instead of someone else's cloud."** "Time machine" survives only as the door hook, never as the spine. The 90-second demo script + delivery notes + Q&A pivots + sponsor verbatim phrase placement live in `docs/DEMO_VIDEO_SCRIPT.md`.
+**Alternatives considered:**
+- Continuing with "time machine" as the spine (rejected — it's a hook, not a thesis; doesn't answer "so what" for judges or for Antler)
+- Adding a predictive ML / "do more with the data" angle suggested by an outside participant (rejected — at 19 seed events there is no ML to do; predicting gentrification is gentrification; it would dilute the wedge)
+- Leading with the PS2 aesthetic / Frontier Creativity angle (rejected — the aesthetic is a strength but not load-bearing on its own; the local-hardware claim is the only framing where the GB10 is load-bearing rather than decorative)
+**Why:** This is the only framing where the hardware is the political claim, not a perf flex. NVIDIA Spark Hack judges + Antler GP in the room + a literal GB10 on the floor — the room is screaming "local hardware as a sovereignty claim." Every other team is either doing a cloud wrapper or using the GB10 as a benchmark. We're the only team where the hardware IS the thesis. This framing is also what makes Antler write a check (PixVerse is the cloud bet on the same generative-AI thesis; Sixth Borough is the local-hardware fork — same conviction, opposite infrastructure). The "time machine" framing is fine as a hook for the door but cannot carry the pitch. The "cultural memory infrastructure" reframe carries it.
+
+The load-bearing claim, in Alex's words: *"Cultural memory is the most extractable resource a city has. Right now Google, Zillow, and OpenAI are extracting it for free. They flatten it. They surveil it. They charge per query. And they only know what got scraped. We built the opposite."*
+**Owner:** Alex.
+**Reversible by:** Standup confirmation. After Sat morning standup lock, this is the script we rehearse.
+
+---
+
+## 2026-04-11 morning — CORS middleware staged for main.py (uncommitted)
+
+**Decision:** Pre-stage `fastapi.middleware.cors.CORSMiddleware` in `src/orchestrator/main.py` with `allow_origins=["*"]` so the future public WASM build at `sixthborough.nyc` can hit `api.sixthborough.nyc/narrate` cross-origin. Staged in working tree only, **not committed**, holding until Carson's Bevy→WASM build is verified green and the team decides to buy the domain.
+**Alternatives considered:**
+- Committing CORS now (rejected — restarts the live orchestrator on GN100 for no current benefit; introduces risk before the WASM path is proven)
+- Not staging at all (rejected — leaves a 5-minute fire drill the moment WASM lands)
+**Why:** CORS is harmless when there's no cross-origin caller, so the risk is asymmetric. Staging the diff costs nothing. Committing it without testing the live restart costs ~30 seconds of downtime if it goes wrong. The right move is "ready to ship, not yet shipped." When WASM is verified, `git add src/orchestrator/main.py && git commit && git push && restart orch tmux` is the activation path.
+**Owner:** Alex (staged), Carson (will trigger by landing WASM).
+**Reversible by:** `git checkout src/orchestrator/main.py` if we abandon the WASM path.
+
+---
+
 ## (add new decisions below this line as they happen)
