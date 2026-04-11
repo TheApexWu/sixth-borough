@@ -1,0 +1,2779 @@
+{
+  "description": "Annual NYC immigration, 1719\u20132026. Drives the garden-hose dot-spray visualization.",
+  "peak_year": 1907,
+  "peak_nyc_arrivals": 964012,
+  "records": [
+    {
+      "year": 1719,
+      "us_arrivals": 3076,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 461,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0005
+    },
+    {
+      "year": 1720,
+      "us_arrivals": 3219,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 483,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0005
+    },
+    {
+      "year": 1721,
+      "us_arrivals": 3364,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 505,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0005
+    },
+    {
+      "year": 1722,
+      "us_arrivals": 3513,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 527,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0005
+    },
+    {
+      "year": 1723,
+      "us_arrivals": 3668,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 550,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1724,
+      "us_arrivals": 3830,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 574,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1725,
+      "us_arrivals": 4000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1726,
+      "us_arrivals": 4198,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 630,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1727,
+      "us_arrivals": 4432,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 665,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1728,
+      "us_arrivals": 4689,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 703,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1729,
+      "us_arrivals": 4956,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 743,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1730,
+      "us_arrivals": 5219,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 783,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1731,
+      "us_arrivals": 5464,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 820,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1732,
+      "us_arrivals": 5678,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 852,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1733,
+      "us_arrivals": 5848,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 877,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1734,
+      "us_arrivals": 5960,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 894,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1735,
+      "us_arrivals": 6000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 900,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1736,
+      "us_arrivals": 5944,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 892,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1737,
+      "us_arrivals": 5792,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 869,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1738,
+      "us_arrivals": 5568,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 835,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1739,
+      "us_arrivals": 5296,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 794,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1740,
+      "us_arrivals": 5000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 750,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1741,
+      "us_arrivals": 4704,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 706,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1742,
+      "us_arrivals": 4432,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 665,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1743,
+      "us_arrivals": 4208,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 631,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1744,
+      "us_arrivals": 4056,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 608,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1745,
+      "us_arrivals": 4000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1746,
+      "us_arrivals": 4112,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 617,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1747,
+      "us_arrivals": 4416,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 662,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1748,
+      "us_arrivals": 4864,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 730,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1749,
+      "us_arrivals": 5408,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 811,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1750,
+      "us_arrivals": 6000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 900,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1751,
+      "us_arrivals": 6592,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 989,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.001
+    },
+    {
+      "year": 1752,
+      "us_arrivals": 7136,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 1070,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0011
+    },
+    {
+      "year": 1753,
+      "us_arrivals": 7584,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 1138,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1754,
+      "us_arrivals": 7888,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 1183,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1755,
+      "us_arrivals": 8000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1756,
+      "us_arrivals": 8000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0017
+    },
+    {
+      "year": 1757,
+      "us_arrivals": 7996,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1599,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0017
+    },
+    {
+      "year": 1758,
+      "us_arrivals": 7986,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1597,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0017
+    },
+    {
+      "year": 1759,
+      "us_arrivals": 7968,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1594,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0017
+    },
+    {
+      "year": 1760,
+      "us_arrivals": 7938,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1588,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1761,
+      "us_arrivals": 7892,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1578,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1762,
+      "us_arrivals": 7828,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1566,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1763,
+      "us_arrivals": 7744,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1549,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1764,
+      "us_arrivals": 7636,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1527,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1765,
+      "us_arrivals": 7500,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1500,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0016
+    },
+    {
+      "year": 1766,
+      "us_arrivals": 7252,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1450,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0015
+    },
+    {
+      "year": 1767,
+      "us_arrivals": 6840,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1368,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0014
+    },
+    {
+      "year": 1768,
+      "us_arrivals": 6308,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1262,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0013
+    },
+    {
+      "year": 1769,
+      "us_arrivals": 5700,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1140,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1770,
+      "us_arrivals": 5062,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1012,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.001
+    },
+    {
+      "year": 1771,
+      "us_arrivals": 4440,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 888,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1772,
+      "us_arrivals": 3878,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 776,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1773,
+      "us_arrivals": 3420,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 684,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1774,
+      "us_arrivals": 3112,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 622,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1775,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1776,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1777,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1778,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1779,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1780,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1781,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1782,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1783,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1784,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1785,
+      "us_arrivals": 3000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 600,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1786,
+      "us_arrivals": 3084,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 617,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0006
+    },
+    {
+      "year": 1787,
+      "us_arrivals": 3312,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 662,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0007
+    },
+    {
+      "year": 1788,
+      "us_arrivals": 3648,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 730,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1789,
+      "us_arrivals": 4056,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 811,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0008
+    },
+    {
+      "year": 1790,
+      "us_arrivals": 4500,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 900,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0009
+    },
+    {
+      "year": 1791,
+      "us_arrivals": 4944,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 989,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.001
+    },
+    {
+      "year": 1792,
+      "us_arrivals": 5352,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1070,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0011
+    },
+    {
+      "year": 1793,
+      "us_arrivals": 5688,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1138,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1794,
+      "us_arrivals": 5916,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1183,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1795,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1796,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1797,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1798,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1799,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1800,
+      "us_arrivals": 6000,
+      "nyc_share": 0.2,
+      "nyc_arrivals": 1200,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0012
+    },
+    {
+      "year": 1801,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1802,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1803,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1804,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1805,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1806,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1807,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1808,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1809,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1810,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1811,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1812,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1813,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1814,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1815,
+      "us_arrivals": 6000,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2100,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1816,
+      "us_arrivals": 6172,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2160,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0022
+    },
+    {
+      "year": 1817,
+      "us_arrivals": 6612,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2314,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0024
+    },
+    {
+      "year": 1818,
+      "us_arrivals": 7205,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2522,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0026
+    },
+    {
+      "year": 1819,
+      "us_arrivals": 7836,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2743,
+      "tier": 2,
+      "source": "colonial-estimate",
+      "intensity": 0.0028
+    },
+    {
+      "year": 1820,
+      "us_arrivals": 8390,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2936,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.003
+    },
+    {
+      "year": 1821,
+      "us_arrivals": 9130,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 3196,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0033
+    },
+    {
+      "year": 1822,
+      "us_arrivals": 6910,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2418,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0025
+    },
+    {
+      "year": 1823,
+      "us_arrivals": 6350,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2222,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0023
+    },
+    {
+      "year": 1824,
+      "us_arrivals": 7910,
+      "nyc_share": 0.35,
+      "nyc_arrivals": 2768,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0029
+    },
+    {
+      "year": 1825,
+      "us_arrivals": 10200,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 6120,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0063
+    },
+    {
+      "year": 1826,
+      "us_arrivals": 10840,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 6504,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0067
+    },
+    {
+      "year": 1827,
+      "us_arrivals": 18880,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 11328,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0118
+    },
+    {
+      "year": 1828,
+      "us_arrivals": 27380,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 16428,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.017
+    },
+    {
+      "year": 1829,
+      "us_arrivals": 22520,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 13512,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.014
+    },
+    {
+      "year": 1830,
+      "us_arrivals": 23320,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 13992,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0145
+    },
+    {
+      "year": 1831,
+      "us_arrivals": 22630,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 13578,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0141
+    },
+    {
+      "year": 1832,
+      "us_arrivals": 60480,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 36288,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0376
+    },
+    {
+      "year": 1833,
+      "us_arrivals": 58640,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 35184,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0365
+    },
+    {
+      "year": 1834,
+      "us_arrivals": 65370,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 39222,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0407
+    },
+    {
+      "year": 1835,
+      "us_arrivals": 45370,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 27222,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0282
+    },
+    {
+      "year": 1836,
+      "us_arrivals": 76240,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 45744,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0475
+    },
+    {
+      "year": 1837,
+      "us_arrivals": 79340,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 47604,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0494
+    },
+    {
+      "year": 1838,
+      "us_arrivals": 38910,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 23346,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0242
+    },
+    {
+      "year": 1839,
+      "us_arrivals": 68070,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 40842,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0424
+    },
+    {
+      "year": 1840,
+      "us_arrivals": 84070,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 50442,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0523
+    },
+    {
+      "year": 1841,
+      "us_arrivals": 80290,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 48174,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.05
+    },
+    {
+      "year": 1842,
+      "us_arrivals": 104570,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 62742,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0651
+    },
+    {
+      "year": 1843,
+      "us_arrivals": 52500,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 31500,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0327
+    },
+    {
+      "year": 1844,
+      "us_arrivals": 78620,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 47172,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0489
+    },
+    {
+      "year": 1845,
+      "us_arrivals": 114370,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 68622,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0712
+    },
+    {
+      "year": 1846,
+      "us_arrivals": 154420,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 92652,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0961
+    },
+    {
+      "year": 1847,
+      "us_arrivals": 234970,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 140982,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1462
+    },
+    {
+      "year": 1848,
+      "us_arrivals": 226530,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 135918,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.141
+    },
+    {
+      "year": 1849,
+      "us_arrivals": 297020,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 178212,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1849
+    },
+    {
+      "year": 1850,
+      "us_arrivals": 369980,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 221988,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2303
+    },
+    {
+      "year": 1851,
+      "us_arrivals": 379470,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 227682,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2362
+    },
+    {
+      "year": 1852,
+      "us_arrivals": 371600,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 222960,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2313
+    },
+    {
+      "year": 1853,
+      "us_arrivals": 368650,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 221190,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2294
+    },
+    {
+      "year": 1854,
+      "us_arrivals": 427830,
+      "nyc_share": 0.6,
+      "nyc_arrivals": 256698,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2663
+    },
+    {
+      "year": 1855,
+      "us_arrivals": 200880,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 140616,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1459
+    },
+    {
+      "year": 1856,
+      "us_arrivals": 200440,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 140308,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1455
+    },
+    {
+      "year": 1857,
+      "us_arrivals": 251310,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 175917,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1825
+    },
+    {
+      "year": 1858,
+      "us_arrivals": 123130,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 86191,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0894
+    },
+    {
+      "year": 1859,
+      "us_arrivals": 121280,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 84896,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0881
+    },
+    {
+      "year": 1860,
+      "us_arrivals": 153640,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 107548,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1116
+    },
+    {
+      "year": 1861,
+      "us_arrivals": 91920,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 64344,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0667
+    },
+    {
+      "year": 1862,
+      "us_arrivals": 91990,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 64393,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0668
+    },
+    {
+      "year": 1863,
+      "us_arrivals": 176280,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 123396,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.128
+    },
+    {
+      "year": 1864,
+      "us_arrivals": 193420,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 135394,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1404
+    },
+    {
+      "year": 1865,
+      "us_arrivals": 248120,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 173684,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1802
+    },
+    {
+      "year": 1866,
+      "us_arrivals": 318570,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 222999,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2313
+    },
+    {
+      "year": 1867,
+      "us_arrivals": 315720,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 221004,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2293
+    },
+    {
+      "year": 1868,
+      "us_arrivals": 138840,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 97188,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1008
+    },
+    {
+      "year": 1869,
+      "us_arrivals": 352770,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 246939,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2562
+    },
+    {
+      "year": 1870,
+      "us_arrivals": 387200,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 271040,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2812
+    },
+    {
+      "year": 1871,
+      "us_arrivals": 321350,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 224945,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2333
+    },
+    {
+      "year": 1872,
+      "us_arrivals": 404810,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 283367,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2939
+    },
+    {
+      "year": 1873,
+      "us_arrivals": 459800,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 321860,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3339
+    },
+    {
+      "year": 1874,
+      "us_arrivals": 313340,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 219338,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2275
+    },
+    {
+      "year": 1875,
+      "us_arrivals": 227500,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 159250,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1652
+    },
+    {
+      "year": 1876,
+      "us_arrivals": 169990,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 118993,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1234
+    },
+    {
+      "year": 1877,
+      "us_arrivals": 141860,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 99302,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.103
+    },
+    {
+      "year": 1878,
+      "us_arrivals": 138470,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 96929,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1005
+    },
+    {
+      "year": 1879,
+      "us_arrivals": 177830,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 124481,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1291
+    },
+    {
+      "year": 1880,
+      "us_arrivals": 457260,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 320082,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.332
+    },
+    {
+      "year": 1881,
+      "us_arrivals": 669430,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 468601,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.4861
+    },
+    {
+      "year": 1882,
+      "us_arrivals": 788990,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 552293,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.5729
+    },
+    {
+      "year": 1883,
+      "us_arrivals": 603320,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 422324,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.4381
+    },
+    {
+      "year": 1884,
+      "us_arrivals": 518590,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 363013,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3766
+    },
+    {
+      "year": 1885,
+      "us_arrivals": 395350,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 276745,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2871
+    },
+    {
+      "year": 1886,
+      "us_arrivals": 334200,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 233940,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2427
+    },
+    {
+      "year": 1887,
+      "us_arrivals": 490110,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 343077,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3559
+    },
+    {
+      "year": 1888,
+      "us_arrivals": 546890,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 382823,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3971
+    },
+    {
+      "year": 1889,
+      "us_arrivals": 444430,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 311101,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3227
+    },
+    {
+      "year": 1890,
+      "us_arrivals": 455300,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 318710,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3306
+    },
+    {
+      "year": 1891,
+      "us_arrivals": 560320,
+      "nyc_share": 0.7,
+      "nyc_arrivals": 392224,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.4069
+    },
+    {
+      "year": 1892,
+      "us_arrivals": 579660,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 434745,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.451
+    },
+    {
+      "year": 1893,
+      "us_arrivals": 439730,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 329798,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3421
+    },
+    {
+      "year": 1894,
+      "us_arrivals": 285630,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 214222,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2222
+    },
+    {
+      "year": 1895,
+      "us_arrivals": 258540,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 193905,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2011
+    },
+    {
+      "year": 1896,
+      "us_arrivals": 343270,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 257452,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2671
+    },
+    {
+      "year": 1897,
+      "us_arrivals": 230830,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 173122,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1796
+    },
+    {
+      "year": 1898,
+      "us_arrivals": 229300,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 171975,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1784
+    },
+    {
+      "year": 1899,
+      "us_arrivals": 311720,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 233790,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2425
+    },
+    {
+      "year": 1900,
+      "us_arrivals": 448570,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 336428,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.349
+    },
+    {
+      "year": 1901,
+      "us_arrivals": 487920,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 365940,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3796
+    },
+    {
+      "year": 1902,
+      "us_arrivals": 648740,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 486555,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.5047
+    },
+    {
+      "year": 1903,
+      "us_arrivals": 857050,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 642788,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6668
+    },
+    {
+      "year": 1904,
+      "us_arrivals": 812870,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 609652,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6324
+    },
+    {
+      "year": 1905,
+      "us_arrivals": 1026500,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 769875,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.7986
+    },
+    {
+      "year": 1906,
+      "us_arrivals": 1100740,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 825555,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.8564
+    },
+    {
+      "year": 1907,
+      "us_arrivals": 1285350,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 964012,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 1.0
+    },
+    {
+      "year": 1908,
+      "us_arrivals": 782870,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 587152,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6091
+    },
+    {
+      "year": 1909,
+      "us_arrivals": 751790,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 563842,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.5849
+    },
+    {
+      "year": 1910,
+      "us_arrivals": 1041570,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 781178,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.8103
+    },
+    {
+      "year": 1911,
+      "us_arrivals": 878590,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 658942,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6835
+    },
+    {
+      "year": 1912,
+      "us_arrivals": 838170,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 628628,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6521
+    },
+    {
+      "year": 1913,
+      "us_arrivals": 1197890,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 898418,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.932
+    },
+    {
+      "year": 1914,
+      "us_arrivals": 1218480,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 913860,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.948
+    },
+    {
+      "year": 1915,
+      "us_arrivals": 326700,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 245025,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2542
+    },
+    {
+      "year": 1916,
+      "us_arrivals": 298830,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 224122,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2325
+    },
+    {
+      "year": 1917,
+      "us_arrivals": 295400,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 221550,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2298
+    },
+    {
+      "year": 1918,
+      "us_arrivals": 110620,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 82965,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0861
+    },
+    {
+      "year": 1919,
+      "us_arrivals": 141130,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 105848,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1098
+    },
+    {
+      "year": 1920,
+      "us_arrivals": 430000,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 322500,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3345
+    },
+    {
+      "year": 1921,
+      "us_arrivals": 805230,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 603922,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.6265
+    },
+    {
+      "year": 1922,
+      "us_arrivals": 309560,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 232170,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2408
+    },
+    {
+      "year": 1923,
+      "us_arrivals": 522920,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 392190,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.4068
+    },
+    {
+      "year": 1924,
+      "us_arrivals": 706900,
+      "nyc_share": 0.75,
+      "nyc_arrivals": 530175,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.55
+    },
+    {
+      "year": 1925,
+      "us_arrivals": 294310,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 191302,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1984
+    },
+    {
+      "year": 1926,
+      "us_arrivals": 304490,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 197918,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2053
+    },
+    {
+      "year": 1927,
+      "us_arrivals": 335180,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 217867,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.226
+    },
+    {
+      "year": 1928,
+      "us_arrivals": 307260,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 199719,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2072
+    },
+    {
+      "year": 1929,
+      "us_arrivals": 279680,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 181792,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1886
+    },
+    {
+      "year": 1930,
+      "us_arrivals": 241700,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 157105,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.163
+    },
+    {
+      "year": 1931,
+      "us_arrivals": 97140,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 63141,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0655
+    },
+    {
+      "year": 1932,
+      "us_arrivals": 35580,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 23127,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.024
+    },
+    {
+      "year": 1933,
+      "us_arrivals": 23070,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 14996,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0156
+    },
+    {
+      "year": 1934,
+      "us_arrivals": 29470,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 19156,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0199
+    },
+    {
+      "year": 1935,
+      "us_arrivals": 34960,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 22724,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0236
+    },
+    {
+      "year": 1936,
+      "us_arrivals": 36330,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 23614,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0245
+    },
+    {
+      "year": 1937,
+      "us_arrivals": 50240,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 32656,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0339
+    },
+    {
+      "year": 1938,
+      "us_arrivals": 67900,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 44135,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0458
+    },
+    {
+      "year": 1939,
+      "us_arrivals": 83000,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 53950,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.056
+    },
+    {
+      "year": 1940,
+      "us_arrivals": 70760,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 45994,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0477
+    },
+    {
+      "year": 1941,
+      "us_arrivals": 51780,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 33657,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0349
+    },
+    {
+      "year": 1942,
+      "us_arrivals": 28780,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 18707,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0194
+    },
+    {
+      "year": 1943,
+      "us_arrivals": 23730,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 15424,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.016
+    },
+    {
+      "year": 1944,
+      "us_arrivals": 28550,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 18558,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0193
+    },
+    {
+      "year": 1945,
+      "us_arrivals": 38120,
+      "nyc_share": 0.65,
+      "nyc_arrivals": 24778,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0257
+    },
+    {
+      "year": 1946,
+      "us_arrivals": 108720,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 59796,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.062
+    },
+    {
+      "year": 1947,
+      "us_arrivals": 147290,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 81010,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.084
+    },
+    {
+      "year": 1948,
+      "us_arrivals": 170570,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 93814,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0973
+    },
+    {
+      "year": 1949,
+      "us_arrivals": 188320,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 103576,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1074
+    },
+    {
+      "year": 1950,
+      "us_arrivals": 249190,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 137054,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1422
+    },
+    {
+      "year": 1951,
+      "us_arrivals": 205720,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 113146,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1174
+    },
+    {
+      "year": 1952,
+      "us_arrivals": 265520,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 146036,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1515
+    },
+    {
+      "year": 1953,
+      "us_arrivals": 170430,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 93737,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0972
+    },
+    {
+      "year": 1954,
+      "us_arrivals": 208180,
+      "nyc_share": 0.55,
+      "nyc_arrivals": 114499,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1188
+    },
+    {
+      "year": 1955,
+      "us_arrivals": 237790,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 71337,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.074
+    },
+    {
+      "year": 1956,
+      "us_arrivals": 321630,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 96489,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1001
+    },
+    {
+      "year": 1957,
+      "us_arrivals": 326870,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 98061,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1017
+    },
+    {
+      "year": 1958,
+      "us_arrivals": 253270,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 75981,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0788
+    },
+    {
+      "year": 1959,
+      "us_arrivals": 260690,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 78207,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0811
+    },
+    {
+      "year": 1960,
+      "us_arrivals": 265400,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 79620,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0826
+    },
+    {
+      "year": 1961,
+      "us_arrivals": 271340,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 81402,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0844
+    },
+    {
+      "year": 1962,
+      "us_arrivals": 283760,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 85128,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0883
+    },
+    {
+      "year": 1963,
+      "us_arrivals": 306260,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 91878,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0953
+    },
+    {
+      "year": 1964,
+      "us_arrivals": 292250,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 87675,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0909
+    },
+    {
+      "year": 1965,
+      "us_arrivals": 296700,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 89010,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0923
+    },
+    {
+      "year": 1966,
+      "us_arrivals": 323040,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 96912,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1005
+    },
+    {
+      "year": 1967,
+      "us_arrivals": 361970,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 108591,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1126
+    },
+    {
+      "year": 1968,
+      "us_arrivals": 454450,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 136335,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1414
+    },
+    {
+      "year": 1969,
+      "us_arrivals": 358580,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 107574,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1116
+    },
+    {
+      "year": 1970,
+      "us_arrivals": 373330,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 111999,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1162
+    },
+    {
+      "year": 1971,
+      "us_arrivals": 370480,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 111144,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1153
+    },
+    {
+      "year": 1972,
+      "us_arrivals": 384690,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 115407,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1197
+    },
+    {
+      "year": 1973,
+      "us_arrivals": 398520,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 119556,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.124
+    },
+    {
+      "year": 1974,
+      "us_arrivals": 393920,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 118176,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1226
+    },
+    {
+      "year": 1975,
+      "us_arrivals": 385380,
+      "nyc_share": 0.3,
+      "nyc_arrivals": 115614,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1199
+    },
+    {
+      "year": 1976,
+      "us_arrivals": 499090,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 109800,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1139
+    },
+    {
+      "year": 1977,
+      "us_arrivals": 458760,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 100927,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1047
+    },
+    {
+      "year": 1978,
+      "us_arrivals": 589810,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 129758,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1346
+    },
+    {
+      "year": 1979,
+      "us_arrivals": 394240,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 86733,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.09
+    },
+    {
+      "year": 1980,
+      "us_arrivals": 524300,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 115346,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1197
+    },
+    {
+      "year": 1981,
+      "us_arrivals": 595010,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 130902,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1358
+    },
+    {
+      "year": 1982,
+      "us_arrivals": 533620,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 117396,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1218
+    },
+    {
+      "year": 1983,
+      "us_arrivals": 550050,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 121011,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1255
+    },
+    {
+      "year": 1984,
+      "us_arrivals": 541810,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 119198,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1236
+    },
+    {
+      "year": 1985,
+      "us_arrivals": 568150,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 124993,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1297
+    },
+    {
+      "year": 1986,
+      "us_arrivals": 600030,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 132007,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1369
+    },
+    {
+      "year": 1987,
+      "us_arrivals": 599890,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 131976,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1369
+    },
+    {
+      "year": 1988,
+      "us_arrivals": 641350,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 141097,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1464
+    },
+    {
+      "year": 1989,
+      "us_arrivals": 1090170,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 239837,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2488
+    },
+    {
+      "year": 1990,
+      "us_arrivals": 1535870,
+      "nyc_share": 0.22,
+      "nyc_arrivals": 337891,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.3505
+    },
+    {
+      "year": 1991,
+      "us_arrivals": 1826600,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 273990,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.2842
+    },
+    {
+      "year": 1992,
+      "us_arrivals": 973450,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 146018,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1515
+    },
+    {
+      "year": 1993,
+      "us_arrivals": 903920,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 135588,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1406
+    },
+    {
+      "year": 1994,
+      "us_arrivals": 803990,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 120598,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1251
+    },
+    {
+      "year": 1995,
+      "us_arrivals": 720180,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 108027,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1121
+    },
+    {
+      "year": 1996,
+      "us_arrivals": 915560,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 137334,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1425
+    },
+    {
+      "year": 1997,
+      "us_arrivals": 797850,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 119678,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1241
+    },
+    {
+      "year": 1998,
+      "us_arrivals": 653210,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 97982,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1016
+    },
+    {
+      "year": 1999,
+      "us_arrivals": 644790,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 96718,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1003
+    },
+    {
+      "year": 2000,
+      "us_arrivals": 841000,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 126150,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1309
+    },
+    {
+      "year": 2001,
+      "us_arrivals": 1058900,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 158835,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1648
+    },
+    {
+      "year": 2002,
+      "us_arrivals": 1059360,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 158904,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1648
+    },
+    {
+      "year": 2003,
+      "us_arrivals": 703540,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 105531,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1095
+    },
+    {
+      "year": 2004,
+      "us_arrivals": 957880,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 143682,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.149
+    },
+    {
+      "year": 2005,
+      "us_arrivals": 1122260,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 168339,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1746
+    },
+    {
+      "year": 2006,
+      "us_arrivals": 1266130,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 189920,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.197
+    },
+    {
+      "year": 2007,
+      "us_arrivals": 1052420,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 157863,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1638
+    },
+    {
+      "year": 2008,
+      "us_arrivals": 1107130,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 166070,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1723
+    },
+    {
+      "year": 2009,
+      "us_arrivals": 1130820,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 169623,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.176
+    },
+    {
+      "year": 2010,
+      "us_arrivals": 1042630,
+      "nyc_share": 0.15,
+      "nyc_arrivals": 156394,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1622
+    },
+    {
+      "year": 2011,
+      "us_arrivals": 1062040,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 138065,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1432
+    },
+    {
+      "year": 2012,
+      "us_arrivals": 1031630,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 134112,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1391
+    },
+    {
+      "year": 2013,
+      "us_arrivals": 990550,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 128772,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1336
+    },
+    {
+      "year": 2014,
+      "us_arrivals": 1016520,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 132148,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1371
+    },
+    {
+      "year": 2015,
+      "us_arrivals": 1051030,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 136634,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1417
+    },
+    {
+      "year": 2016,
+      "us_arrivals": 1183510,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 153856,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1596
+    },
+    {
+      "year": 2017,
+      "us_arrivals": 1127170,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 146532,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.152
+    },
+    {
+      "year": 2018,
+      "us_arrivals": 1096610,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 142559,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1479
+    },
+    {
+      "year": 2019,
+      "us_arrivals": 1031770,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 134130,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1391
+    },
+    {
+      "year": 2020,
+      "us_arrivals": 707360,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 91957,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0954
+    },
+    {
+      "year": 2021,
+      "us_arrivals": 740000,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 96200,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.0998
+    },
+    {
+      "year": 2022,
+      "us_arrivals": 1018350,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 132386,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1373
+    },
+    {
+      "year": 2023,
+      "us_arrivals": 1172910,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 152478,
+      "tier": 1,
+      "source": "dhs-table-1",
+      "intensity": 0.1582
+    },
+    {
+      "year": 2024,
+      "us_arrivals": 1172910,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 152478,
+      "tier": 3,
+      "source": "held-flat-from-2023",
+      "intensity": 0.1582
+    },
+    {
+      "year": 2025,
+      "us_arrivals": 1172910,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 152478,
+      "tier": 3,
+      "source": "held-flat-from-2023",
+      "intensity": 0.1582
+    },
+    {
+      "year": 2026,
+      "us_arrivals": 1172910,
+      "nyc_share": 0.13,
+      "nyc_arrivals": 152478,
+      "tier": 3,
+      "source": "held-flat-from-2023",
+      "intensity": 0.1582
+    }
+  ]
+}
