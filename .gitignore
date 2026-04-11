@@ -5,3 +5,6 @@ __pycache__/
 .DS_Store
 CLAUDE.md
 plan.md
+
+# Large assets hosted externally (Google Drive, etc.)
+cultural-content/liberty-island.zip
