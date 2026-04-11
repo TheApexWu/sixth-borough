@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "_doc": "List of point cloud ghost assets. See pointcloud-pipeline/README.md for the full schema. Large .ply / .glb files are gitignored - this manifest + preview PNGs are the only committed pointers. Marvens bumps this file when a new ghost ships.",
+  "ghosts": []
+}
