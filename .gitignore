@@ -39,3 +39,6 @@ models/
 build/
 *.so
 *.dylib
+
+# Large assets hosted externally (Google Drive, etc.)
+cultural-content/liberty-island.zip
