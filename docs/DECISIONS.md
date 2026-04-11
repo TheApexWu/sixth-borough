@@ -201,4 +201,77 @@ The load-bearing claim, in Alex's words: *"Cultural memory is the most extractab
 
 ---
 
+## 2026-04-11 ~midday — NYC borough expansion data audit (DECISION PENDING)
+
+**Decision:** PENDING. Alex to decide post-standup whether to expand from Bronx-only to all 5 boroughs.
+
+**The ask**: "Did we update Sixth Borough to include ALL borough data and building info? It'd be nice bonus to fully fulfill the entirety of NYC. First obtain more open data and the physical models of the buildings, validate/audit them, then we can decide to add them."
+
+**Audit findings — datasets that exist, are free, cover all 5 boroughs**:
+
+### Tier 1 — Geometric building data
+
+| Dataset | Source | Size | Format | Vintage | Coverage | Notes |
+|---|---|---|---|---|---|---|
+| **TUM LoD2 CityGML** | gis.bgu.tum.de (TU Munich) | **2.4 GB compressed** | CityGML, KML, COLLADA, **glTF** | 2015-2017 | All 5 boroughs, **1,082,015 buildings**, 55 thematic attributes per building | **glTF native = Carson's stock Bevy loader can ingest. But 1M buildings is way past the demo budget.** Source: NYC Open Data + TUM enhancements. |
+| **NYC Official 3D Building Model** | data.cityofnewyork.us / maps.nyc.gov | unknown | GML, Multipatch (Esri), DGN | 2014 base, last updated Sep 2023 | All 5 boroughs, hybrid LoD1+LoD2 (~100 iconic buildings in LoD2) | Less detailed than TUM but official. Download URLs: DA_WISE_GML.zip, DA_WISE_Multipatch.zip, DA_Wise_DGN.zip. |
+| **NYC Building Footprints (active)** | data.cityofnewyork.us (`5zhs-2jue`) | varies | Shapefile, GeoJSON, file geodatabase, REST | Updated daily by OTI | All current buildings >400 sqft >12 ft, all 5 boroughs | Daily-updated. Attributes: BIN, BBL, construction year, ground elevation, roof height, feature code. 2D footprints. |
+| **MapPLUTO** | nyc.gov/site/planning | 11-65 MB per borough | Shapefile | 22v2 (May 2022), newer releases possible | 870,000+ tax lots, 80+ attributes per lot, all 5 boroughs | Tabular metadata, not geometry. Pairs with footprints. |
+
+### Tier 2 — Historical / demolished building data (the actual ghost-layer candidates)
+
+| Dataset | Source | Size | Format | Coverage | Notes |
+|---|---|---|---|---|---|
+| **BUILDING_HISTORIC** | data.cityofnewyork.us (`ipkp-snf6`) | unknown | Shapefile, GeoJSON, file geodatabase | All 5 boroughs, demolished AND significantly altered buildings | **THIS IS THE GHOST LAYER DATASET.** Attributes: `OBJECTID`, `NAME`, `BIN`, `HEIGHT_ROOF`, `LAST_STATUS_TYPE` (demolition vs alteration), `CONSTRUCTION_YEAR`, `DEMOLITION_YEAR`, `ALTERATION_YEAR`, `BASE_BBL`, `MAPPLUTO_BBL`, `GEOM_SOURCE`, `GROUND_ELEVATION`. Maps directly onto the demolished-theaters niche. Records moved here from active footprints when demolished/altered. |
+| **LPC Individual Landmark + Historic District Building Database** | data.cityofnewyork.us (`7mgd-s57w`) | tabular | CSV / API | All 5 boroughs, **36,000 buildings** (34K within 141 historic districts + 1,408 individual landmarks) | Pairs with BUILDING_HISTORIC for narrative grounding. 50+ years of LPC reports. |
+| **Historic Districts (Map)** | data.cityofnewyork.us (`xbvj-gfnw`) | small | Shapefile | All 5 boroughs | The 141 historic districts as polygons. |
+
+### Tier 3 — Cultural/historical archives (for the RAG roadmap line)
+
+| Dataset | Source | Format | Coverage | Notes |
+|---|---|---|---|---|
+| **NYPL NYC Space/Time Directory** | spacetime.nypl.org | NDJSON, Data Package, APIs, georectified historical maps | **5,000+ digitized NYC street maps 1850-1950**, historical addresses, Building Inspector data, OldNYC photo locations, 18th century ward boundaries | **Phase 2 RAG source.** Cite on stage as "we ground every narration in NYPL's Space/Time Directory." DO NOT import today. The killer cultural memory data layer for post-hack. |
+
+### Validation summary
+
+- **License**: All datasets above are governed by NYC Open Data Terms of Use (free for non-commercial; commercial use OK with attribution). TUM redistribution adds no restrictions. **No license blockers.**
+- **Format compatibility**: TUM model has glTF — Carson's existing `SceneRoot(asset_server.load(GltfAssetLabel::Scene(0)...))` could ingest individual building glTF files directly, no new loader needed. BUILDING_HISTORIC and footprints are 2D shapefiles/GeoJSON — would need extrusion (Blender → glb) before they're renderable, ~1 day Blender work for one borough's worth.
+- **Vintage**: 2014-2017 is the freshest 3D data. Buildings demolished/built since then will be wrong. **For demolished buildings the staleness is a feature, not a bug** — we want the historical state, not 2026.
+- **Scope reality check**: 1,082,015 buildings is NOT importable in 24 hours. Even loading TUM's glTF into Bevy at runtime would crush the GB10 frame budget. Carson's renderer at "loads manifest, spawns SceneRoots" handles tens-to-hundreds of entities, not a million.
+
+### Three options for the ask
+
+**Option A — DO NOTHING (Bronx only, future-roadmap line)**
+- Ship as-is. Pitch the architecture as borough-agnostic. Cite NYC Open Data + NYPL Space/Time as Phase 2/3 in the script.
+- Cost: 0 hours. Risk: judges ask "what about the other boroughs" and the answer is verbal-only.
+- The 90s script already handles this with: *"Starting in the Bronx where hip-hop was born. The architecture is borough-agnostic."*
+
+**Option B — CURATE EVENTS ACROSS BOROUGHS (no new geometry, just data layer)** ⭐ RECOMMENDED
+- Hand-curate 5-10 cultural events per borough for `data/events-seed.json`. Push from 19 → ~50 events.
+- Manhattan candidates: Stonewall Inn (1969), CBGB (1973-2006), Apollo Theater (1934 onwards), Loew's State Theatre (demolished 1987), Pennsylvania Station (demolished 1963), Studio 54 (1977), Tenement Museum site (1863).
+- Brooklyn candidates: Brooklyn Navy Yard, Coney Island Steeplechase Park (demolished 1964), Wonder Wheel, Ebbets Field (demolished 1960), Eastern Parkway, Brownstone Brooklyn formation.
+- Queens candidates: 1939 + 1964 World's Fair sites (Flushing Meadows), Long Island City warehouse-to-art transition, Steinway Mansion, Forest Hills Tennis Stadium.
+- Staten Island candidates: St. George Ferry Terminal, Snug Harbor Cultural Center, Fresh Kills landfill (closed 2001), Conference House.
+- Pitch upgrade: **"all 5 boroughs scaffolded"** instead of "Bronx demo." Click any pin in any borough → real narration.
+- Cost: ~2 hours of curation. Can ship today before the noon checkpoint if started immediately.
+- Risk: low. Infrastructure already handles multi-borough events. The renderer doesn't care which borough a coordinate is in.
+- **This is the recommended add.**
+
+**Option C — IMPORT THE TUM 3D MODEL (full geometric scaffold)**
+- Download 2.4 GB TUM glTF. Spike into Carson's renderer. Try to make 1M buildings render at frame rate.
+- Cost: 6-12 hours of pipeline work, probably blows the 24-hour budget. Likely crashes or chokes the GB10 at runtime.
+- Risk: HIGH. Could derail the entire demo.
+- **NOT recommended for this hackathon.** Recommended for Phase 2 / post-hack.
+
+### Recommended decision
+
+**Take Option B** (curate events across all 5 boroughs, ship today). **Defer Option C to Phase 2 roadmap line in the script.** Update the 90s script line from *"Starting in the Bronx where hip-hop was born"* to *"All five boroughs are seeded. We're demoing the Bronx hip-hop slice because it's the most cinematic."* That single phrase upgrade earns the "all of NYC" claim without any new geometry.
+
+**Phase 2 roadmap addition (also recommended for the script)**: "Phase 2 grounds every narration in NYPL's NYC Space/Time Directory — 5,000+ georectified historical street maps 1850-1950, plus the BUILDING_HISTORIC dataset of every demolished building in the five boroughs."
+
+**Owner of decision:** Alex (post-standup or now).
+**Reversible by:** Sat noon if curating events. After that the seed file is locked.
+
+---
+
 ## (add new decisions below this line as they happen)
