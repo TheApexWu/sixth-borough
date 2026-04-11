@@ -1,0 +1,2657 @@
+[
+ {
+  "qid": "Q6259426",
+  "name": "John Street Theatre",
+  "lat": 40.7098,
+  "lon": -74.0088,
+  "demolished": "1798-01-01",
+  "built": "1767-12-07",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/John-street-theater-300x210.jpg"
+ },
+ {
+  "qid": "Q34828220",
+  "name": "Elgin Botanic Garden",
+  "lat": 40.75889,
+  "lon": -73.97917,
+  "demolished": "1811-01-01",
+  "built": "1804-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Elgin%20Botanic%20Garden.jpg"
+ },
+ {
+  "qid": "Q34828220",
+  "name": "Elgin Botanic Garden",
+  "lat": 40.758611,
+  "lon": -73.979167,
+  "demolished": "1811-01-01",
+  "built": "1804-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Elgin%20Botanic%20Garden.jpg"
+ },
+ {
+  "qid": "Q14706294",
+  "name": "Government House",
+  "lat": 40.7044,
+  "lon": -74.0139,
+  "demolished": "1815-01-01",
+  "built": "1790-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/The%20Government%20House%2C%20New%20York%201650665.jpg"
+ },
+ {
+  "qid": "Q4719520",
+  "name": "Alexander Macomb House",
+  "lat": 40.7063,
+  "lon": -74.0132,
+  "demolished": "1821-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Second%20Presidential%20Mansion.jpg"
+ },
+ {
+  "qid": "Q108049621",
+  "name": "Washington Square Park potter's field",
+  "lat": 40.730833,
+  "lon": -73.997778,
+  "demolished": "1825-01-01",
+  "built": "1800-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6471371",
+  "name": "Lafayette Circus",
+  "lat": 40.722384,
+  "lon": -74.003738,
+  "demolished": "1829-01-01",
+  "built": "1825-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/LAFAYETTE%20THEATRE%20%3B%20PETER%20GRAIN%2C%20architect%2C%201827.jpg"
+ },
+ {
+  "qid": "Q131359493",
+  "name": "National Theatre",
+  "lat": 40.717889,
+  "lon": -74.005903,
+  "demolished": "1841-01-01",
+  "built": "1833-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/National%20Theatre%2C%20Church%20and%20Leonard%20Streets%2C%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q135509493",
+  "name": "St. Paul's College and Grammar School",
+  "lat": 40.792778,
+  "lon": -73.848333,
+  "demolished": "1848-01-01",
+  "built": "1836-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7138090",
+  "name": "Park Theatre",
+  "lat": 40.7115,
+  "lon": -74.0076,
+  "demolished": "1848-12-16",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Park%20Theatre%201822.jpg"
+ },
+ {
+  "qid": "Q7138090",
+  "name": "Park Theatre",
+  "lat": 40.7115,
+  "lon": -74.0076,
+  "demolished": "1848-12-16",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Park%20Row%2C%20Manhattan%2C%20looking%20east%20from%20Broadway.jpg"
+ },
+ {
+  "qid": "Q7821697",
+  "name": "Tontine Coffee House",
+  "lat": 40.7055,
+  "lon": -74.008,
+  "demolished": "1855-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Tontine%20coffee%20house.jpg"
+ },
+ {
+  "qid": "Q7412321",
+  "name": "Samuel Osgood House",
+  "lat": 40.7095,
+  "lon": -74.0015,
+  "demolished": "1856-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/The%20First%20Presidential%20Mansion.jpg"
+ },
+ {
+  "qid": "Q2103252",
+  "name": "Seneca Village",
+  "lat": 40.781,
+  "lon": -73.966,
+  "demolished": "1857-01-01",
+  "built": "1825-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Seneca%20Village%20from%20Map%20of%20Central%20Park%20by%20Viele%201856%20%281697276%29.png"
+ },
+ {
+  "qid": "Q1983045",
+  "name": "New York Crystal Palace",
+  "lat": 40.753611,
+  "lon": -73.983889,
+  "demolished": "1858-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Crystal%20Palace.jpg"
+ },
+ {
+  "qid": "Q29469037",
+  "name": "Old Broadway Theatre",
+  "lat": 40.7158,
+  "lon": -74.0045,
+  "demolished": "1859-04-11",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Broadway%20Theatre%2C%20326-30%20Broadway%2C%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q6724819",
+  "name": "Macombs Dam",
+  "lat": 40.828087,
+  "lon": -73.933847,
+  "demolished": "1861-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q808531",
+  "name": "Barnum's American Museum",
+  "lat": 40.71102,
+  "lon": -74.00852,
+  "demolished": "1868-01-01",
+  "built": "1841-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Barnum%27s%20American%20Museum-photo%201858.jpg"
+ },
+ {
+  "qid": "Q6137902",
+  "name": "Union Grounds",
+  "lat": 40.703889,
+  "lon": -73.952778,
+  "demolished": "1883-01-01",
+  "built": "1862-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q92632008",
+  "name": "New Theatre Comique",
+  "lat": 40.72939,
+  "lon": -73.99317,
+  "demolished": "1884-01-01",
+  "built": "1865-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Globe%20Theatre%2C%20from%20Robert%20N.%20Dennis%20collection%20of%20stereoscopic%20views%202%20-%20cropped%2C%20jpg%20version.jpg"
+ },
+ {
+  "qid": "Q3754550",
+  "name": "Madison Square Garden",
+  "lat": 40.742778,
+  "lon": -73.985556,
+  "demolished": "1890-01-01",
+  "built": "1874-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Madison%20Square%20Garden%20%28c.1879%29.jpg"
+ },
+ {
+  "qid": "Q4811071",
+  "name": "Astor Opera House",
+  "lat": 40.7301,
+  "lon": -73.99167,
+  "demolished": "1890-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Clinton%20Hall%2C%20New%20York%2C%20from%20Robert%20N.%20Dennis%20collection%20of%20stereoscopic%20views%20-%20cropped.png"
+ },
+ {
+  "qid": "Q135977064",
+  "name": "Elliottville, Staten Island",
+  "lat": 40.642778,
+  "lon": -74.108333,
+  "demolished": "1890-01-01",
+  "built": "1840-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Dr.%20Samuel%20MacKenzie%20House%2069%20Delafield%20Place%2C%20Staten%20Island%2C%20NY.jpg"
+ },
+ {
+  "qid": "Q3875796",
+  "name": "Niblo's Garden",
+  "lat": 40.724348,
+  "lon": -73.996744,
+  "demolished": "1895-01-01",
+  "built": "1823-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Niblo%27s%20Garden%20c.1887.jpg"
+ },
+ {
+  "qid": "Q126877102",
+  "name": "New York Herald Building",
+  "lat": 40.710833,
+  "lon": -74.008333,
+  "demolished": "1895-01-01",
+  "built": "1867-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Herald%20Building%2C%20Valentine%27s%20Manual%201868.jpg"
+ },
+ {
+  "qid": "Q4811069",
+  "name": "Astor Library",
+  "lat": 40.729167,
+  "lon": -73.991667,
+  "demolished": "1895-05-23",
+  "built": "1849-01-18",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Astor%20Library%2C%20N.Y%2C%20from%20Robert%20N.%20Dennis%20collection%20of%20stereoscopic%20views%20crop.jpg"
+ },
+ {
+  "qid": "Q28206312",
+  "name": "Lenox Library",
+  "lat": 40.771389,
+  "lon": -73.9675,
+  "demolished": "1895-05-23",
+  "built": "1877-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Lenox%20Library%20Loeffler.jpg"
+ },
+ {
+  "qid": "Q5359415",
+  "name": "Elephantine Colossus",
+  "lat": 40.5767,
+  "lon": -73.9783,
+  "demolished": "1896-09-27",
+  "built": "1885-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Elephantine%20Colossus%20Side%20View.jpg"
+ },
+ {
+  "qid": "Q7013575",
+  "name": "New York Gold Exchange",
+  "lat": 40.705833,
+  "lon": -74.009722,
+  "demolished": "1897-01-01",
+  "built": "1862-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5268170",
+  "name": "Dewey Arch",
+  "lat": 40.7425,
+  "lon": -73.988889,
+  "demolished": "1900-01-01",
+  "built": "1899-09-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Dewey%20Arch%2C%20New%20York.jpg"
+ },
+ {
+  "qid": "Q2579510",
+  "name": "Koster and Bial's Music Hall",
+  "lat": 40.750706,
+  "lon": -73.989315,
+  "demolished": "1901-01-01",
+  "built": "1870-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Koster%20and%20Bial%27s%20Music%20Hall.jpg"
+ },
+ {
+  "qid": "Q6707253",
+  "name": "Lyceum Theatre",
+  "lat": 40.740732,
+  "lon": -73.986243,
+  "demolished": "1902-01-01",
+  "built": "1885-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Lyceum%20Theatre%20-%20Fourth%20Avenue%201885.jpg"
+ },
+ {
+  "qid": "Q18151982",
+  "name": "Pabst Hotel",
+  "lat": 40.7564,
+  "lon": -73.9864,
+  "demolished": "1902-11-24",
+  "built": "1899-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Pabst%20Hotel%2C%2042nd%20Street%2C%20Manhattan%20%2801%29.jpg"
+ },
+ {
+  "qid": "Q130326844",
+  "name": "Germania Theatre",
+  "lat": 40.730924,
+  "lon": -73.992775,
+  "demolished": "1903-01-01",
+  "built": "1812-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/NY%20Germania%20Theatre%20Manhattan%201895.jpg"
+ },
+ {
+  "qid": "Q6166659",
+  "name": "Jay Gould House",
+  "lat": 40.7694,
+  "lon": -73.9691,
+  "demolished": "1906-01-01",
+  "built": "1868-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Jay%20Gould%20House.jpg"
+ },
+ {
+  "qid": "Q6728106",
+  "name": "Madison Square Theatre",
+  "lat": 40.7422,
+  "lon": -73.9901,
+  "demolished": "1908-01-01",
+  "built": "1865-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg603%20HOYT%27S%20MADISON-SQUARE%20THEATRE%2C%2024th%20STREET%2C%20NEAR%20BROADWAY.jpg"
+ },
+ {
+  "qid": "Q138504234",
+  "name": "Washington Heights Presbyterian Church (1860)",
+  "lat": 40.832072,
+  "lon": -73.943001,
+  "demolished": "1908-01-01",
+  "built": "1860-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Washington%20Heights%20Presbyterian%20Church.jpg"
+ },
+ {
+  "qid": "Q27312232",
+  "name": "Park Theatre",
+  "lat": 40.692,
+  "lon": -73.9886,
+  "demolished": "1908-11-12",
+  "built": "1863-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Park%20Theatre%2C%20Brooklyn.jpg"
+ },
+ {
+  "qid": "Q6749314",
+  "name": "Manhattan Theatre",
+  "lat": 40.748953,
+  "lon": -73.988627,
+  "demolished": "1909-01-01",
+  "built": "1875-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Eagle-Theatre.jpg"
+ },
+ {
+  "qid": "Q5562012",
+  "name": "Gillender Building",
+  "lat": 40.707347,
+  "lon": -74.010741,
+  "demolished": "1910-01-01",
+  "built": "1897-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Gillender%20Building1900.jpg"
+ },
+ {
+  "qid": "Q3272426",
+  "name": "Equitable Life Building",
+  "lat": 40.708333,
+  "lon": -74.010556,
+  "demolished": "1912-01-01",
+  "built": "1870-05-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Equitable%20Life%20Assurance%20Building%201870.jpg"
+ },
+ {
+  "qid": "Q107556963",
+  "name": "Leaders of the World",
+  "lat": 40.752528,
+  "lon": -73.987139,
+  "demolished": "1912-02-22",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/The%20Leaders%20of%20the%20World%2C%20Popular%20Electricity.png"
+ },
+ {
+  "qid": "Q5764114",
+  "name": "Hilltop Park",
+  "lat": 40.840556,
+  "lon": -73.942222,
+  "demolished": "1913-01-01",
+  "built": "1903-04-30",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hilltoppark1903.jpg"
+ },
+ {
+  "qid": "Q16985698",
+  "name": "Tower Building",
+  "lat": 40.706339,
+  "lon": -74.012524,
+  "demolished": "1913-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Tower%20Building%20Entrance.jpg"
+ },
+ {
+  "qid": "Q7988406",
+  "name": "Western Union Telegraph Building",
+  "lat": 40.710833,
+  "lon": -74.009722,
+  "demolished": "1914-01-01",
+  "built": "1875-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Western%20Union%20Telegraph%20Building.jpg"
+ },
+ {
+  "qid": "Q2425363",
+  "name": "Eden Musée",
+  "lat": 40.742639,
+  "lon": -73.9915,
+  "demolished": "1915-01-01",
+  "built": "1884-03-28",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/The%20Eden%20Musee.jpg"
+ },
+ {
+  "qid": "Q5732648",
+  "name": "Herald Square Theatre",
+  "lat": 40.751029,
+  "lon": -73.988219,
+  "demolished": "1915-01-01",
+  "built": "1883-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Herald%20Square%20Theatre%20at%20night.jpg"
+ },
+ {
+  "qid": "Q16986504",
+  "name": "Victoria Theater",
+  "lat": 40.7561,
+  "lon": -73.987,
+  "demolished": "1915-01-01",
+  "built": "1899-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hammerstein%27s%20Victoria.jpg"
+ },
+ {
+  "qid": "Q17065500",
+  "name": "Paradise Roof Garden",
+  "lat": 40.756761,
+  "lon": -73.986528,
+  "demolished": "1915-01-01",
+  "built": "1899-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hammerstein%27s%20Roof%20Garden.jpg"
+ },
+ {
+  "qid": "Q134594017",
+  "name": "Hoffman House",
+  "lat": 40.741928,
+  "lon": -73.986951,
+  "demolished": "1915-01-01",
+  "built": "1864-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28West%2023rd%20St.%20-%20United%20Cigar%20Co.%20-%20Albemarle%20Hotel%20-%20Hoffma%20-%20%283524434034%29.jpg"
+ },
+ {
+  "qid": "Q1392715",
+  "name": "291",
+  "lat": 40.7464,
+  "lon": -73.9861,
+  "demolished": "1917-01-01",
+  "built": "1905-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/291%20exterior%20view%2C%20before%201913.jpg"
+ },
+ {
+  "qid": "Q2957049",
+  "name": "St. John's Chapel",
+  "lat": 40.7211,
+  "lon": -74.0061,
+  "demolished": "1918-01-01",
+  "built": "1807-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/St.JohnsChapel%20NYC%201829.jpg"
+ },
+ {
+  "qid": "Q6728104",
+  "name": "Madison Square Presbyterian Church",
+  "lat": 40.7416,
+  "lon": -73.9875,
+  "demolished": "1919-01-01",
+  "built": "1906-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Madison%20Square%20Presbyterian%20Church%20%281906%29%20crop.jpg"
+ },
+ {
+  "qid": "Q60786714",
+  "name": "Daly's Theatre",
+  "lat": 40.7465,
+  "lon": -73.988694,
+  "demolished": "1920-01-01",
+  "built": "1867-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg875%20BROADWAY%20AND%2029TH%20STREET%2C%20SHOWING%20IMPERIAL%20MUSIC%20HALL%20AND%20DALY%27S%20THEATRE.jpg"
+ },
+ {
+  "qid": "Q126871596",
+  "name": "New York Herald Building",
+  "lat": 40.750833,
+  "lon": -73.9875,
+  "demolished": "1921-01-01",
+  "built": "1893-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Herald%20Building%2C%20New%20York%2C%20N.Y.%20%28LC-DIG-det-4a17016%29.jpg"
+ },
+ {
+  "qid": "Q5597917",
+  "name": "Gravesend Race Track",
+  "lat": 40.6011,
+  "lon": -73.9694,
+  "demolished": "1922-01-01",
+  "built": "1886-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Gravesend%20racetrack%20-%201893.jpg"
+ },
+ {
+  "qid": "Q28206800",
+  "name": "School of American Sculpture",
+  "lat": 40.764167,
+  "lon": -73.971944,
+  "demolished": "1922-01-01",
+  "built": "1918-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5522338",
+  "name": "Garden Theatre",
+  "lat": 40.743,
+  "lon": -73.986,
+  "demolished": "1925-01-01",
+  "built": "1890-09-27",
+  "image": ""
+ },
+ {
+  "qid": "Q5171466",
+  "name": "Cornelius Vanderbilt II House",
+  "lat": 40.7633,
+  "lon": -73.9741,
+  "demolished": "1926-01-01",
+  "built": "1883-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Vanderbilt%20Mansion%20and%20Grand%20Army%20Plaza%2C%20New%20York%201908.jpg"
+ },
+ {
+  "qid": "Q9026714",
+  "name": "Madison Square Garden",
+  "lat": 40.742778,
+  "lon": -73.985556,
+  "demolished": "1926-01-01",
+  "built": "1890-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Madison%20Square%20Garden%201890-2.jpg"
+ },
+ {
+  "qid": "Q108207945",
+  "name": "Trinity Court Building (1879–1926)",
+  "lat": 40.708425,
+  "lon": -74.012752,
+  "demolished": "1926-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Curb%20Market%20Bldg.%20LCCN00650323.jpg"
+ },
+ {
+  "qid": "Q5006661",
+  "name": "C. Ledyard Blair House",
+  "lat": 40.7711,
+  "lon": -73.9677,
+  "demolished": "1927-01-01",
+  "built": "1914-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/C.%20Ledyard%20Blair%20House.jpg"
+ },
+ {
+  "qid": "Q8003926",
+  "name": "William A. Clark House",
+  "lat": 40.7752,
+  "lon": -73.9647,
+  "demolished": "1927-01-01",
+  "built": "1911-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/William%20A.%20Clark%20House%20-%20Antiquities-to-impressionism.jpg"
+ },
+ {
+  "qid": "Q106114960",
+  "name": "Manresa Institute",
+  "lat": 41.0725,
+  "lon": -73.410278,
+  "demolished": "1927-01-01",
+  "built": "1889-04-21",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Manresa%20Institute%2C%20Keyser%20Island.png"
+ },
+ {
+  "qid": "Q97358549",
+  "name": "Temple Emanu-El",
+  "lat": 40.754,
+  "lon": -73.98,
+  "demolished": "1927-01-01",
+  "built": "1868-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Temple%20Emanu-El%20%28New%20York%2C%201868%29%201.jpg"
+ },
+ {
+  "qid": "Q123855430",
+  "name": "Gilsey Building",
+  "lat": 40.7097,
+  "lon": -74.0104,
+  "demolished": "1927-05-01",
+  "built": "1854-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Gilsey%27s%20Building%20%28Norton%27s%20Handbook%20of%20New%20York%20City%2C%201859%29.png"
+ },
+ {
+  "qid": "Q6698871",
+  "name": "Ludlow Street Jail",
+  "lat": 40.7176,
+  "lon": -73.9893,
+  "demolished": "1927-12-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q130500004",
+  "name": "Long Island Rail Road Demonstration Farm",
+  "lat": 40.9561,
+  "lon": -72.8351,
+  "demolished": "1928-01-01",
+  "built": "1905-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5518882",
+  "name": "Gallatin Bank Building",
+  "lat": 40.7067,
+  "lon": -74.0101,
+  "demolished": "1929-01-01",
+  "built": "1887-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg723%20GALLATIN%20NATIONAL%20BANK.%2038%20WALL%20STREET%2C%20BETWEEN%20NASSAU%20AND%20WILLIAM%20STREETS%2C%20ADJOINING%20ASSAY%20OFFICE.jpg"
+ },
+ {
+  "qid": "Q18749268",
+  "name": "Waldorf–Astoria",
+  "lat": 40.7483,
+  "lon": -73.9856,
+  "demolished": "1929-01-01",
+  "built": "1893-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Waldorf%20Hotel%201893.jpg"
+ },
+ {
+  "qid": "Q4950940",
+  "name": "Bowery Theatre",
+  "lat": 40.7159,
+  "lon": -73.9966,
+  "demolished": "1929-06-05",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Old%20Bowery%20Theatre%2C%20Bowery%2C%20N.Y%2C%20from%20Robert%20N.%20Dennis%20collection%20of%20stereoscopic%20views%20-%20crop%202%20-%20jpg%20version.jpg"
+ },
+ {
+  "qid": "Q5063204",
+  "name": "Century Theatre",
+  "lat": 40.7701,
+  "lon": -73.9806,
+  "demolished": "1930-01-01",
+  "built": "1909-11-16",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20Theatre%20-%20NE%20exterior%20view%20-%20The%20Architect%201909.jpg"
+ },
+ {
+  "qid": "Q6422066",
+  "name": "Knickerbocker Theatre",
+  "lat": 40.753042,
+  "lon": -73.987346,
+  "demolished": "1930-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Knickerbocker%20theater%20showing%20Angel%20Face%20in%201920.jpg"
+ },
+ {
+  "qid": "Q17575825",
+  "name": "Hotel Majestic",
+  "lat": 40.775962,
+  "lon": -73.976449,
+  "demolished": "1930-01-01",
+  "built": "1893-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q108049821",
+  "name": "Wards Island potter's field",
+  "lat": 40.7846,
+  "lon": -73.92931,
+  "demolished": "1930-01-01",
+  "built": "1840-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q130452809",
+  "name": "Columbia Building",
+  "lat": 40.706054,
+  "lon": -74.013581,
+  "demolished": "1930-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg686%20THE%20PROVIDENT%20SAVINGS%20LIFE-ASSURANCE%20SOCIETY%2C%20COLUMBIA%20BUILDING%2C%20BROAD%20WAY%20AND%20MORRIS%20STREET.jpg"
+ },
+ {
+  "qid": "Q5595142",
+  "name": "Grand Theatre",
+  "lat": 40.717923,
+  "lon": -73.993715,
+  "demolished": "1930-01-01",
+  "built": "1903-02-05",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Brockhaus%20and%20Efron%20Jewish%20Encyclopedia%20e2%20283-0.jpg"
+ },
+ {
+  "qid": "Q6981720",
+  "name": "Naval Air Station Rockaway",
+  "lat": 40.5683,
+  "lon": -73.8725,
+  "demolished": "1930-01-01",
+  "built": "1917-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/NAS%20Rockaway%201919.jpg"
+ },
+ {
+  "qid": "Q7014821",
+  "name": "New York Velodrome",
+  "lat": 40.872841,
+  "lon": -73.907478,
+  "demolished": "1930-08-04",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q17319849",
+  "name": "Hanover National Bank Building",
+  "lat": 40.7076,
+  "lon": -74.0106,
+  "demolished": "1931-01-01",
+  "built": "1903-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg732%20HANOVER%20NATIONALBANK%2C%20NASSAU%20AND%20PINE%20STREETS.jpg"
+ },
+ {
+  "qid": "Q3848974",
+  "name": "Garrick Theatre",
+  "lat": 40.750323,
+  "lon": -73.986636,
+  "demolished": "1932-01-01",
+  "built": "1890-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/A%20history%20of%20real%20estate%2C%20building%20and%20architecture%20in%20New%20York%20City%20during%20the%20last%20quarter%20of%20a%20century%20%281898%29%20%2814771501924%29.jpg"
+ },
+ {
+  "qid": "Q45034272",
+  "name": "Gayety Theatre",
+  "lat": 40.70416,
+  "lon": -73.94868,
+  "demolished": "1932-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q45101680",
+  "name": "Amphion Theatre",
+  "lat": 40.759416,
+  "lon": -73.991728,
+  "demolished": "1934-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q16827474",
+  "name": "Colored School No. 3",
+  "lat": 40.7085,
+  "lon": -73.9506,
+  "demolished": "1934-01-01",
+  "built": "1879-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Colored%20School%203%20Brooklyn.JPG"
+ },
+ {
+  "qid": "Q25428773",
+  "name": "Ørkenen Sur",
+  "lat": 40.671131,
+  "lon": -74.011478,
+  "demolished": "1934-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q7088983",
+  "name": "Olympia Theatre",
+  "lat": 40.757503,
+  "lon": -73.985378,
+  "demolished": "1935-01-01",
+  "built": "1895-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hammerstein%27s%20Olympia%2C%20Broadway%20and%2044th%20Street%2C%20Manhattan.jpg"
+ },
+ {
+  "qid": "Q134608920",
+  "name": "Q134608920",
+  "lat": 40.750278,
+  "lon": -73.978611,
+  "demolished": "1935-01-01",
+  "built": "1934-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q17515315",
+  "name": "Central Park Casino",
+  "lat": 40.772778,
+  "lon": -73.969722,
+  "demolished": "1936-01-01",
+  "built": "1864-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Casino%2C%20west%20front%2C%20by%20T.%20C.%20Roche%20%28cropped%29.jpg"
+ },
+ {
+  "qid": "Q8565140",
+  "name": "Fourteenth Street Theatre",
+  "lat": 40.737778,
+  "lon": -73.997222,
+  "demolished": "1938-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Civic%20Repertory%20Theatre%2C%2014th%20Street%20West%20of%20Sixth%20Avenue%2C%20Manhattan%20%28NYPL%20b13668355-482764%29.jpg"
+ },
+ {
+  "qid": "Q101252358",
+  "name": "George M. Cohan's Theatre",
+  "lat": 40.756218,
+  "lon": -73.98564,
+  "demolished": "1938-01-01",
+  "built": "1911-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/George%20M.%20Cohan%27s%20Theatre%2C%20West%2043rd%20Street%2C%20Manhattan.jpg"
+ },
+ {
+  "qid": "Q131360472",
+  "name": "Fitzgerald Building",
+  "lat": 40.75632,
+  "lon": -73.985978,
+  "demolished": "1938-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Fitzgerald%20Building%20with%20George%20M.%20Cohan%20Theatre%20%28left%29.jpg"
+ },
+ {
+  "qid": "Q204583",
+  "name": "Hippodrome Theatre",
+  "lat": 40.755676,
+  "lon": -73.98302,
+  "demolished": "1939-01-01",
+  "built": "1905-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hippodrome%20NYC%20c1905%20crop.jpg"
+ },
+ {
+  "qid": "Q5123209",
+  "name": "City Hall Post Office and Courthouse",
+  "lat": 40.71196,
+  "lon": -74.00758,
+  "demolished": "1939-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Post%20Office%2C%20New%20York%20LCCN2014690232.jpg"
+ },
+ {
+  "qid": "Q5447480",
+  "name": "Fifth Avenue Theatre",
+  "lat": 40.745588,
+  "lon": -73.988934,
+  "demolished": "1939-01-01",
+  "built": "1868-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Fifthavetheat.JPG"
+ },
+ {
+  "qid": "Q5695876",
+  "name": "Hebrew Technical Institute",
+  "lat": 40.7298,
+  "lon": -73.988,
+  "demolished": "1939-01-01",
+  "built": "1884-01-07",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Vocational%20guidance%2C%20Hebrew%20Technical%20Institute%2C%20circa%201920%20%284502486429%29.jpg"
+ },
+ {
+  "qid": "Q108365463",
+  "name": "Belmont Hotel",
+  "lat": 40.751944,
+  "lon": -73.978333,
+  "demolished": "1939-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Belmont%20Hotel%20%28NBY%2010435%29.jpg"
+ },
+ {
+  "qid": "Q56843694",
+  "name": "Montauk Theatre",
+  "lat": 40.68864,
+  "lon": -73.98275,
+  "demolished": "1940-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q107360034",
+  "name": "Dark Tower",
+  "lat": 40.815,
+  "lon": -73.941111,
+  "demolished": "1941-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Madame%20C.%20J.%20Walker%27s%20Dark%20Tower%20Estate.jpg"
+ },
+ {
+  "qid": "Q20858210",
+  "name": "Comedy Theatre",
+  "lat": 40.754372,
+  "lon": -73.98532,
+  "demolished": "1942-01-01",
+  "built": "1909-09-06",
+  "image": ""
+ },
+ {
+  "qid": "Q6728094",
+  "name": "Madison Square Garden Bowl",
+  "lat": 40.7525,
+  "lon": -73.9127,
+  "demolished": "1942-01-01",
+  "built": "1932-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q4638095",
+  "name": "44th Street Theatre",
+  "lat": 40.757877,
+  "lon": -73.987337,
+  "demolished": "1945-01-01",
+  "built": "1912-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Bergman%20Meredith%20Liliom.jpg"
+ },
+ {
+  "qid": "Q4875993",
+  "name": "Beacon Towers",
+  "lat": 40.8657,
+  "lon": -73.728,
+  "demolished": "1945-01-01",
+  "built": "1917-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Beacon%20Towers%201922%20front%20elevation.jpg"
+ },
+ {
+  "qid": "Q4875993",
+  "name": "Beacon Towers",
+  "lat": 40.8657,
+  "lon": -73.728,
+  "demolished": "1945-01-01",
+  "built": "1918-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Beacon%20Towers%201922%20front%20elevation.jpg"
+ },
+ {
+  "qid": "Q22023355",
+  "name": "Murray Hill Hotel",
+  "lat": 40.751944,
+  "lon": -73.977222,
+  "demolished": "1947-01-01",
+  "built": "1884-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Murray%20Hill%20Hotel%20crop.jpg"
+ },
+ {
+  "qid": "Q705846",
+  "name": "The Art of This Century Gallery",
+  "lat": 40.763556,
+  "lon": -73.975778,
+  "demolished": "1947-01-01",
+  "built": "1942-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q96407941",
+  "name": "Temple Beth-El",
+  "lat": 40.775,
+  "lon": -73.965,
+  "demolished": "1947-01-01",
+  "built": "1891-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Brockhaus%20and%20Efron%20Jewish%20Encyclopedia%20e2%20219-0.jpg"
+ },
+ {
+  "qid": "Q27988146",
+  "name": "Williamsburg Bridge Trolley Terminal",
+  "lat": 40.71851,
+  "lon": -73.988199,
+  "demolished": "1948-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Williamsburg%20Bridge%20trolley%20terminal%20vc.jpg"
+ },
+ {
+  "qid": "Q5491846",
+  "name": "Franklin Square",
+  "lat": 40.7093,
+  "lon": -74.0017,
+  "demolished": "1950-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q16985676",
+  "name": "Tompkins Avenue",
+  "lat": 40.688354,
+  "lon": -73.944932,
+  "demolished": "1950-10-13",
+  "built": "1885-05-13",
+  "image": ""
+ },
+ {
+  "qid": "Q5508463",
+  "name": "Fulton Street",
+  "lat": 40.7078,
+  "lon": -74.0044,
+  "demolished": "1950-12-22",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q133697844",
+  "name": "Broadway Arena",
+  "lat": 40.685278,
+  "lon": -73.916111,
+  "demolished": "1951-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q104145298",
+  "name": "Savoy Theatre",
+  "lat": 40.74983,
+  "lon": -73.98872,
+  "demolished": "1952-01-01",
+  "built": "1900-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Savoy%20Excerpt%20Herald%20Square%2C%20New%20York%20c1907%20LC-USZ62-13195.jpg"
+ },
+ {
+  "qid": "Q15032135",
+  "name": "Empire Theatre",
+  "lat": 40.754008,
+  "lon": -73.986711,
+  "demolished": "1953-01-01",
+  "built": "1893-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Empire%20Theatre%2041st%20Street.jpg"
+ },
+ {
+  "qid": "Q15619234",
+  "name": "Bignou Gallery",
+  "lat": 40.7619,
+  "lon": -73.97202,
+  "demolished": "1953-01-01",
+  "built": "1927-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5059357",
+  "name": "Center Theatre",
+  "lat": 40.759,
+  "lon": -73.98,
+  "demolished": "1954-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Radio%20City%20-%20RKO%20Roxy%20Theatre%20ad%20from%2C%20The%20Film%20Daily%2C%20Jul-Dec%201932%20%28page%201083%20crop%29.jpg"
+ },
+ {
+  "qid": "Q6737715",
+  "name": "Majestic Theatre",
+  "lat": 40.767915,
+  "lon": -73.982691,
+  "demolished": "1954-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Colin%20Campbell%20Cooper%20-%20Columbus%20Circle.JPG"
+ },
+ {
+  "qid": "Q137373681",
+  "name": "Sterling Oval",
+  "lat": 40.827778,
+  "lon": -73.913889,
+  "demolished": "1954-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q956198",
+  "name": "New York World Building",
+  "lat": 40.71184,
+  "lon": -74.00486,
+  "demolished": "1955-01-01",
+  "built": "1890-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20World%20Building%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q4638707",
+  "name": "48th Street Theatre",
+  "lat": 40.7597,
+  "lon": -73.9833,
+  "demolished": "1955-01-01",
+  "built": "1912-08-12",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/48th%20Street%20Theatre.jpg"
+ },
+ {
+  "qid": "Q7244847",
+  "name": "Princess Theatre",
+  "lat": 40.753144,
+  "lon": -73.986341,
+  "demolished": "1955-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Nightie-Night%20in%201920%20at%20the%20Princess%20Theater.tif"
+ },
+ {
+  "qid": "Q58827420",
+  "name": "Blair Building",
+  "lat": 40.7065,
+  "lon": -74.0111,
+  "demolished": "1955-01-01",
+  "built": "1903-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q4557668",
+  "name": "18th Street",
+  "lat": 40.7357,
+  "lon": -73.9853,
+  "demolished": "1955-05-12",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Third%20Avenue%20elevated%20railway%20at%2018th%20Street8d22128v.jpg"
+ },
+ {
+  "qid": "Q18151772",
+  "name": "Hinsdale Street",
+  "lat": 40.671205,
+  "lon": -73.900496,
+  "demolished": "1956-04-26",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q23091958",
+  "name": "New York Produce Exchange",
+  "lat": 40.704722,
+  "lon": -74.013056,
+  "demolished": "1957-01-01",
+  "built": "1884-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Produce%20Exchange%201883.jpg"
+ },
+ {
+  "qid": "Q16987112",
+  "name": "Willard Parker Hospital",
+  "lat": 40.729444,
+  "lon": -73.973056,
+  "demolished": "1958-01-01",
+  "built": "1885-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q2170757",
+  "name": "Roxy Theatre",
+  "lat": 40.7608,
+  "lon": -73.9818,
+  "demolished": "1960-01-01",
+  "built": "1927-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Roxy%20Theater%20NY%20Weekly%20Review%20March%2010%2C%201928.jpg"
+ },
+ {
+  "qid": "Q6795966",
+  "name": "Maxine Elliott Theatre",
+  "lat": 40.753309,
+  "lon": -73.986035,
+  "demolished": "1960-01-01",
+  "built": "1908-12-30",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Maxine%20Elliott%27s%20Theatre%20LCCN2014681544%20%28cropped%29.jpg"
+ },
+ {
+  "qid": "Q7262317",
+  "name": "Putnam Bridge",
+  "lat": 40.832153,
+  "lon": -73.934322,
+  "demolished": "1960-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Putnam%20Bridge.jpg"
+ },
+ {
+  "qid": "Q19817713",
+  "name": "Stuyvesant Apartments",
+  "lat": 40.736,
+  "lon": -73.9861,
+  "demolished": "1960-01-01",
+  "built": "1870-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Stuyvesant%20Apartments%20July%203%2C%201934.png"
+ },
+ {
+  "qid": "Q95011824",
+  "name": "Washington Market",
+  "lat": 40.713078,
+  "lon": -74.013208,
+  "demolished": "1960-01-01",
+  "built": "1812-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%28King1893NYC%29%20pg803%20WASHINGTON%20MARKET%2C%20WASHINGTON%20AND%20WEST%20STREETS%2C%20BETWEEN%20FULTON%20AND%20VESEY%20STREETS.jpg"
+ },
+ {
+  "qid": "Q14707189",
+  "name": "Grand Opera House",
+  "lat": 40.7456,
+  "lon": -73.9986,
+  "demolished": "1960-06-15",
+  "built": "1868-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Grand%20Opera%20House%2C%208th%20Avenue%20and%2023rd%20Street.jpg"
+ },
+ {
+  "qid": "Q111018631",
+  "name": "Lincoln School for Nurses",
+  "lat": 40.807,
+  "lon": -73.9095,
+  "demolished": "1961-01-01",
+  "built": "1898-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7006506",
+  "name": "New Century Theatre",
+  "lat": 40.766715,
+  "lon": -73.97971,
+  "demolished": "1962-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Cinema%20Treasures-Central%20Park%20Theatre-195638.jpg"
+ },
+ {
+  "qid": "Q60764277",
+  "name": "River Crest Sanitarium",
+  "lat": 40.779167,
+  "lon": -73.913333,
+  "demolished": "1962-01-01",
+  "built": "1896-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/River%20Crest%20%28postcard%20image%20-2%20%29.jpg"
+ },
+ {
+  "qid": "Q1422777",
+  "name": "Manhattan Life Insurance Building",
+  "lat": 40.70702,
+  "lon": -74.01193,
+  "demolished": "1963-01-01",
+  "built": "1894-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Manhattan%20Life%20Insurance%20Company%20Building%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q14707174",
+  "name": "Pennsylvania Station",
+  "lat": 40.7506,
+  "lon": -73.9939,
+  "demolished": "1963-01-01",
+  "built": "1910-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Penn%20Station3.jpg"
+ },
+ {
+  "qid": "Q136933202",
+  "name": "Les Deux Mégots",
+  "lat": 40.72732,
+  "lon": -73.987081,
+  "demolished": "1963-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q2155601",
+  "name": "Q2155601",
+  "lat": 40.801402,
+  "lon": -73.898246,
+  "demolished": "1963-01-01",
+  "built": "1885-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q17631519",
+  "name": "Knickerbocker Trust Building",
+  "lat": 40.70682,
+  "lon": -74.01206,
+  "demolished": "1964-01-01",
+  "built": "1909-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Knickerbocker%20Trust%20Co.%20Bldg.%2C%2060%20Broadway%20LCCN00650126.jpg"
+ },
+ {
+  "qid": "Q130465613",
+  "name": "New York Clearing House Building",
+  "lat": 40.708524,
+  "lon": -74.01022,
+  "demolished": "1964-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%20Clearing%20House.png"
+ },
+ {
+  "qid": "Q1276360",
+  "name": "Polo Grounds",
+  "lat": 40.830833,
+  "lon": -73.9375,
+  "demolished": "1964-04-10",
+  "built": "1890-04-19",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/No%20Known%20Restrictions%20Polo%20Grounds%20during%20World%20Series%20Game%2C%201913%20from%20the%20Bain%20Collection%20%28LOC%29%20%28434431507%29.jpg"
+ },
+ {
+  "qid": "Q5564567",
+  "name": "Girls' High School",
+  "lat": 40.6815,
+  "lon": -73.9496,
+  "demolished": "1964-06-25",
+  "built": "1885-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Girls%20HS%20Nostrand%20Av%20jeh.jpg"
+ },
+ {
+  "qid": "Q4943860",
+  "name": "Booth's Theatre",
+  "lat": 40.7425,
+  "lon": -73.9927,
+  "demolished": "1965-01-01",
+  "built": "1869-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Edwin%20Booth%27s%20Theatre%2C%2023rd%20St.%2C%20between%205th%20and%206th%20Ave%2C%20from%20Robert%20N.%20Dennis%20collection%20of%20stereoscopic%20views%20-%20cropped.jpg"
+ },
+ {
+  "qid": "Q5602572",
+  "name": "Green Gallery",
+  "lat": 40.7637,
+  "lon": -73.9753,
+  "demolished": "1965-01-01",
+  "built": "1960-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7620064",
+  "name": "Stork Club",
+  "lat": 40.7603,
+  "lon": -73.9753,
+  "demolished": "1965-01-01",
+  "built": "1929-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Sherman%20Billingsley%20at%20Stork%20Club%201951.JPG"
+ },
+ {
+  "qid": "Q56843124",
+  "name": "World's Fair Pavilion Theatre",
+  "lat": 40.750502,
+  "lon": -73.844362,
+  "demolished": "1965-01-01",
+  "built": "1964-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q198850",
+  "name": "Ziegfeld Theatre",
+  "lat": 40.7625,
+  "lon": -73.978611,
+  "demolished": "1966-01-01",
+  "built": "1927-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Ziegfeld-Theatre-1931.jpg"
+ },
+ {
+  "qid": "Q1425684",
+  "name": "Palladium Ballroom",
+  "lat": 40.7633,
+  "lon": -73.9828,
+  "demolished": "1966-01-01",
+  "built": "1948-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7014774",
+  "name": "New York Tribune Building",
+  "lat": 40.7114,
+  "lon": -74.0053,
+  "demolished": "1966-01-01",
+  "built": "1875-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/NewYorkTribuneBuilding.jpg"
+ },
+ {
+  "qid": "Q5903297",
+  "name": "Hotel Astor",
+  "lat": 40.7578,
+  "lon": -73.9864,
+  "demolished": "1967-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/HotelAstor.jpg"
+ },
+ {
+  "qid": "Q6182827",
+  "name": "Jerome Mansion",
+  "lat": 40.7424,
+  "lon": -73.9863,
+  "demolished": "1967-01-01",
+  "built": "1865-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Jerome%20Mansion%20crop.jpg"
+ },
+ {
+  "qid": "Q6825160",
+  "name": "Metropolitan Opera House",
+  "lat": 40.7542,
+  "lon": -73.9875,
+  "demolished": "1967-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Metropolitan%20opera%201905%20crop.jpg"
+ },
+ {
+  "qid": "Q14707033",
+  "name": "Mount Washington Presbyterian Church",
+  "lat": 40.8655,
+  "lon": -73.9271,
+  "demolished": "1967-01-01",
+  "built": "1844-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q651362",
+  "name": "Singer Building",
+  "lat": 40.70953,
+  "lon": -74.01078,
+  "demolished": "1968-01-01",
+  "built": "1908-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/SingerBuilding%20crop.jpg"
+ },
+ {
+  "qid": "Q651362",
+  "name": "Singer Building",
+  "lat": 40.70953,
+  "lon": -74.01078,
+  "demolished": "1968-01-01",
+  "built": "1908-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Singer%20Building%2C%20New%20York%2C%20N.%20Y%20%28NYPL%20b12647398-69783%29.tiff"
+ },
+ {
+  "qid": "Q651362",
+  "name": "Singer Building",
+  "lat": 40.70953,
+  "lon": -74.01078,
+  "demolished": "1968-01-01",
+  "built": "1908-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/SingerBuilding3.jpg"
+ },
+ {
+  "qid": "Q1093955",
+  "name": "City Investing Building",
+  "lat": 40.7099,
+  "lon": -74.0111,
+  "demolished": "1968-01-01",
+  "built": "1908-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Singer%20City%20Investing%20Hudson%20Terminal%201909%20crop.jpg"
+ },
+ {
+  "qid": "Q5035943",
+  "name": "Capitol Theatre",
+  "lat": 40.762,
+  "lon": -73.9839,
+  "demolished": "1968-01-01",
+  "built": "1919-10-24",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%22The%20Capitol%20Theatre%20New%20York%20World%27s%20Largest%20Theatre%22%20Program%20for%20the%20week%20beginning%20Sunday%2C%20March%2030%2C%201924.jpg"
+ },
+ {
+  "qid": "Q6728098",
+  "name": "Madison Square Garden",
+  "lat": 40.7624,
+  "lon": -73.9877,
+  "demolished": "1968-01-01",
+  "built": "1925-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Madison%20Square%20Garden%201941%20Postcard.jpg"
+ },
+ {
+  "qid": "Q15032188",
+  "name": "Playhouse Theatre",
+  "lat": 40.7594,
+  "lon": -73.9825,
+  "demolished": "1969-01-01",
+  "built": "1911-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q45107775",
+  "name": "Loew's Sheridan Theatre",
+  "lat": 40.737186,
+  "lon": -74.001126,
+  "demolished": "1969-08-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Sheridan%20Theatre%2C%20Greenwich%20Village.jpg"
+ },
+ {
+  "qid": "Q7971670",
+  "name": "Washington Avenue",
+  "lat": 40.693347,
+  "lon": -73.966892,
+  "demolished": "1969-10-04",
+  "built": "1888-12-04",
+  "image": ""
+ },
+ {
+  "qid": "Q16846470",
+  "name": "Bridge–Jay Streets",
+  "lat": 40.693774,
+  "lon": -73.985191,
+  "demolished": "1969-10-04",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q355322",
+  "name": "George Abbott Theatre",
+  "lat": 40.7625,
+  "lon": -73.9794,
+  "demolished": "1970-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Popu%20lar%20Price%20Theatre%20presents%20%22The%20dictator%22%20LCCN96518592.jpg"
+ },
+ {
+  "qid": "Q23091846",
+  "name": "Lafayette",
+  "lat": 40.75559,
+  "lon": -73.97052,
+  "demolished": "1970-01-01",
+  "built": "1965-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/New%20York%201122.jpg"
+ },
+ {
+  "qid": "Q45032393",
+  "name": "Fox Theatre",
+  "lat": 40.68823,
+  "lon": -73.980826,
+  "demolished": "1970-11-07",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/PARTIAL%20VIEW%20OF%20NORTHEAST%20%28FLATBUSH%20AVENUE%29%20ELEVATION%20-%20Fox%20Theatre%2C%2020%20Flatbush%20Avenue%20and%201%20Nevins%20Street%2C%20Brooklyn%2C%20Kings%20County%2C%20NY%20HABS%20NY%2C24-BROK%2C41-1.tif"
+ },
+ {
+  "qid": "Q130238343",
+  "name": "MUSEUM: A Project of Living Artists",
+  "lat": 40.72975,
+  "lon": -73.99331,
+  "demolished": "1971-01-01",
+  "built": "1968-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q130554125",
+  "name": "German American Insurance Building",
+  "lat": 40.707582,
+  "lon": -74.00786,
+  "demolished": "1971-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/German%20American%20Bldg.%20LCCN00650116.jpg"
+ },
+ {
+  "qid": "Q2918029",
+  "name": "Hudson Terminal",
+  "lat": 40.71124,
+  "lon": -74.01155,
+  "demolished": "1971-07-02",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Singer%20City%20Investing%20Hudson%20Terminal%201909%20crop.jpg"
+ },
+ {
+  "qid": "Q4974884",
+  "name": "Brooklyn Preparatory School",
+  "lat": 40.667136,
+  "lon": -73.951831,
+  "demolished": "1972-01-01",
+  "built": "1908-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Medgar%20Evers%20College%20td%20%282022-04-09%29%2015%20-%20Carroll%20Building.jpg"
+ },
+ {
+  "qid": "Q6537369",
+  "name": "Lewisohn Stadium",
+  "lat": 40.8191,
+  "lon": -73.9512,
+  "demolished": "1973-01-01",
+  "built": "1915-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Ccny.JPG"
+ },
+ {
+  "qid": "Q18510566",
+  "name": "Downtown Gallery",
+  "lat": 40.761667,
+  "lon": -73.970278,
+  "demolished": "1973-01-01",
+  "built": "1926-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6112071",
+  "name": "Jack Dempsey's Broadway Restaurant",
+  "lat": 40.7611,
+  "lon": -73.9845,
+  "demolished": "1974-01-01",
+  "built": "1935-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Jack%20Dempsey%27s%20Broadway%20Restaurant.jpg"
+ },
+ {
+  "qid": "Q5004105",
+  "name": "Bykert Gallery",
+  "lat": 40.7636,
+  "lon": -73.9754,
+  "demolished": "1975-01-01",
+  "built": "1966-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7338895",
+  "name": "Rivington Street municipal bath",
+  "lat": 40.716806,
+  "lon": -73.976806,
+  "demolished": "1975-01-01",
+  "built": "1900-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q93361249",
+  "name": "Acts of Art",
+  "lat": 40.735249,
+  "lon": -74.00135,
+  "demolished": "1975-01-01",
+  "built": "1969-10-01",
+  "image": ""
+ },
+ {
+  "qid": "Q4917540",
+  "name": "Bishop Dubois High School",
+  "lat": 40.83,
+  "lon": -73.9449,
+  "demolished": "1976-01-01",
+  "built": "1946-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6940999",
+  "name": "Museum of Primitive Art",
+  "lat": 40.761667,
+  "lon": -73.976366,
+  "demolished": "1976-01-01",
+  "built": "1957-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7013654",
+  "name": "New York Jazz Museum",
+  "lat": 40.764079,
+  "lon": -73.983129,
+  "demolished": "1977-01-01",
+  "built": "1972-06-16",
+  "image": ""
+ },
+ {
+  "qid": "Q17620786",
+  "name": "60 Wall Street",
+  "lat": 40.706167,
+  "lon": -74.00838,
+  "demolished": "1977-01-01",
+  "built": "1905-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5454409",
+  "name": "Fischbach Gallery",
+  "lat": 40.74985,
+  "lon": -74.006008,
+  "demolished": "1978-01-01",
+  "built": "1960-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/210%2011th%20Av%2025%20St%20jeh.jpg"
+ },
+ {
+  "qid": "Q112678164",
+  "name": "Day's End",
+  "lat": 40.739148,
+  "lon": -74.010427,
+  "demolished": "1979-01-01",
+  "built": "1975-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q126414355",
+  "name": "St. Luke's Hospital",
+  "lat": 40.805517,
+  "lon": -73.96201,
+  "demolished": "1979-01-01",
+  "built": "1896-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/St.%20Luke%27s%20Hospital%20in%20Manhattan%2C%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q18011281",
+  "name": "Bonwit Teller Building",
+  "lat": 40.762222,
+  "lon": -73.974167,
+  "demolished": "1980-01-01",
+  "built": "1929-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q105015566",
+  "name": "Come!Unity Press",
+  "lat": 40.737683,
+  "lon": -73.995992,
+  "demolished": "1980-01-01",
+  "built": "1971-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Come%21Unity%20Press%20printer%27s%20mark.jpg"
+ },
+ {
+  "qid": "Q4809147",
+  "name": "Associated American Artists",
+  "lat": 40.7634,
+  "lon": -73.9753,
+  "demolished": "1981-01-01",
+  "built": "1934-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Associated%20American%20Artists%20240%20W57%20jeh.jpg"
+ },
+ {
+  "qid": "Q4811082",
+  "name": "Astor Theatre",
+  "lat": 40.758333,
+  "lon": -73.985833,
+  "demolished": "1982-01-01",
+  "built": "1906-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Astor%20Theatre%2C%20Broadway%2C%201936.jpg"
+ },
+ {
+  "qid": "Q4907254",
+  "name": "Bijou Theatre",
+  "lat": 40.7472,
+  "lon": -73.9886,
+  "demolished": "1982-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Bijou%20Theatre%2C%20W.%2045th%20St.%2C%20Manhattan.jpg"
+ },
+ {
+  "qid": "Q5508468",
+  "name": "Fulton Theatre",
+  "lat": 40.758787,
+  "lon": -73.986113,
+  "demolished": "1982-01-01",
+  "built": "1911-04-27",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Fulton%20Theater%2C%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q5517010",
+  "name": "Gaiety Theatre",
+  "lat": 40.758669,
+  "lon": -73.985812,
+  "demolished": "1982-01-01",
+  "built": "1909-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Gaiety%20Theatre%2C%20West%2046th%20Street%2C%20Manhattan.jpeg"
+ },
+ {
+  "qid": "Q6913281",
+  "name": "Morosco Theatre",
+  "lat": 40.75853,
+  "lon": -73.986449,
+  "demolished": "1982-01-01",
+  "built": "1917-02-05",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Morosco%20Theatre%2C%20New%20York%20City%2C%20at%20night.jpg"
+ },
+ {
+  "qid": "Q45104070",
+  "name": "Little Carnegie Playhouse",
+  "lat": 40.764971,
+  "lon": -73.979142,
+  "demolished": "1982-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q1415643",
+  "name": "Brooklyn Jewish Hospital and Medical Center",
+  "lat": 40.67611,
+  "lon": -73.959335,
+  "demolished": "1982-01-01",
+  "built": "1906-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Jewish%20Hospital%20of%20Brooklyn%20jeh.JPG"
+ },
+ {
+  "qid": "Q1392467",
+  "name": "Mudd Club",
+  "lat": 40.7177,
+  "lon": -74.0023,
+  "demolished": "1983-01-01",
+  "built": "1978-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Facciata%20del%20Mudd%20Club%20%40%20NYC.jpg"
+ },
+ {
+  "qid": "Q6139943",
+  "name": "Irving Place Theatre",
+  "lat": 40.734627,
+  "lon": -73.988739,
+  "demolished": "1984-01-01",
+  "built": "1888-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Irving%20Place%20Theatre%2C%20Irving%20Place%2C%20from%20Northeast%20corner%20of%20Irving%20Place%20and%20East%2015th%20Street%2C%20Manhattan%20%28NYPL%20b13668355-482680%29%20%28cropped%29.jpg"
+ },
+ {
+  "qid": "Q115626588",
+  "name": "Cayman Gallery",
+  "lat": 40.72374,
+  "lon": -74.002441,
+  "demolished": "1984-01-01",
+  "built": "1975-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7166425",
+  "name": "Peppermint Lounge",
+  "lat": 40.7572,
+  "lon": -73.9833,
+  "demolished": "1985-01-01",
+  "built": "1958-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q48806213",
+  "name": "The East",
+  "lat": 40.68279,
+  "lon": -73.95786,
+  "demolished": "1986-01-01",
+  "built": "1969-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q2339843",
+  "name": "Paradise Garage",
+  "lat": 40.727735,
+  "lon": -74.006366,
+  "demolished": "1987-01-01",
+  "built": "1976-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Paradise%20garage.jpg"
+ },
+ {
+  "qid": "Q6769881",
+  "name": "Strand Theatre",
+  "lat": 40.7597,
+  "lon": -73.9853,
+  "demolished": "1987-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Strand%20Theatre%20%28Manhattan%29%20-%20cropped.jpg"
+ },
+ {
+  "qid": "Q18152524",
+  "name": "Loew's State Theatre",
+  "lat": 40.757815,
+  "lon": -73.984877,
+  "demolished": "1987-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Loew%27s%20State%20Theatre%20Broadway%20New%20York%20City.jpg"
+ },
+ {
+  "qid": "Q115599660",
+  "name": "Tin Pan Alley",
+  "lat": 40.7609,
+  "lon": -73.98534,
+  "demolished": "1988-01-01",
+  "built": "1978-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q17039033",
+  "name": "Store Front Museum",
+  "lat": 40.700819,
+  "lon": -73.795521,
+  "demolished": "1988-01-01",
+  "built": "1971-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Storefront%20Museum.tif"
+ },
+ {
+  "qid": "Q5325782",
+  "name": "Earl Carroll Theatre",
+  "lat": 40.760739,
+  "lon": -73.983001,
+  "demolished": "1990-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Earl%20Carroll%20Theatre%2C%20Manhattan.jpg"
+ },
+ {
+  "qid": "Q129964296",
+  "name": "Costello's",
+  "lat": 40.751694,
+  "lon": -73.972278,
+  "demolished": "1992-01-01",
+  "built": "1929-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5594399",
+  "name": "Grand Central Art Galleries",
+  "lat": 40.7528,
+  "lon": -73.9768,
+  "demolished": "1994-01-01",
+  "built": "1922-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Gcag-medal-1922-small.jpg"
+ },
+ {
+  "qid": "Q7111022",
+  "name": "Our Lady of the Miraculous Medal Church",
+  "lat": 40.80211,
+  "lon": -73.95363,
+  "demolished": "1994-01-01",
+  "built": "1927-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q101176068",
+  "name": "Cubiculo Theatre",
+  "lat": 40.7645,
+  "lon": -73.9895,
+  "demolished": "1994-01-01",
+  "built": "1968-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6306686",
+  "name": "Julia Richman High School",
+  "lat": 40.7653,
+  "lon": -73.9597,
+  "demolished": "1995-01-01",
+  "built": "1913-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q4780357",
+  "name": "Apollo Theatre",
+  "lat": 40.7567,
+  "lon": -73.9878,
+  "demolished": "1996-01-01",
+  "built": "1920-11-17",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Apollo%20Theatre%20and%20Times%20Square%20Theatre%20%2842nd%20Street%29%20-%20cropped.jpg"
+ },
+ {
+  "qid": "Q5004361",
+  "name": "Byron Gallery",
+  "lat": 40.779183,
+  "lon": -73.960556,
+  "demolished": "1996-01-01",
+  "built": "1961-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5330110",
+  "name": "Eastern District High School",
+  "lat": 40.712,
+  "lon": -73.9394,
+  "demolished": "1996-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q4967659",
+  "name": "Brighton Heights Reformed Church",
+  "lat": 40.641389,
+  "lon": -74.078611,
+  "demolished": "1996-06-29",
+  "built": "1866-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Brighton%20Heights%20Reformed%20Ch%20SI%20jeh.JPG"
+ },
+ {
+  "qid": "Q104532129",
+  "name": "Union Hospital",
+  "lat": 40.8605,
+  "lon": -73.8959,
+  "demolished": "1997-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q65074793",
+  "name": "South Oxford Tennis Club",
+  "lat": 40.683778,
+  "lon": -73.972472,
+  "demolished": "1997-12-01",
+  "built": "1981-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6978408",
+  "name": "National Shakespeare Conservatory",
+  "lat": 40.7641,
+  "lon": -73.9883,
+  "demolished": "1998-01-01",
+  "built": "1974-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q1455686",
+  "name": "Fresh Kills Landfill",
+  "lat": 40.57667,
+  "lon": -74.18733,
+  "demolished": "2001-03-22",
+  "built": "1948-04-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/GARBAGE%20SCOWS%20BRING%20SOLID%20WASTE%2C%20FOR%20USE%20AS%20LANDFILL%2C%20TO%20FRESH%20KILLS%20ON%20STATEN%20ISLAND%2C%20JUST%20EAST%20OF%20CARTERET%2C%20NJ%20-%20NARA%20-%20548315.jpg"
+ },
+ {
+  "qid": "Q11235",
+  "name": "World Trade Center",
+  "lat": 40.711389,
+  "lon": -74.0125,
+  "demolished": "2001-09-11",
+  "built": "1966-08-25",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/World%20Trade%20Center%20circa%20fall%201993.jpg"
+ },
+ {
+  "qid": "Q11706",
+  "name": "Windows on the World",
+  "lat": 40.7115,
+  "lon": -74.0133,
+  "demolished": "2001-09-11",
+  "built": "1976-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q1631191",
+  "name": "Marriott World Trade Center",
+  "lat": 40.71131,
+  "lon": -74.01403,
+  "demolished": "2001-09-11",
+  "built": "1981-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/%D0%97%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5%20%D0%BD%D0%BE%D0%BC%D0%B5%D1%80%203%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%20%D0%92%D1%81%D0%B5%D0%BC%D0%B8%D1%80%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%A2%D0%BE%D1%80%D0%B3%D0%BE%D0%B2%D0%BE%D0%B3%D0%BE%20%D0%A6%D0%B5%D0%BD%D1%82%D1%80%D0%B0%28%D0%9E%D1%82%D0%B5%D0%BB%D1%8C%20%D0%9C%D0%B0%D1%80%D1%80%D0%B8%D0%BE%D1%82%D1%82%20%D0%B8%D0%BB%D0%B8%20%D0%9E%D1%82%D0%B5%D0%BB%D1%8C%20%D0%92%D0%B8%D1%81%D1%82%D0%B0%29.jpg"
+ },
+ {
+  "qid": "Q2030757",
+  "name": "7 World Trade Center",
+  "lat": 40.713333,
+  "lon": -74.011944,
+  "demolished": "2001-09-11",
+  "built": "1987-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Wtc7%20from%20wtc%20observation%20deck.jpg"
+ },
+ {
+  "qid": "Q20445370",
+  "name": "1 World Trade Center",
+  "lat": 40.712136,
+  "lon": -74.013186,
+  "demolished": "2001-09-11",
+  "built": "1970-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Photo%20of%20WTC1%20%28cropped%29.jpg"
+ },
+ {
+  "qid": "Q2593897",
+  "name": "4 World Trade Center",
+  "lat": 40.71062,
+  "lon": -74.012125,
+  "demolished": "2001-09-11",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Pre-9-11%20WTC%204%20in%20NYC%20%282001-08-21%29.jpg"
+ },
+ {
+  "qid": "Q20445008",
+  "name": "Two World Trade Center",
+  "lat": 40.711084,
+  "lon": -74.013023,
+  "demolished": "2001-09-11",
+  "built": "1971-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Photo%20of%20WTC2%20%28cropped%29.jpg"
+ },
+ {
+  "qid": "Q1278748",
+  "name": "Six World Trade Center",
+  "lat": 40.71286,
+  "lon": -74.012876,
+  "demolished": "2001-12-01",
+  "built": "1973-04-04",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Six%20WTC%20SW%20Corner.jpg"
+ },
+ {
+  "qid": "Q5303202",
+  "name": "Downing Stadium",
+  "lat": 40.793889,
+  "lon": -73.924167,
+  "demolished": "2002-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Downing%20Stadium%20Randalls%20Island%20bb.jpg"
+ },
+ {
+  "qid": "Q15032193",
+  "name": "Rialto Theatre",
+  "lat": 40.756842,
+  "lon": -73.98584,
+  "demolished": "2002-01-01",
+  "built": "1916-04-21",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Rialto%20lobby%20-%20Cat%20People%20premiere.jpg"
+ },
+ {
+  "qid": "Q1580984",
+  "name": "5 World Trade Center",
+  "lat": 40.711984,
+  "lon": -74.011302,
+  "demolished": "2002-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/5%20World%20Trade%20Center%20from%20WTC%20Plaza.jpg"
+ },
+ {
+  "qid": "Q123698309",
+  "name": "Upright Citizens Brigade Theatre",
+  "lat": 40.743355,
+  "lon": -73.995461,
+  "demolished": "2002-11-18",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q5654670",
+  "name": "Harbor Road",
+  "lat": 40.6338,
+  "lon": -74.1601,
+  "demolished": "2004-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q6703862",
+  "name": "Lunatarium",
+  "lat": 40.7179,
+  "lon": -74.0096,
+  "demolished": "2004-01-01",
+  "built": "2001-07-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6706050",
+  "name": "Lutèce",
+  "lat": 40.75522,
+  "lon": -73.96897,
+  "demolished": "2004-01-01",
+  "built": "1961-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q98609843",
+  "name": "Stuyvesant Polyclinic Hospital",
+  "lat": 40.729001,
+  "lon": -73.987712,
+  "demolished": "2005-01-01",
+  "built": "1883-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Freie%20Bibliothek%20and%20Deutsches%20Dispensary.jpg"
+ },
+ {
+  "qid": "Q7250744",
+  "name": "Prospect Heights High School",
+  "lat": 40.67,
+  "lon": -73.9614,
+  "demolished": "2006-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Prospect%20Heights%20Campus%20on%20a%20Fall%20Day.jpg"
+ },
+ {
+  "qid": "Q34851331",
+  "name": "Milstein Plaza",
+  "lat": 40.773611,
+  "lon": -73.982778,
+  "demolished": "2006-08-14",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q1022965",
+  "name": "CBGB",
+  "lat": 40.725278,
+  "lon": -73.991944,
+  "demolished": "2006-10-15",
+  "built": "1973-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/CBGB%20club%20facade.jpg"
+ },
+ {
+  "qid": "Q440082",
+  "name": "Deutsche Bank Building",
+  "lat": 40.7097,
+  "lon": -74.0133,
+  "demolished": "2007-01-01",
+  "built": "1973-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/DeutscheBank.jpg"
+ },
+ {
+  "qid": "Q5118050",
+  "name": "Church of the Sacred Hearts of Mary and Jesus",
+  "lat": 40.74405,
+  "lon": -73.97558,
+  "demolished": "2007-01-01",
+  "built": "1916-10-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/SacredHeartsofJesusandMaryRC.1915.jpg"
+ },
+ {
+  "qid": "Q5305604",
+  "name": "Drake Hotel",
+  "lat": 40.7613,
+  "lon": -73.9715,
+  "demolished": "2007-01-01",
+  "built": "1926-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Drake%20Hotel%20%281251914031%29.jpg"
+ },
+ {
+  "qid": "Q7791257",
+  "name": "Thomas Jefferson High School",
+  "lat": 40.6674,
+  "lon": -73.8949,
+  "demolished": "2007-01-01",
+  "built": "1922-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Jefferson%20HS%20400%20Pennsylvania%20Av%20jeh.jpg"
+ },
+ {
+  "qid": "Q5296573",
+  "name": "Donnell Library Center",
+  "lat": 40.7608,
+  "lon": -73.9774,
+  "demolished": "2008-01-01",
+  "built": "1955-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/NYPL-Donnell.jpg"
+ },
+ {
+  "qid": "Q1056326",
+  "name": "Shea Stadium",
+  "lat": 40.755556,
+  "lon": -73.848056,
+  "demolished": "2008-10-14",
+  "built": "1961-10-28",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Shea%20Crowded.jpg"
+ },
+ {
+  "qid": "Q7579760",
+  "name": "Sports Museum of America",
+  "lat": 40.7051,
+  "lon": -74.0132,
+  "demolished": "2009-02-01",
+  "built": "2008-05-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Sports-museum-logo.jpg"
+ },
+ {
+  "qid": "Q2915475",
+  "name": "Oscar Wilde Bookshop",
+  "lat": 40.734021,
+  "lon": -74.00057,
+  "demolished": "2009-03-29",
+  "built": "1967-11-24",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/ChristopherAndGayStreets9.JPG"
+ },
+ {
+  "qid": "Q6471428",
+  "name": "Lafayette High School",
+  "lat": 40.5936,
+  "lon": -73.9861,
+  "demolished": "2010-01-01",
+  "built": "1939-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Lafayette%20High%20school.jpg"
+ },
+ {
+  "qid": "Q675214",
+  "name": "Yankee Stadium",
+  "lat": 40.826944,
+  "lon": -73.928056,
+  "demolished": "2010-05-13",
+  "built": "1923-04-18",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Yankee%20Stadium%20aerial%20from%20Blackhawk.jpg"
+ },
+ {
+  "qid": "Q7590725",
+  "name": "St. Michael Academy",
+  "lat": 40.7533,
+  "lon": -73.9975,
+  "demolished": "2010-06-01",
+  "built": "1874-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q124302",
+  "name": "Chelsea Art Museum",
+  "lat": 40.747833,
+  "lon": -74.007,
+  "demolished": "2011-01-01",
+  "built": "2002-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/0106TIARA%20P1000549.JPG"
+ },
+ {
+  "qid": "Q5094370",
+  "name": "Chevrolet-Saturn of Harlem",
+  "lat": 40.804639,
+  "lon": -73.932341,
+  "demolished": "2011-01-01",
+  "built": "2006-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7323008",
+  "name": "Rice High School",
+  "lat": 40.8068,
+  "lon": -73.9456,
+  "demolished": "2011-01-01",
+  "built": "1938-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5031185",
+  "name": "Canarsie High School",
+  "lat": 40.6406,
+  "lon": -73.8981,
+  "demolished": "2011-01-01",
+  "built": "1964-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Canarsie%20High%20jeh.JPG"
+ },
+ {
+  "qid": "Q16932879",
+  "name": "St. Ann’s Armenian Catholic Cathedral",
+  "lat": 40.732219,
+  "lon": -73.989114,
+  "demolished": "2011-01-01",
+  "built": "1983-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/NYU%20Founder%20Hall%20Anns%20Ch%20120%20E12%20jeh.jpg"
+ },
+ {
+  "qid": "Q97063215",
+  "name": "Yvon Lambert Gallery, New York, NY",
+  "lat": 40.744803,
+  "lon": -73.999546,
+  "demolished": "2011-01-01",
+  "built": "2003-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5420387",
+  "name": "Exit Art",
+  "lat": 40.7562,
+  "lon": -73.9984,
+  "demolished": "2012-01-01",
+  "built": "1982-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q14706909",
+  "name": "Mars 2112",
+  "lat": 40.761944,
+  "lon": -73.984056,
+  "demolished": "2012-01-01",
+  "built": "1998-11-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Mars%202112%20jeh.JPG"
+ },
+ {
+  "qid": "Q3328431",
+  "name": "Museum of Comic and Cartoon Art",
+  "lat": 40.76484,
+  "lon": -73.96686,
+  "demolished": "2012-07-09",
+  "built": "2001-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q5378852",
+  "name": "Enid A. Haupt Glass Garden",
+  "lat": 40.7433,
+  "lon": -73.9732,
+  "demolished": "2012-10-01",
+  "built": "1959-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q983738",
+  "name": "Old Orchard Shoal Light",
+  "lat": 40.512298,
+  "lon": -74.098714,
+  "demolished": "2012-10-19",
+  "built": "1893-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Oldorchardshoal.JPG"
+ },
+ {
+  "qid": "Q6471542",
+  "name": "Lafayette Theater",
+  "lat": 40.81295,
+  "lon": -73.945013,
+  "demolished": "2013-01-01",
+  "built": "1912-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Lafayette-Theatre-Macbeth-1936-2.jpg"
+ },
+ {
+  "qid": "Q7586706",
+  "name": "St. Agnes Boys High School",
+  "lat": 40.7894,
+  "lon": -73.9778,
+  "demolished": "2013-01-01",
+  "built": "1914-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Agnes%20Boys%20school%2087th%20St%20WE%20Av%202011%20jeh.jpg"
+ },
+ {
+  "qid": "Q5173371",
+  "name": "Corton",
+  "lat": 40.7196,
+  "lon": -74.0058,
+  "demolished": "2013-07-01",
+  "built": "1985-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6917309",
+  "name": "Mother Cabrini High School",
+  "lat": 40.8579,
+  "lon": -73.9356,
+  "demolished": "2014-01-01",
+  "built": "1899-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Mother%20Cabrini%20High%20School%20701%20Fort%20Washington%20Avenue.jpg"
+ },
+ {
+  "qid": "Q63869721",
+  "name": "American Folk Art Museum Midtown Building",
+  "lat": 40.7616,
+  "lon": -73.9781,
+  "demolished": "2014-01-01",
+  "built": "2001-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/AmericanFolk%20Art%20Museum.JPG"
+ },
+ {
+  "qid": "Q904023",
+  "name": "5 Pointz",
+  "lat": 40.7452,
+  "lon": -73.9457,
+  "demolished": "2014-01-01",
+  "built": "1993-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Hunters%20Point.JPG"
+ },
+ {
+  "qid": "Q4973306",
+  "name": "Broken Angel House",
+  "lat": 40.6856,
+  "lon": -73.9615,
+  "demolished": "2014-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Broken%20Angel%20House.jpg"
+ },
+ {
+  "qid": "Q5031016",
+  "name": "Canal Room",
+  "lat": 40.721,
+  "lon": -74.0046,
+  "demolished": "2014-01-11",
+  "built": "2004-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Canalroom.jpg"
+ },
+ {
+  "qid": "Q6672675",
+  "name": "Long Island College Hospital",
+  "lat": 40.6897,
+  "lon": -73.9967,
+  "demolished": "2014-08-30",
+  "built": "1858-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q1255057",
+  "name": "wd~50",
+  "lat": 40.7196,
+  "lon": -73.9846,
+  "demolished": "2014-11-30",
+  "built": "2003-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Wd50.jpeg"
+ },
+ {
+  "qid": "Q21558066",
+  "name": "Trinity Court Building",
+  "lat": 40.70839,
+  "lon": -74.013,
+  "demolished": "2015-01-01",
+  "built": "1927-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Old%20American%20Stock%20Exchange%20Building%202009.JPG"
+ },
+ {
+  "qid": "Q19361347",
+  "name": "Ziegfeld Theatre",
+  "lat": 40.762694,
+  "lon": -73.978806,
+  "demolished": "2016-01-01",
+  "built": "1969-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Ziegfeld%20Theatre%20NYC.jpg"
+ },
+ {
+  "qid": "Q19361347",
+  "name": "Ziegfeld Theatre",
+  "lat": 40.762778,
+  "lon": -73.979722,
+  "demolished": "2016-01-01",
+  "built": "1969-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Ziegfeld%20Theatre%20NYC.jpg"
+ },
+ {
+  "qid": "Q124567397",
+  "name": "Right Track Recording",
+  "lat": 40.759658,
+  "lon": -73.983735,
+  "demolished": "2016-01-01",
+  "built": "1976-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Carlos%20Alomar%2C%20Carmine%20Rojas%2C%20Guy%20Fletcher%2C%20Geoff%20Dugmore%2C%20Chester%20Kamen%2C%20Right%20Track%20Recording%20Studio%2C%20New%20York%201986.jpg"
+ },
+ {
+  "qid": "Q28206778",
+  "name": "Globe Institute of Technology",
+  "lat": 40.753188,
+  "lon": -73.989338,
+  "demolished": "2016-01-01",
+  "built": "1985-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7420633",
+  "name": "Santos Party House",
+  "lat": 40.7177,
+  "lon": -74.0014,
+  "demolished": "2016-05-29",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q1029132",
+  "name": "Louis Armstrong Stadium",
+  "lat": 40.750944,
+  "lon": -73.8455,
+  "demolished": "2016-10-01",
+  "built": "1978-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Louis%20Armstrong%20Stadium.jpg"
+ },
+ {
+  "qid": "Q2894308",
+  "name": "Carnegie Deli",
+  "lat": 40.7641,
+  "lon": -73.9813,
+  "demolished": "2016-12-31",
+  "built": "1937-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Carnegie%20deli%20exterior.JPG"
+ },
+ {
+  "qid": "Q115902355",
+  "name": "Gansevoort Destructor Plant",
+  "lat": 40.740224,
+  "lon": -74.010426,
+  "demolished": "2017-01-01",
+  "built": "",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/At%20New%20York%2C%20USA%202017%20269.jpg"
+ },
+ {
+  "qid": "Q7669195",
+  "name": "TACT",
+  "lat": 40.7586,
+  "lon": -73.9934,
+  "demolished": "2018-01-01",
+  "built": "1992-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q1676687",
+  "name": "270 Park Avenue",
+  "lat": 40.755833,
+  "lon": -73.975556,
+  "demolished": "2019-01-01",
+  "built": "1960-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/270%20Park%20Avenue%20%28WTM%20by%20official-ly%20cool%20100%29.jpg"
+ },
+ {
+  "qid": "Q72971780",
+  "name": "Squibb Park Bridge",
+  "lat": 40.70092,
+  "lon": -73.996034,
+  "demolished": "2019-01-01",
+  "built": "2013-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7735035",
+  "name": "The Four Seasons Restaurant",
+  "lat": 40.7581,
+  "lon": -73.9721,
+  "demolished": "2019-06-11",
+  "built": "1959-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Four-seasons-ny.jpg"
+ },
+ {
+  "qid": "Q17299843",
+  "name": "Science, Industry and Business Library",
+  "lat": 40.7481,
+  "lon": -73.9831,
+  "demolished": "2020-01-01",
+  "built": "1995-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q113757145",
+  "name": "Odessa Restaurant",
+  "lat": 40.726389,
+  "lon": -73.983472,
+  "demolished": "2020-01-01",
+  "built": "1994-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Odessa%20Restaurant%20%2852162325189%29.jpg"
+ },
+ {
+  "qid": "Q4797206",
+  "name": "Art in General",
+  "lat": 40.718097,
+  "lon": -74.001844,
+  "demolished": "2020-10-31",
+  "built": "1981-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/WSTM%20Mark%20Frank%200034.jpg"
+ },
+ {
+  "qid": "Q6824666",
+  "name": "Metro Pictures Gallery",
+  "lat": 40.7489,
+  "lon": -74.0048,
+  "demolished": "2021-12-11",
+  "built": "1980-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q7405667",
+  "name": "Salon 94",
+  "lat": 40.7862,
+  "lon": -73.956,
+  "demolished": "2022-01-01",
+  "built": "",
+  "image": ""
+ },
+ {
+  "qid": "Q110302622",
+  "name": "Grand Central Library",
+  "lat": 40.75386,
+  "lon": -73.973587,
+  "demolished": "2022-12-01",
+  "built": "2008-07-10",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Grand%20Central%20NYPL%20135%20E46%20jeh.jpg"
+ },
+ {
+  "qid": "Q6771667",
+  "name": "Marlborough Fine Art",
+  "lat": 51.5083,
+  "lon": -0.141111,
+  "demolished": "2024-01-01",
+  "built": "1946-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q6771667",
+  "name": "Marlborough Fine Art",
+  "lat": 51.5083,
+  "lon": -0.141111,
+  "demolished": "2024-01-01",
+  "built": "1963-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q105979668",
+  "name": "Frick Madison",
+  "lat": 40.773411,
+  "lon": -73.963837,
+  "demolished": "2024-01-01",
+  "built": "2021-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/2021%20The%20Frick%20on%20Madison%20-%20Former%20Whitney%20Museum%20Of%20American%20Art%201037.jpg"
+ },
+ {
+  "qid": "Q13428369",
+  "name": "New York Theological Seminary",
+  "lat": 40.8112,
+  "lon": -73.9639,
+  "demolished": "2024-07-01",
+  "built": "1900-01-01",
+  "image": "http://commons.wikimedia.org/wiki/Special:FilePath/Nytslogo.jpg"
+ },
+ {
+  "qid": "Q114391919",
+  "name": "Jack Hanley Gallery",
+  "lat": 40.717663,
+  "lon": -74.010033,
+  "demolished": "2024-12-01",
+  "built": "1987-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q28403424",
+  "name": "Venus Over Manhattan",
+  "lat": 40.726882,
+  "lon": -73.993039,
+  "demolished": "2025-01-01",
+  "built": "2012-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q81210433",
+  "name": "Bridget Donahue",
+  "lat": 40.71739,
+  "lon": -73.99494,
+  "demolished": "2025-01-01",
+  "built": "2015-01-01",
+  "image": ""
+ },
+ {
+  "qid": "Q4930572",
+  "name": "Bluestockings",
+  "lat": 40.718899,
+  "lon": -73.985832,
+  "demolished": "2025-09-01",
+  "built": "1999-01-01",
+  "image": ""
+ }
+]
