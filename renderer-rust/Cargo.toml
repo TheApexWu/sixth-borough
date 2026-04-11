@@ -17,6 +17,12 @@ features = [
     "bevy_winit",
     "bevy_log",
     "default_font",
-    "multi_threaded",
     "png",
 ]
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "z"
+lto = "fat"
+codegen-units = 1
+strip = "debuginfo"

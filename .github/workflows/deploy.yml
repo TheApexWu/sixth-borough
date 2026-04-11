@@ -35,7 +35,7 @@ jobs:
         with:
           version: latest
 
-      - name: Build with Trunk
+      - name: Build with Trunk (wasm-release profile)
         run: trunk build --release
         working-directory: renderer-rust
 
