@@ -157,6 +157,52 @@ The file ownership boundaries are designed so only `data-curation` has merge-con
 
 ---
 
+## GN100 access (Alex's box at the venue)
+
+The Acer Veriton GN100 is the only machine running `NARRATION_MODE=real`. Everyone else codes against the stub. If you need to debug the real backend or watch it run during integration, here's the path in.
+
+**Network:** Tailscale only. The venue wifi has AP isolation, so the box is unreachable by IP. Tailscale node name: `gn100-3857`.
+
+**Get on the tailnet:**
+1. Install Tailscale on your laptop (`brew install --cask tailscale` or download from tailscale.com).
+2. Ping Alex in chat with your Tailscale email — he'll share the node from the admin panel.
+3. Drop your SSH public key (`cat ~/.ssh/id_ed25519.pub`) in chat. Alex appends it to `authorized_keys` on the box.
+
+**SSH config (recommended):** add to `~/.ssh/config` on your laptop:
+
+```
+Host gn100
+  HostName gn100-3857
+  User acergn100_7
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 4
+```
+
+Then `ssh gn100` works from anywhere on the tailnet. The `ServerAlive` flags keep the connection from timing out on flaky venue wifi.
+
+**tmux session naming convention on the box:**
+
+| Session | Purpose | Owner | Touch? |
+|---|---|---|---|
+| `stub` | Orchestrator stub server on :30000 | Alex | **NEVER** — this is the safety net |
+| `llama` | llama.cpp server hosting Nemotron-3-Nano on :8090 | Alex | Read-only attaches only |
+| `nano-dl` | (transient) GGUF download | Alex | Don't touch — auto-cleans when done |
+| `your-name-foo` | Anything you spin up | You | Yours, prefix with your name |
+
+**Rules:**
+- Always launch long-running processes inside tmux. SSH dies, tmux survives.
+- Never `tmux kill-session` on a session you didn't start.
+- Read-only is fine: `tmux attach -r -t llama`. Non-readonly attaches steal control.
+- Stub on :30000 is sacred. If you suspect it's dead, ping Alex before doing anything.
+
+**What you can / can't touch:**
+- ✅ Your own tmux sessions, your own files under `~/your-name/`, the public repo.
+- ❌ sshd config, tailscale, networking, firewall, the `stub` tmux session, anything in `/etc`, `sudo` of anything that isn't a documented apt package.
+
+---
+
 ## If you're stuck
 
 1. Re-read this doc.
