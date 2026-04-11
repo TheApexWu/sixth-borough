@@ -1,7 +1,6 @@
+use bevy::asset::AssetPath;
 use bevy::prelude::*;
 use serde::Deserialize;
-use std::fs;
-use std::path::Path;
 
 #[derive(Debug, Deserialize)]
 pub struct Manifest {
@@ -44,35 +43,50 @@ pub struct Ghost {
 pub struct GhostManifest {
     pub entries: Vec<GhostEntry>,
 }
+
 const MANIFEST_PATH: &str = "assets/pointclouds/MANIFEST.json";
 
-pub fn load_ghost_manifest(mut commands: Commands, asset_server: Res<AssetServer>) {
-    let manifest_path = Path::new(MANIFEST_PATH);
-    let manifest: Manifest = match fs::read_to_string(manifest_path) {
-        Ok(contents) => match serde_json::from_str(&contents) {
-            Ok(m) => m,
+/// Read and parse the manifest. On native, reads from the filesystem.
+/// On WASM, std::fs is unavailable so we start with zero ghosts.
+fn read_manifest() -> Manifest {
+    #[cfg(not(target_arch = "wasm32"))]
+    {
+        use std::fs;
+        use std::path::Path;
+
+        let manifest_path = Path::new(MANIFEST_PATH);
+        match fs::read_to_string(manifest_path) {
+            Ok(contents) => match serde_json::from_str(&contents) {
+                Ok(m) => return m,
+                Err(e) => {
+                    warn!(
+                        "Failed to parse {}: {}. Starting with zero ghosts.",
+                        MANIFEST_PATH, e
+                    );
+                }
+            },
             Err(e) => {
                 warn!(
-                    "Failed to parse {}: {}. Starting with zero ghosts.",
+                    "Failed to read {}: {}. Starting with zero ghosts.",
                     MANIFEST_PATH, e
                 );
-                Manifest {
-                    version: 2,
-                    ghosts: vec![],
-                }
-            }
-        },
-        Err(e) => {
-            warn!(
-                "Failed to read {}: {}. Starting with zero ghosts.",
-                MANIFEST_PATH, e
-            );
-            Manifest {
-                version: 2,
-                ghosts: vec![],
             }
         }
-    };
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        info!("WASM build: ghost manifest will be loaded via asset system (not yet implemented). Starting with zero ghosts.");
+    }
+
+    Manifest {
+        version: 2,
+        ghosts: vec![],
+    }
+}
+
+pub fn load_ghost_manifest(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let manifest = read_manifest();
 
     info!(
         "Ghost manifest v{}: {} ghost(s) declared",
@@ -83,21 +97,29 @@ pub fn load_ghost_manifest(mut commands: Commands, asset_server: Res<AssetServer
     commands.insert_resource(GhostManifest {
         entries: entries.clone(),
     });
+
     for entry in &entries {
         let glb_path = format!("pointclouds/{}", entry.file);
-        let full_path = Path::new("assets").join("pointclouds").join(&entry.file);
-        if !full_path.exists() {
-            warn!(
-                "Ghost '{}': file '{}' not found on disk — skipping. Sync from shared storage.",
-                entry.slug, entry.file
-            );
-            continue;
+
+        // On native, check if the file exists on disk before trying to load
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            use std::path::Path;
+            let full_path = Path::new("assets").join("pointclouds").join(&entry.file);
+            if !full_path.exists() {
+                warn!(
+                    "Ghost '{}': file '{}' not found on disk — skipping. Sync from shared storage.",
+                    entry.slug, entry.file
+                );
+                continue;
+            }
         }
 
         info!("Ghost '{}': loading '{}'", entry.slug, glb_path);
 
+        let asset_path: AssetPath<'static> = AssetPath::from(glb_path);
         commands.spawn((
-            SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(&glb_path))),
+            SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(asset_path))),
             Transform::default(),
             Visibility::default(),
             Ghost {
