@@ -1023,6 +1023,7 @@ const FLAGS = {
   ghostPointCloud:{ label: 'Ghost Point Cloud', desc: 'Penn Station (demolished 1963) as a point-cloud ghost after its demolition year.', group: 'effects', default: false },
   libertyIsland:  { label: 'Liberty Island 3D', desc: 'Load photogrammetry mesh of Liberty Island into the harbor. Auto-flies camera when enabled.', group: 'effects', default: false },
   oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
+  demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: false },
   photoMode:      { label: 'Photo Mode', desc: 'Fullscreen archival-photo viewer. Timeline slider and era dots scrub through ~150 Manhattan photos in chronological order. Hit PLAY for a timed slideshow, ← → to step manually, ESC to exit.', group: 'ui', default: false },
   freeCamera:     { label: 'Free Camera', desc: 'Unlock pitch and enable drag-rotate. Right-click + drag (or ctrl+drag) to orbit. Drag to pan, scroll to zoom.', group: 'ui', default: false },
 };
@@ -1730,6 +1731,22 @@ fetch('data/manhattan_compact.json')
     applyFlags();
   });
 
+// ── Demolished landmarks (Wikidata) — loaded once, filtered at render time by flag ──
+let demolishedLandmarks = [];
+fetch('data/demolished-landmarks.json')
+  .then(r => r.json())
+  .then(data => {
+    demolishedLandmarks = data
+      .map(r => ({
+        ...r,
+        builtYear: r.built ? parseInt(r.built.slice(0, 4), 10) : null,
+        demolishedYear: r.demolished ? parseInt(r.demolished.slice(0, 4), 10) : null,
+      }))
+      .filter(r => Number.isFinite(r.demolishedYear));
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  })
+  .catch(err => console.warn('demolished landmarks failed to load:', err));
+
 let oldnycPhotosSorted = [];  // chronologically sorted for photo mode slideshow
 fetch('cultural-content/oldnyc/index.json')
   .then(r => r.json())
@@ -1809,6 +1826,17 @@ function initDeck() {
         const yearTag = object.year === currentYear ? `${object.year}` : `${object.year} (${Math.abs(object.year - currentYear)}y off)`;
         return {
           html: `<b>📷 ${escapeHtml(object.title) || 'NYPL photo'}</b><br>${yearTag}<br><span style="color:#777">NYPL Milstein · click to open</span>`,
+          style: tooltipStyle,
+        };
+      }
+      if (layer && layer.id === 'demolished-landmarks') {
+        const builtStr = object.builtYear || '?';
+        const demoStr = object.demolishedYear;
+        const state = currentYear < (object.builtYear || -Infinity)
+          ? 'not yet built'
+          : currentYear <= demoStr ? 'standing' : `demolished ${currentYear - demoStr}y ago`;
+        return {
+          html: `<b>🏛 ${escapeHtml(object.name)}</b><br>${builtStr} – ${demoStr}<br><span style="color:#777">${state} · Wikidata</span>`,
           style: tooltipStyle,
         };
       }
@@ -2067,7 +2095,46 @@ function buildLayers() {
   if (libertyPoints) layers.push(libertyPoints);
   const photos = buildOldnycPhotosLayer();
   if (photos) layers.push(photos);
+  const demolished = buildDemolishedLandmarksLayer();
+  if (demolished) layers.push(demolished);
   return layers;
+}
+
+// Demolished landmarks from Wikidata. A pin is "alive" while the building
+// existed (built ≤ year ≤ demolished) and fades to an amber "ghost" once the
+// slider passes its demolition year. Pre-built years hide the pin entirely —
+// otherwise Penn Station would be visible in 1850.
+function buildDemolishedLandmarksLayer() {
+  if (!featureFlags.demolishedLandmarks) return null;
+  if (!demolishedLandmarks.length) return null;
+  return new ScatterplotLayer({
+    id: 'demolished-landmarks',
+    data: demolishedLandmarks,
+    getPosition: p => [p.lon, p.lat],
+    radiusUnits: 'pixels',
+    lineWidthUnits: 'pixels',
+    getRadius: p => {
+      if (p.builtYear && currentYear < p.builtYear) return 0;
+      return currentYear <= p.demolishedYear ? 6 : 5;
+    },
+    getFillColor: p => {
+      if (p.builtYear && currentYear < p.builtYear) return [0, 0, 0, 0];
+      if (currentYear <= p.demolishedYear) return [255, 255, 255, 230];
+      return [255, 170, 60, 170];
+    },
+    getLineColor: p => {
+      if (p.builtYear && currentYear < p.builtYear) return [0, 0, 0, 0];
+      return currentYear <= p.demolishedYear ? [0, 184, 212, 220] : [255, 120, 40, 220];
+    },
+    stroked: true,
+    lineWidthMinPixels: 1.5,
+    pickable: true,
+    updateTriggers: {
+      getRadius: currentYear,
+      getFillColor: currentYear,
+      getLineColor: currentYear,
+    },
+  });
 }
 
 // Photo pins render every Manhattan oldnyc record continuously — radius, alpha and
