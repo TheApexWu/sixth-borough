@@ -17,7 +17,11 @@ fn main() {
         .run();
 }
 
-fn setup_scene(mut commands: Commands) {
+fn setup_scene(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
     // Camera
     commands.spawn((
         Camera3d::default(),
@@ -33,5 +37,15 @@ fn setup_scene(mut commands: Commands) {
         Transform::from_rotation(Quat::from_euler(EulerRot::XYZ, -0.8, 0.4, 0.0)),
     ));
 
-    info!("Scene ready — camera + light spawned");
+    // Test cube
+    commands.spawn((
+        Mesh3d(meshes.add(Cuboid::new(1.0, 1.0, 1.0))),
+        MeshMaterial3d(materials.add(StandardMaterial {
+            base_color: Color::srgb(0.8, 0.2, 0.3),
+            ..default()
+        })),
+        Transform::from_xyz(0.0, 0.5, 0.0),
+    ));
+
+    info!("Scene ready — camera + light + test cube spawned");
 }
