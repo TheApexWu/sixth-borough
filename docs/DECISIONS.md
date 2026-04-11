@@ -289,4 +289,30 @@ The load-bearing claim, in Alex's words: *"Cultural memory is the most extractab
 
 ---
 
+## 2026-04-11 ~14:00 ET — Product wedge framing locked: receipts not predictions
+
+**Decision:** The defensible product wedge underneath the cultural memory experience is a **non-ML historical-truth layer** assembled from public open data. We do NOT add predictive ML / gentrification forecasting / migration prediction to the build. Every claim is traceable to an open data record. The user-facing tagline: *"We don't predict gentrification. We trace it."* Full wedge breakdown (4 data layers + 5 sellable buyer segments + Marvens's particle role) lives in `docs/PRODUCT_WEDGES.md`.
+**Alternatives considered:**
+- Adding ML/prediction overlays for migration or gentrification forecasting (rejected — predicting gentrification IS gentrification; the room reads predictive overlays as extraction; weakens both the thesis and the political defensibility)
+- Treating the project as a museum/tour-guide product only (rejected — caps buyer pool to grant-funded preservation orgs, doesn't justify Antler-grade investment thesis)
+- Pivoting away from cultural memory toward pure real estate analytics (rejected — kills the emotional onramp that makes the data layer memorable; the cultural memory experience IS the marketing wedge for the data product)
+**Why:** The room (Spark Hack judges + Antler GPs + community-data audience) is screaming for the opposite of cloud extraction. ML prediction layered on community displacement data IS the extraction we're claiming to fight. The defensible move is to surface receipts that already exist, anchor them to historical events, and let users draw their own conclusions. This is also the framing that makes the GB10 sponsored-product flex coherent end-to-end: local hardware → local memory → local sovereignty → no model trained on community pain. The four layers (demolitions, demographic shift, evictions, alterations) all live on top of the existing data spine — no new infrastructure required. Marvens's particle effects become data tracers (documented historical movements) rather than predictive overlays.
+**Owner:** Alex.
+**Reversible by:** N/A — this is a thesis-level commitment, not a build constraint. Reversing it would require rewriting the pitch and the moat story.
+
+---
+
+## 2026-04-11 ~14:00 ET — Visual direction doc locked (PS2 as constraint language)
+
+**Decision:** PS2 aesthetic is a **constraint language for memory, not a 3D world the user walks through.** The map stays a flat social interface (Mode A — Lobby). PS2 only kicks in inside the ghost encounter (Mode B — Dungeon). Six SMT3 Nocturne reference images locked into `docs/refs/visual/` with NOTICE.md fair-use disclaimer. Full direction doc at `docs/VISUAL_DIRECTION.md`. Sent-ready HTML version with embedded reference images at `~/Desktop/sixth-borough-visual-direction.html`.
+**Alternatives considered:**
+- Pure 3D walkable world from the start (rejected — kills the social map interface that James shipped, multiplies asset budget, drowns the cultural data layer in geometry)
+- PS2 styling on the map view itself (rejected — clashes with deck.gl/maplibre's clean cartographic register; map needs to read as data, not as game world)
+- Skipping the visual reference doc and hoping verbal direction lands (rejected — Marvens needs concrete reference images to lock the constraint contract)
+**Why:** The Mode A (lobby) ↔ Mode B (encounter) split lets each render style do what it's best at. The map is for browsing the city's data, the encounter is for being inside one specific memory. PS2 as a constraint language (low poly, vertex lighting, fog falloff, affine texture warping, 256×256 textures, vertex normals only) is what makes the ghosts feel like memories rather than 3D models — the constraints ARE the aesthetic argument. The visual direction doc gives Marvens a concrete spec without locking him into specific meshes.
+**Owner:** Alex (the framing), Marvens (the meshes), Carson (the shader).
+**Reversible by:** Sat afternoon if Marvens pushes back on the constraint set. After Sat night, the contract is locked.
+
+---
+
 ## (add new decisions below this line as they happen)
