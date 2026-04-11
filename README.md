@@ -1,20 +1,24 @@
 # Sixth Borough
 
-A time machine for niche subcultures across all five boroughs of New York City. Built for Spark Hack Series NYC, Apr 10–12 2026.
+**Cultural memory infrastructure that runs on the community's own hardware instead of someone else's cloud.** Built for Spark Hack Series NYC, Apr 10–12 2026.
 
-Drop into any neighborhood, scrub a year slider through decades of history, toggle a niche filter (hip-hop heads, queer history, demolished theaters, jazz, salsa, immigration flow), and watch the place re-render in the visual language of its era while a local language model narrates what mattered there. Everything runs on one box with the ethernet cable on the floor.
+Every building in New York City has a birthday, a biography, and (sometimes) a death record — all of it in open data. Sixth Borough renders the city as it was, layer by layer, year by year, on local hardware. Click any building to see when it went up, what stood there before, who was displaced, what the photo from 1925 looked like. A 30-billion-parameter NVIDIA Nemotron model narrates the moment, live, from a box ten feet from the user with the ethernet cable on the floor.
+
+**We don't predict gentrification. We trace it from the receipts.** Every particle on screen is a person who moved, on the record, in NYC Open Data. See `docs/PRODUCT_WEDGES.md` for the five buyer segments and the non-ML data thesis.
 
 **Track:** Cultural Impact
-**Hardware:** Acer Veriton GN100 (DGX Spark / GB10 Grace Blackwell, 128 GB unified memory, runs entirely offline)
-**Renderer:** Bevy 0.16 (Rust + wgpu) with PS2-style post-process and `bevy_pointcloud` for the demolished-building ghost layer
-**Narration:** Nemotron-3-Nano-30B-A3B (Q8 GGUF) via llama.cpp on the GB10
-**Asset authoring:** Blender + OpenVAT for animated vertex-level point cloud animation
+**Hardware:** Acer Veriton GN100 (NVIDIA DGX Spark / GB10 Grace Blackwell Superchip, 128 GB unified memory, runs entirely offline)
+**Narration:** **NVIDIA Nemotron-3 Nano 30B (A3B variant)** from the NVIDIA Nemotron model family, served via llama.cpp on the GB10. 29 tokens/sec sustained.
+**Renderer (native, primary):** Bevy 0.18.1 (Rust + wgpu) with PS2-era post-process for the encounter mode.
+**Renderer (web, breadth surface):** deck.gl + maplibre prototype with year slider, 8 architectural eras, and 750 georeferenced NYPL Milstein photos across all 5 boroughs (`feature/sketch-overlay`).
+**Asset authoring:** Blender → glb (low-poly ghost meshes for demolished buildings).
+**Data spine:** NYC Open Data — Building Footprints (LiDAR roof heights), MapPLUTO (yearbuilt/yearalter1/2), BUILDING_HISTORIC (demolitions), DOB Job Filings, ACS tract decennial 1970-2020, NYPL Milstein collection, LPC landmarks crosswalk.
 
 ---
 
 ## Quick start (any laptop, no GPU required)
 
-The orchestrator has two modes. **Stub mode** runs templated narration on any laptop with no GPU and no model download — this is how teammates develop their slice without depending on the GN100. **Real mode** swaps in the actual Nemotron-3-Nano via llama.cpp on the GN100 box at the venue. Both modes serve the same `/narrate` HTTP contract, so the renderer code never has to know which is wired.
+The orchestrator has two modes. **Stub mode** runs templated narration on any laptop with no GPU and no model download — this is how teammates develop their slice without depending on the GN100. **Real mode** swaps in the actual NVIDIA Nemotron-3 Nano 30B (A3B variant, Q8 GGUF) via llama.cpp on the GN100 box at the venue. Both modes serve the same `/narrate` HTTP contract, so the renderer code never has to know which is wired.
 
 ```bash
 git clone https://github.com/TheApexWu/sixth-borough.git
@@ -41,12 +45,14 @@ Run the test suite with `./scripts/dev-test.sh` (15 tests cover the schema, the 
 Only one machine in the world runs Sixth Borough at full fidelity: the Acer Veriton GN100 box at the venue. After checking out the box:
 
 ```bash
-./scripts/setup-gn100.sh    # builds llama.cpp, downloads Nemotron (~38 GB)
-./scripts/start-gn100.sh    # starts the llama.cpp server on :30000
-NARRATION_MODE=real ./scripts/dev-stub.sh   # starts the orchestrator pointed at the real backend
+./scripts/start-llama-nano.sh                # idempotent llama-server launcher (Nemotron 30B Q8 on :8090)
+NARRATION_MODE=real LLAMA_SERVER_URL=http://127.0.0.1:8090 \
+  python -m uvicorn src.orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
-`scripts/test-narration.sh` smoke-tests the raw llama.cpp endpoint directly.
+The real backend runs the model on `:8090` and the orchestrator on `:30001`. The stub orchestrator on `:30000` stays alive as fallback. Verified live Apr 11 ~14:45 ET via `ssh gn100 curl :30001/narrate` — returns `backend:"real"` in ~23 seconds for the canonical Sedgwick event.
+
+A pre-baked cache of all 19 events lives at `data/narration_cache.json` as venue-WiFi insurance: 19/19 events, ~15 sec average per generation, all `backend:"real"`. See `docs/GN100_HEALTH_APR11.md` for the standup-ready health snapshot.
 
 ---
 
@@ -54,41 +60,50 @@ NARRATION_MODE=real ./scripts/dev-stub.sh   # starts the orchestrator pointed at
 
 ```
 sixth-borough/
-├── README.md                    this file
-├── ARCHITECTURE.md              system diagram + asset pipeline
-├── CONTRIBUTING.md              branch playbook + collaboration model
-├── requirements.txt             Python dependencies
-├── pyproject.toml               Python project metadata
+├── README.md                          this file
+├── ARCHITECTURE.md                    system diagram + asset pipeline
+├── CONTRIBUTING.md                    branch playbook + collaboration model
+├── requirements.txt                   Python dependencies
+├── pyproject.toml                     Python project metadata
 ├── docs/
-│   ├── STACK.md                 pinned tech stack with verbatim setup
-│   ├── DECISIONS.md             append-only decision log
-│   ├── DATA_SOURCES.md          NYC Open Data references
-│   └── EVENT_RULES.md           Spark Hack rules + judging criteria
+│   ├── DEMO_VIDEO_SCRIPT.md           90s pitch script (locked)
+│   ├── PRODUCT_WEDGES.md              receipts-not-predictions thesis + 5 buyer segments
+│   ├── VISUAL_DIRECTION.md            PS2 as constraint language for memory
+│   ├── MIGRATION_FLOW_PROTOTYPE.html  Cross-Bronx canonical static cone sample
+│   ├── PITCH_FRAMINGS.md              5 framings explored before lock
+│   ├── GN100_HEALTH_APR11.md          standup-ready hardware snapshot
+│   ├── STACK.md                       pinned tech stack
+│   ├── DECISIONS.md                   append-only decision log
+│   ├── DATA_SOURCES.md                NYC Open Data references
+│   ├── EVENT_RULES.md                 Spark Hack rules + judging rubric
+│   └── refs/visual/                   SMT3 reference images + NOTICE.md
+├── cultural-content/
+│   └── oldnyc/index.json              750 NYPL Milstein photos × 5 boroughs
 ├── data/
-│   └── events-seed.json         hand-curated cultural events
+│   ├── events-seed.json               19 hand-curated cultural events
+│   ├── narration_cache.json           pre-baked narrations (venue WiFi insurance)
+│   └── manhattan_compact.json         building polygons {p,h,y,b} schema
 ├── src/
 │   ├── data/
-│   │   ├── schema.py            CulturalEvent + NarrationRequest/Response Pydantic models
-│   │   ├── niches.py            niche taxonomy + display metadata
-│   │   ├── narration_prompts.py niche-conditioned prompt template
-│   │   └── loader.py            seed JSON loader + query helpers
+│   │   ├── schema.py                  Pydantic models
+│   │   ├── niches.py                  niche taxonomy
+│   │   ├── narration_prompts.py       prompt template
+│   │   └── loader.py                  seed JSON loader
 │   ├── orchestrator/
-│   │   ├── main.py              FastAPI app
-│   │   ├── narration_stub.py    templated narration (anyone, any laptop)
-│   │   └── narration_real.py    real Nemotron via llama.cpp (GN100 only)
-│   └── renderer/                Carson's Bevy + WGSL renderer
-├── pointcloud-pipeline/
-│   └── README.md                Blender → Bevy file format contract (PLY + OpenVAT)
+│   │   ├── main.py                    FastAPI app
+│   │   ├── narration_stub.py          templated narration
+│   │   └── narration_real.py          NVIDIA Nemotron via llama.cpp (GN100 only)
+│   └── renderer/                      Carson's Bevy 0.18.1 + WGSL renderer
 ├── assets/
-│   └── pointclouds/
-│       └── MANIFEST.json        list of available ghost assets
+│   └── ghosts/
+│       └── MANIFEST.json              low-poly Blender ghost mesh registry
 ├── scripts/
-│   ├── dev-stub.sh              start orchestrator in stub mode (anyone)
-│   ├── dev-test.sh              run pytest suite
-│   ├── setup-gn100.sh           build llama.cpp + download Nemotron (GN100 only)
-│   ├── start-gn100.sh           start llama.cpp narration server (GN100 only)
-│   └── test-narration.sh        smoke-test raw llama.cpp (GN100 only)
-└── tests/                       pytest suite
+│   ├── dev-stub.sh                    start orchestrator in stub mode
+│   ├── dev-test.sh                    run pytest suite
+│   ├── start-llama-nano.sh            idempotent llama-server launcher (GN100 only)
+│   ├── export_buildings.py            Building Footprints → compact JSON compactor
+│   └── build_oldnyc_index.py          NYPL Milstein → georeferenced index
+└── tests/                             pytest suite
 ```
 
 ---

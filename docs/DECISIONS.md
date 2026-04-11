@@ -315,4 +315,30 @@ The load-bearing claim, in Alex's words: *"Cultural memory is the most extractab
 
 ---
 
+## 2026-04-11 ~15:30 ET — Doc consistency pass against Spark Hack judging rubric
+
+**Decision:** Updated `README.md`, `docs/DEMO_VIDEO_SCRIPT.md`, `docs/STACK.md`, `docs/PRODUCT_WEDGES.md`, `ARCHITECTURE.md`, and `CONTRIBUTING.md` to consistently use the phrase **"NVIDIA Nemotron-3 Nano 30B (A3B variant) from the NVIDIA Nemotron model family"** instead of bare "Nemotron." Aligned every doc to the actually-shipped stack: Bevy 0.18.1 (not 0.16), glb-only (not PLY+OpenVAT+bevy_pointcloud), `:30001` real orchestrator + `:8090` llama-server (not `:30000` for the model). Added named usability personas (Sofia Reyes tenant lawyer, Marcus Chen REIT analyst, Dr. Alicia Vance LPC researcher, Jordan Park ProPublica reporter, Riya Patel insurance underwriter) to PRODUCT_WEDGES.md. Added explicit performance numbers (29 tok/s sustained, 60 MB browser-deliverable, 128 GB unified memory, zero round trips) to DEMO_VIDEO_SCRIPT.md Q&A.
+
+**Why:** Pulled the full Spark Hack Notion via the Notion v3 API and discovered the rubric verbatim. Two findings forced this pass:
+
+1. **The Stack score (15 pts)** awards "use of major NVIDIA library/tool" and explicitly lists **NeMo Models** as qualifying. Nemotron IS a NeMo model, but only if the team **names it as such**. Saying "Nemotron via llama.cpp" understates the rubric attribution and could read as 0 pts. Saying "from NVIDIA's Nemotron model family on NVIDIA DGX Spark" locks the 15 pts.
+
+2. **The Usability score (10 pts)** explicitly asks: *"Could a real City Planner, or Factory Foreman actually use this tool to make a decision tomorrow?"* The previous Q&A answer talked about "cultural orgs first" — too soft. The new Q&A leads with PRODUCT_WEDGES.md's five buyer segments and names a specific persona (tenant lawyer in the South Bronx) for the rubric's exact test.
+
+Secondary cleanup: removed all references to the dropped stack pieces (`bevy_pointcloud`, PLY format, OpenVAT vertex animation textures, Bevy 0.16, Live VLM WebUI). These were locked in the Apr 10 evening and Apr 11 morning entries above; this pass propagates the deprecation through the surface docs that judges and teammates actually read.
+
+**Owner:** Alex.
+**Reversible by:** N/A — these are corrections to make existing docs match shipped state. Reverting would re-introduce known-stale content.
+
+---
+
+## 2026-04-11 ~15:30 ET — Bevy 0.16 → 0.18.1 confirmation
+
+**Decision:** The renderer engine pin is **Bevy 0.18.1**, not 0.16. The 0.16 pin in the Apr 10 evening entry above is superseded.
+**Why:** The 0.16 pin was driven entirely by `bevy_pointcloud` plugin compatibility. Once that plugin was dropped (Apr 11 ~10:00 ET, `d6470aa` glb-only single-format contract), the version constraint was lifted. Carson bumped to 0.18.1 in `renderer-rust` to get the latest WASM target + webgl2 support for the Cloudflare Pages deploy path (`819a7f3 wasm` + `54a431f cicd`, Apr 11 11:59 ET). 0.18.1 was released Jan 2026, well past the Mar 27 dependency-age cutoff.
+**Owner:** Carson (the engineering call), Alex (the doc lock).
+**Reversible by:** N/A — already shipped to `renderer-rust`.
+
+---
+
 ## (add new decisions below this line as they happen)

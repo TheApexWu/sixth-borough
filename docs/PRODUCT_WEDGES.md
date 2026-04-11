@@ -105,6 +105,35 @@ That's the answer that turns *"cool hackathon project"* into *"fundable wedge."*
 
 ---
 
+## Named usability personas (for the rubric Usability score, 10 pts)
+
+The Spark Hack rubric explicitly asks: *"Could a real City Planner, or Factory Foreman actually use this tool to make a decision tomorrow?"* Sixth Borough's equivalent answer is **five named personas**, one per buyer segment:
+
+| Persona | Tomorrow-morning use case |
+|---|---|
+| **Sofia Reyes**, tenant lawyer at Bronx Legal Services | Pulls every demolition + eviction filing + alteration record on a single block to build a displacement case for a holdover hearing |
+| **Marcus Chen**, due diligence analyst at a real estate REIT | Pulls a 50-year truth report on a portfolio of 12 walk-ups before closing — demolition history, alteration history, demographic shift, eviction filings, archival photo overlay, all in one report |
+| **Dr. Alicia Vance**, preservation researcher at the Landmarks Preservation Commission | Queries every demolished building inside a historic district between 1969 and now, cross-referenced with LPC designation dates, to support a landmark designation report |
+| **Jordan Park**, ProPublica investigative reporter | Traces the receipts of a gentrification claim made by a city council candidate — demolitions, building re-skins, demographic shift, with citations to original DOB filings |
+| **Riya Patel**, underwriter at a regional property insurer | Pulls building age + alteration history + neighborhood claim density to anchor a parcel-level risk model in the actual historical record rather than statistical proxies |
+
+These are illustrative archetypes — not real people — but they're concrete enough to drop into a Q&A answer when a judge asks "who uses this." Each persona maps to one of the five buyer segments above. For the demo, **lead with Sofia Reyes** (tenant lawyer in the South Bronx) because it lands the cultural-impact-track ethics test cleanly without diluting the receipts thesis.
+
+---
+
+## Mapping to the Spark Hack judging rubric
+
+This doc earns score primarily on two of the four rubric categories:
+
+| Category | What this doc contributes | Pts at stake |
+|---|---|---|
+| Value & Impact → Insight Quality | Specific historical receipts (Cross-Bronx 60K, Caro citation, BUILDING_HISTORIC dataset, ACS tract delta) — non-obvious and traceable, not "rain causes traffic." | 10 |
+| Value & Impact → Usability | Five named personas above, each with a tomorrow-morning decision the tool enables. Hits the rubric's exact "could a real City Planner use this tomorrow" test. | 10 |
+| NVIDIA Ecosystem → The Spark Story (indirect support) | The receipts framing makes "no model trained on community pain" coherent end-to-end with the local-hardware claim. | (supports the 15) |
+| Frontier Factor → Creativity (indirect support) | Six-dataset fusion (DOB filings + Building Footprints Historical + ACS census + NYPL archives + LiDAR + 30B local LLM) is the "novel combination of data/models" the rubric rewards. | (supports the 10) |
+
+---
+
 ## What this does NOT change
 
 - The 90s demo script stays locked (`docs/DEMO_VIDEO_SCRIPT.md`)
