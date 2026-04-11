@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sixth Borough · Migration Flow Prototype · Cross-Bronx 1948–1972</title>
+<style>
+  :root {
+    --bg-deep: #060912;
+    --bg-mid: #0a0e1a;
+    --bg-panel: #0f1422;
+    --border: #2a3454;
+    --border-soft: #1a2238;
+    --text-primary: #d8e0f0;
+    --text-secondary: #8a96b4;
+    --text-tertiary: #5a6584;
+
+    /* PS2 cool palette — LOCKED. No warms anywhere. */
+    --era-1948: #3a4d78;   /* deep faded steel */
+    --era-1955: #4a5d8a;   /* steel blue */
+    --era-1962: #6a82a8;   /* washed periwinkle */
+    --era-1968: #8a9ec4;   /* pale periwinkle */
+    --era-1972: #a8b8d8;   /* memory blue */
+    --era-disperse: #c0d0e8; /* whisper white-blue */
+
+    /* Single warm accent — origin marker only, used sparingly */
+    --origin-gold: #d4a574;
+    --origin-gold-glow: rgba(212, 165, 116, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+
+  h1 {
+    font-family: "Iowan Old Style", "Palatino", Georgia, serif;
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .eyebrow {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .thesis {
+    font-family: "Iowan Old Style", "Palatino", Georgia, serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--era-1972);
+    border-left: 2px solid var(--era-1955);
+    padding-left: 16px;
+    margin-top: 16px;
+  }
+
+  h2 {
+    font-family: "Iowan Old Style", "Palatino", Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+
+  h3 {
+    font-family: -apple-system, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    margin-top: 24px;
+  }
+
+  section {
+    margin-bottom: 64px;
+  }
+
+  /* HERO BLOCK */
+  .hero-block {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  .hero-viz {
+    background: var(--bg-mid);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .hero-viz svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .metadata-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+    font-size: 13px;
+  }
+
+  .metadata-panel h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    font-family: -apple-system, system-ui, sans-serif;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+
+  .metadata-panel dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 16px;
+    margin-bottom: 20px;
+  }
+
+  .metadata-panel dt {
+    color: var(--text-tertiary);
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding-top: 3px;
+  }
+
+  .metadata-panel dd {
+    color: var(--text-primary);
+    font-size: 13px;
+  }
+
+  .metadata-panel .summary {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .metadata-panel .citation {
+    color: var(--text-tertiary);
+    font-size: 11px;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* VARIANTS */
+  .variants {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .variants figure {
+    background: var(--bg-mid);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 12px;
+  }
+
+  .variants svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .variants figcaption {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    line-height: 1.4;
+    text-align: center;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+
+  .variants figcaption strong {
+    display: block;
+    color: var(--era-1972);
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+
+  /* YEAR SLIDER MOCKUP */
+  .slider-mockup-wrap {
+    background: var(--bg-mid);
+    border: 1px solid var(--border-soft);
+    border-radius: 4px;
+    padding: 28px 32px;
+  }
+
+  .slider-mockup-wrap svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* DESIGN NOTES */
+  .design-notes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .notes-block {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 28px;
+  }
+
+  .notes-block.warn {
+    border-color: #4a3a4a;
+    background: #15101a;
+  }
+
+  .notes-block ul {
+    list-style: none;
+  }
+
+  .notes-block li {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .notes-block li:last-child {
+    border-bottom: none;
+  }
+
+  .notes-block li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .notes-block.warn li::before {
+    content: "✕  ";
+    color: #8a5a6a;
+    font-family: "SF Mono", Menlo, monospace;
+    font-weight: 700;
+  }
+
+  .notes-block.lock li::before {
+    content: "→  ";
+    color: var(--era-1972);
+    font-family: "SF Mono", Menlo, monospace;
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-tertiary);
+    font-size: 11px;
+    font-family: "SF Mono", Menlo, monospace;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .hero-block, .design-notes { grid-template-columns: 1fr; }
+    .variants { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Sixth Borough · Migration Flow Prototype · Static Sample</p>
+  <h1>Cross-Bronx Expressway, 1948–1972</h1>
+  <p class="subtitle">~60,000 residents displaced · authored from Robert Caro, <em>The Power Broker</em> · Bronx</p>
+  <p class="thesis">"We don't predict gentrification. We trace it from the receipts. Every particle is a person who moved, on record, in open data."</p>
+</header>
+
+<main>
+
+  <!-- HERO BLOCK -->
+  <section>
+    <h3 style="margin-top:0">Hero rendering</h3>
+    <div class="hero-block">
+      <div class="hero-viz">
+        <svg id="hero-svg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0a0e1a"/>
+              <stop offset="60%" stop-color="#0e1424"/>
+              <stop offset="100%" stop-color="#161e36"/>
+            </linearGradient>
+            <radialGradient id="origin-glow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="rgba(212,165,116,0.6)"/>
+              <stop offset="60%" stop-color="rgba(212,165,116,0.15)"/>
+              <stop offset="100%" stop-color="rgba(212,165,116,0)"/>
+            </radialGradient>
+            <filter id="soft-blur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="0.4"/>
+            </filter>
+          </defs>
+
+          <!-- sky background -->
+          <rect width="800" height="600" fill="url(#sky)"/>
+
+          <!-- ground baseline -->
+          <line x1="0" y1="500" x2="800" y2="500" stroke="#1a2440" stroke-width="1"/>
+
+          <!-- low-poly Bronx skyline silhouette -->
+          <g id="skyline" fill="#06080f" opacity="0.95"></g>
+
+          <!-- distant skyline (Manhattan, faint horizon) -->
+          <g id="skyline-far" fill="#0c1228" opacity="0.6"></g>
+
+          <!-- cone outline guide (very faint) -->
+          <g id="cone-guide" stroke="#2a3454" stroke-width="0.5" fill="none" opacity="0.25"></g>
+
+          <!-- particle group (generated by JS) -->
+          <g id="particles"></g>
+
+          <!-- origin marker -->
+          <g id="origin-marker"></g>
+
+          <!-- title overlay -->
+          <text x="32" y="48" font-family="SF Mono, Menlo, monospace" font-size="10" fill="#5a6584" letter-spacing="1.5">CROSS-BRONX EXPRESSWAY · 1948–1972</text>
+          <text x="32" y="64" font-family="SF Mono, Menlo, monospace" font-size="10" fill="#5a6584" letter-spacing="1">N · 60,000 displaced</text>
+
+          <!-- compass -->
+          <g transform="translate(740, 60)">
+            <line x1="0" y1="-18" x2="0" y2="18" stroke="#3a4d78" stroke-width="0.8"/>
+            <line x1="-18" y1="0" x2="18" y2="0" stroke="#3a4d78" stroke-width="0.8"/>
+            <text x="0" y="-22" font-family="SF Mono, monospace" font-size="9" fill="#6a82a8" text-anchor="middle">N</text>
+          </g>
+        </svg>
+      </div>
+
+      <aside class="metadata-panel">
+        <h2>Click-panel content</h2>
+        <dl>
+          <dt>Event</dt><dd>Cross-Bronx Expressway construction</dd>
+          <dt>Years</dt><dd>1948–1972</dd>
+          <dt>Borough</dt><dd>Bronx (East Tremont, Tremont, Morrisania)</dd>
+          <dt>Centroid</dt><dd>40.846°N, 73.908°W</dd>
+          <dt>Displaced</dt><dd>~60,000 residents</dd>
+          <dt>Direction</dt><dd>Outward; dominant push to outer Bronx (Co-op City), Westchester, then long-term to South Florida + the Carolinas</dd>
+          <dt>Era band</dt><dd>1950s–1970s cool palette</dd>
+          <dt>Spread</dt><dd>4 of 5 (broad)</dd>
+          <dt>Source</dt><dd>Caro, <em>Power Broker</em></dd>
+        </dl>
+        <p class="summary">
+          Robert Moses pushed the Cross-Bronx Expressway through East Tremont and Tremont
+          between 1948 and 1972, displacing roughly 60,000 residents — many of them
+          working-class Jewish, Black, and Puerto Rican families. Co-op City (1968–1973)
+          absorbed a significant share. Others moved to outer Bronx neighborhoods, then
+          Westchester, then over decades to South Florida and the Carolinas. The highway
+          split the neighborhood physically and the community demographically.
+        </p>
+        <p class="citation">
+          Robert Caro, <em>The Power Broker: Robert Moses and the Fall of New York</em>,
+          Knopf, 1974, ch. 37–39. Displacement count is Caro's own estimate, widely cited.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- VARIANT STRIP -->
+  <section>
+    <h2>Encoding range — four variants</h2>
+    <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">
+      Same primitive, different parameter values. The four variables Marvens needs to control
+      per event: <em>height</em> (intensity), <em>top-width</em> (spread), <em>tilt</em> (direction),
+      <em>era band color</em>.
+    </p>
+    <div class="variants">
+      <figure>
+        <svg id="var-a" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg"></svg>
+        <figcaption><strong>A · Vertical</strong>magnitude only<br/>no direction encoded</figcaption>
+      </figure>
+      <figure>
+        <svg id="var-b" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg"></svg>
+        <figcaption><strong>B · Tilted</strong>direction = axis lean<br/>(Cross-Bronx hero)</figcaption>
+      </figure>
+      <figure>
+        <svg id="var-c" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg"></svg>
+        <figcaption><strong>C · Tall narrow</strong>high intensity<br/>concentrated spread</figcaption>
+      </figure>
+      <figure>
+        <svg id="var-d" viewBox="0 0 220 280" xmlns="http://www.w3.org/2000/svg"></svg>
+        <figcaption><strong>D · Short wide</strong>mild intensity<br/>diffuse spread</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- YEAR SLIDER MOCKUP -->
+  <section>
+    <h2>Year-slider activation (mockup)</h2>
+    <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">
+      Cones are dim/inert until the slider window enters their event range. When active, particles
+      drift slowly upward. When inactive, only the faint cone outline remains as a "ghost of an event."
+    </p>
+    <div class="slider-mockup-wrap">
+      <svg id="slider-svg" viewBox="0 0 1000 100" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </section>
+
+  <!-- DESIGN NOTES -->
+  <section class="design-notes">
+    <div class="notes-block lock">
+      <h3 style="margin-top:0">Locked grammar</h3>
+      <ul>
+        <li><strong>Cool PS2 palette only.</strong> Deep navy → washed periwinkle → memory blue. Single dusty-gold accent for the origin click-target.</li>
+        <li><strong>Slow upward drift.</strong> Dense at base, sparse at top. Vertical bias in all motion.</li>
+        <li><strong>Soft dispersal at top.</strong> Particles spread outward, never plume.</li>
+        <li><strong>Origin centroid, not specific building.</strong> Anchor reads as a neighborhood marker.</li>
+        <li><strong>Click-panel pairing.</strong> Every cone is clickable → opens metadata with documented count + source citation.</li>
+        <li><strong>Year-slider activation.</strong> Inactive = faint outline ghost; active = particles flowing.</li>
+        <li><strong>Tilt encodes direction.</strong> Cone leans toward vector mean of destination tracts when known.</li>
+      </ul>
+    </div>
+    <div class="notes-block warn">
+      <h3 style="margin-top:0">Anti-patterns — do not ship</h3>
+      <ul>
+        <li>Red / orange / yellow particles. Reads as fire. Kitsch. Anti-community.</li>
+        <li>Fast turbulent motion. Reads as smoke or destruction.</li>
+        <li>Solid plume shape. Reads as a chimney smokestack.</li>
+        <li>Photorealistic shading or PBR. Kills the PS2 memory grammar.</li>
+        <li>Cone without a click-panel. Reads as decorative noise.</li>
+        <li>Cone shaded with a literal flame gradient. The neighborhood is not on fire.</li>
+        <li>Rapid pulse / strobe. The data is solemn, not a rave.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- AUTHORING CONTRACT -->
+  <section>
+    <h2>Authoring contract (Marvens → Carson)</h2>
+    <div class="notes-block lock">
+      <h3 style="margin-top:0">Per-event Blender deliverable</h3>
+      <ul>
+        <li><strong>Mesh:</strong> inverted cone with particle-emitting volume inside. Vertex count &lt;2,000.</li>
+        <li><strong>Lighting:</strong> vertex normals only, no UVs needed (vertex-lit).</li>
+        <li><strong>Animation:</strong> embedded vertex animation texture (OpenVAT) for slow upward drift, ~4 second loop.</li>
+        <li><strong>Tilt:</strong> baked into geometry if directional, or as a runtime parameter Carson sets per event.</li>
+        <li><strong>Color:</strong> vertex color attribute encoding the era band. Carson reads + applies via shader.</li>
+        <li><strong>Export:</strong> <code>assets/migration-flows/{event_id}.glb</code></li>
+        <li><strong>Manifest:</strong> sibling to ghost manifest at <code>assets/migration-flows/MANIFEST.json</code></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    Drafted Apr 11 ~14:30 ET · Sixth Borough · Spark Hack NYC<br/>
+    Static prototype · iterate at standup · companion to docs/PRODUCT_WEDGES.md + docs/VISUAL_DIRECTION.md
+  </footer>
+</main>
+
+<script>
+  // ─────────────────────────────────────────────
+  // Seeded random (deterministic across reloads)
+  // ─────────────────────────────────────────────
+  function seededRandom(seed) {
+    let s = seed;
+    return function() {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+  }
+
+  // ─────────────────────────────────────────────
+  // PS2 cool era palette
+  // ─────────────────────────────────────────────
+  const palette = [
+    "#3a4d78",  // 1948 deep steel
+    "#4a5d8a",  // 1955 steel blue
+    "#5e7298",  // 1960
+    "#6a82a8",  // 1962 washed periwinkle
+    "#7a90b8",  // 1965
+    "#8a9ec4",  // 1968 pale periwinkle
+    "#98add0",  // 1970
+    "#a8b8d8",  // 1972 memory blue
+    "#b6c4dd",  // dispersal
+    "#c0d0e8",  // whisper white-blue
+  ];
+
+  function eraColor(t) {
+    // t in [0,1], 0 = base/origin, 1 = top/dispersal
+    const idx = Math.min(Math.floor(t * palette.length), palette.length - 1);
+    return palette[idx];
+  }
+
+  // ─────────────────────────────────────────────
+  // Cone particle generator
+  // ─────────────────────────────────────────────
+  function generateCone(opts) {
+    const {
+      cx, baseY, height, baseWidth, topWidth,
+      tiltX, count, seed, particleSizeMin, particleSizeMax,
+      driftStreaks
+    } = opts;
+    const rng = seededRandom(seed || 1);
+    const particles = [];
+
+    for (let i = 0; i < count; i++) {
+      // density bias toward base
+      const t = Math.pow(rng(), 0.7);
+      const halfW = baseWidth + (topWidth - baseWidth) * t;
+      // gaussian-ish lateral via 2-sample average
+      const lateralT = (rng() + rng()) / 2 - 0.5;
+      const xOffset = lateralT * 2 * halfW;
+      const xTilt = tiltX * t;
+
+      const x = cx + xOffset + xTilt;
+      const y = baseY - t * height + (rng() - 0.5) * 3;
+
+      const size = particleSizeMin + rng() * (particleSizeMax - particleSizeMin);
+      const color = eraColor(t);
+      const opacity = 0.35 + (1 - t) * 0.55 + (rng() - 0.5) * 0.15;
+
+      particles.push({ x, y, size, color, opacity, t });
+    }
+
+    // sort by t descending so base particles render LAST (on top, denser)
+    particles.sort((a, b) => b.t - a.t);
+    return particles;
+  }
+
+  function renderParticles(svgGroup, particles, withStreaks) {
+    let html = "";
+    for (const p of particles) {
+      // optional vertical drift streak (implies upward motion in still frame)
+      if (withStreaks && Math.random() < 0.4) {
+        html += `<line x1="${p.x.toFixed(1)}" y1="${(p.y + 1).toFixed(1)}" x2="${p.x.toFixed(1)}" y2="${(p.y + 4 + p.size).toFixed(1)}" stroke="${p.color}" stroke-width="${(p.size * 0.4).toFixed(1)}" opacity="${(p.opacity * 0.35).toFixed(2)}"/>`;
+      }
+      html += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.size.toFixed(1)}" fill="${p.color}" opacity="${p.opacity.toFixed(2)}"/>`;
+    }
+    svgGroup.innerHTML = html;
+  }
+
+  // ─────────────────────────────────────────────
+  // Cone outline guide (very faint)
+  // ─────────────────────────────────────────────
+  function renderConeOutline(svgGroup, opts) {
+    const { cx, baseY, height, baseWidth, topWidth, tiltX } = opts;
+    const topY = baseY - height;
+    const leftBaseX = cx - baseWidth;
+    const rightBaseX = cx + baseWidth;
+    const leftTopX = cx - topWidth + tiltX;
+    const rightTopX = cx + topWidth + tiltX;
+    svgGroup.innerHTML = `
+      <line x1="${leftBaseX}" y1="${baseY}" x2="${leftTopX}" y2="${topY}"/>
+      <line x1="${rightBaseX}" y1="${baseY}" x2="${rightTopX}" y2="${topY}"/>
+      <line x1="${leftTopX}" y1="${topY}" x2="${rightTopX}" y2="${topY}"/>
+    `;
+  }
+
+  // ─────────────────────────────────────────────
+  // Origin marker (dusty gold accent — only warm in palette)
+  // ─────────────────────────────────────────────
+  function renderOriginMarker(svgGroup, cx, baseY) {
+    svgGroup.innerHTML = `
+      <circle cx="${cx}" cy="${baseY}" r="22" fill="url(#origin-glow)"/>
+      <circle cx="${cx}" cy="${baseY}" r="3.5" fill="#d4a574"/>
+      <circle cx="${cx}" cy="${baseY}" r="1.5" fill="#f0d4a8"/>
+      <line x1="${cx - 8}" y1="${baseY}" x2="${cx + 8}" y2="${baseY}" stroke="#d4a574" stroke-width="0.6" opacity="0.6"/>
+      <text x="${cx}" y="${baseY + 18}" font-family="SF Mono, monospace" font-size="9" fill="#8a96b4" text-anchor="middle" letter-spacing="0.5">EAST TREMONT · CENTROID</text>
+    `;
+  }
+
+  // ─────────────────────────────────────────────
+  // Low-poly skyline silhouette
+  // ─────────────────────────────────────────────
+  function renderSkyline(svgGroup, baseY, count, seed, widthRange, heightRange, xMin, xMax) {
+    const rng = seededRandom(seed);
+    let html = "";
+    let x = xMin;
+    while (x < xMax) {
+      const w = widthRange[0] + rng() * (widthRange[1] - widthRange[0]);
+      const h = heightRange[0] + rng() * (heightRange[1] - heightRange[0]);
+      // skip occasional gaps for street-grid feel
+      if (rng() > 0.08) {
+        html += `<rect x="${x.toFixed(1)}" y="${(baseY - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}"/>`;
+        // tiny window dots
+        if (rng() > 0.4 && h > 14) {
+          const winY = baseY - h * 0.55;
+          html += `<rect x="${(x + w * 0.3).toFixed(1)}" y="${winY.toFixed(1)}" width="1" height="1.5" fill="#1a2440"/>`;
+          html += `<rect x="${(x + w * 0.6).toFixed(1)}" y="${winY.toFixed(1)}" width="1" height="1.5" fill="#1a2440"/>`;
+        }
+      }
+      x += w + (rng() * 2);
+    }
+    svgGroup.innerHTML = html;
+  }
+
+  // ─────────────────────────────────────────────
+  // HERO RENDER
+  // ─────────────────────────────────────────────
+  const heroOpts = {
+    cx: 400,
+    baseY: 500,
+    height: 380,
+    baseWidth: 22,
+    topWidth: 175,
+    tiltX: -28,    // slight north lean (left in SVG = north on the compass)
+    count: 850,
+    seed: 1948,
+    particleSizeMin: 0.7,
+    particleSizeMax: 2.4,
+  };
+
+  const heroSvg = document.getElementById("hero-svg");
+  renderSkyline(
+    document.getElementById("skyline-far"),
+    470, 60, 99, [10, 25], [12, 28], 0, 800
+  );
+  renderSkyline(
+    document.getElementById("skyline"),
+    500, 50, 42, [16, 38], [18, 60], 0, 800
+  );
+  renderConeOutline(document.getElementById("cone-guide"), heroOpts);
+  renderParticles(document.getElementById("particles"), generateCone(heroOpts), true);
+  renderOriginMarker(document.getElementById("origin-marker"), heroOpts.cx, heroOpts.baseY);
+
+  // ─────────────────────────────────────────────
+  // VARIANTS RENDER
+  // ─────────────────────────────────────────────
+  function renderVariant(svgId, opts, captionTilt) {
+    const svg = document.getElementById(svgId);
+    // background
+    let html = `<rect width="220" height="280" fill="#0a0e1a"/>`;
+    // baseline
+    html += `<line x1="0" y1="245" x2="220" y2="245" stroke="#1a2440" stroke-width="0.6"/>`;
+    // mini skyline
+    const rng = seededRandom(opts.seed + 7);
+    let x = 0;
+    while (x < 220) {
+      const w = 6 + rng() * 8;
+      const h = 5 + rng() * 12;
+      if (rng() > 0.1) html += `<rect x="${x.toFixed(1)}" y="${(245 - h).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="#06080f"/>`;
+      x += w + 1;
+    }
+    // cone outline
+    const topY = 245 - opts.height;
+    html += `<line x1="${110 - opts.baseWidth}" y1="245" x2="${110 - opts.topWidth + opts.tiltX}" y2="${topY}" stroke="#2a3454" stroke-width="0.4" opacity="0.3"/>`;
+    html += `<line x1="${110 + opts.baseWidth}" y1="245" x2="${110 + opts.topWidth + opts.tiltX}" y2="${topY}" stroke="#2a3454" stroke-width="0.4" opacity="0.3"/>`;
+    // particles
+    const particles = generateCone({...opts, cx: 110, baseY: 245});
+    for (const p of particles) {
+      html += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.size.toFixed(1)}" fill="${p.color}" opacity="${p.opacity.toFixed(2)}"/>`;
+    }
+    // origin marker
+    html += `<circle cx="110" cy="245" r="9" fill="rgba(212,165,116,0.18)"/>`;
+    html += `<circle cx="110" cy="245" r="2" fill="#d4a574"/>`;
+    svg.innerHTML = html;
+  }
+
+  renderVariant("var-a", {
+    height: 200, baseWidth: 12, topWidth: 60, tiltX: 0,
+    count: 280, seed: 100, particleSizeMin: 0.6, particleSizeMax: 1.8
+  });
+  renderVariant("var-b", {
+    height: 200, baseWidth: 14, topWidth: 80, tiltX: -22,
+    count: 320, seed: 200, particleSizeMin: 0.6, particleSizeMax: 1.8
+  });
+  renderVariant("var-c", {
+    height: 220, baseWidth: 8, topWidth: 38, tiltX: 0,
+    count: 360, seed: 300, particleSizeMin: 0.6, particleSizeMax: 1.8
+  });
+  renderVariant("var-d", {
+    height: 110, baseWidth: 18, topWidth: 95, tiltX: 0,
+    count: 240, seed: 400, particleSizeMin: 0.6, particleSizeMax: 1.8
+  });
+
+  // ─────────────────────────────────────────────
+  // YEAR SLIDER MOCKUP
+  // ─────────────────────────────────────────────
+  function renderSlider() {
+    const svg = document.getElementById("slider-svg");
+    const startYear = 1900;
+    const endYear = 2026;
+    const trackY = 50;
+    const trackLeft = 40;
+    const trackRight = 960;
+    const trackW = trackRight - trackLeft;
+
+    function yearToX(y) {
+      return trackLeft + ((y - startYear) / (endYear - startYear)) * trackW;
+    }
+
+    let html = "";
+
+    // background track
+    html += `<line x1="${trackLeft}" y1="${trackY}" x2="${trackRight}" y2="${trackY}" stroke="#1a2440" stroke-width="2"/>`;
+
+    // tick marks every decade
+    for (let y = 1900; y <= 2026; y += 10) {
+      const x = yearToX(y);
+      const isCentury = y % 50 === 0;
+      html += `<line x1="${x}" y1="${trackY - (isCentury ? 6 : 3)}" x2="${x}" y2="${trackY + (isCentury ? 6 : 3)}" stroke="#3a4d78" stroke-width="${isCentury ? 1 : 0.6}"/>`;
+      if (isCentury) {
+        html += `<text x="${x}" y="${trackY + 22}" font-family="SF Mono, monospace" font-size="10" fill="#5a6584" text-anchor="middle">${y}</text>`;
+      }
+    }
+
+    // ACTIVE WINDOW: Cross-Bronx 1948-1972
+    const winLeft = yearToX(1948);
+    const winRight = yearToX(1972);
+    const winW = winRight - winLeft;
+
+    // window highlight
+    html += `<rect x="${winLeft}" y="${trackY - 8}" width="${winW}" height="16" fill="#1a2440" stroke="#4a5d8a" stroke-width="0.8" opacity="0.9"/>`;
+    // particle stream above window
+    const streamRng = seededRandom(1948);
+    for (let i = 0; i < 60; i++) {
+      const xx = winLeft + streamRng() * winW;
+      const yy = trackY - 14 - streamRng() * 28;
+      const sz = 0.6 + streamRng() * 1.4;
+      const t = (trackY - 14 - yy) / 28;
+      html += `<circle cx="${xx.toFixed(1)}" cy="${yy.toFixed(1)}" r="${sz.toFixed(1)}" fill="${eraColor(t * 0.8 + 0.2)}" opacity="${(0.4 + (1 - t) * 0.4).toFixed(2)}"/>`;
+    }
+
+    // window label
+    html += `<text x="${(winLeft + winRight) / 2}" y="${trackY - 26}" font-family="SF Mono, monospace" font-size="9" fill="#a8b8d8" text-anchor="middle" letter-spacing="0.5">CROSS-BRONX ACTIVE</text>`;
+    html += `<text x="${winLeft}" y="${trackY + 38}" font-family="SF Mono, monospace" font-size="9" fill="#6a82a8" text-anchor="middle">1948</text>`;
+    html += `<text x="${winRight}" y="${trackY + 38}" font-family="SF Mono, monospace" font-size="9" fill="#6a82a8" text-anchor="middle">1972</text>`;
+
+    // slider thumb at 1962
+    const thumbX = yearToX(1962);
+    html += `<line x1="${thumbX}" y1="${trackY - 18}" x2="${thumbX}" y2="${trackY + 18}" stroke="#d4a574" stroke-width="1.5"/>`;
+    html += `<circle cx="${thumbX}" cy="${trackY}" r="4" fill="#d4a574"/>`;
+    html += `<circle cx="${thumbX}" cy="${trackY}" r="1.8" fill="#f0d4a8"/>`;
+    html += `<text x="${thumbX}" y="${trackY - 22}" font-family="SF Mono, monospace" font-size="9" fill="#d4a574" text-anchor="middle" font-weight="600">1962</text>`;
+
+    // inactive cone outlines (ghost events on the timeline)
+    const inactiveEvents = [
+      {year: 1929, label: "STOCK CRASH"},
+      {year: 1969, label: "STONEWALL"},
+      {year: 1988, label: "TOMPKINS SQ"},
+      {year: 2009, label: "ATLANTIC YARDS"},
+    ];
+    for (const ev of inactiveEvents) {
+      const ex = yearToX(ev.year);
+      // tiny dim cone outline
+      html += `<line x1="${ex - 4}" y1="${trackY - 6}" x2="${ex - 1}" y2="${trackY - 14}" stroke="#3a4d78" stroke-width="0.5" opacity="0.4"/>`;
+      html += `<line x1="${ex + 4}" y1="${trackY - 6}" x2="${ex + 1}" y2="${trackY - 14}" stroke="#3a4d78" stroke-width="0.5" opacity="0.4"/>`;
+    }
+
+    svg.innerHTML = html;
+  }
+  renderSlider();
+</script>
+
+</body>
+</html>

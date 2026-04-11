@@ -1,0 +1,185 @@
+{
+  "_meta": {
+    "baked_at": "2026-04-11T18:48:17Z",
+    "model": "Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL",
+    "backend": "real",
+    "endpoint": "127.0.0.1:30001",
+    "style": "sensory",
+    "total_seconds": 292.5,
+    "ok": 19,
+    "fail": 0
+  },
+  "narrations": {
+    "bronx-1973-08-11-sedgwick": {
+      "text": "The brick walls of 1520 Sedgwick throb with the thump of two turntables, the needle catching the crisp crack of a funk break while the air smells of stale soda and teenage sweat; a flickering fluorescent light throws shadows over the rec room as dancers spin. Clive Campbell, known as DJ Kool Herc, loops that break, stretching it into an endless groove.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "duration_ms": 28320,
+      "backend": "real",
+      "year": 1973,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1974-cedar-park": {
+      "text": "The bass thumps through the cracked brick of Cedar Park as Herc spins the turntables, the streetlight halo flickering over a sea of cotton tees. The crowd leans forward, waiting for the breakbeat that erupts like a drumroll from the night air.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "duration_ms": 19440,
+      "backend": "real",
+      "year": 1974,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1975-bronx-river-houses": {
+      "text": "The Bronx River Houses community center hums with the thump of a turntable, the smell of cheap pizza and incense curling around cracked linoleum as Afrika Bambaataa spins a breakbeat. Kids in faded tracksuits gather, their sneakers scuffing the brick‑stained floor, turning the party into a pulse of politics that rides the break.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "duration_ms": 26400,
+      "backend": "real",
+      "year": 1975,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1975-t-connection": {
+      "text": "The brick walls of T‑Connection on White Plains Road pulse with the low thump of a turntable, neon flickering over sticky linoleum while cheap beer and sweat hang thick in the air. DJs spin Cold Crush Brothers’ loops, and the crowd’s heads bob as the bass shakes the cracked plaster, turning hip‑hop into something you step inside to hear.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "duration_ms": 27120,
+      "backend": "real",
+      "year": 1975,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1976-grandmaster-flash-quick-mix": {
+      "text": "In the dim, brick‑walled basement of a South Bronx apartment, Joseph Saddler—Grandmaster Flash—scratches a crayon‑marked vinyl, his turntable humming like a restless beast as the breakbeat crackles and snaps, slicing the night with frame‑perfect cuts. The vinyl’s warm, oily scent mixes with the metallic tang of soldered cables, while a lone fluorescent bulb casts a stark white glow over his hands as he rewrites the rhythm.",
+      "era_visual_mode": "1970s-bronx-warm",
+      "duration_ms": 30000,
+      "backend": "real",
+      "year": 1976,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1977-blackout-jul-13": {
+      "text": "July 13, 1977, the city’s power flickers off, leaving streets slick with rain and the acrid tang of burnt wiring. Crowds surge through the darkened avenues, dragging home stolen turntables that thump against brick walls, their needles already hunting beats in the humid night.",
+      "era_visual_mode": "1970s-bronx-burning",
+      "duration_ms": 22080,
+      "backend": "real",
+      "year": 1977,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1978-disco-fever": {
+      "text": "The bass rattles the brick walls of Disco Fever, and a cheap polyester shirt clings to the backs of dancers as neon lights sputter over the sticky floor. The DJ spins vinyl while the scent of stale beer and hairspray hangs thick, and every name in the borough steps into the doorway, turning the Bronx basement into a hub for record execs.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 27120,
+      "backend": "real",
+      "year": 1978,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1979-rappers-delight": {
+      "text": "The cheap portable speaker spits out the opening beat, a warm hiss of vinyl and the faint smell of stale coffee drifting from the hallway. The bass rattles the brick façade of a South Bronx tenement as the track loops, while the trio in a New Jersey studio never set foot on that block. Passersby on the corner glance up, their heads bobbing to a rhythm that will soon spill out of the borough.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 30000,
+      "backend": "real",
+      "year": 1979,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1980-cold-crush-brothers": {
+      "text": "The warehouse smells of cheap cologne and aerosol paint, neon buzzes over cracked brick while turntables crackle; Cold Crush Brothers trade tight harmonies and choreographed shouts, their jackets brushing like a live band, and Fantastic 5 fires back with razor‑sharp call‑and‑response that rattles the concrete floor.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 25360,
+      "backend": "real",
+      "year": 1980,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1981-the-message": {
+      "text": "Melle Mel's verse slices through the Bronx night, the bass reverberating off brick walls slick with rain. The smell of wet concrete and fried dough mixes with the distant wail of sirens as the lyrics map the rats and broken glass onto a vinyl groove that critics finally call art.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 22400,
+      "backend": "real",
+      "year": 1981,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1982-wild-style-filming": {
+      "text": "Charlie Ahearn rolls the camera on a cracked lot where spray cans hiss and diesel fumes curl around brick walls slick with fresh paint. Lee Quinones flips his cap in a faded bomber jacket as the boom mic catches the echo of a distant subway, and the whole block pulses like a live mixtape.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 23120,
+      "backend": "real",
+      "year": 1982,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1982-planet-rock": {
+      "text": "The 808 hits like a subway car braking on the platform, shaking the brick walls of the Bronx club. The synth line slices through the haze of cheap cologne and fried dough, pulling every kid on the block to mimic its robotic chant. Your hands still remember the rubbery grip of the cheap cassette case as you spin it on the turntable.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 26640,
+      "backend": "real",
+      "year": 1982,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1983-rock-steady-roxy": {
+      "text": "The vinyl’s bass rattles the cracked brick walls as skaters grind, neon flickers over cheap perfume and stale beer, and a low‑key thump syncs with the scrape of skates. Rock Steady Crew drops a break while Basquiat’s graffiti tags glow beside a Warhol‑slicked poster, and the crowd swells with downtown art kids and Bronx kids off the train. The beat spreads, stitching the boroughs into a single pulse that never folds back.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 30000,
+      "backend": "real",
+      "year": 1983,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1984-fashion-moda": {
+      "text": "The low hum of vinyl needles mixes with the scrape of spray cans as you step into Fashion Moda on Third Avenue, where the brick walls glow amber from streetlights and the air smells of fresh paint and cheap cologne. Stefan Eins watches a teenage MC freestyle beside John Ahearn's plaster casts, while Lee Quinones and a German visitor trade ideas over graffiti‑splattered tables.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 30000,
+      "backend": "real",
+      "year": 1978,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1984-beat-street": {
+      "text": "The camera follows a crew painting a wall as boom boxes thump through the night, the scent of hot tar and fresh spray paint clinging to brick walls. Their colors flash under flickering streetlights, the beat syncing with the pulse of the block.",
+      "era_visual_mode": "1980s-bronx-grit",
+      "duration_ms": 19520,
+      "backend": "real",
+      "year": 1984,
+      "niche": "hip-hop",
+      "style": "sensory"
+    },
+    "bronx-1959-cross-bronx-expressway-displacement": {
+      "text": "The demolition crew’s jackhammers pound the brick facades, sending up clouds of gray dust that cling to the faded blue work shirts of the last families packing their trunks. Through the haze, a lone accordion wails from a doorway as a woman clutches a worn rosary, her breath fogging in the cold November air.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "duration_ms": 24720,
+      "backend": "real",
+      "year": 1959,
+      "niche": "immigration",
+      "style": "sensory"
+    },
+    "bronx-1965-puerto-rican-migration": {
+      "text": "The clatter of a tinny radio blends with the sharp scent of fresh coffee from a corner bodega as men in guayaberas step off the bus onto cracked brick, their shadows stretching over graffiti‑tagged walls. A distant factory whistle from the newly opened garment shop rings out, mixing with the hiss of a subway train and the steady murmur of Spanish chatter on the street.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "duration_ms": 29680,
+      "backend": "real",
+      "year": 1948,
+      "niche": "immigration",
+      "style": "sensory"
+    },
+    "bronx-1923-loews-paradise": {
+      "text": "The marble floor reflects the glow of stained‑glass sconces, and the brass organ sighs as the velvet drape lifts. Outside, the Bronx night hums with distant streetcars, while the lobby smells of fresh paint and polished wood.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "duration_ms": 18000,
+      "backend": "real",
+      "year": 1929,
+      "niche": "demolished-theaters",
+      "style": "sensory"
+    },
+    "bronx-1968-bronx-opera-house": {
+      "text": "The brick facade crumbles as demolition crews swing sledgehammers, dust rising like old applause. A distant saxophone wails from a passing streetcar, mixing with the acrid smell of sawdust and gasoline. I feel the cold wind slip through the torn curtains that once framed vaudeville stars, and the street hums with the ghost of applause.",
+      "era_visual_mode": "1960s-bronx-cool",
+      "duration_ms": 26960,
+      "backend": "real",
+      "year": 1913,
+      "niche": "demolished-theaters",
+      "style": "sensory"
+    }
+  }
+}

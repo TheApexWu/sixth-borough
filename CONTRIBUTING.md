@@ -26,9 +26,11 @@ The stub server runs the same `POST /narrate` contract as the real Nemotron. You
 | Mode | What it is | Who uses it |
 |---|---|---|
 | `stub` | Templated narration. No model. Any laptop. | Carson, James, Marvens, Alex (off-box) |
-| `real` | Nemotron-3-Nano via llama.cpp. GN100 only. | Alex (at the venue) + Sat night integration |
+| `real` | NVIDIA Nemotron-3 Nano 30B via llama.cpp on the GB10. GN100 only. | Alex (at the venue) + Sat night integration |
 
 Switch with `NARRATION_MODE=stub` or `NARRATION_MODE=real`. Same Pydantic models, same HTTP contract.
+
+**Live as of Apr 11 ~14:45 ET**: real backend on `:30001` returning `backend:"real"` for the canonical Sedgwick event in ~23s. Pre-baked cache at `data/narration_cache.json` (all 19 events) is venue-WiFi insurance.
 
 ---
 
@@ -36,63 +38,70 @@ Switch with `NARRATION_MODE=stub` or `NARRATION_MODE=real`. Same Pydantic models
 
 ### `renderer-rust` — Carson
 
-**Goal:** Bevy 0.16 renderer (Rust + wgpu). Loads the seed JSON. Renders a scene with PS2 post-process. Calls `/narrate` on pin click. Ingests Marvens's static point clouds via `bevy_pointcloud` and animated point clouds via custom WGSL shader sampling OpenVAT textures.
+**Goal:** Bevy 0.18.1 renderer (Rust + wgpu, native + WASM target). Loads the seed JSON. Renders a scene with PS2 post-process. Calls `/narrate` on pin click. Ingests Marvens's low-poly Blender ghost meshes (`assets/ghosts/MANIFEST.json`) and migration cone primitives (`assets/migration-flows/MANIFEST.json`) via Bevy's stock `SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(...)))`.
 
-**Engine pin:** Bevy 0.16 (mid-2025), NOT 0.18. Plugin compat reasons. Bumping to 0.17 OK if `bevy_pointcloud` works on it.
+**Engine pin:** Bevy 0.18.1. The earlier 0.16 pin was driven by `bevy_pointcloud` plugin compat — once the team moved to glb-only single-format ghosts (Apr 11 ~10:00 ET, `d6470aa`), the plugin was dropped and the version constraint was lifted. Carson shipped `819a7f3 wasm` + `54a431f cicd` Apr 11 11:59 ET on `renderer-rust`.
 
 **Owns:** `src/renderer/` only. Don't touch `src/orchestrator/` or `src/data/`.
 
-**Pair with Marvens Friday night** to lock the file format contract in `pointcloud-pipeline/README.md` BEFORE writing ingest code.
+**WASM caveat**: cloud build at `sixthborough.nyc` spawns ZERO ghosts (cfg-gated empty manifest fallback). Don't pitch the cloud URL as the main demo. The native build on the GB10 is the demo.
 
-**First PR done when:** window opens, loads seed JSON, time slider scrubs, one niche filter button works, one narration call returns text from stub, one PS2 shader stage running, one static point cloud loaded via `bevy_pointcloud`.
+**First PR done when:** window opens, loads seed JSON, time slider scrubs, one niche filter button works, one narration call returns text from stub, one PS2 shader stage running, one ghost mesh loaded from `assets/ghosts/MANIFEST.json`.
 
 **Doesn't need:** GN100, Nemotron, llama.cpp.
 
 ---
 
-### `webgl-fallback` — James
+### `feature/sketch-overlay` — James
 
-**Goal:** WebGL + Three.js renderer (likely a port of `feature/sketch-overlay`). Same `/narrate` endpoint as Carson. Era-conditioned cutscenes.
+**Goal:** deck.gl + maplibre browser renderer. Year slider 1700-2026, 8 architectural eras color-coded by construction year, guided 8-era tour with cutscenes, GSAP motion engine, dev panel with feature flags. Same `/narrate` endpoint as Carson. **Already shipped** the 750 NYPL Milstein photo index across all 5 boroughs (`bde0148`, Apr 11 11:37 ET).
 
-**Owns:** `web/` only. Don't touch `src/`.
+**Owns:** `index.html`, `data/manhattan_compact.json`, `cultural-content/oldnyc/`, `scripts/export_buildings.py`, `scripts/build_oldnyc_index.py`. Don't touch `src/`.
 
-**First PR done when:** browser-renderable demo with year slider, Sobel pass, niche filter, narration call working. At least one of the 8 cutscenes ported.
+**Borough expansion**: extend `scripts/export_buildings.py` for the other 4 boroughs in the same `{p, h, y, b}` JSON schema. Output: `data/{borough}_compact.json` × 4 using Building Footprints LiDAR `height_roof`. NO .glb generation. ~30-60 min once branch strategy is decided post-standup.
 
-**Test against the stub:** `python -m http.server 8080` in `web/`, open in browser, scrub year, click pin, see narration overlay.
-
-**Bonus:** safety net — if the Bevy renderer doesn't stabilize on the GN100 by Sat 4 PM, the demo runs from this browser path.
+**Bonus:** breadth surface — independent of Carson's native build. The merge of both renderers IS the demo. Both consume the same data spine.
 
 ---
 
 ### `pointcloud-pipeline` — Marvens
 
-**Goal:** Blender → PLY (static) and Blender → glb-with-OpenVAT (animated) export pipelines + first sample point cloud asset (1520 Sedgwick rec room interior, 1973). **Pair with Carson Friday night** to lock the file format contract.
+**Goal:** Blender → glb export pipelines for **(1)** low-poly ghost meshes for demolished buildings, and **(2)** migration cone primitives per `docs/MIGRATION_FLOW_PROTOTYPE.html` design grammar (Cross-Bronx Expressway 1948-1972 as canonical anchor).
 
-**Two formats from day one:**
-- **Static ghosts**: PLY (binary, little-endian). Loaded by `bevy_pointcloud`. Use for architectural exteriors and frozen interiors.
-- **Animated ghosts (the ODESZA technique)**: glb with embedded base mesh + OpenVAT vertex animation texture. Loaded by Carson's custom WGSL shader. Use for the killer demo moments.
+**glb-only single-format contract** (Apr 11 ~10:00 ET, `d6470aa`):
+- ~2K verts per mesh
+- Vertex normals only (no PBR)
+- Vertex colors for era band encoding
+- Cool PS2 palette per `docs/VISUAL_DIRECTION.md` (deep navy → washed periwinkle → memory blue + dusty gold accent for origin click-target)
+- **Anti-patterns**: no red/orange/yellow, no fast turbulent motion, no plume shape, no PBR/photoreal
 
-**Owns:** `pointcloud-pipeline/` and `assets/pointclouds/` only.
+**Sibling manifest pattern**: each asset family gets its own MANIFEST.json. Drop ghosts into `assets/ghosts/` + bump `assets/ghosts/MANIFEST.json`. Drop migration cones into `assets/migration-flows/` + bump `assets/migration-flows/MANIFEST.json`. The two loaders are independent.
 
-**First PR done when:** README documents both file formats (already in place), one preview PNG committed, one MANIFEST.json entry committed, actual asset synced to shared storage.
+**Owns:** `pointcloud-pipeline/` (legacy directory name, format is glb-only now), `assets/ghosts/`, `assets/migration-flows/`.
 
-**Authoring stack:** Blender + OpenVAT addon (sharpen3d/openvat) + Meshroom or COLMAP for photogrammetry from Joe Conzo Jr.'s Cornell archive (6,000+ free, geocoded negatives at digital.library.cornell.edu/collections/conzo).
+**Sun deliverable (locked target):**
+- 1-2 ghost meshes per the visual direction contract
+- 1 migration cone prototype anchored to Cross-Bronx (most cinematic, best-documented, ~60K Caro number)
+
+One canonical example sells the framework. Other events stay as v2 catalog post-hack.
+
+**Authoring stack:** Blender + vanilla glTF export.
 
 **Doesn't need:** code skills, GN100, the narration loop, the renderer to be done.
 
-**Asset rule:** large `.ply` / `.glb` files are gitignored. Manifest JSON + preview PNGs committed. Files sync via shared storage.
+**Asset rule:** large `.glb` files are gitignored. Manifest JSON + preview PNGs committed. Files sync via shared storage.
 
 ---
 
 ### `orchestrator-narration` — Alex
 
-**Goal:** Real Nemotron-3-Nano path that swaps in for the stub when `NARRATION_MODE=real`. llama.cpp's OpenAI-compatible API.
+**Goal:** Real path that swaps in **NVIDIA Nemotron-3 Nano 30B (A3B variant, Q8_K_XL GGUF)** from the NVIDIA Nemotron model family when `NARRATION_MODE=real`. llama.cpp's OpenAI-compatible API on `:8090`, FastAPI orchestrator wrapping it on `:30001`.
 
 **Owns:** `src/orchestrator/main.py`, `narration_real.py`, GN100 runbook. Don't touch `narration_stub.py`.
 
-**First PR done when:** `narration_real.py` parses the same Pydantic models the stub uses, returns the same response shape, mode-switch test passes both paths.
+**First PR done when:** `narration_real.py` parses the same Pydantic models the stub uses, returns the same response shape, mode-switch test passes both paths. **Done as of Apr 11 morning** (`4ce1930` — reasoning_content fallback + LLAMA_MAX_TOKENS bump).
 
-**Test:** stub locally on MacBook, real on the GN100 at the venue.
+**Test:** stub locally on MacBook, real on the GN100 at the venue. Verified live Apr 11 14:45 ET.
 
 ---
 
@@ -112,15 +121,16 @@ Switch with `NARRATION_MODE=stub` or `NARRATION_MODE=real`. Same Pydantic models
 
 | Path | Owner |
 |---|---|
-| `src/renderer/` | Carson |
-| `web/` | James |
-| `pointcloud-pipeline/` + `assets/pointclouds/` | Marvens |
+| `src/renderer/` | Carson (also `renderer-rust` branch) |
+| `index.html`, `data/manhattan_compact.json`, `cultural-content/oldnyc/`, `scripts/export_buildings.py`, `scripts/build_oldnyc_index.py` | James (also `feature/sketch-overlay` branch) |
+| `pointcloud-pipeline/` + `assets/ghosts/` + `assets/migration-flows/` | Marvens |
 | `src/orchestrator/main.py` + `narration_real.py` | Alex |
 | `src/data/schema.py` | Alex (ping before changing) |
-| `data/events-seed.json` | Alex / James (rolling, small PRs) |
-| `scripts/dev-stub.sh` + `setup-gn100.sh` | Alex (stable) |
+| `data/events-seed.json` + `data/narration_cache.json` | Alex / James (rolling, small PRs) |
+| `scripts/dev-stub.sh` + `scripts/start-llama-nano.sh` | Alex (stable) |
 | `tests/` | area owner adds tests for their area |
 | `docs/DECISIONS.md` | anyone (append-only) |
+| `docs/PRODUCT_WEDGES.md` + `docs/DEMO_VIDEO_SCRIPT.md` + `docs/VISUAL_DIRECTION.md` | Alex (pitch surface) |
 
 ---
 

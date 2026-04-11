@@ -4,28 +4,37 @@ This document is the **single source of truth** for what tech we are using and w
 
 ---
 
-## The decision (Friday night, lock by midnight)
+## The locked stack (as of Apr 11 ~15:30 ET)
 
 | Layer | Pinned choice | Backup if it fails |
 |---|---|---|
-| Narration LLM | **Nemotron-3-Nano-30B-A3B** (Q8 GGUF) via **llama.cpp** | Q4_K_M quantization, or Ollama with `nemotron-mini` (4B) |
-| Narration runtime | **llama.cpp** built from source with `-DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="121"` | Ollama (slower but easier) |
-| Narration API | OpenAI-compatible `/v1/chat/completions` on port `:30000` | Same |
-| Vision model (optional) | **Live VLM WebUI** + Ollama backend (Gemma 3 or Llama Vision) | Drop the vision pipeline entirely |
-| Renderer (primary) | **Bevy 0.16** (Rust + wgpu) (Carson) | **WebGL + Three.js** sketch-overlay branch (James) |
-| Renderer post-process | Sobel + vignette + palette quantization | Same in both paths |
-| Static point clouds | **`bevy_pointcloud`** plugin (Potree-based, stable Rust, PLY ingest) | Custom WGSL fallback if plugin compat breaks |
-| Animated point clouds | **OpenVAT** (Blender addon) → glb with embedded vertex animation texture, sampled in custom WGSL | glTF morph targets (lower vertex count, simpler) |
-| Asset authoring (3D / point clouds) | **Blender** (Marvens) | — |
-| Asset interop format | **glTF / glb** (vanilla Blender exporter) + **PLY** (binary, little-endian) for static point clouds | Blenvy addon for Bevy-component-from-Blender workflow (optional, evaluated Sat morning) |
-| Orchestrator | **Python (FastAPI)** | Node if Python deps fail |
+| Narration LLM | **NVIDIA Nemotron-3 Nano 30B (A3B variant)** from the NVIDIA Nemotron model family, Q8_K_XL GGUF, served via llama.cpp | Q4_K_M quantization (smaller, lower quality) |
+| Narration runtime | **llama.cpp** built from source with `-DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="121"` for GB10's sm_121 | Ollama (slower path, used for stub fallback only) |
+| Narration API | OpenAI-compatible `/v1/chat/completions` on **port `:8090`** (llama-server) wrapped by FastAPI orchestrator on **port `:30001`** for the real path; stub orchestrator on `:30000` as safety net | Same |
+| Renderer (encounter mode, native, primary) | **Bevy 0.18.1** (Rust + wgpu) — Carson, on `renderer-rust` branch | **deck.gl + maplibre** browser path (James, on `feature/sketch-overlay`) as the breadth surface, also serves as fallback if native crashes |
+| Renderer (lobby mode, web, breadth surface) | **deck.gl + maplibre** with year slider 1700-2026, 8 architectural eras, 750 NYPL Milstein photos georeferenced across 5 boroughs | Same |
+| Renderer post-process | PS2-era constraint set: low-poly + vertex normals only + Sobel edge detection + palette quantization + fog falloff + affine warping | Same in both renderers |
+| Ghost mesh format | **glb only** (low-poly Blender meshes, ~2K verts, vertex normals only). Single-format contract per `pointcloud-pipeline/README.md`. Loaded via Bevy's stock `SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(...)))` | Same |
+| Migration flow primitive | **Sibling manifest pattern** at `assets/migration-flows/MANIFEST.json` (separate from ghost manifest). Cone with magnitude/spread/tilt/era encoding per `docs/MIGRATION_FLOW_PROTOTYPE.html` | Same |
+| Asset authoring | **Blender** (Marvens) with vanilla glb export | — |
+| Orchestrator | **Python (FastAPI)** with Pydantic models | — |
+| Web build / WASM target | **Bevy → WASM via Trunk + Cloudflare Pages** (Carson, `renderer-rust` branch, `819a7f3` wasm + `54a431f` cicd) | Static deck.gl prototype as fallback |
 | OS / runtime on box | DGX OS on the Acer Veriton GN100 | Provided, can't swap |
+
+**Note on what was dropped (was previously pinned, no longer in the stack):**
+- ~~`bevy_pointcloud` plugin~~ — dropped Apr 11 ~10:00 ET when Carson moved to glb-only single-format contract (`d6470aa`). Was the binding constraint pinning Bevy to 0.16; now removed.
+- ~~PLY format~~ — dropped same time, glb is the single asset format.
+- ~~OpenVAT vertex animation textures~~ — dropped when Marvens's deliverable shifted to "low-poly Blender ghosts" rather than animated point clouds. The ODESZA technique is reserved for post-hack v2.
+- ~~Bevy 0.16~~ — Carson bumped to **0.18.1** in `renderer-rust` once the plugin constraint was gone.
+- ~~Live VLM WebUI~~ — vision pipeline never started; not part of the submission.
 
 ---
 
-## Nemotron-3-Nano setup (the canonical path per NVIDIA's official playbook)
+## NVIDIA Nemotron-3 Nano 30B setup (the canonical path per NVIDIA's official playbook)
 
 Source: NVIDIA `dgx-spark-playbooks/nvidia/nemotron/README.md`. Cached locally at `~/Desktop/spark-hack-cache/dgx-spark-playbooks/`.
+
+**Why this matters for the rubric**: the Spark Hack judging breakdown awards **15 points for "The Stack"** based on whether the team uses a major NVIDIA library/tool — NeMo Models is explicitly listed as qualifying. Nemotron is NVIDIA's open model family and IS a NeMo model. The phrase **"NVIDIA Nemotron-3 Nano 30B from the NVIDIA Nemotron model family"** should appear in the demo video, the README, and any sponsor-facing pitch surface. Saying "Nemotron via llama.cpp" understates the rubric attribution. llama.cpp is the inference engine; **the model is the NVIDIA artifact**.
 
 ### Hardware
 - DGX Spark with GB10 GPU
@@ -69,14 +78,20 @@ hf download unsloth/Nemotron-3-Nano-30B-A3B-GGUF \
 ```
 **This is the single biggest network risk on bad wifi. Start it FIRST after box checkout. Download is resumable.**
 
-### Step 6 — start the server
+### Step 6 — start the server (use the idempotent launcher)
+```bash
+./scripts/start-llama-nano.sh
+```
+
+Or manually (note port `:8090`, not `:30000` — `:30000` is reserved for the stub orchestrator on the same box):
 ```bash
 ./bin/llama-server \
   --model ~/models/nemotron3-gguf/Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL.gguf \
   --host 0.0.0.0 \
-  --port 30000 \
+  --port 8090 \
   --n-gpu-layers 99 \
   --ctx-size 8192 \
+  --jinja \
   --threads 8
 ```
 
@@ -108,63 +123,35 @@ Smaller download, lower output quality, same API.
 
 ---
 
-## Live VLM WebUI setup (optional vision pipeline)
+## Renderer asset pipeline (Bevy 0.18.1 + Blender, glb-only)
 
-Source: NVIDIA `dgx-spark-playbooks/nvidia/live-vlm-webui/README.md`. Cached locally.
+The native renderer is **Bevy 0.18.1** (Rust, built on wgpu). Bevy was chosen over raw wgpu because the built-in animation graph, the mature first-party glTF loader, the ECS, and the WASM target give Marvens's Blender work a clean integration path without scene-graph plumbing from scratch.
 
-### What it gives us
-- Real-time WebRTC video streaming to a VLM backend
-- OpenAI-compatible API
-- Web UI at `https://<SPARK_IP>:8090`
-- Backends: **Ollama** (recommended), vLLM, SGLang, NIM, or cloud APIs (we will use Ollama)
+### Why Bevy 0.18.1 (not 0.16)
 
-### Why we'd use it
-The vision pipeline lets the narration model "see" the rendered scene. Instead of narrating from a hardcoded era description, the system can take a screenshot of the renderer output, ask the VLM "describe this scene," then feed that description into the Nemotron narration prompt for grounding. **This is a +10 Frontier Creativity move** ("vision models reading the rendered map") if we have time.
+The earlier 0.16 pin was driven by `bevy_pointcloud` plugin compatibility. Once the team moved to **glb-only single-format ghosts** (Apr 11 ~10:00 ET, commit `d6470aa`), `bevy_pointcloud` was no longer needed and the version constraint was lifted. Carson bumped to 0.18.1 in `renderer-rust` (`819a7f3` wasm + `54a431f` cicd) to get the latest WASM target and webgl2 support for the Cloudflare Pages deploy path.
 
-### Setup
-1. Install Ollama on the Spark (per `nvidia/ollama/` playbook)
-2. Pull a vision model: `ollama pull gemma3:vision` or `ollama pull llama3.2-vision`
-3. Install Live VLM WebUI via pip
-4. Start it pointing at Ollama on the box
-5. Access at `https://localhost:8090`
+### Blender → Bevy gold path (glb-only)
 
-### Commit decision
-**Skip this entirely if Nemotron narration isn't running by Sat noon.** Vision is a stretch goal, not a core feature. Don't let it distract from the narration loop.
+1. **Marvens authors in Blender.** City geometry, ghost meshes for demolished buildings, migration cone primitives — all in Blender.
+2. **Vanilla glb export** for everything. Material constraint: **vertex normals only**, low poly (~2K verts per ghost), vertex colors for era band encoding, no procedural materials, no PBR.
+3. **Drop into `assets/ghosts/`** for ghost meshes or `assets/migration-flows/` for migration cones. Add an entry to the corresponding `MANIFEST.json` (sibling pattern — one manifest per asset family, not nested).
+4. **Carson reads from `MANIFEST.json`** in the Bevy ECS startup system, spawns one entity per asset via `SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(...)))`, and the rendering systems handle the rest.
 
----
+### Sibling manifest pattern (locked Apr 11)
 
-## Renderer asset pipeline (Bevy + Blender + point clouds)
+Each asset family gets its own manifest, not a unified one:
 
-The renderer is **Bevy 0.16** (Rust, built on wgpu). Bevy was chosen over raw wgpu because the built-in animation graph (since 0.14), the mature glTF loader, the ECS, and the plugin ecosystem make Marvens's Blender work integrate cleanly without writing scene-graph plumbing from scratch.
+```
+assets/ghosts/MANIFEST.json              # low-poly Blender ghosts (Marvens v1)
+assets/migration-flows/MANIFEST.json     # migration cones (Marvens v1, Cross-Bronx canonical)
+```
 
-### Why Bevy 0.16, not 0.18
-
-Bevy 0.18 (released January 2026) is the latest, but the third-party plugin ecosystem — especially `bevy_pointcloud` — is most reliably aligned with **Bevy 0.16** (released mid-2025). 0.16 is well past the dependency-age cutoff (Mar 27 2026), is documented and stable, and avoids the "newest version, broken plugins" trap. If Carson confirms 0.17 plugin compatibility on his machine, 0.17 is acceptable. **Do not bump to 0.18 mid-build.**
-
-### Blender → Bevy gold path
-
-1. **Marvens authors in Blender.** City geometry, character placeholders, animated camera moves, point cloud ghosts — all in Blender.
-2. **Vanilla glTF export** for everything except static point clouds. `.glb` (binary) for production, `.gltf` (JSON + sidecar) only for inspection. Material constraint: **Principled BSDF only**, no procedural materials.
-3. **Static point clouds** export as **PLY** (binary, little-endian). Loaded via the `bevy_pointcloud` plugin (Potree-based renderer, stable Rust, no nightly required).
-4. **Animated point clouds** (Marvens's ODESZA-tour technique) use **OpenVAT** — a Blender-native addon that captures vertex animation from Blender's evaluated dependency graph (Geometry Nodes, modifiers, shapekeys, simulations all work) and encodes the per-frame vertex positions into a Vertex Animation Texture. The base mesh + VAT texture export as `.glb`, and a custom WGSL vertex shader on the Bevy side samples the VAT to drive the animation. GPU-side, fast, the AAA standard for non-skeletal animation.
-5. **Drop into `assets/pointclouds/`** (or `assets/scenes/` for full scenes). Add an entry to `assets/pointclouds/MANIFEST.json` with slug + era + niche tags + `animated: bool` flag. Large binary files are gitignored; manifest entries + preview PNGs are committed; the actual assets sync via shared storage.
-6. **Carson reads from `MANIFEST.json`** in the Bevy ECS startup system, spawns one entity per ghost, attaches the right component (`StaticPointCloud` or `AnimatedPointCloud`), and the rendering systems handle the rest.
+The two loaders are independent in the Bevy ECS startup phase. New asset families add new sibling manifests, not nested keys. Reasoning: keeps the JSON schemas independent so Marvens's two deliverables don't block each other, and lets the migration-flows loader evolve separately as the data layer grows.
 
 ### Why this collaboration model works
 
-Marvens never touches Rust. Carson never touches Blender. The contract between them is the file format spec in `pointcloud-pipeline/README.md`. They sync **once** Friday night to lock the contract (vertex count targets, file naming, MANIFEST schema), then they can iterate independently for the rest of the weekend. Marvens drops a new ghost into shared storage + bumps the manifest, Carson pulls and the renderer ingests it on next launch. Real-time hot reload is a Sat-night stretch goal.
-
-### Bevy plugin shopping list (all stable Rust, all >2 weeks old)
-
-| Plugin | Purpose | Notes |
-|---|---|---|
-| `bevy_gltf` | First-party glTF loader | Built into Bevy core |
-| `bevy_animation` | First-party animation graph | Built into Bevy core (0.14+) |
-| `bevy_pointcloud` (rlamarche) | Static PLY point cloud rendering | Potree-based, stable Rust |
-| OpenVAT (Blender addon, Marvens-side) | Vertex animation texture authoring | Blender extension |
-| `bevy_mod_picking` | Click-to-select for pin interaction | Mature, well-maintained |
-
-**Explicitly NOT using `bevy_gaussian_splatting`** for the hackathon. It exists, it's interesting, but it requires nightly Rust for default features and adds risk we don't need. Save it for V1 if we want the more "neural rendering" aesthetic.
+Marvens never touches Rust. Carson never touches Blender. The contract between them is `pointcloud-pipeline/README.md` (despite the legacy directory name; the format is glb-only now). Marvens drops a new ghost into shared storage + bumps the relevant manifest, Carson pulls and the renderer ingests it on next launch.
 
 ---
 
@@ -182,18 +169,20 @@ Marvens never touches Rust. Carson never touches Blender. The contract between t
 
 | Tech | Why not |
 |---|---|
-| GPT-4 / Claude / any cloud LLM API | **Zero points on the NVIDIA Stack score.** Local-only is the entire pitch. |
-| NeMo Framework (the Python toolkit) | NeMo's modern focus is speech/ASR/TTS — not the right tool for our LLM narration use case. The NVIDIA-recommended path for LLM inference on DGX Spark is llama.cpp, per their own playbook. We use the playbook path. |
+| GPT-4 / Claude / any cloud LLM API | **Zero points on the NVIDIA Stack score** per the rubric ("Merely calling GPT-4 via API gets 0 points here"). Local-only is the entire pitch. |
+| NeMo Framework (the Python toolkit) | NeMo Framework's modern focus is speech/ASR/TTS — not the right tool for our LLM narration use case. The NVIDIA-recommended path for LLM inference on DGX Spark is llama.cpp serving NVIDIA Nemotron models, per their own playbook. We use the playbook path. **The model attribution to the NVIDIA Nemotron family still scores The Stack** — see the "NeMo Models" line in the rubric. |
 | TensorRT-LLM | More setup overhead than llama.cpp for the same outcome in 38 hours |
 | vLLM | Higher throughput than we need; llama.cpp's OpenAI API is enough |
 | Fine-tuning | We have 38 hours. Pretrained inference only. |
 | OpenClaw | Only relevant for the OpenClaw bounty (RTX 5090). Cultural Impact track does not need it. |
+| Predictive ML / gentrification forecasting | Locked out by thesis (`docs/PRODUCT_WEDGES.md`): "we don't predict gentrification, we trace it from the receipts." Predictive overlays read as extraction theater to community-data audiences. |
+| Vision pipeline (Live VLM WebUI / Ollama vision) | Was a stretch goal; never started; not part of submission. |
 
 ---
 
 ## Cultural events schema (the data layer that drives niche discovery)
 
-The cultural intelligence layer is a static JSON file at `data/events-bronx-hiphop-seed.json` (for the demo). Hand-curated, ~30 events. Schema:
+The cultural intelligence layer is a static JSON file at `data/events-seed.json`. Hand-curated, **19 events** (Apr 11 ~14:50 ET, all 19 pre-baked through the real backend into `data/narration_cache.json` as venue-WiFi insurance). Schema:
 
 ```json
 {
@@ -275,9 +264,9 @@ This template gives Nemotron enough structure that the niche voice stays consist
 | Nemotron-3-Nano GGUF Q8_K_XL (unsloth) | 4 months ago | ✅ Pass |
 | Live VLM WebUI | Nov 4 2025 (~5 months) | ✅ Pass |
 | Rust + wgpu | Years old | ✅ Pass |
-| Bevy 0.16 | Released mid-2025 (~10 months) | ✅ Pass |
-| `bevy_pointcloud` (rlamarche) | Months old | ✅ Pass |
-| OpenVAT Blender addon (sharpen3d) | Months old | ✅ Pass |
+| Bevy 0.18.1 | Released January 2026 (~3 months) | ✅ Pass |
+| ~~`bevy_pointcloud`~~ | Dropped Apr 11 ~10:00 ET when team moved to glb-only (`d6470aa`) | n/a |
+| ~~OpenVAT Blender addon~~ | Dropped Apr 11 ~14:00 ET when Marvens's deliverable shifted from animated point clouds to low-poly Blender ghosts | n/a |
 | Blender (point cloud authoring) | 20+ years old | ✅ Pass |
 | glTF / glb format | 2017 spec, years of tooling | ✅ Pass |
 | AliceVision Meshroom (photogrammetry) | Years old | ✅ Pass |
@@ -301,10 +290,20 @@ These words **must** appear in the recorded demo:
 - "DGX Spark"
 - "GB10 Grace Blackwell Superchip"
 - "128 gigabytes of unified memory"
-- "Nemotron-3-Nano"
+- **"NVIDIA Nemotron"** model family attribution (CRITICAL — see rubric note below)
 - "running locally"
 - "no internet connection at runtime"
 - The unplug-cable moment with the line: "*Everything you're about to see runs on the box, with the cable on the floor, because computational ghosts need local hardware.*"
+
+**Critical rubric note (Apr 11 ~15:30 ET pass)**: the phrase "Nemotron" alone does NOT lock the 15 NVIDIA Stack pts unambiguously. The rubric awards The Stack score on use of NVIDIA libraries/tools and explicitly lists **NeMo Models** as qualifying. Nemotron IS in the NeMo model family — but only if the team **names it as such**. The locked attribution phrase is:
+
+> "NVIDIA Nemotron-3 Nano 30B from the NVIDIA Nemotron model family, running on NVIDIA DGX Spark hardware."
+
+Or, slightly shorter for the demo postscript:
+
+> "a 30-billion-parameter model from NVIDIA's Nemotron model family, running on this box."
+
+Saying "Nemotron via llama.cpp" reads as "they're just using llama.cpp." Saying "from NVIDIA's Nemotron model family on NVIDIA DGX Spark" is what locks the rubric attribution.
 
 If the recorded video does not contain these phrases, we lose 15 of the 30 NVIDIA Ecosystem points. Do not skip.
 

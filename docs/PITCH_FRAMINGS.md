@@ -1,5 +1,16 @@
 # Pitch Framings — Discussion Doc for Saturday Morning
 
+> **🔒 LOCKED Apr 11 morning.** The thesis, the 90-second script, the Q&A pivots, and the sponsor verbatim phrase placement all live in **`docs/DEMO_VIDEO_SCRIPT.md`**. Rehearse from that doc, not this one.
+>
+> **The locked thesis (one sentence):**
+> *Sixth Borough is cultural memory infrastructure that runs on the community's own hardware instead of someone else's cloud.*
+>
+> **The locked spine:** Framing D cold open → Framing A "we built the opposite" claim → Framing E technical brag baked into the demo postscript → Framing A unplug close. Plus the new "cultural memory infrastructure" reframe layered over the top, which replaces "time machine" as the internal language. "Time machine" survives only as the door hook, never as the thesis.
+>
+> Framings A–E below are preserved as the discussion record from the overnight draft. They are no longer the artifact you rehearse from.
+
+---
+
 **For:** Alex + Carson + James + Marvens
 **When:** Saturday Apr 11 morning, before we lock the demo video script
 **Goal:** Pick ONE framing for the 30-second elevator pitch + the demo video. Reinforce shared identity.
