@@ -1369,6 +1369,11 @@
   <div class="sub">NYC / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
 </div>
 
+<div id="layer-toggles" style="position:fixed; bottom:120px; left:24px; z-index:45; display:flex; flex-direction:column; gap:6px;">
+  <button id="toggle-immigration" onclick="toggleImmigration()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#ffc870; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">IMMIGRATION: OFF</button>
+  <button id="toggle-landmarks" onclick="toggleLandmarks()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#fff; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">LANDMARKS: ON</button>
+</div>
+
 <div id="legend"></div>
 
 <div id="immigration-origins-panel">
@@ -5051,6 +5056,32 @@ function flyToWTC() {
       transitionDuration: 1800, transitionInterpolator: new deck.FlyToInterpolator(),
     },
   });
+}
+
+function toggleImmigration() {
+  const btn = document.getElementById('toggle-immigration');
+  const on = !featureFlags.immigrationFlow;
+  featureFlags.immigrationFlow = on;
+  featureFlags.immigrationGlow = on;
+  featureFlags.immigrationSettlers = on;
+  featureFlags.immigrationOrigins = on;
+  btn.textContent = 'IMMIGRATION: ' + (on ? 'ON' : 'OFF');
+  btn.style.borderColor = on ? '#ffc870' : '#333';
+  if (on) {
+    document.getElementById('immigration-origins-panel').style.display = 'block';
+  } else {
+    document.getElementById('immigration-origins-panel').style.display = 'none';
+  }
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
+}
+
+function toggleLandmarks() {
+  const btn = document.getElementById('toggle-landmarks');
+  featureFlags.demolishedLandmarks = !featureFlags.demolishedLandmarks;
+  btn.textContent = 'LANDMARKS: ' + (featureFlags.demolishedLandmarks ? 'ON' : 'OFF');
+  btn.style.borderColor = featureFlags.demolishedLandmarks ? '#fff' : '#333';
+  btn.style.color = featureFlags.demolishedLandmarks ? '#fff' : '#666';
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
 }
 
 function updateVisibleCount() {
