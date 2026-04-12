@@ -11,14 +11,13 @@ This document is the **single source of truth** for what tech we are using and w
 | Narration LLM | **NVIDIA Nemotron-3 Nano 30B (A3B variant)** from the NVIDIA Nemotron model family, Q8_K_XL GGUF, served via llama.cpp | Q4_K_M quantization (smaller, lower quality) |
 | Narration runtime | **llama.cpp** built from source with `-DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES="121"` for GB10's sm_121 | Ollama (slower path, used for stub fallback only) |
 | Narration API | OpenAI-compatible `/v1/chat/completions` on **port `:8090`** (llama-server) wrapped by FastAPI orchestrator on **port `:30001`** for the real path; stub orchestrator on `:30000` as safety net | Same |
-| Renderer (encounter mode, native, primary) | **Bevy 0.18.1** (Rust + wgpu) — Carson, on `renderer-rust` branch | **deck.gl + maplibre** browser path (James, on `feature/sketch-overlay`) as the breadth surface, also serves as fallback if native crashes |
-| Renderer (lobby mode, web, breadth surface) | **deck.gl + maplibre** with year slider 1700-2026, 8 architectural eras, 750 NYPL Milstein photos georeferenced across 5 boroughs | Same |
-| Renderer post-process | PS2-era constraint set: low-poly + vertex normals only + Sobel edge detection + palette quantization + fog falloff + affine warping | Same in both renderers |
-| Ghost mesh format | **glb only** (low-poly Blender meshes, ~2K verts, vertex normals only). Single-format contract per `pointcloud-pipeline/README.md`. Loaded via Bevy's stock `SceneRoot(asset_server.load(GltfAssetLabel::Scene(0).from_asset(...)))` | Same |
+| Renderer (lobby mode, web, PRIMARY for Sun demo) | **deck.gl + maplibre** with year slider 1700-2026, 8 architectural eras, 750 NYPL Milstein photos georeferenced across 5 boroughs (James, on `feature/sketch-overlay`) | Static fallback rendered from `data/narration_cache.json` |
+| Renderer (encounter mode, native, post-hack v2) | **Bevy 0.18.1** (Rust + wgpu) — `renderer-rust` branch, frozen at `b394623`. Not part of Sun demo path. | — |
+| Renderer post-process | PS2-era constraint set: low-poly + vertex normals only + Sobel edge detection + palette quantization + fog falloff + affine warping | Same |
+| Ghost mesh format | **glb only** (low-poly Blender meshes, ~2K verts, vertex normals only). Single-format contract per `pointcloud-pipeline/README.md`. | Same |
 | Migration flow primitive | **Sibling manifest pattern** at `assets/migration-flows/MANIFEST.json` (separate from ghost manifest). Cone with magnitude/spread/tilt/era encoding per `docs/MIGRATION_FLOW_PROTOTYPE.html` | Same |
 | Asset authoring | **Blender** (Marvens) with vanilla glb export | — |
-| Orchestrator | **Python (FastAPI)** with Pydantic models | — |
-| Web build / WASM target | **Bevy → WASM via Trunk + Cloudflare Pages** (Carson, `renderer-rust` branch, `819a7f3` wasm + `54a431f` cicd) | Static deck.gl prototype as fallback |
+| Orchestrator | **Python (FastAPI)** with Pydantic models. Two endpoints in scope for the demo: `POST /narrate` (forensic narration of one cultural event) and `POST /biography` (zero-dependency RAG over Building Footprints + NYPL photos + events-seed + demolished landmarks). | — |
 | OS / runtime on box | DGX OS on the Acer Veriton GN100 | Provided, can't swap |
 
 **Note on what was dropped (was previously pinned, no longer in the stack):**
@@ -97,13 +96,21 @@ Or manually (note port `:8090`, not `:30000` — `:30000` is reserved for the st
 
 ### Step 7 — test the API
 ```bash
-curl http://localhost:30000/v1/chat/completions \
+# llama-server speaks the OpenAI chat completions API directly on :8090
+curl http://localhost:8090/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "nemotron",
+    "model": "nemotron-3-nano-30b-a3b",
     "messages": [{"role": "user", "content": "Describe Mott Haven in 1978 in two sentences."}],
     "max_tokens": 100
   }'
+
+# The FastAPI orchestrator wraps llama-server on :30001 with the demo
+# contracts (forensic /narrate and structured /biography). Use this for
+# the renderer-side smoke test:
+curl -X POST http://localhost:30001/narrate \
+  -H "Content-Type: application/json" \
+  -d '{"event_id":"bronx-1973-08-11-sedgwick","year":1973,"niche":"hip-hop","style":"forensic"}'
 ```
 
 ### Memory failure recovery
@@ -210,15 +217,13 @@ The cultural intelligence layer is a static JSON file at `data/events-seed.json`
 - `source_url`: provenance — what we cited
 - `importance_score`: 0–100, used to prioritize pins when many overlap on the map at the same time
 
-**Niche taxonomy (for the demo):**
-- `hip-hop` — fully populated, ~25 events (the demo cinematic)
-- `immigration` — placeholder, 2-3 events
-- `demolished-theaters` — placeholder, 2 events
-- `queer-history` — placeholder, 1-2 events
-- `jazz` — placeholder, 1-2 events
-- `salsa` — placeholder, 1-2 events
+**Niche taxonomy (actual counts in `data/events-seed.json` as of Apr 11):**
+- `hip-hop` — 15 events (the demo cinematic — Kool Herc through Beat Street)
+- `immigration` — 3 events (Cross-Bronx Expressway displacement, Puerto Rican migration wave, Bronx demolitions chain)
+- `demolished-theaters` — 2 events (Loew's Paradise, Bronx Opera House)
+- `queer-history` — 1 event
 
-The placeholders prove the architecture handles other lenses without being the cinematic centerpiece.
+The Cross-Bronx Expressway displacement event is tagged `immigration` because displacement is the inverse of immigration — both are population-flow events that the same lens surfaces. The Sun demo verb is the year-slider scrub on top of the building map; niche filtering is the Q&A "what else can it do" answer, not the cinematic.
 
 ---
 

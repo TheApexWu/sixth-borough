@@ -14,60 +14,63 @@
                 │                                                   │
                 ▼                                                   ▼
 ┌────────────────────────────┐                      ┌────────────────────────────┐
-│  BEVY 0.18.1               │                      │  llama.cpp                 │
-│  ENCOUNTER RENDERER        │                      │  NARRATION SERVER          │
-│  (Rust + wgpu, native)     │                      │                            │
+│  deck.gl + maplibre        │                      │  llama.cpp                 │
+│  LOBBY RENDERER (PRIMARY)  │                      │  NARRATION SERVER          │
+│  (browser, James)          │                      │                            │
 │                            │                      │  NVIDIA Nemotron-3 Nano    │
-│  PS2 post-process          │   POST /narrate      │  30B-A3B (Q8_K_XL GGUF)    │
-│  Low-poly Blender ghosts   │ ───────────────────► │  from the NVIDIA Nemotron  │
-│  Migration cone primitives │                      │  model family              │
-│  (sibling manifest pattern)│                      │                            │
-│                            │                      │  Port :8090                │
-│  Bevy → WASM target via    │                      │  OpenAI-compatible API     │
-│  Trunk + Cloudflare Pages  │                      │  --jinja --ngl 99          │
+│  Year slider 1700-2026     │   POST /narrate      │  30B-A3B (Q8_K_XL GGUF)    │
+│  8 architectural eras      │   POST /biography    │  from the NVIDIA Nemotron  │
+│  750 NYPL Milstein photos  │ ───────────────────► │  model family              │
+│  All 5 boroughs compacted  │                      │                            │
+│  Click → biography RAG     │                      │  Port :8090                │
+│                            │                      │  OpenAI-compatible API     │
+│  (Bevy native v2 deferred) │                      │  --jinja --ngl 99          │
 └────────────────────────────┘                      └────────────────────────────┘
                 ▲                                                   ▲
                 │                                                   │
                 └────────────────────┬──────────────────────────────┘
                                      │
                                      ▼
-                       ┌──────────────────────────┐
-                       │  FastAPI ORCHESTRATOR    │
-                       │  src/orchestrator/main.py│
-                       │                          │
-                       │  - Loads events-seed.json│
-                       │  - Builds Nemotron prompt│
-                       │  - Routes to backend     │
-                       │    (real / stub / cache) │
-                       │  - Pre-baked cache as    │
-                       │    venue WiFi insurance  │
-                       │                          │
-                       │  Port :30001 (real)      │
-                       │  Port :30000 (stub)      │
-                       └──────────────────────────┘
-                                     │
-                                     ▼
-                       ┌──────────────────────────┐
-                       │   LOBBY RENDERER         │
-                       │   deck.gl + maplibre     │
-                       │   (browser, James)       │
-                       │                          │
-                       │   Year slider 1700-2026  │
-                       │   8 architectural eras   │
-                       │   750 NYPL Milstein      │
-                       │     photos × 5 boroughs  │
-                       │   manhattan_compact.json │
-                       └──────────────────────────┘
+                       ┌──────────────────────────────┐
+                       │  FastAPI ORCHESTRATOR        │
+                       │  src/orchestrator/main.py    │
+                       │                              │
+                       │  POST /narrate               │
+                       │    forensic narration of one │
+                       │    cultural event, grounded  │
+                       │    in events-seed.json       │
+                       │                              │
+                       │  POST /biography             │
+                       │    src/biography/ structured │
+                       │    retrieval over Building   │
+                       │    Footprints + NYPL photos  │
+                       │    + demolished landmarks +  │
+                       │    events-seed by BIN/lat-lon│
+                       │    proximity → Nemotron 4-   │
+                       │    section forensic biography│
+                       │                              │
+                       │  GET /events  GET /niches    │
+                       │  GET /health                 │
+                       │                              │
+                       │  Pre-baked cache at          │
+                       │  data/narration_cache.json   │
+                       │  as venue WiFi insurance     │
+                       │                              │
+                       │  Port :30001 (real)          │
+                       │  Port :30000 (stub)          │
+                       └──────────────────────────────┘
 ```
 
-## Data sources (all cached locally before code freeze)
+## Data sources (everything is committed in the repo, no runtime fetches)
 
-- **NYC Open Data** — historical landmark records, zoning history, neighborhood boundaries
-  - Cached at `assets/nyc-data/` (gitignored, downloaded once)
-- **Wikimedia Commons** — historical photos of NYC neighborhoods by era
-  - 24 photos already in James's `feature/sketch-overlay` branch
-  - Cached at `assets/photos/` (gitignored)
-- **Era metadata** — hand-curated by team, lives in `src/data/eras.json`
+| Source | Where in repo | What it provides |
+|---|---|---|
+| NYC Building Footprints `5zhs-2jue` (NYC OTI) | `data/{manhattan,bronx,brooklyn,queens,staten}_compact.json` | LiDAR roof heights + construction year + BIN + polygon for every building in NYC. 5 boroughs compacted Apr 11 21:43 ET, 262 MB total. Schema `{p, h, y, b}` byte-compatible with James's original Manhattan compactor. |
+| NYPL Milstein Picture Collection | `cultural-content/oldnyc/index.json` (James's `bde0148`) | 750 georeferenced archival photos × 5 boroughs, 1900-1956. Schema `{id, boro, lat, lon, year, title, thumb, nypl_url}`. |
+| Wikidata demolished NYC landmarks | `data/demolished-landmarks.json` | 295 demolished landmarks with name, built/demolished years, lat/lon. Sourced via SPARQL on `feature/sketch-overlay@277e8d9`. |
+| Hand-curated cultural events | `data/events-seed.json` | 19 events anchored on the Bronx hip-hop birth chain — Cross-Bronx displacement 1959 → Puerto Rican migration → Loew's Paradise → Kool Herc 1973 → Wild Style → Beat Street. Each event carries `{id, coordinate, start_year, end_year, niche_tags, title, narration_seed, era_visual_mode, source_url, importance_score}`. Pre-baked narrations at `data/narration_cache.json` as venue WiFi insurance. |
+
+**No external network fetches at runtime.** Everything in the table above is committed at code freeze and read from disk by the `src/biography/lookup.py` retrieval layer. The `lookup.py` `assemble_record()` entry point joins these sources by BIN and haversine lat/lon proximity into a single flat record passed to Nemotron via `src/biography/synthesize.py`.
 
 ## Network topology
 
@@ -144,18 +147,20 @@ Marvens never touches Rust. Carson never touches Blender. The contract between t
 
 ---
 
-## The two-mode product map
+## The Sun demo path (one renderer + one engine + one causal arc)
 
-The locked thesis (`docs/DEMO_VIDEO_SCRIPT.md`) is **cultural memory infrastructure on local hardware**. The architecture splits into two surfaces that share a data spine:
+The locked thesis (`docs/DEMO_VIDEO_SCRIPT.CROSS_BRONX.md`) is **cultural memory infrastructure on local hardware** anchored on a single causal arc: Cross-Bronx Expressway 1948-1972 → 60K displaced → Sedgwick Avenue → Kool Herc Aug 11 1973 → hip-hop birth. The Sun demo runs on one renderer and one engine:
 
-| Mode | Surface | Owner | What it does |
+| Layer | Choice | Owner | What it does |
 |---|---|---|---|
-| **Mode A — Lobby (breadth)** | deck.gl + maplibre browser | James | Year slider scrubbing 1700-2026 across all 5 boroughs, 8 architectural eras color-coded by construction year, 750 NYPL Milstein photos georeferenced, click-any-building biography panel. The "every building has a birthday" pitch surface. |
-| **Mode B — Encounter (depth)** | Bevy 0.18.1 native on GB10 | Carson + Marvens | Drop into one specific event (Cross-Bronx canonical). Low-poly ghost meshes for demolished buildings. Migration cone primitives for displaced communities (sibling manifest at `assets/migration-flows/MANIFEST.json`). NVIDIA Nemotron-3 Nano 30B narration generated live on the GB10. PS2 post-process. The "computational ghosts need local hardware" pitch surface. |
+| **Renderer (PRIMARY)** | deck.gl + maplibre browser on the GN100 | James | Year slider scrubbing 1700-2026 across all 5 boroughs, 8 architectural eras color-coded by construction year, 750 NYPL Milstein photos georeferenced, click-any-building → biography panel. The Sun demo verb. |
+| **Migration cone** | static glb + click panel | Marvens | Cross-Bronx displacement primitive at the corridor centroid, magnitude/spread/tilt encoded per `docs/MIGRATION_FLOW_PROTOTYPE.html`. Sibling manifest at `assets/migration-flows/MANIFEST.json`. Beat 3 of the demo (was Beat 5 pre-pivot). |
+| **Biography RAG** | `src/biography/` zero-dependency stdlib + httpx | Alex | Click any building polygon → structured retrieval over 4 local data sources → forensic 4-section biography from Nemotron in 5-30 sec. The payoff click. |
+| **Narration LLM** | NVIDIA Nemotron-3 Nano 30B (A3B) via llama.cpp on `:8090` | Alex | 30B reasoning model warm-loaded in 128 GB unified memory, ethernet unplugged at demo time. |
 
-Both modes consume the same `{p, h, y, b}` building polygon JSONs, the same `events-seed.json`, the same NYPL OldNYC index, and the same `/narrate` orchestrator contract. **The merge of James + Carson + Marvens is the demo** — corrected from an earlier "park renderer-rust" mistake at Apr 11 morning.
+Bevy 0.18.1 (Rust + wgpu) lives on `renderer-rust`, frozen at `b394623`, **deferred to post-hack v2.** Carson left the team Apr 11 ~21:30 ET; the Bevy native renderer is shipped as documented but not part of the Sun demo path. The deck.gl browser is the primary surface and the only surface judges will see Sunday afternoon.
 
-The product wedge story (5 buyer segments, non-ML data layers) lives in `docs/PRODUCT_WEDGES.md` and is the post-demo Q&A pitch, not the 90-second video.
+The product wedge story (tenant lawyer compliance lock + museum reanimation + 18-month roadmap) lives in `docs/PRODUCT_WEDGES.md` and is the post-demo Q&A pitch, not the 90-second video. Alex's Antler unicorn-bounty pitch is in `docs/DEMO_VIDEO_SCRIPT.CROSS_BRONX.md` (2-min Antler 1:1 version).
 
 ---
 
@@ -170,50 +175,57 @@ For the demo, ~30 hand-curated events. For the universal architecture pitch, "th
 
 ---
 
-## Niche filter UI flow
+## The Sun demo verb (Cross-Bronx walkthrough)
 
 ```
-USER opens Sixth Borough
+USER lands on the deck.gl + maplibre browser at the venue
        │
        ▼
-Default state: time slider at 2026, no niche filter, modern view
+Default state: year slider at 2026, all 5 boroughs of building polygons
+extruded by LiDAR roof height, 750 NYPL Milstein photo pins, modern view
        │
-       │ user drags slider 2026 → 1973
+       │ Alex grabs the year slider and scrubs 2026 → 1948
        ▼
-Renderer morphs through era_visual_modes (PS2 palette/post-process changes)
+Building polygons morph era by era as construction_year filters apply.
+Postwar Bronx fills back in.
        │
-       │ user clicks "Hip-hop heads" toggle in niche filter list
+       │ Alex scrubs 1948 → 1972 (the Cross-Bronx Expressway era)
        ▼
-Orchestrator queries events: hip-hop tag, year window 1965-1985
+The 7-mile Cross-Bronx corridor visibly empties as buildings whose
+construction_year predates 1972 disappear from the displaced footprint.
+Marvens's migration cone fires upward at the corridor centroid with
+the documented displacement count (60,000 per Caro) on the click panel.
        │
+       │ Alex clicks the 1520 Sedgwick Avenue building polygon
        ▼
-Pins appear/disappear on map as slider passes their start_years
-       │
-       │ user drags slider forward to 1973
-       ▼
-1520 Sedgwick pin lights up
-       │
-       │ user clicks the pin
-       ▼
-Orchestrator builds prompt:
-  niche=hip-hop, year=1973, place=Bronx, event=Kool Herc breakbeat,
-  narration_seed=..., recent_nearby=[...]
+Browser POST :30001/biography {"bin": "2008888"}  (or lat/lon)
        │
        ▼
-POST :30000/v1/chat/completions
+src/biography/lookup.py · assemble_record():
+  - resolves BIN against bronx_compact.json (height_m, year_built, polygon)
+  - haversine within 200m → 8 nearest NYPL Milstein photos
+  - haversine within 500m → nearby cultural events from events-seed.json
+  - haversine within 1km → demolished landmarks from Wikidata
+  - returns flat structured dict + dataset citations
        │
        ▼
-Nemotron-3-Nano returns 2-3 sentence narration
+src/biography/synthesize.py · synthesize():
+  POST :8090/v1/chat/completions to local llama-server with:
+  - SYSTEM: forensic building historian, no speculation, no invented owners
+  - USER: structured record verbatim with field names preserved
        │
        ▼
-Orchestrator overlays narration text on the renderer scene
+NVIDIA Nemotron-3 Nano 30B returns the 4-section markdown biography
+(Identification / Physical history / Cultural significance / What the
+receipts prove) in 5-30 sec on the warm-loaded model
        │
-       │ user toggles "Hip-hop" off, "Immigration flow" on
        ▼
-Same map, same year, totally different pin set (immigration events)
+Browser overlays the biography panel + photo strip + dataset citation row.
+Alex pulls the ethernet cable. The next visitor clicks a building anywhere
+in NYC and the same flow runs with the cable on the floor.
 ```
 
-The toggle is the critical UX element. **Niche switching is what proves the architecture works on multiple lenses.** Even if only one niche is fully populated, the toggle has to feel real.
+**The verb is the year slider, the wow beat is the Cross-Bronx scrub, the payoff is the 1520 Sedgwick biography click.** The niche filter is a Q&A "what else can it do" answer, not the cinematic. The biography RAG is what makes the product more than a visualization — every click returns a footnoted historical document, not a vibe poem.
 
 ---
 
@@ -222,18 +234,18 @@ The toggle is the critical UX element. **Niche switching is what proves the arch
 The full rubric is in `docs/EVENT_RULES.md`. Total: 100 pts.
 
 ### 1. Technical Execution & Completeness (30 pts)
-- **Completeness (15 pts)**: full data workflow runs end-to-end. NYC Open Data → compactor → JSON → renderer → orchestrator → llama.cpp → NVIDIA Nemotron → narration → screen. Verified Apr 11 14:45 ET via `ssh gn100 curl :30001/narrate` returning `backend:"real"` Sedgwick narration in 23.4s.
-- **Technical Depth (15 pts)**: not a static dashboard. Custom multi-stage pipeline with structured retrieval grounding the LLM in historical records (events-seed + open data layers + NYPL Milstein index). Bevy native renderer + WASM target + deck.gl breadth surface + FastAPI orchestrator + llama.cpp inference + Blender authoring → glb sibling manifests. Six datasets fused.
+- **Completeness (15 pts)**: full data workflow runs end-to-end. NYC Building Footprints citywide GeoJSON → `scripts/export_buildings_all_boroughs.py` → 5 borough compact JSONs → deck.gl + maplibre browser → click building → `POST /biography` → `src/biography/lookup.py` structured retrieval → `src/biography/synthesize.py` Nemotron prompt → llama.cpp on `:8090` → 4-section forensic biography → browser overlay. Verified Apr 12 ~01:06 UTC via smoke test returning `backend:"real"` Sedgwick narration in 5 sec on warm-loaded model.
+- **Technical Depth (15 pts)**: not a static dashboard, not an API wrapper. Zero-dependency RAG (`src/biography/`) over 4 local data sources joined by BIN and haversine lat/lon proximity, no embeddings, no vector DB, no LangChain, no cloud calls. Custom multi-stage pipeline grounding the LLM in 4 fused datasets: NYC Building Footprints (citywide LiDAR), NYPL Milstein photo index (750 georeferenced archival photos), Wikidata demolished landmarks (295 records), hand-curated cultural events (19 anchored on the Bronx hip-hop birth chain). Pre-baked narration cache as venue WiFi insurance. FastAPI orchestrator with two endpoints (`/narrate`, `/biography`) sharing a common forensic posture.
 
 ### 2. NVIDIA Ecosystem & Spark Utility (30 pts)
 - **The Stack (15 pts)**: **NVIDIA Nemotron-3 Nano 30B (A3B variant) from the NVIDIA Nemotron model family**, served via llama.cpp on the GB10. Nemotron is in the NeMo Models category explicitly listed by the rubric. **The model attribution must be named in the demo for the rubric to score it as a NeMo Model use** (see `docs/STACK.md` "verbatim words to lock").
 - **The Spark Story (15 pts)**: 128 GB unified memory holds the 30B model + open data corpus + renderer state simultaneously, no PCIe round trips. Local-only inference for sovereignty/privacy. The unplug-cable demo is the punchline. We use the unified memory the way it was designed to be used.
 
 ### 3. Value & Impact (20 pts)
-- **Insight Quality (10 pts)**: Cross-Bronx Expressway 1948-1972 displaced ~60,000 people (Caro). Receipts traceable to BUILDING_HISTORIC + DOB demolition records + ACS tract delta. Specific, sourced, non-obvious. "We don't predict gentrification, we trace it from the receipts."
-- **Usability (10 pts)**: a tenant lawyer in the South Bronx could use this to build a displacement case tomorrow. A preservation researcher at LPC could pull every demolished building in a historic district with one query. A ProPublica reporter could trace the receipts of any gentrification claim. Five named buyer segments in `docs/PRODUCT_WEDGES.md`.
+- **Insight Quality (10 pts)**: Cross-Bronx Expressway 1948-1972 displaced ~60,000 people (Caro). Receipts traceable to NYC Building Footprints construction_year + Wikidata demolished landmarks + NYPL Milstein photo provenance + hand-curated events-seed cultural events. Specific, sourced, non-obvious. "We don't predict gentrification, we trace it from the receipts."
+- **Usability (10 pts)**: a tenant lawyer in the South Bronx could pull a 4-section footnoted building biography in 30 sec for any NYC address — vs ~6 paralegal hours of records work today. The NY right-to-counsel expansion of 2022 generates ~20K new tenant cases/yr that legally cannot be uploaded to a cloud LLM (Rule 1.6 of the NY Rules of Professional Conduct, client confidentiality), so the local-inference architecture is a compliance lock, not a flex. A preservation researcher could surface every demolished landmark within a radius of any address with one query. The same engine serves the museum/curator reanimation use case post-hack.
 
 ### 4. The "Frontier" Factor (20 pts)
-- **Creativity (10 pts)**: novel combination of six datasets (DOB filings + Building Footprints Historical + ACS census + NYPL archives + LiDAR roof heights + 30B local LLM) with PS2 constraint language for memory rendering on Blackwell silicon.
-- **Performance (10 pts)**: **29 tokens per second** sustained generation on a 30B Q8 reasoning model. **60 megabytes** browser-deliverable carrying 175 years of NYC building biography across 5 boroughs. **Zero** network round trips at runtime.
+- **Creativity (10 pts)**: novel combination of 4 fused datasets (NYC Building Footprints citywide LiDAR + NYPL Milstein photo index + Wikidata demolished landmarks + hand-curated cultural events) joined zero-dependency by BIN and lat/lon proximity, then grounded into a 30B local reasoning model that returns a 4-section forensic biography. PS2 constraint language for the renderer post-process. Cross-Bronx → Kool Herc causal arc as the cinematic anchor — the demo doesn't just visualize NYC, it traces a single 25-year story from urban renewal trauma to the birth of hip-hop, all from public records on local hardware.
+- **Performance (10 pts)**: **29 tokens per second** sustained generation on a 30B Q8 reasoning model. **262 megabytes** total for all 5 boroughs of NYC building polygons + LiDAR roof heights + construction years (~1.05 million buildings). **Zero** network round trips at runtime — the ethernet cable comes out before the demo starts.
 

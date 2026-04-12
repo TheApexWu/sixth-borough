@@ -9,10 +9,11 @@ Every building in New York City has a birthday, a biography, and (sometimes) a d
 **Track:** Cultural Impact
 **Hardware:** Acer Veriton GN100 (NVIDIA DGX Spark / GB10 Grace Blackwell Superchip, 128 GB unified memory, runs entirely offline)
 **Narration:** **NVIDIA Nemotron-3 Nano 30B (A3B variant)** from the NVIDIA Nemotron model family, served via llama.cpp on the GB10. 29 tokens/sec sustained.
-**Renderer (native, primary):** Bevy 0.18.1 (Rust + wgpu) with PS2-era post-process for the encounter mode.
-**Renderer (web, breadth surface):** deck.gl + maplibre prototype with year slider, 8 architectural eras, and 750 georeferenced NYPL Milstein photos across all 5 boroughs (`feature/sketch-overlay`).
+**Renderer (primary):** deck.gl + maplibre browser surface (James, `feature/sketch-overlay`) — year slider 1700-2026, 8 architectural eras, 750 georeferenced NYPL Milstein photos across all 5 boroughs, click-to-biography on every building polygon.
+**Renderer (post-hack v2):** Bevy 0.18.1 (Rust + wgpu) with PS2-era post-process — `renderer-rust` branch, frozen for the Sun demo.
 **Asset authoring:** Blender → glb (low-poly ghost meshes for demolished buildings).
-**Data spine:** NYC Open Data — Building Footprints (LiDAR roof heights), MapPLUTO (yearbuilt/yearalter1/2), BUILDING_HISTORIC (demolitions), DOB Job Filings, ACS tract decennial 1970-2020, NYPL Milstein collection, LPC landmarks crosswalk.
+**Structured retrieval:** zero-dependency RAG over local files (`src/biography/`) — joins all 5 borough Building Footprints compactions, NYPL Milstein photo index, hand-curated cultural events, and Wikidata demolished landmarks by BIN and lat/lon proximity. No embeddings, no vector DB, no LangChain, no cloud calls.
+**Data spine:** NYC Open Data Building Footprints `5zhs-2jue` (LiDAR roof heights + construction years, all 5 boroughs compacted to 262 MB total), NYPL Milstein photo index (750 photos × 5 boroughs), Wikidata demolished landmarks (295 records), hand-curated cultural events (`data/events-seed.json`).
 
 ---
 
@@ -67,7 +68,7 @@ sixth-borough/
 ├── pyproject.toml                     Python project metadata
 ├── docs/
 │   ├── DEMO_VIDEO_SCRIPT.md           90s pitch script (locked)
-│   ├── PRODUCT_WEDGES.md              receipts-not-predictions thesis + 5 buyer segments
+│   ├── PRODUCT_WEDGES.md              receipts-not-predictions thesis + buyer segments
 │   ├── VISUAL_DIRECTION.md            PS2 as constraint language for memory
 │   ├── MIGRATION_FLOW_PROTOTYPE.html  Cross-Bronx canonical static cone sample
 │   ├── PITCH_FRAMINGS.md              5 framings explored before lock
@@ -82,18 +83,26 @@ sixth-borough/
 ├── data/
 │   ├── events-seed.json               19 hand-curated cultural events
 │   ├── narration_cache.json           pre-baked narrations (venue WiFi insurance)
-│   └── manhattan_compact.json         building polygons {p,h,y,b} schema
+│   ├── demolished-landmarks.json      Wikidata NYC demolished landmarks (295 records)
+│   ├── manhattan_compact.json         Manhattan building polygons {p,h,y,b} schema
+│   ├── bronx_compact.json             Bronx building polygons (104K buildings)
+│   ├── brooklyn_compact.json          Brooklyn building polygons
+│   ├── queens_compact.json            Queens building polygons
+│   └── staten_compact.json            Staten Island building polygons
 ├── src/
 │   ├── data/
 │   │   ├── schema.py                  Pydantic models
 │   │   ├── niches.py                  niche taxonomy
-│   │   ├── narration_prompts.py       prompt template
 │   │   └── loader.py                  seed JSON loader
 │   ├── orchestrator/
-│   │   ├── main.py                    FastAPI app
-│   │   ├── narration_stub.py          templated narration
+│   │   ├── main.py                    FastAPI app (POST /narrate, POST /biography)
+│   │   ├── narration_stub.py          templated narration (forensic posture)
 │   │   └── narration_real.py          NVIDIA Nemotron via llama.cpp (GN100 only)
-│   └── renderer/                      Carson's Bevy 0.18.1 + WGSL renderer
+│   └── biography/                     zero-dependency RAG endpoint
+│       ├── lookup.py                  structured retrieval (BIN + haversine joins)
+│       ├── synthesize.py              Nemotron prompt + llama-server client
+│       └── router.py                  POST /biography FastAPI route
+├── renderer-rust/                     Bevy 0.18.1 + wgpu (post-hack v2, frozen)
 ├── assets/
 │   └── ghosts/
 │       └── MANIFEST.json              low-poly Blender ghost mesh registry
@@ -101,7 +110,8 @@ sixth-borough/
 │   ├── dev-stub.sh                    start orchestrator in stub mode
 │   ├── dev-test.sh                    run pytest suite
 │   ├── start-llama-nano.sh            idempotent llama-server launcher (GN100 only)
-│   ├── export_buildings.py            Building Footprints → compact JSON compactor
+│   ├── export_buildings.py            Building Footprints → compact JSON (legacy)
+│   ├── export_buildings_all_boroughs.py  citywide compactor (5zhs-2jue, 5 boroughs)
 │   └── build_oldnyc_index.py          NYPL Milstein → georeferenced index
 └── tests/                             pytest suite
 ```

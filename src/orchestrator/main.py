@@ -25,7 +25,9 @@ import os
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
+from src.biography.router import router as biography_router
 from src.data.loader import find_event, load_events, query_events
 from src.data.niches import NICHE_DISPLAY
 from src.data.schema import NarrationRequest, NarrationResponse
@@ -45,6 +47,27 @@ app = FastAPI(
     version="0.1.0",
     description="Time machine for niche subcultures across all five boroughs of NYC.",
 )
+
+# CORS for the local browser → local orchestrator hop on the GN100.
+# The deck.gl + maplibre lobby renderer is a static page served from the
+# same box; the orchestrator listens on a different port so the fetch is
+# cross-origin even though it never leaves the machine. Wildcard is fine
+# because there is no public origin: /narrate and /biography are read-only,
+# carry no cookies, and the box is unplugged from the internet at demo time.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+# Mount the zero-dependency biography RAG endpoint (POST /biography).
+# Lives in src/biography/{lookup,synthesize,router}.py — joins all 5 borough
+# building footprints + NYPL Milstein photos + events-seed + demolished
+# landmarks by BIN and lat/lon proximity, returns a 4-section forensic
+# biography from the same local Nemotron server that powers /narrate.
+app.include_router(biography_router)
 
 # Load events once at startup. They are immutable for the lifetime of the
 # server - if the seed JSON changes, restart the server (dev-stub.sh has
