@@ -5329,15 +5329,14 @@ function showCard(building) {
   _cardPhotos = [];
   _cardPhotoBuildingYear = building.y || currentYear;
   _cardPhotoIdx = 0;
-  if (marquee && marquee.photo) {
+  if (marquee && marquee.photo && currentYear >= (marquee.year || 0)) {
     _cardPhotos.push({ thumb: marquee.photo, nypl_url: '', title: marquee.title, year: marquee.year });
   }
   if (featureFlags.oldnycPhotos && building.p && oldnycPhotos.length) {
     const [clng, clat] = polygonCentroid(building.p);
-    let hits = findPhotosNear(clng, clat, currentYear);
-    if (!hits.length) {
-      hits = findNearestPhotosSpatial(clng, clat, currentYear);
-    }
+    // Timeline-sensitive: only show photos within ±8 years of current slider position
+    const hits = findPhotosNear(clng, clat, currentYear);
+    // No fallback -- if no era-matched photos exist, show empty. This is a time machine.
     _cardPhotos = _cardPhotos.concat(hits.slice(0, 5).map(h => h.photo));
   }
   } // end if (!building.moses)
@@ -5452,8 +5451,8 @@ function showDemolishedCard(landmark) {
   _cardPhotoIdx = 0;
   _cardPhotoBuildingYear = landmark.builtYear || currentYear;
   if (featureFlags.oldnycPhotos && oldnycPhotos.length) {
-    let hits = findPhotosNear(landmark.lon, landmark.lat, currentYear);
-    if (!hits.length) hits = findNearestPhotosSpatial(landmark.lon, landmark.lat, currentYear);
+    // Timeline-sensitive only -- no fallback
+    const hits = findPhotosNear(landmark.lon, landmark.lat, currentYear);
     _cardPhotos = hits.slice(0, 5).map(h => h.photo);
   }
   renderCardPhotos();
