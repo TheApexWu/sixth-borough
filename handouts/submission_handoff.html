@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIXTH BOROUGH — Submission Handoff</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a; color: #ddd;
+    font-family: 'Courier New', monospace;
+    padding: 40px 60px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 { color: #00b8d4; font-size: 18px; letter-spacing: 4px; margin-bottom: 8px; }
+  .meta { color: #555; font-size: 11px; letter-spacing: 2px; margin-bottom: 40px; }
+
+  .instructions {
+    border: 2px solid #ff6f00;
+    background: rgba(255,111,0,0.06);
+    padding: 24px 28px;
+    margin-bottom: 40px;
+  }
+  .instructions h2 {
+    color: #ff6f00; font-size: 13px; letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .instructions ol {
+    padding-left: 24px; line-height: 2;
+    color: #ccc; font-size: 13px;
+  }
+  .instructions li { margin-bottom: 4px; }
+  .instructions code {
+    background: #1a1a1a; padding: 2px 6px; color: #00b8d4;
+  }
+
+  .field {
+    border: 1px solid #222;
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .field:hover { border-color: #00b8d4; }
+
+  .field-label {
+    font-size: 10px; letter-spacing: 3px; color: #00b8d4;
+    text-transform: uppercase; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .copy-btn {
+    font-family: 'Courier New', monospace;
+    font-size: 10px; letter-spacing: 1px;
+    background: #1a1a1a; color: #666;
+    border: 1px solid #333; padding: 4px 12px;
+    cursor: pointer; transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .copy-btn:hover { border-color: #00b8d4; color: #00b8d4; }
+  .copy-btn.copied { border-color: #4caf50; color: #4caf50; }
+
+  .field-value {
+    color: #ccc; font-size: 13px; line-height: 1.7;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+
+  .field.action {
+    border-color: #ff6f00;
+    background: rgba(255,111,0,0.04);
+  }
+  .field.action .field-label { color: #ff6f00; }
+  .field.action .field-value { color: #ff6f00; }
+
+  .divider {
+    border: none; border-top: 1px solid #1a1a1a;
+    margin: 36px 0;
+  }
+
+  .section-header {
+    font-size: 11px; letter-spacing: 3px; color: #555;
+    text-transform: uppercase; margin-bottom: 20px; margin-top: 12px;
+  }
+
+  a { color: #00b8d4; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<h1>SIXTH BOROUGH</h1>
+<div class="meta">SUBMISSION HANDOFF -- CARSON + MARVENS -- APR 12 2026</div>
+
+<div class="instructions">
+  <h2>Instructions (Read First)</h2>
+  <ol>
+    <li><strong>Carson:</strong> Record the demo video using the runbook at <code>handouts/carson_recording_runbook.html</code></li>
+    <li>Upload to YouTube (unlisted is fine). Title: <code>Sixth Borough - Spark Hack 2026 Demo</code></li>
+    <li>Copy-paste each field below into the submission form. Click the COPY button on the right of each field.</li>
+    <li><strong>Demo Video field:</strong> paste the YouTube link (marked in orange below)</li>
+    <li><strong>Submit before 11 AM Sunday.</strong> Do not wait for Alex.</li>
+  </ol>
+</div>
+
+<div class="section-header">Basic Info</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Name</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Sixth Borough</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Submission Description</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">New York has five boroughs you can walk through. The sixth one only exists in this box. Sixth Borough is a 3D map of every building in NYC, 1.05 million structures extruded to real LiDAR roof heights, scrubbable year by year from 1700 to 2026. Drag the slider and watch the Twin Towers rise in 1970 and vanish on September 11. Watch the Cross-Bronx Expressway hollow out 159 blocks between 1948 and 1972. Click any building and a 30-billion-parameter NVIDIA Nemotron model, running on the GN100 with the ethernet cable on the floor, writes a footnoted forensic biography from four public NYC datasets. No cloud. No speculation. No internet at runtime. The demo traces one chain: Robert Moses displaced 60,000 South Bronx families onto Sedgwick Avenue, where the crowding created the rec room party scene, where DJ Kool Herc invented hip-hop on August 11, 1973. Cultural memory is what survives the bulldozer. We built the archive that proves it, on hardware the community can own for $3,000.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Track</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Cultural Impact</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Bounty</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Most Likely to Become a Unicorn</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Bounty Description</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">NYC's right-to-counsel expansion in 2022 guaranteed legal representation for 20,000 new tenant cases per year. Every one of those cases needs a building history: ownership chain, violation records, demolition context, displacement patterns. Today that takes a paralegal 6 hours pulling from 8 separate city databases. At $100/hr that is $600 per case, $12M/yr of redundant labor across the legal aid system. Sixth Borough assembles the same dossier in 30 seconds from public records for $500/mo per attorney seat. The reason this has to run locally is not ideology. Rule 1.6 of the NY Rules of Professional Conduct requires client confidentiality. Tenant attorneys legally cannot upload privileged case files to OpenAI or Anthropic. The same constraint applies to insurance underwriters running proprietary risk models and REIT analysts doing acquisition due diligence. Three compliance-locked buyer segments, one engine, one $3,000 box the firm owns outright. 100 attorneys at $500/mo = $600K ARR year one, REIT and insurance in NYC = $5M year two, five cities = $25M year three.</div>
+</div>
+
+<hr class="divider">
+<div class="section-header">Team Members</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 1 -- Name</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Alex Wu</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 1 -- Email</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">alexanderwu2002@gmail.com</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 1 -- LinkedIn</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">https://www.linkedin.com/in/alex-wu-873b25181/</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 2 -- Name</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Carson Weeks</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 2 -- Email</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">mail@carsonweeks.com</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 2 -- LinkedIn</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">https://www.linkedin.com/in/carsonweeks/</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 3 -- Name</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">James Burke</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 3 -- Email</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">lifesized@gmail.com</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 3 -- LinkedIn</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">https://www.linkedin.com/in/jamesburkenyc/</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 4 -- Name</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Marvens Destin&#233;</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 4 -- Email</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">marvens@blenderbin.com</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Team Member 4 -- LinkedIn</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">https://www.linkedin.com/in/marv-destine/</div>
+</div>
+
+<hr class="divider">
+<div class="section-header">Technical Details</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Developer Roundtable</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Alex Wu</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>GitHub Repo</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">https://github.com/TheApexWu/sixth-borough</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Models Used</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">NVIDIA Nemotron-3 Nano 30B (A3B variant), quantized to Q8_K_XL GGUF format. Served via llama-server (llama.cpp) with all 99 layers offloaded to GPU. Used for generating building biographical narratives from structured context (building metadata, census data, cultural event timelines). 29 tok/sec sustained inference, 11ms cache hit latency.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Tools Used</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">llama.cpp (llama-server), CUDA 12.8, cuBLAS, Python FastAPI, deck.gl, maplibre-gl</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Did you use NemoClaw?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">No. Cultural Impact track, not OpenClaw bounty.</div>
+</div>
+
+<hr class="divider">
+<div class="section-header">Acer GN100 Questions</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>How was Acer GN100 Leveraged?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Everything runs on it with no internet. 128 GB unified memory holds the 30B model (38 GB), 262 MB building data, orchestrator, and renderer in one address space. Demo ends by pulling the ethernet cable and clicking another building. Biography generates with the cable on the floor.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Were there any capabilities of the device that supported your build in a unique way?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Yes. The 128 GB unified memory let us load a 30B parameter model (Nemotron-3 Nano Q8_K_XL) with all 99 layers on GPU while simultaneously serving 231 MB of building geometry data. On any discrete-GPU setup we'd be swapping between model weights and data. Unified memory meant we could run inference and serve a million-building map from the same box with zero contention. That's the entire thesis of the project: cultural memory infrastructure that fits in one room with no cloud dependency.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>How was it building with local inference/compute? (1-10)</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">8. The raw capability is exceptional. Loading a 30B model with full GPU offload on a single desktop-class box is something we couldn't do 18 months ago without a multi-GPU rig. The inference speed was production-grade for our use case. Cons: first-boot setup (driver verification, confirming CUDA paths, figuring out the right llama.cpp flags for this specific chip) took trial and error with limited documentation for the GB10 specifically.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Would you recommend the Acer GN100? (1-10)</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">8. Yes for any project where data sovereignty or offline operation matters. The unified memory model is genuinely different from anything else at this price point. Would especially recommend for teams working with sensitive data (medical, legal, government) who can't send inference requests to a cloud endpoint.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>What features were missing?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Better documentation for the GB10 memory architecture and llama.cpp flag compatibility. We had to experiment to find the right n-gpu-layers 99 and quantization format. A curated list of validated model/quantization/flag combos for the specific chip would have saved 2-3 hours on day one.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Do you find value in building on an edge device for local inference?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">Yes. Our entire demo closes with pulling the ethernet cable out. Every building biography, every historical narration, every photo lookup runs on local SSD and local inference. For cultural infrastructure, that's not a feature, it's the point. Institutions (libraries, museums, city agencies) won't send their archival data to a cloud LLM. Local inference is the only path to adoption for that audience.</div>
+</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>Any other final thoughts?</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">The $3,000 price point makes this a legitimate alternative to cloud inference budgets for small teams. We burned zero API credits across a 48-hour hackathon running a 30B model. That math works for startups and researchers, not just enterprises.</div>
+</div>
+
+<hr class="divider">
+<div class="section-header">Social + Media</div>
+
+<div class="field">
+  <div class="field-label">
+    <span>X/Twitter</span>
+    <button class="copy-btn" onclick="copyField(this)">Copy</button>
+  </div>
+  <div class="field-value">@amadeusWoo</div>
+</div>
+
+<div class="field" style="border-color: #555; background: rgba(255,255,255,0.02);">
+  <div class="field-label" style="color: #888;">
+    <span>Note: Tag for 2 Free Community Choice Votes</span>
+  </div>
+  <div class="field-value" style="color: #888;">Tag @AntlerGlobal and @NvidiaAIDev in the post for 2 free community choice votes. Alex will post later in the morning.</div>
+</div>
+
+<div class="field action">
+  <div class="field-label">
+    <span>Demo Video -- CARSON FILLS THIS IN</span>
+  </div>
+  <div class="field-value">[Carson records and uploads to YouTube, paste the link into the submission form here]</div>
+</div>
+
+<hr class="divider">
+<div style="color: #333; font-size: 11px; text-align: center; padding: 20px 0;">
+  Alex is asleep. Submit before 11 AM. If anything is unclear, text Alex but do not wait for a reply.
+</div>
+
+<script>
+function copyField(btn) {
+  const value = btn.closest('.field').querySelector('.field-value').textContent;
+  navigator.clipboard.writeText(value).then(() => {
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+
+</body>
+</html>

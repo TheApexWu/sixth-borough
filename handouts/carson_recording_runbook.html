@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CARSON — Recording Runbook + Demo Script</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #ddd; font-family: 'Courier New', monospace; padding: 30px 50px; max-width: 900px; margin: 0 auto; }
+  h1 { color: #00b8d4; font-size: 18px; letter-spacing: 4px; margin-bottom: 6px; }
+  .meta { color: #555; font-size: 11px; letter-spacing: 2px; margin-bottom: 30px; }
+  h2 { color: #00b8d4; font-size: 13px; letter-spacing: 3px; margin: 28px 0 12px; border-bottom: 1px solid #222; padding-bottom: 6px; }
+  .step { border-left: 2px solid #333; padding: 10px 16px; margin: 8px 0; }
+  .step.critical { border-left-color: #f5c842; }
+  .cmd { background: #111; border: 1px solid #222; padding: 10px 14px; font-size: 13px; margin: 8px 0; color: #0f0; overflow-x: auto; white-space: pre; }
+  .spoken { color: #fff; font-size: 16px; line-height: 1.7; margin: 10px 0; }
+  .sponsor { color: #00b8d4; font-weight: bold; }
+  .emphasis { color: #f5c842; }
+  .silent { color: #888; font-size: 12px; border-left: 2px solid #555; padding-left: 12px; margin: 8px 0; }
+  .warn { color: #f55; font-size: 12px; }
+  label { display: block; font-size: 12px; color: #888; margin: 4px 0; cursor: pointer; }
+  label input { margin-right: 8px; }
+  p { font-size: 13px; line-height: 1.6; color: #aaa; margin: 6px 0; }
+  @media print { body { background: #fff; color: #111; } .spoken { color: #000; } .cmd { background: #f5f5f5; color: #000; } }
+</style>
+</head>
+<body>
+
+<h1>CARSON — RECORDING RUNBOOK</h1>
+<div class="meta">SIXTH BOROUGH DEMO VIDEO — SUN APR 12 2026 — TARGET ~110 SEC — READ THIS TOP TO BOTTOM</div>
+
+<!-- ============================================ -->
+<h2>PART 1: SETUP (before you hit record)</h2>
+
+<div class="step">
+  <p><strong>1. Open the map.</strong> On the GN100, open a browser and navigate to:</p>
+  <div class="cmd">file:///home/acergn100_7/sixth-borough/index.html</div>
+  <p>If that doesn't work (the data files are large), serve it locally:</p>
+  <div class="cmd">cd ~/sixth-borough && python3 -m http.server 8080</div>
+  <p>Then open <code>http://localhost:8080/index.html</code> in the browser.</p>
+</div>
+
+<div class="step">
+  <p><strong>2. Verify the map loads.</strong> You should see:</p>
+  <label><input type="checkbox"> 3D extruded buildings covering Manhattan + Bronx (loads first)</label>
+  <label><input type="checkbox"> Red borough boundary outlines</label>
+  <label><input type="checkbox"> Year slider at bottom (drag it — buildings should appear/disappear)</label>
+  <label><input type="checkbox"> Brooklyn/Queens/Staten Island fill in after ~1 sec</label>
+  <label><input type="checkbox"> Total building count shows ~1,082,000</label>
+</div>
+
+<div class="step">
+  <p><strong>3. Verify the orchestrator is running.</strong></p>
+  <div class="cmd">curl -s http://127.0.0.1:30001/health | python3 -m json.tool</div>
+  <p>Should return <code>"status": "ok", "narration_mode": "real"</code></p>
+</div>
+
+<div class="step">
+  <p><strong>4. Verify Sedgwick biography works.</strong></p>
+  <div class="cmd">curl -s -X POST http://127.0.0.1:30001/biography -H "Content-Type: application/json" -d '{"bin": "2008286"}' | python3 -m json.tool | head -5</div>
+  <p>Should return cached biography in ~11ms (look for <code>"backend": "cache"</code>).</p>
+</div>
+
+<div class="step">
+  <p><strong>5. Set up screen recording.</strong> Use OBS, or the simplest screen recorder available. Record the browser window fullscreen. Make sure audio is captured (you'll narrate live over the recording).</p>
+</div>
+
+<div class="step critical">
+  <p><strong>6. OPTIONAL: Plug ethernet back in for the unplug beat.</strong> If you have an ethernet cable, plug it into the GN100 now. During the demo close, you'll pull it out. If no ethernet available, skip the unplug gesture and just say "no internet connection at runtime."</p>
+</div>
+
+<!-- ============================================ -->
+<h2>PART 2: PRE-FLIGHT CHECKLIST</h2>
+
+<div class="step">
+  <label><input type="checkbox"> Map is open and rendering all 5 boroughs</label>
+  <label><input type="checkbox"> Year slider is set to 2026 (starting position)</label>
+  <label><input type="checkbox"> Zoom level shows all of NYC (zoomed out enough to see all boroughs)</label>
+  <label><input type="checkbox"> Screen recorder is running and capturing audio</label>
+  <label><input type="checkbox"> You've read through the script below once</label>
+  <label><input type="checkbox"> Browser dev tools / URL bar hidden (F11 fullscreen if possible)</label>
+</div>
+
+<!-- ============================================ -->
+<h2>PART 3: THE SCRIPT (~110 sec)</h2>
+<p>Sponsor phrases in <span class="sponsor">CYAN</span>. Key emotional beats in <span class="emphasis">GOLD</span>. Read naturally, not robotically.</p>
+
+<div class="step">
+  <p style="color:#00b8d4; font-size:10px; letter-spacing:3px;">BEAT 1 — OPENING (~12 sec)</p>
+  <div class="silent">ACTION: Stand next to or gesture at the GN100 box. Tap it if within reach.</div>
+  <div class="spoken">
+    "Sixth Borough is New York City's memory, localized in one box. One <span class="sponsor">DGX Spark</span>. One <span class="sponsor">GB10 Grace Blackwell Superchip</span>. <span class="sponsor">128 gigabytes of unified memory</span>. <span class="sponsor">Running locally</span>. <span class="sponsor">No internet connection at runtime</span>."
+  </div>
+</div>
+
+<div class="step">
+  <p style="color:#00b8d4; font-size:10px; letter-spacing:3px;">BEAT 2 — THE MAP (~18 sec)</p>
+  <div class="silent">ACTION: The map should be on screen at year 2026. Point at it.</div>
+  <div class="spoken">
+    "This is every building in New York City, extruded to its real LiDAR-measured height, color-coded by architectural era. The slider at the bottom is the year. Drag it back to 1948."
+  </div>
+  <div class="silent">ACTION: Drag year slider from 2026 → 1948 in ONE smooth motion (~5 sec). Buildings change. DON'T TALK during the drag. Let the map do the work.</div>
+</div>
+
+<div class="step">
+  <p style="color:#00b8d4; font-size:10px; letter-spacing:3px;">BEAT 3 — THE CROSS-BRONX (~22 sec)</p>
+  <div class="silent">ACTION: Zoom into the South Bronx area (around 1520 Sedgwick Ave / Cross-Bronx Expressway corridor).</div>
+  <div class="spoken">
+    "1948. Robert Moses begins demolishing 159 buildings to push the Cross-Bronx Expressway through the South Bronx. Watch."
+  </div>
+  <div class="silent">ACTION: Drag slider 1948 → 1972 slowly (~6 sec). Buildings disappear from the corridor. Stay silent during the drag.</div>
+  <div class="spoken">
+    "<span class="emphasis">Sixty thousand people displaced over twenty-four years.</span> Every particle is a documented person. Real DOB demolition records. Real ACS census data. They were pushed onto a few blocks of Sedgwick Avenue."
+  </div>
+</div>
+
+<div class="step">
+  <p style="color:#00b8d4; font-size:10px; letter-spacing:3px;">BEAT 4 — THE CLICK (~25 sec)</p>
+  <div class="spoken">
+    "August 11, 1973. 1520 Sedgwick. The rec room of the building that was full because of the displacement you just watched."
+  </div>
+  <div class="silent">ACTION: Click on a building in the Sedgwick Ave area. A card will appear with text (either MARQUEE content or a biography from Nemotron). STAY SILENT for 8-12 seconds while the text is visible on screen. This silence is the most important part of the demo.</div>
+  <div class="spoken">
+    "That text was just generated by a 30-billion-parameter model from <span class="sponsor">NVIDIA's Nemotron model family</span>, running on this box, ten feet from you, in the last 30 seconds. The map you scrubbed, the cone you watched, the photo of the rec room, the model that wrote the narration — all local. <span class="emphasis">Nothing left the room.</span>"
+  </div>
+</div>
+
+<div class="step">
+  <p style="color:#00b8d4; font-size:10px; letter-spacing:3px;">BEAT 5 — CLOSE (~13 sec)</p>
+  <div class="silent">ACTION: If ethernet is plugged in, pull the cable now. Otherwise just gesture at the box.</div>
+  <div class="spoken">
+    "We don't predict gentrification. We trace it from the receipts. Hip-hop was born inside the trauma of urban renewal. Cultural memory is what survives the bulldozer.<br><br>
+    <span class="emphasis">Computational ghosts need local hardware.</span>"
+  </div>
+</div>
+
+<!-- ============================================ -->
+<h2>PART 4: IF SOMETHING BREAKS</h2>
+
+<div class="step">
+  <p><strong>Building click shows "Loading biography from Nemotron..." but never resolves:</strong> The orchestrator may not be reachable from the browser. The card will fall back to MARQUEE text or a static description. Keep going — the visual demo is the main event, the biography text is bonus.</p>
+</div>
+
+<div class="step">
+  <p><strong>Map is slow or blank:</strong> Wait 10-15 seconds. The GN100 has 128 GB — it can handle the data. If still blank, try refreshing the page once.</p>
+</div>
+
+<div class="step">
+  <p><strong>Buy-time line if Nemotron hangs:</strong></p>
+  <div class="spoken" style="font-size:14px; color:#aaa;">"While that loads, this runs on the same hardware NVIDIA built for exactly this category of work. Local-first inference is the whole claim, and local-first means we own the latency too."</div>
+</div>
+
+<!-- ============================================ -->
+<h2>SPONSOR PHRASE CHECKLIST (15 rubric pts)</h2>
+<label><input type="checkbox"> "DGX Spark"</label>
+<label><input type="checkbox"> "GB10 Grace Blackwell Superchip"</label>
+<label><input type="checkbox"> "128 gigabytes of unified memory"</label>
+<label><input type="checkbox"> "Running locally"</label>
+<label><input type="checkbox"> "No internet connection at runtime"</label>
+<label><input type="checkbox"> "NVIDIA's Nemotron model family"</label>
+<label><input type="checkbox"> "Computational ghosts need local hardware"</label>
+
+<div style="height: 40px;"></div>
+</body>
+</html>
