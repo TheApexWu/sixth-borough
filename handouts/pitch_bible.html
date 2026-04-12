@@ -146,7 +146,7 @@
   <li><span class="gold">Orchestrator:</span> FastAPI on :30001 (real) / :30000 (stub fallback)</li>
   <li><span class="gold">Frontend:</span> deck.gl + maplibre-gl, serves from file:// or python3 http.server</li>
   <li><span class="gold">Data:</span> all on local SSD, zero network at runtime</li>
-  <li><span class="gold">Bevy/Rust:</span> native renderer on renderer-rust-v2 branch. Bevy 0.18.1 + wgpu. Same data/landmarks-infrastructure.json. WASM build deployed to Cloudflare Pages.</li>
+  <li><span class="gold">Bevy/Rust:</span> native renderer on renderer-rust-v2 branch. Bevy 0.18.1 + wgpu. Same data/landmarks-infrastructure.json. Runs natively on the GN100.</li>
 </ul>
 
 <hr class="divider">
@@ -212,7 +212,7 @@
 
 <div class="qa">
   <div class="qa-q">Q: "What about the Bevy/Rust renderer?"</div>
-  <div class="qa-a">Carson built a native Bevy renderer as a parallel path. Same JSON data, GPU-native rendering. deck.gl is the browser demo you're seeing. The Rust path is the production renderer -- when we scale to 49K photos and full temporal animation, we need native GPU performance, not WebGL. Two renderers, one data contract. The Cloudflare Pages WASM build is live.</div>
+  <div class="qa-a">Carson built a native Bevy renderer as a parallel path. Same JSON data, GPU-native rendering. deck.gl is the browser demo you're seeing. The Rust path is the production renderer -- when we scale to 49K photos and full temporal animation, we need native GPU performance, not WebGL. Two renderers, one data contract.</div>
 </div>
 
 <div class="qa">
