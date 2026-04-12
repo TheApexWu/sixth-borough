@@ -2706,6 +2706,43 @@ const GHOST_BUILDINGS = [
   { p: [[-74.00990,40.70920],[-74.00960,40.70920],[-74.00960,40.70895],[-74.00990,40.70895],[-74.00990,40.70920]], h: 187, y: 1908, d: 1968, b: 'SINGER' },
   // Cross-Bronx Expressway corridor — 117 tenements demolished 1948-1972
   ...CROSS_BRONX_GHOSTS,
+
+  // ── BRIDGES (infrastructure not in PLUTO/BIN data) ──
+  // Brooklyn Bridge — 1883, towers 84m, deck ~40m, ~486m main span
+  { p: [[-73.9969,40.7065],[-73.9964,40.7063],[-73.9903,40.7012],[-73.9908,40.7014],[-73.9969,40.7065]], h: 40, y: 1883, b: 'BRIDGE_BROOKLYN' },
+  // Manhattan Bridge — 1909, ~450m span
+  { p: [[-73.9907,40.7075],[-73.9902,40.7073],[-73.9847,40.6997],[-73.9852,40.6999],[-73.9907,40.7075]], h: 40, y: 1909, b: 'BRIDGE_MANHATTAN' },
+  // Williamsburg Bridge — 1903
+  { p: [[-73.9728,40.7134],[-73.9723,40.7132],[-73.9653,40.7094],[-73.9658,40.7096],[-73.9728,40.7134]], h: 40, y: 1903, b: 'BRIDGE_WILLIAMSBURG' },
+  // Queensboro (Ed Koch) Bridge — 1909
+  { p: [[-73.9575,40.7570],[-73.9570,40.7568],[-73.9470,40.7530],[-73.9475,40.7532],[-73.9575,40.7570]], h: 46, y: 1909, b: 'BRIDGE_QUEENSBORO' },
+  // George Washington Bridge — 1931
+  { p: [[-73.9527,40.8520],[-73.9522,40.8518],[-73.9440,40.8510],[-73.9445,40.8512],[-73.9527,40.8520]], h: 65, y: 1931, b: 'BRIDGE_GW' },
+  // Verrazano-Narrows Bridge — 1964
+  { p: [[-74.0468,40.6075],[-74.0463,40.6073],[-74.0500,40.6005],[-74.0505,40.6007],[-74.0468,40.6075]], h: 70, y: 1964, b: 'BRIDGE_VERRAZANO' },
+  // Throgs Neck Bridge — 1961
+  { p: [[-73.7955,40.8055],[-73.7950,40.8053],[-73.7870,40.8025],[-73.7875,40.8027],[-73.7955,40.8055]], h: 45, y: 1961, b: 'BRIDGE_THROGS' },
+  // Triborough (RFK) Bridge — 1936 (simplified, main span)
+  { p: [[-73.9240,40.7940],[-73.9235,40.7938],[-73.9200,40.7870],[-73.9205,40.7872],[-73.9240,40.7940]], h: 40, y: 1936, b: 'BRIDGE_TRIBORO' },
+
+  // ── STADIUMS ──
+  // Yankee Stadium (new) — 2009, Bronx
+  { p: [[-73.9274,40.8297],[-73.9244,40.8297],[-73.9244,40.8273],[-73.9274,40.8273],[-73.9274,40.8297]], h: 50, y: 2009, b: 'STADIUM_YANKEE' },
+  // Citi Field — 2009, Queens
+  { p: [[-73.8468,40.7573],[-73.8438,40.7573],[-73.8438,40.7553],[-73.8468,40.7553],[-73.8468,40.7573]], h: 45, y: 2009, b: 'STADIUM_CITI' },
+  // Madison Square Garden — 1968
+  { p: [[-73.9944,40.7506],[-73.9924,40.7506],[-73.9924,40.7492],[-73.9944,40.7492],[-73.9944,40.7506]], h: 46, y: 1968, b: 'STADIUM_MSG' },
+  // Barclays Center — 2012, Brooklyn
+  { p: [[-73.9764,40.6828],[-73.9744,40.6828],[-73.9744,40.6812],[-73.9764,40.6812],[-73.9764,40.6828]], h: 37, y: 2012, b: 'STADIUM_BARCLAYS' },
+  // MetLife Stadium — 2010 (technically NJ but visible from NYC)
+  // Arthur Ashe Stadium — 1997, Queens (USTA)
+  { p: [[-73.8498,40.7508],[-73.8468,40.7508],[-73.8468,40.7488],[-73.8498,40.7488],[-73.8498,40.7508]], h: 40, y: 1997, b: 'STADIUM_ASHE' },
+  // Original Yankee Stadium (demolished 2010) — ghost
+  { p: [[-73.9282,40.8267],[-73.9252,40.8267],[-73.9252,40.8247],[-73.9282,40.8247],[-73.9282,40.8267]], h: 45, y: 1923, d: 2010, b: 'STADIUM_YANKEE_OLD' },
+  // Polo Grounds (demolished 1964) — ghost
+  { p: [[-73.9373,40.8292],[-73.9343,40.8292],[-73.9343,40.8268],[-73.9373,40.8268],[-73.9373,40.8292]], h: 30, y: 1911, d: 1964, b: 'STADIUM_POLO' },
+  // Ebbets Field (demolished 1960) — ghost
+  { p: [[-73.9573,40.6623],[-73.9553,40.6623],[-73.9553,40.6607],[-73.9573,40.6607],[-73.9573,40.6623]], h: 25, y: 1913, d: 1960, b: 'STADIUM_EBBETS' },
 ];
 
 // Add WTC to MARQUEE so clicks show real content
@@ -2716,6 +2753,24 @@ Object.assign(MARQUEE, {
   'SINGER': { title: 'Singer Building', year: 1908, body: 'Ernest Flagg, 1908. 612 feet, 41 floors. Tallest building ever peacefully demolished (1968) to make way for One Liberty Plaza. Stood at 149 Broadway in Lower Manhattan.', photo: 'cultural-content/oldnyc/thumbs/718942f.jpg' },
   // 1520 Sedgwick Ave — birthplace of hip-hop
   '2008286': { title: '1520 Sedgwick Avenue', year: 1967, body: 'August 11, 1973. DJ Kool Herc throws a back-to-school party in the rec room of this building. He isolates the break — the percussion-only section — and loops it between two turntables. The crowd goes off. Hip-hop is born. The building was full of displaced families from the Cross-Bronx Expressway demolitions. The density created the culture.', photo: 'cultural-content/bronx/kool-herc.jpg' },
+  // Bridges
+  'BRIDGE_BROOKLYN': { title: 'Brooklyn Bridge', year: 1883, body: 'John and Washington Roebling. 1,595 ft main span. First steel-wire suspension bridge. Took 14 years to build. John Roebling died of tetanus during construction. His son Washington was paralyzed by caisson disease and supervised via telescope. Emily Roebling managed the project day-to-day.' },
+  'BRIDGE_MANHATTAN': { title: 'Manhattan Bridge', year: 1909, body: 'Leon Moisseiff. 1,470 ft main span. Carries 4 subway tracks, 7 road lanes, a bike path, and a pedestrian walkway. The deflection theory Moisseiff used here was later applied to the Tacoma Narrows Bridge, which famously collapsed.' },
+  'BRIDGE_WILLIAMSBURG': { title: 'Williamsburg Bridge', year: 1903, body: 'Leffert L. Buck. 1,600 ft main span. When completed it was the longest suspension bridge in the world. Opened the Lower East Side to Brooklyn, triggering a massive migration of Jewish immigrants across the river.' },
+  'BRIDGE_QUEENSBORO': { title: 'Queensboro Bridge (Ed Koch)', year: 1909, body: 'Henry Hornbostel and Gustav Lindenthal. Cantilever bridge, 1,182 ft main span. F. Scott Fitzgerald: "The city seen from the Queensboro Bridge is always the city seen for the first time, in its first wild promise of all the mystery and the beauty in the world."' },
+  'BRIDGE_GW': { title: 'George Washington Bridge', year: 1931, body: 'Othmar Ammann. 3,500 ft main span. When completed, it was the longest suspension bridge in the world by a factor of two. Le Corbusier called it "the most beautiful bridge in the world." 100 million vehicle crossings per year.' },
+  'BRIDGE_VERRAZANO': { title: 'Verrazano-Narrows Bridge', year: 1964, body: 'Othmar Ammann. 4,260 ft main span. Longest suspension bridge in the world from 1964 to 1981. The towers are 693 ft tall and 1 5/8 inches farther apart at their tops than their bases due to the curvature of the Earth.' },
+  'BRIDGE_THROGS': { title: 'Throgs Neck Bridge', year: 1961, body: 'Othmar Ammann. Suspension bridge connecting Queens and the Bronx. 1,800 ft main span. Part of Robert Moses\'s highway network. Named after John Throckmorton, who settled the area in 1643.' },
+  'BRIDGE_TRIBORO': { title: 'Triborough Bridge (RFK)', year: 1936, body: 'Othmar Ammann and Robert Moses. Three separate bridges connecting Manhattan, Queens, and the Bronx via Randall\'s and Wards Islands. Moses used the bridge authority as his power base for decades of highway construction across NYC.' },
+  // Stadiums
+  'STADIUM_YANKEE': { title: 'Yankee Stadium', year: 2009, body: 'Populous architects. Replaced the original 1923 stadium across the street. 54,251 capacity. Cost $2.3 billion. The original House That Ruth Built hosted 6,581 regular season games over 85 years.' },
+  'STADIUM_CITI': { title: 'Citi Field', year: 2009, body: 'Populous architects. 41,922 capacity. Replaced Shea Stadium (1964-2008). The rotunda entrance is modeled after Ebbets Field, the beloved Brooklyn Dodgers stadium demolished in 1960.' },
+  'STADIUM_MSG': { title: 'Madison Square Garden', year: 1968, body: 'Charles Luckman. Built on the site of the demolished Pennsylvania Station. The most controversial building in NYC — the destruction of Penn Station for this arena directly created the landmarks preservation movement.' },
+  'STADIUM_BARCLAYS': { title: 'Barclays Center', year: 2012, body: 'SHoP Architects. 17,732 capacity. Built as part of the Atlantic Yards development. The weathered steel facade rusts intentionally over time.' },
+  'STADIUM_ASHE': { title: 'Arthur Ashe Stadium', year: 1997, body: 'Rossetti Associates. 23,771 capacity. Largest tennis stadium in the world. Named for Arthur Ashe, the first Black man to win the US Open (1968). Retractable roof added 2016.' },
+  'STADIUM_YANKEE_OLD': { title: 'Original Yankee Stadium', year: 1923, body: 'Osborn Engineering. The House That Ruth Built. 67,000 capacity at peak. Babe Ruth hit the first home run here on April 18, 1923. Hosted 37 World Series. Demolished 2010 to build a public park.' },
+  'STADIUM_POLO': { title: 'Polo Grounds', year: 1911, body: 'Home of the NY Giants (baseball and football). Bobby Thomson\'s Shot Heard Round the World, 1951. Willie Mays\'s over-the-shoulder catch, 1954 World Series Game 1. Demolished 1964 for public housing.' },
+  'STADIUM_EBBETS': { title: 'Ebbets Field', year: 1913, body: 'Home of the Brooklyn Dodgers. Jackie Robinson broke baseball\'s color line here on April 15, 1947. The Dodgers left for LA in 1957. The stadium was demolished in 1960. The site is now the Ebbets Field Apartments housing project.' },
 });
 
 // ── State ──
