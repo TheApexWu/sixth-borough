@@ -88,6 +88,7 @@
   <li><span class="gold">The past can be profitable AND meaningful.</span> Legal aid attorneys need building histories. Insurance underwriters need demolition context. REIT analysts need ownership chains. Real buyer segments, not charity.</li>
   <li>Cities are being optimized for the future at the expense of their own history. The Mamdani administration is reshaping NYC's urban policy right now. <span class="gold">Before you rezone, you should know what you're erasing. Sixth Borough is the receipt.</span> We want to bring this directly to the mayor's office -- give city government institutional memory before it makes irreversible decisions.</li>
   <li>The inspiration was the PS2. Not nostalgia -- <span class="gold">the hardware itself as an object of genuine preservation.</span> A PS2 is timeless. You put it in a room, you put a disc in, and it holds an entire world. No updates, no cloud, no account. It's a vehicle of memory. The DGX Spark is the same idea at city scale. One box, one world, fully self-contained. The immersive feel of something you own and can touch. That's the design philosophy.</li>
+  <li>Carson built a native Bevy 0.18.1 renderer in Rust as a parallel path. Same building data, GPU-native rendering with real materials and shadows. <span class="gold">deck.gl is the primary demo, Bevy is the performance path</span> for when we scale to 49K photos and full temporal animation. Two renderers, one data contract.</li>
 </ul>
 
 <hr class="divider">
@@ -127,6 +128,9 @@
   <li><span class="gold">Zero</span> network round trips at runtime</li>
   <li><span class="gold">$3,000</span> retail box price</li>
   <li><span class="gold">49,000</span> photos in full OldNYC (we use 1.5%, 65x expansion)</li>
+  <li><span class="gold">8</span> bridges (Brooklyn, Manhattan, Williamsburg, Queensboro, GW, Verrazano, Throgs Neck, Triborough)</li>
+  <li><span class="gold">8</span> stadiums (3 ghost: Polo Grounds, Ebbets Field, original Yankee Stadium)</li>
+  <li><span class="gold">Shared</span> data/landmarks-infrastructure.json feeds both renderers</li>
 </ul>
 
 <hr class="divider">
@@ -142,6 +146,7 @@
   <li><span class="gold">Orchestrator:</span> FastAPI on :30001 (real) / :30000 (stub fallback)</li>
   <li><span class="gold">Frontend:</span> deck.gl + maplibre-gl, serves from file:// or python3 http.server</li>
   <li><span class="gold">Data:</span> all on local SSD, zero network at runtime</li>
+  <li><span class="gold">Bevy/Rust:</span> native renderer on renderer-rust-v2 branch. Bevy 0.18.1 + wgpu. Same data/landmarks-infrastructure.json. WASM build deployed to Cloudflare Pages.</li>
 </ul>
 
 <hr class="divider">
@@ -207,7 +212,7 @@
 
 <div class="qa">
   <div class="qa-q">Q: "What about the Bevy/Rust renderer?"</div>
-  <div class="qa-a">Carson built a native Bevy renderer as a stretch goal. deck.gl is the primary demo. The Rust path is a performance optimization for when we scale to real-time streaming of 49K photos and full temporal animation. It's infrastructure, not the demo.</div>
+  <div class="qa-a">Carson built a native Bevy renderer as a parallel path. Same JSON data, GPU-native rendering. deck.gl is the browser demo you're seeing. The Rust path is the production renderer -- when we scale to 49K photos and full temporal animation, we need native GPU performance, not WebGL. Two renderers, one data contract. The Cloudflare Pages WASM build is live.</div>
 </div>
 
 <div class="qa">
