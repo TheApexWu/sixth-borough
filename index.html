@@ -2691,59 +2691,21 @@ const CROSS_BRONX_GHOSTS = [
   ...crossBronxBlock(-73.8780, 40.8395, 7, 3, 1966, 1972),
 ];
 
-const GHOST_BUILDINGS = [
-  // WTC North Tower (1 WTC) — 63m×63m, 417m tall, 1970-2001
-  { p: [[-74.01365,40.71268],[-74.01295,40.71268],[-74.01295,40.71212],[-74.01365,40.71212],[-74.01365,40.71268]], h: 417, y: 1970, d: 2001, b: 'WTC1' },
-  // WTC South Tower (2 WTC) — 63m×63m, 415m tall, 1971-2001
-  { p: [[-74.01348,40.71158],[-74.01278,40.71158],[-74.01278,40.71102],[-74.01348,40.71102],[-74.01348,40.71158]], h: 415, y: 1971, d: 2001, b: 'WTC2' },
-  // Marriott WTC (3 WTC) — hotel, ~73m tall, 1981-2001
-  { p: [[-74.01445,40.71168],[-74.01395,40.71168],[-74.01395,40.71128],[-74.01445,40.71128],[-74.01445,40.71168]], h: 73, y: 1981, d: 2001, b: 'WTC3' },
-  // 7 WTC — 174m tall, 1987-2001
-  { p: [[-74.01265,40.71365],[-74.01175,40.71365],[-74.01175,40.71315],[-74.01265,40.71315],[-74.01265,40.71365]], h: 174, y: 1987, d: 2001, b: 'WTC7' },
-  // Original Penn Station — 1910-1963, Beaux-Arts masterpiece demolished for MSG
-  { p: [[-73.99420,40.75080],[-73.99260,40.75080],[-73.99260,40.74970],[-73.99420,40.74970],[-73.99420,40.75080]], h: 46, y: 1910, d: 1963, b: 'PENN_ORIG' },
-  // Singer Building — tallest building ever demolished, 1908-1968, 187m
-  { p: [[-74.00990,40.70920],[-74.00960,40.70920],[-74.00960,40.70895],[-74.00990,40.70895],[-74.00990,40.70920]], h: 187, y: 1908, d: 1968, b: 'SINGER' },
-  // Cross-Bronx Expressway corridor — 117 tenements demolished 1948-1972
-  ...CROSS_BRONX_GHOSTS,
-
-  // ── BRIDGES (infrastructure not in PLUTO/BIN data) ──
-  // Brooklyn Bridge — 1883, towers 84m, deck ~40m, ~486m main span
-  { p: [[-73.9969,40.7065],[-73.9964,40.7063],[-73.9903,40.7012],[-73.9908,40.7014],[-73.9969,40.7065]], h: 40, y: 1883, b: 'BRIDGE_BROOKLYN' },
-  // Manhattan Bridge — 1909, ~450m span
-  { p: [[-73.9907,40.7075],[-73.9902,40.7073],[-73.9847,40.6997],[-73.9852,40.6999],[-73.9907,40.7075]], h: 40, y: 1909, b: 'BRIDGE_MANHATTAN' },
-  // Williamsburg Bridge — 1903
-  { p: [[-73.9728,40.7134],[-73.9723,40.7132],[-73.9653,40.7094],[-73.9658,40.7096],[-73.9728,40.7134]], h: 40, y: 1903, b: 'BRIDGE_WILLIAMSBURG' },
-  // Queensboro (Ed Koch) Bridge — 1909
-  { p: [[-73.9575,40.7570],[-73.9570,40.7568],[-73.9470,40.7530],[-73.9475,40.7532],[-73.9575,40.7570]], h: 46, y: 1909, b: 'BRIDGE_QUEENSBORO' },
-  // George Washington Bridge — 1931
-  { p: [[-73.9527,40.8520],[-73.9522,40.8518],[-73.9440,40.8510],[-73.9445,40.8512],[-73.9527,40.8520]], h: 65, y: 1931, b: 'BRIDGE_GW' },
-  // Verrazano-Narrows Bridge — 1964
-  { p: [[-74.0468,40.6075],[-74.0463,40.6073],[-74.0500,40.6005],[-74.0505,40.6007],[-74.0468,40.6075]], h: 70, y: 1964, b: 'BRIDGE_VERRAZANO' },
-  // Throgs Neck Bridge — 1961
-  { p: [[-73.7955,40.8055],[-73.7950,40.8053],[-73.7870,40.8025],[-73.7875,40.8027],[-73.7955,40.8055]], h: 45, y: 1961, b: 'BRIDGE_THROGS' },
-  // Triborough (RFK) Bridge — 1936 (simplified, main span)
-  { p: [[-73.9240,40.7940],[-73.9235,40.7938],[-73.9200,40.7870],[-73.9205,40.7872],[-73.9240,40.7940]], h: 40, y: 1936, b: 'BRIDGE_TRIBORO' },
-
-  // ── STADIUMS ──
-  // Yankee Stadium (new) — 2009, Bronx
-  { p: [[-73.9274,40.8297],[-73.9244,40.8297],[-73.9244,40.8273],[-73.9274,40.8273],[-73.9274,40.8297]], h: 50, y: 2009, b: 'STADIUM_YANKEE' },
-  // Citi Field — 2009, Queens
-  { p: [[-73.8468,40.7573],[-73.8438,40.7573],[-73.8438,40.7553],[-73.8468,40.7553],[-73.8468,40.7573]], h: 45, y: 2009, b: 'STADIUM_CITI' },
-  // Madison Square Garden — 1968
-  { p: [[-73.9944,40.7506],[-73.9924,40.7506],[-73.9924,40.7492],[-73.9944,40.7492],[-73.9944,40.7506]], h: 46, y: 1968, b: 'STADIUM_MSG' },
-  // Barclays Center — 2012, Brooklyn
-  { p: [[-73.9764,40.6828],[-73.9744,40.6828],[-73.9744,40.6812],[-73.9764,40.6812],[-73.9764,40.6828]], h: 37, y: 2012, b: 'STADIUM_BARCLAYS' },
-  // MetLife Stadium — 2010 (technically NJ but visible from NYC)
-  // Arthur Ashe Stadium — 1997, Queens (USTA)
-  { p: [[-73.8498,40.7508],[-73.8468,40.7508],[-73.8468,40.7488],[-73.8498,40.7488],[-73.8498,40.7508]], h: 40, y: 1997, b: 'STADIUM_ASHE' },
-  // Original Yankee Stadium (demolished 2010) — ghost
-  { p: [[-73.9282,40.8267],[-73.9252,40.8267],[-73.9252,40.8247],[-73.9282,40.8247],[-73.9282,40.8267]], h: 45, y: 1923, d: 2010, b: 'STADIUM_YANKEE_OLD' },
-  // Polo Grounds (demolished 1964) — ghost
-  { p: [[-73.9373,40.8292],[-73.9343,40.8292],[-73.9343,40.8268],[-73.9373,40.8268],[-73.9373,40.8292]], h: 30, y: 1911, d: 1964, b: 'STADIUM_POLO' },
-  // Ebbets Field (demolished 1960) — ghost
-  { p: [[-73.9573,40.6623],[-73.9553,40.6623],[-73.9553,40.6607],[-73.9573,40.6607],[-73.9573,40.6623]], h: 25, y: 1913, d: 1960, b: 'STADIUM_EBBETS' },
-];
+// Ghost buildings, bridges, stadiums loaded from shared JSON (data/landmarks-infrastructure.json)
+// so both deck.gl and Bevy renderers use the same source of truth
+let GHOST_BUILDINGS = [...CROSS_BRONX_GHOSTS];
+fetch('data/landmarks-infrastructure.json')
+  .then(r => r.json())
+  .then(data => {
+    const all = [...(data.ghost_buildings || []), ...(data.bridges || []), ...(data.stadiums || [])];
+    GHOST_BUILDINGS = GHOST_BUILDINGS.concat(all);
+    // Inject into buildings array if already loaded
+    if (buildings.length) {
+      buildings.push(...all);
+      if (deckgl) deckgl.setProps({ layers: buildLayers() });
+    }
+  })
+  .catch(err => console.warn('landmarks-infrastructure.json failed:', err));
 
 // Add WTC to MARQUEE so clicks show real content
 Object.assign(MARQUEE, {
