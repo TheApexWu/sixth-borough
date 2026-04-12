@@ -1374,6 +1374,18 @@
   <button id="toggle-landmarks" onclick="toggleLandmarks()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#fff; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">LANDMARKS: ON</button>
 </div>
 
+<div id="landmark-nav" style="position:fixed; top:80px; left:24px; z-index:45; background:rgba(0,0,0,0.92); border:1px solid #282828; padding:12px 16px; font-family:'Courier New',monospace; width:260px; max-height:60vh; display:flex; flex-direction:column;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+    <span style="font-size:11px; letter-spacing:3px; color:#00b8d4;">LANDMARKS</span>
+    <span id="landmark-counter" style="font-size:10px; color:#555;">0/0</span>
+  </div>
+  <div style="display:flex; gap:6px; margin-bottom:8px;">
+    <button onclick="landmarkPrev()" style="flex:1; background:rgba(255,255,255,0.06); border:1px solid #333; color:#aaa; font-family:'Courier New',monospace; font-size:11px; padding:4px 0; cursor:pointer;">PREV</button>
+    <button onclick="landmarkNext()" style="flex:1; background:rgba(255,255,255,0.06); border:1px solid #333; color:#aaa; font-family:'Courier New',monospace; font-size:11px; padding:4px 0; cursor:pointer;">NEXT</button>
+  </div>
+  <div id="landmark-list" style="overflow-y:auto; flex:1; max-height:45vh;"></div>
+</div>
+
 <div id="legend"></div>
 
 <div id="immigration-origins-panel">
@@ -5115,6 +5127,75 @@ function toggleLandmarks() {
   btn.style.color = featureFlags.demolishedLandmarks ? '#fff' : '#666';
   if (deckgl) deckgl.setProps({ layers: buildLayers() });
 }
+
+// ── Landmark navigation list ──
+const LANDMARK_LIST = [
+  // Iconic buildings
+  { id: 'ESB', name: 'Empire State Building', lat: 40.7484, lon: -73.9857, year: 1931, zoom: 16, type: 'building' },
+  { id: 'CHRYSLER', name: 'Chrysler Building', lat: 40.7516, lon: -73.9755, year: 1930, zoom: 16, type: 'building' },
+  { id: 'WOOLWORTH', name: 'Woolworth Building', lat: 40.7127, lon: -74.0074, year: 1913, zoom: 16, type: 'building' },
+  { id: 'GCT', name: 'Grand Central Terminal', lat: 40.7527, lon: -73.9772, year: 1913, zoom: 16, type: 'building' },
+  { id: 'DAKOTA', name: 'The Dakota', lat: 40.7766, lon: -73.9764, year: 1884, zoom: 16, type: 'building' },
+  { id: '30ROCK', name: '30 Rockefeller Plaza', lat: 40.7587, lon: -73.9787, year: 1933, zoom: 16, type: 'building' },
+  // Ghost buildings
+  { id: 'WTC', name: 'Twin Towers (Ghost)', lat: 40.7118, lon: -74.0131, year: 1970, zoom: 15.5, type: 'ghost' },
+  { id: 'PENN', name: 'Penn Station (Ghost)', lat: 40.7505, lon: -73.9935, year: 1910, zoom: 16, type: 'ghost' },
+  { id: 'SINGER', name: 'Singer Building (Ghost)', lat: 40.7091, lon: -74.0098, year: 1908, zoom: 16, type: 'ghost' },
+  // Bridges
+  { id: 'BR_BROOKLYN', name: 'Brooklyn Bridge', lat: 40.7034, lon: -73.9955, year: 1883, zoom: 15, type: 'bridge' },
+  { id: 'BR_GW', name: 'George Washington Bridge', lat: 40.8513, lon: -73.9443, year: 1931, zoom: 14.5, type: 'bridge' },
+  { id: 'BR_VERRAZANO', name: 'Verrazano-Narrows Bridge', lat: 40.6034, lon: -74.0475, year: 1964, zoom: 14, type: 'bridge' },
+  { id: 'BR_QUEENSBORO', name: 'Queensboro Bridge', lat: 40.7545, lon: -73.9507, year: 1909, zoom: 15, type: 'bridge' },
+  { id: 'BR_WILLIAMSBURG', name: 'Williamsburg Bridge', lat: 40.7117, lon: -73.9659, year: 1903, zoom: 15, type: 'bridge' },
+  // Stadiums
+  { id: 'YANKEE', name: 'Yankee Stadium', lat: 40.8296, lon: -73.9262, year: 2009, zoom: 15.5, type: 'stadium' },
+  { id: 'MSG', name: 'Madison Square Garden', lat: 40.7505, lon: -73.9934, year: 1968, zoom: 16, type: 'stadium' },
+  { id: 'BARCLAYS', name: 'Barclays Center', lat: 40.6827, lon: -73.9754, year: 2012, zoom: 16, type: 'stadium' },
+  // Ghost stadiums
+  { id: 'POLO', name: 'Polo Grounds (Ghost)', lat: 40.8292, lon: -73.9358, year: 1911, zoom: 15.5, type: 'ghost' },
+  { id: 'EBBETS', name: 'Ebbets Field (Ghost)', lat: 40.6615, lon: -73.9563, year: 1913, zoom: 15.5, type: 'ghost' },
+  // Cultural
+  { id: 'SEDGWICK', name: '1520 Sedgwick Ave (Hip-Hop)', lat: 40.8301, lon: -73.9225, year: 1973, zoom: 15.5, type: 'cultural' },
+  { id: 'CBX', name: 'Cross-Bronx Expressway', lat: 40.8410, lon: -73.8950, year: 1948, zoom: 14.5, type: 'cultural' },
+];
+
+let _landmarkIdx = 0;
+
+function buildLandmarkList() {
+  const list = document.getElementById('landmark-list');
+  if (!list) return;
+  list.innerHTML = LANDMARK_LIST.map((l, i) => {
+    const colors = { building: '#fff', ghost: '#ff6a3c', bridge: '#00b8d4', stadium: '#8f8', cultural: '#f5c842' };
+    const c = colors[l.type] || '#aaa';
+    return `<div onclick="landmarkGo(${i})" style="padding:5px 8px; cursor:pointer; border-left:2px solid ${i === _landmarkIdx ? c : 'transparent'}; color:${i === _landmarkIdx ? '#fff' : '#777'}; font-size:11px; line-height:1.5; transition:all 0.15s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='${i === _landmarkIdx ? '#fff' : '#777'}'">
+      <span style="color:${c};">${l.type.toUpperCase()}</span> ${l.name} <span style="color:#555">${l.year}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('landmark-counter').textContent = `${_landmarkIdx + 1}/${LANDMARK_LIST.length}`;
+}
+
+function landmarkGo(i) {
+  _landmarkIdx = i;
+  const l = LANDMARK_LIST[i];
+  // Set year to the landmark's era
+  jumpToYear(l.year);
+  // Fly camera
+  if (deckgl) {
+    deckgl.setProps({
+      initialViewState: {
+        latitude: l.lat, longitude: l.lon, zoom: l.zoom, pitch: 50, bearing: -15,
+        transitionDuration: 1800, transitionInterpolator: new deck.FlyToInterpolator(),
+      },
+    });
+  }
+  buildLandmarkList();
+}
+
+function landmarkNext() { landmarkGo((_landmarkIdx + 1) % LANDMARK_LIST.length); }
+function landmarkPrev() { landmarkGo((_landmarkIdx - 1 + LANDMARK_LIST.length) % LANDMARK_LIST.length); }
+
+// Build list on load
+setTimeout(buildLandmarkList, 500);
 
 function updateVisibleCount() {
   const count = buildings.filter(b => b.y === 0 || b.y <= currentYear).length;
