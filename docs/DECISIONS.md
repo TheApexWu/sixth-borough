@@ -35,7 +35,7 @@ Append-only log of build decisions made during the hackathon. When you make a no
 
 ## 2026-04-10 evening — Narration model
 
-**Decision:** Nemotron-3-Nano-30B-A3B (Q8 GGUF) via llama.cpp on the GN100, OpenAI-compatible API on port 30000.
+**Decision:** Nemotron-3-Nano-30B-A3B (Q8_K_XL GGUF) via llama.cpp on the GN100, OpenAI-compatible API on llama-server port `:8090`, wrapped by FastAPI orchestrator on `:30001`. (Stub orch on `:30000` is the safety net.)
 **Alternatives considered:**
 - Nemotron-Mini-4B-Instruct (smaller, faster, but less impressive on stage)
 - Cloud APIs (zeros us on NVIDIA Stack score)
@@ -342,3 +342,63 @@ Secondary cleanup: removed all references to the dropped stack pieces (`bevy_poi
 ---
 
 ## (add new decisions below this line as they happen)
+
+---
+
+## 2026-04-12 ~01:00 ET — Cross-Bronx pivot locked (Session 45)
+
+**Decision:** The demo collapses to ONE causal arc: Cross-Bronx Expressway 1948-1972 → 60K displaced → families pushed onto Sedgwick Avenue → 1520 Sedgwick Avenue rec room → DJ Kool Herc Aug 11 1973 → hip-hop birth → "cultural memory is what survives the bulldozer." The map+slider+migration cone is the visual hero. The biography click is the payoff.
+**Alternatives considered:** the earlier "5 buyer segment" frame and the later "A+B two-surface" frame (both kept as fallback drafts in `docs/*.A_PLUS_B.md`).
+**Why:** Single causal chain (not "look at all this NYC data"), quantifiable at every step (60K displaced per Caro, 159 buildings demolished, 24 years, 7-mile route), Cross-Bronx → Kool Herc is THE iconic NYC cultural memory story, hits Cultural Impact track verbatim, earns Insight Quality rubric (10 pts) by being non-obvious, and the unicorn-bounty number row falls out cleanly (NYC right-to-counsel 2022 expansion = 20K cases/yr × 6 paralegal hours × $100/hr = $12M/yr redundant labor, Rule 1.6 NY Rules of Pro Conduct = compliance lock to local inference).
+**Owner:** Alex.
+**Reversible by:** Not reversible — demo video script is built around this anchor (`docs/DEMO_VIDEO_SCRIPT.CROSS_BRONX.md`).
+
+---
+
+## 2026-04-12 ~01:30 ET — Carson out, Bevy native deferred to v2 (Session 45)
+
+**Decision:** Carson left the venue ~21:30 ET Apr 11, "out of commission." The Bevy 0.18.1 native renderer is FROZEN at `b394623` and is no longer in the Sun demo path. Sun demo runs entirely on the deck.gl + maplibre browser surface (`feature/sketch-overlay`).
+**Alternatives considered:** trying to maintain the Bevy renderer + cherry-pick Carson's last commits (rejected — no time and no Rust expertise on the remaining team).
+**Why:** Forcing the demo to run on a path no one on the remaining team can debug live is a single point of failure. The deck.gl path is independently functional, has James actively shipping it, and matches the rubric's Usability beat ("a tenant lawyer could use this tomorrow") better because the browser is the buyer's existing tool. Bevy stays in the repo as v2 — ships in the submission, doesn't drive the cinematic.
+**Owner:** Alex.
+**Reversible by:** N/A. Carson is gone.
+
+---
+
+## 2026-04-12 ~02:30 ET — Zero-dependency biography RAG endpoint shipped (Session 45)
+
+**Decision:** Build `src/biography/{lookup,synthesize,router}.py` as a zero-dependency structured retrieval layer over the local NYC Open Data files. POST `/biography` with `{bin}` OR `{lat,lon}` OR `{event_id}`, returns a 4-section forensic markdown biography from Nemotron grounded in the public records. No embeddings, no vector DB, no LangChain, no cloud calls. Uses `httpx` (already in requirements) for the localhost loopback to llama-server `:8090`. ~582 lines total.
+**Alternatives considered:** LangChain RAG (added dependency surface, semantic similarity unnecessary when BIN is a primary key), vector DB over photo embeddings (over-engineered), OpenAI assistant API (cloud, dead path), no biography feature at all (loses 13/15 Tech Depth rubric points and the "more than viz" pitch verb).
+**Why:** The rubric's Technical Depth criterion explicitly lists "RAG / Custom Logic" as qualifying. The pitch needs a click verb beyond "vibe poem narration" — clicking a building should return a footnoted historical document the user can take to court. Local-only retrieval + local-only LLM = Rule 1.6 compliance lock for the lawyer use case. Forensic posture is enforced at the prompt level: every claim cites a dataset, no speculation, no invented owners.
+**Owner:** Alex.
+**Reversible by:** N/A — endpoint is live on the GN100, smoke-tested with Sedgwick returning a real biography in 1m43s cold or 11ms cached.
+
+---
+
+## 2026-04-12 ~02:30 ET — Borough expansion: all 5 boroughs compacted (Session 45)
+
+**Decision:** Run `scripts/export_buildings_all_boroughs.py` over the citywide Building Footprints `5zhs-2jue` GeoJSON to produce `data/{manhattan,bronx,brooklyn,queens,staten}_compact.json` × 5 in James's `{p, h, y, b}` schema. Total: 262 MB across all 5 boroughs (~1.05 million buildings). Borough boundaries pulled from NYC DCP `gthc-hcne` for the red-outline overlay layer (3.2 MB).
+**Alternatives considered:** Manhattan-only (the Apr 7 download), Bronx-only (Session 44 first pass), Building Footprints Historical Shape `s5zg-yzea` (export endpoint returned empty 53 bytes — dead path).
+**Why:** The biography RAG needs all 5 boroughs of building polygons to resolve any NYC click into a structured record. The Cross-Bronx demo specifically needs Bronx polygons in the renderer (now in `e0b2428` from James). The other 3 boroughs (Brooklyn/Queens/Staten) lift the pitch from "we have Manhattan + Bronx" to "all 5 boroughs of NYC, ~1.05 million buildings, on the box." Under the 1.3 GB worst-case estimate by 4x.
+**Owner:** Alex.
+**Reversible by:** N/A — files are committed.
+
+---
+
+## 2026-04-12 ~03:30 ET — Biography cache layer shipped (Session 45)
+
+**Decision:** Add a pre-bake cache layer (`data/biography_cache.json`) keyed by request shape (`bin:` / `event:` / `latlon:`). Cache hit returns the response in <50 ms with `backend: "cache"`. Cache miss runs the full pipeline AND writes back. `scripts/prebake_biographies.py` warms all 19 events from `events-seed.json` in one batch (~30 min total).
+**Alternatives considered:** no caching (1m43s per click is unacceptable on stage), serving entirely from a static JSON file (loses the "look up any building" claim — only canonical addresses would work).
+**Why:** Mirrors the existing `data/narration_cache.json` venue WiFi insurance pattern. Demo click on Sedgwick now serves in 11 ms instead of 1m43s — the difference between "look at the model thinking" and "it just works." Cold cache misses on non-canonical buildings still run the full pipeline so the "look up any building in NYC" pitch claim is true.
+**Owner:** Alex.
+**Reversible by:** N/A.
+
+---
+
+## 2026-04-12 ~03:30 ET — Cloudflare/sixthborough.nyc references purged (Session 45)
+
+**Decision:** Strip every reference to Cloudflare Pages, the `sixthborough.nyc` domain, and the WASM-cloud-build path from the load-bearing docs and code. Carson kept shipping CI fixes for the Cloudflare path (`b394623 fix(ci): reduce WASM binary size to fit Cloudflare 25 MiB limit`) after Alex told the team the path was "scrapped" — but the only place that survived was the CORS comment in `src/orchestrator/main.py` and the stack table in `docs/STACK.md` and the system diagram in `ARCHITECTURE.md`. All three now removed.
+**Alternatives considered:** keeping the Cloudflare path alive as a v2 (rejected — directly contradicts the local-first thesis and the unplug-cable demo beat).
+**Why:** Compliance lock + unplug-cable beat both require local-only inference. A judge who greps `Cloudflare` in the repo and finds CORS configured for a public origin invalidates the pitch in 5 seconds. The Cloudflare path was never aligned with the Rule 1.6 compliance argument — keeping it was technical debt for a v2 nobody asked for.
+**Owner:** Alex.
+**Reversible by:** N/A — CF path is no longer load-bearing on any branch.

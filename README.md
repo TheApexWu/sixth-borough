@@ -1,10 +1,22 @@
 # Sixth Borough
 
-**Cultural memory infrastructure that runs on the community's own hardware instead of someone else's cloud.** Built for Spark Hack Series NYC, Apr 10–12 2026.
+**New York has five boroughs you can walk through. The sixth one only exists in here.** *(point at the box)*
 
-Every building in New York City has a birthday, a biography, and (sometimes) a death record — all of it in open data. Sixth Borough renders the city as it was, layer by layer, year by year, on local hardware. Click any building to see when it went up, what stood there before, who was displaced, what the photo from 1925 looked like. A 30-billion-parameter NVIDIA Nemotron model narrates the moment, live, from a box ten feet from the user with the ethernet cable on the floor.
+Sixth Borough is a metaphysical borough — like a sixth sense — that lives entirely in the unified memory of a single NVIDIA DGX Spark / GB10 Grace Blackwell box. It preserves the city as a whole: every demolished theater, every displaced family, every breakbeat, every block bulldozed for an expressway. The hardware **is** the borough. Pull the cable and the sixth borough is still there, in the box, on the floor, ten feet from the user.
 
-**We don't predict gentrification. We trace it from the receipts.** Every particle on screen is a person who moved, on the record, in NYC Open Data. See `docs/PRODUCT_WEDGES.md` for the five buyer segments and the non-ML data thesis.
+**Built for NVIDIA Spark Hack Series NYC, Apr 10–12 2026.**
+
+Every building in New York City has a birthday, a biography, and (sometimes) a death record — all of it in NYC Open Data. Sixth Borough renders the city as it was, year by year, on local hardware. Click any building to see when it went up, what stood there before, what the NYPL Milstein archive shows from 1925, what cultural events were tied to that block, what receipts the public record can prove. A 30-billion-parameter **NVIDIA Nemotron** model writes the forensic biography live, from a box with no internet connection.
+
+**We don't predict gentrification. We trace it from the receipts.** Every claim is grounded in a structured record from a public dataset. Every fact cites the dataset name in parentheses. There is no speculation in the output by construction — the prompt physically cannot contain anything we didn't pull from a CSV. See `docs/PRODUCT_WEDGES.md` for the buyer segments and the non-ML data thesis.
+
+## The Cross-Bronx demo (locked Apr 12 Session 45)
+
+The pitch is one causal arc:
+
+> Cross-Bronx Expressway 1948–1972 → 60,000 displaced (Caro) → families pushed onto Sedgwick Avenue → 1520 Sedgwick rec room → DJ Kool Herc, August 11 1973 → hip-hop is born inside the trauma of urban renewal → cultural memory is what survives the bulldozer.
+
+The map+slider+migration cone is the visual hero. The biography click is the payoff. The hardware is the ideology. Three sentences, one story, every claim provable from a primary record.
 
 **Track:** Cultural Impact
 **Hardware:** Acer Veriton GN100 (NVIDIA DGX Spark / GB10 Grace Blackwell Superchip, 128 GB unified memory, runs entirely offline)

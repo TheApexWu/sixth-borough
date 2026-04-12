@@ -44,7 +44,7 @@ Switch with `NARRATION_MODE=stub` or `NARRATION_MODE=real`. Same Pydantic models
 
 **Owns:** `src/renderer/` only. Don't touch `src/orchestrator/` or `src/data/`.
 
-**WASM caveat**: cloud build at `sixthborough.nyc` spawns ZERO ghosts (cfg-gated empty manifest fallback). Don't pitch the cloud URL as the main demo. The native build on the GB10 is the demo.
+**Status as of Apr 12 ~21:30 ET (Session 45)**: Carson is OUT of the team, "out of commission." The Bevy native renderer is FROZEN at `b394623`. The branch is shipped as-is and is now post-hack v2 territory, NOT the Sun demo path. Don't try to revive it; the deck.gl + maplibre browser is the live demo. Schema verification of the Bevy click handler ({event_id, year, niche, style}) is inherited by Alex.
 
 **First PR done when:** window opens, loads seed JSON, time slider scrubs, one niche filter button works, one narration call returns text from stub, one PS2 shader stage running, one ghost mesh loaded from `assets/ghosts/MANIFEST.json`.
 
@@ -52,15 +52,15 @@ Switch with `NARRATION_MODE=stub` or `NARRATION_MODE=real`. Same Pydantic models
 
 ---
 
-### `feature/sketch-overlay` — James
+### `feature/sketch-overlay` — James (PRIMARY for Sun demo)
 
-**Goal:** deck.gl + maplibre browser renderer. Year slider 1700-2026, 8 architectural eras color-coded by construction year, guided 8-era tour with cutscenes, GSAP motion engine, dev panel with feature flags. Same `/narrate` endpoint as Carson. **Already shipped** the 750 NYPL Milstein photo index across all 5 boroughs (`bde0148`, Apr 11 11:37 ET).
+**Goal:** deck.gl + maplibre browser renderer. Year slider 1700-2026, 8 architectural eras color-coded by construction year, guided 8-era tour with cutscenes, GSAP motion engine, dev panel with feature flags. Same `/narrate` endpoint as the rest of the team. Now also wired into `POST /biography` for the click payoff.
 
-**Owns:** `index.html`, `data/manhattan_compact.json`, `cultural-content/oldnyc/`, `scripts/export_buildings.py`, `scripts/build_oldnyc_index.py`. Don't touch `src/`.
+**Status as of Session 45**: PRIMARY demo path (Carson out, Bevy frozen). All 5 boroughs of building polygons now load (manhattan + bronx wired in `e0b2428`, the other 3 are session-44/borough-expansion-bronx files James can pull). 750 NYPL Milstein photos georeferenced across all 5 boroughs in `bde0148`.
 
-**Borough expansion**: extend `scripts/export_buildings.py` for the other 4 boroughs in the same `{p, h, y, b}` JSON schema. Output: `data/{borough}_compact.json` × 4 using Building Footprints LiDAR `height_roof`. NO .glb generation. ~30-60 min once branch strategy is decided post-standup.
+**Owns:** `index.html`, all `data/*_compact.json` files, `cultural-content/oldnyc/`, `scripts/export_buildings*.py`, `scripts/build_oldnyc_index.py`. Don't touch `src/`.
 
-**Bonus:** breadth surface — independent of Carson's native build. The merge of both renderers IS the demo. Both consume the same data spine.
+**Open work for Sun demo**: see `docs/UX_AUDIT_SESSION_45.md` for the 3 click-handler bugs (building name stub, photo fallback too generous, dev placeholder body text) and the biography RAG wire-up that replaces them. See `docs/MARVENS_PREP.md` for the right-side widget keep/hide/scrap audit and the immigration-origins-panel rebind plan.
 
 ---
 
@@ -121,16 +121,18 @@ One canonical example sells the framework. Other events stay as v2 catalog post-
 
 | Path | Owner |
 |---|---|
-| `src/renderer/` | Carson (also `renderer-rust` branch) |
-| `index.html`, `data/manhattan_compact.json`, `cultural-content/oldnyc/`, `scripts/export_buildings.py`, `scripts/build_oldnyc_index.py` | James (also `feature/sketch-overlay` branch) |
+| `renderer-rust/` | Carson (frozen at `b394623`, post-hack v2) |
+| `index.html`, `data/*_compact.json` (all 5 boroughs), `data/borough_boundaries.geojson`, `cultural-content/oldnyc/`, `scripts/export_buildings*.py`, `scripts/build_oldnyc_index.py` | James (also `feature/sketch-overlay` branch) |
 | `pointcloud-pipeline/` + `assets/ghosts/` + `assets/migration-flows/` | Marvens |
-| `src/orchestrator/main.py` + `narration_real.py` | Alex |
-| `src/data/schema.py` | Alex (ping before changing) |
-| `data/events-seed.json` + `data/narration_cache.json` | Alex / James (rolling, small PRs) |
-| `scripts/dev-stub.sh` + `scripts/start-llama-nano.sh` | Alex (stable) |
+| `src/orchestrator/main.py` + `narration_real.py` + `narration_stub.py` | Alex |
+| `src/biography/{__init__,lookup,synthesize,router}.py` | Alex (zero-dependency RAG endpoint, Session 45) |
+| `src/data/schema.py` + `loader.py` + `niches.py` | Alex (ping before changing) |
+| `data/events-seed.json` + `data/narration_cache.json` + `data/biography_cache.json` | Alex / James (rolling, small PRs) |
+| `data/demolished-landmarks.json` | James (Wikidata SPARQL output, `277e8d9` on sketch-overlay) |
+| `scripts/dev-stub.sh` + `scripts/start-llama-nano.sh` + `scripts/prebake_*.py` | Alex (stable) |
 | `tests/` | area owner adds tests for their area |
 | `docs/DECISIONS.md` | anyone (append-only) |
-| `docs/PRODUCT_WEDGES.md` + `docs/DEMO_VIDEO_SCRIPT.md` + `docs/VISUAL_DIRECTION.md` | Alex (pitch surface) |
+| `docs/PRODUCT_WEDGES.md` + `docs/DEMO_VIDEO_SCRIPT*.md` + `docs/VISUAL_DIRECTION.md` + `docs/MARVENS_PREP.md` + `docs/UX_AUDIT_*.md` | Alex (pitch + handoff surface) |
 
 ---
 
@@ -225,4 +227,4 @@ Then `ssh gn100` works from anywhere on the tailnet. The `ServerAlive` flags kee
 
 ---
 
-*Last updated: Apr 10 2026 evening, kickoff. This doc is the source of truth for the workflow. If something changes, update it and post in chat.*
+*Last updated: Apr 12 2026 ~03:30 ET, Session 45. Carson out, Cross-Bronx pivot locked, biography RAG live, all 5 boroughs compacted. This doc is the source of truth for the workflow. If something changes, update it and post in chat.*

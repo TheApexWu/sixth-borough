@@ -2,7 +2,19 @@
 
 Build-time reference for the data layer. All sources verified against `data.cityofnewyork.us` Apr 2026. License: NYC Open Data Terms of Use unless noted.
 
-For the hackathon submission the cultural events live in `data/events-bronx-hiphop-seed.json` (hand-curated). The sources below are the data spine the architecture is designed around — the schema is the same whether rows come from JSON or from a SQL query against any of the datasets here.
+## What's actually loaded into the demo (Apr 12 ~03:30 ET, Session 45)
+
+Four datasets are committed in the repo and joined by `src/biography/lookup.py` at runtime:
+
+| Source | Where in repo | Used by |
+|---|---|---|
+| **NYC Building Footprints `5zhs-2jue`** (NYC OTI) — all 5 boroughs, ~1.05M buildings, LiDAR roof heights + construction year + BIN | `data/{manhattan,bronx,brooklyn,queens,staten}_compact.json` (262 MB total) | deck.gl renderer + biography RAG |
+| **NYPL Milstein Picture Collection** — 750 georeferenced archival photos × 5 boroughs, 1900-1956 | `cultural-content/oldnyc/index.json` (James `bde0148`) | story card photo gallery + biography RAG nearby_photos |
+| **Wikidata demolished NYC landmarks** — 295 records with name + built/demolished years + lat/lon | `data/demolished-landmarks.json` (sketch-overlay `277e8d9`) | biography RAG nearby_landmarks |
+| **Hand-curated cultural events** — 19 events anchored on the Bronx hip-hop birth chain (Cross-Bronx 1959 → Puerto Rican migration → Loew's Paradise → Kool Herc 1973 → Wild Style → Beat Street) | `data/events-seed.json` (and pre-baked at `data/narration_cache.json` + `data/biography_cache.json`) | `/narrate` + `/biography` anchor events |
+| **NYC Borough Boundaries `gthc-hcne`** (NYC DCP) — 5 polygon features for the red-outline overlay | `data/borough_boundaries.geojson` (3.2 MB) | deck.gl GeoJsonLayer |
+
+Everything below is the broader architecture reference — datasets the schema is *designed for* but not yet wired in. Add to the loaded set above as time permits, or post-hack.
 
 ---
 

@@ -120,3 +120,273 @@ Your ghosts (low-poly Blender meshes) go in `assets/ghosts/` per the sibling man
 You're inheriting the visualization role from a teammate who left mid-build. Alex is recording the demo video at midnight-2 AM. James is heads-down on the renderer. **The Cross-Bronx beat is the load-bearing visual moment of the entire pitch.** Without your cone, the demo is "look at this 3D map of NYC." With your cone, the demo is "watch the city erase 60,000 people in 24 years, click here for the receipts." That's the difference between the Cultural Impact track win and Most Likely to be a Unicorn at Antler.
 
 The cone is the demo. Land the cone.
+
+---
+
+# 📍 COMPREHENSIVE DIRECTORY POINTING (read this when you sit down)
+
+The two priorities:
+1. **Immigration flow + visualization** (BIGGEST — the panel rebind + the cinematic swap)
+2. **Refine immersion without breaking identity** (PS2 constraint language stays, no cloud, no PBR, no fire colors, no fast turbulence)
+
+Below is exact file:line pointers for everything you'll touch.
+
+---
+
+## 1. IMMIGRATION FLOW — where the code lives
+
+Branch: `feature/sketch-overlay`. File: `index.html`. James already built a SOPHISTICATED immigration tuning system — it's not "wire from scratch," it's "fix the trigger and swap the data source."
+
+### Data files (already committed)
+```
+data/immigration/nyc_immigration_timeline.json    ← LOAD THIS, not the CSV
+data/immigration/nyc_immigration_timeline.csv     ← raw source
+data/immigration/us_totals_1820_2023_dhs.csv      ← DHS national context
+data/immigration/README.md                        ← schema notes
+```
+
+### Immigration code in `index.html` — exact line numbers
+
+| Line | What's there | What to do |
+|---|---|---|
+| **2371** | `IMMIGRATION_PARAM_DEFS` — 9 tunable params (size, amount, pressure, spread, life, outline, tail, arc, noise) per particle bucket | Read once. Don't change defaults until you've A/B'd the visual. |
+| **2385** | `IMMIGRATION_BUCKETS = ['low', 'mid', 'high']` — 3 intensity tiers | Each bucket has its own param preset, picked by `IMMIGRATION_BUCKET_EDGES` thresholds (line 2386) |
+| 2200-2360 | Dev panel UI for live-tuning the buckets (sliders, shape picker, save/reset) | This is the existing tuning UX. Wire flag `featureFlags.immigrationOrigins = true` to make it visible. |
+| **3199** | `function getNeighborhoodOrigins(key, year)` — returns origin breakdown for a (neighborhood, year) | The data this function returns is the row that goes into the right-side ORIGINS panel |
+| **3388** | `const GLOW_ANCHORS = [...]` — neighborhood centroids array | **YOU EDIT THIS** to add the Cross-Bronx neighborhoods (East Tremont, Tremont, Crotona Park East, Mott Haven, Belmont). Each entry needs `{key, lon, lat, label}`. |
+| **3401** | `function nearestGlowAnchor(lon, lat)` — coord → anchor index | Used by hover/tooltip to pick which anchor the cursor is over. No changes needed if you add to GLOW_ANCHORS. |
+| **3451** | `immigrationIntensityByYear = new Map(data.records.map(...))` — data load from `data/immigration/nyc_immigration_timeline.json` | Already wired. Verify the file loads on first map render (browser devtools network tab). |
+| 3677 | `immigration-data-readout` element update — live YYY arrivals count | Already wired. Shows in the dev panel. |
+| **3785-3795** | `onHover` handler for the `immigration-density-hexes` layer — populates `selectedNeighborhoodKey` and calls `updateImmigrationOriginsPanel()` | This is the **trigger you need to rebind** for the Cross-Bronx pivot. See below. |
+| 3796-3850 | `getTooltip` handler — renders the inline bar chart for origins | Marvens can rewrite the bar chart styling but the data path is correct. |
+| **4519** | `id: 'immigration-density-hexes'` deck.gl HexagonLayer definition | This is the layer the hover handler depends on. If the layer isn't rendering, the hover never fires. **CHECK THIS FIRST** in browser devtools — look for the layer in the deck.gl layer manager. |
+
+### The single highest-leverage rebind (~15 min)
+
+The hover handler at line 3785 currently fires only when the cursor is over a `immigration-density-hexes` layer hex. The Cross-Bronx pivot wants the panel to fire on the **year slider crossing into 1948-1972** OR on **building polygon click in the Bronx**.
+
+**Cheapest possible fix**: in the year slider event handler (search for `currentYear =` in `index.html` — line 4792 and 4824), add this block right after the year is updated:
+
+```js
+// Auto-pin the immigration origins panel to the Cross-Bronx neighborhoods
+// when the year crosses into the 1948-1972 demolition window. The pivot:
+// when the user scrubs into the Cross-Bronx era, the right-side panel
+// auto-fills with the documented displacement counts (Caro), no hover needed.
+if (currentYear >= 1948 && currentYear <= 1972) {
+  selectedNeighborhoodKey = 'cross-bronx-corridor';  // add this anchor to GLOW_ANCHORS
+  updateImmigrationOriginsPanel();
+} else if (selectedNeighborhoodKey === 'cross-bronx-corridor') {
+  selectedNeighborhoodKey = null;
+  updateImmigrationOriginsPanel();
+}
+```
+
+Then in `getNeighborhoodOrigins(key, year)` at line 3199, add a special case at the top:
+
+```js
+function getNeighborhoodOrigins(key, year) {
+  // Cross-Bronx pivot: hardcoded displacement counts from Caro's
+  // The Power Broker (1974), chapters 37-38. The "origins" here are
+  // neighborhoods displaced INTO 1520 Sedgwick, not immigrant origins —
+  // displacement is the inverse of immigration, same population-flow lens.
+  if (key === 'cross-bronx-corridor' && year >= 1948 && year <= 1972) {
+    return {
+      year,
+      countries: [
+        { name: 'East Tremont',           share: 0.083, count: 5000 },
+        { name: 'Tremont',                share: 0.200, count: 12000 },
+        { name: 'Crotona Park East',      share: 0.133, count: 8000 },
+        { name: 'Mott Haven',             share: 0.100, count: 6000 },
+        { name: 'Belmont, Morris Heights, Highbridge', share: 0.500, count: 30000 },
+      ],
+      totalDisplaced: 60000,
+      source: 'Robert Caro, The Power Broker (1974), ch. 37-38',
+    };
+  }
+  // ... existing immigration logic
+}
+```
+
+And add `cross-bronx-corridor` to GLOW_ANCHORS at line 3388:
+```js
+{ key: 'cross-bronx-corridor', lon: -73.9000, lat: 40.8488, label: 'Cross-Bronx Corridor' },
+```
+
+**This is 3 small edits in one file. Maybe 15 min including testing in the browser.**
+
+---
+
+## 2. CINEMATIC OVERLAY — swap Ellis Island for Cross-Bronx (5-min win)
+
+James shipped the `#cinematic-overlay` widget pointing at `cultural-content/ellis-island-clips/ellis-island-1903-web.mp4`. **But while scraping the repo I found James ALSO shipped Cross-Bronx era archival video assets sitting in `cultural-content/`** that nobody is using yet:
+
+```
+cultural-content/Christie's - DJ Kool Herc and the birth of hip-hop ｜ Christie's [Jdb3MTz7xXg].mp4
+cultural-content/Kinolibrary-Hip_Hop_Party_at_Bronx_River_Center_1980s_New_York_Premium-pLSmNafnaGo.mp4
+cultural-content/ThamesTv-South_Bronx_fire_Apartment_Block_Fire_1980_s_South_Bronx_Only_in_America_1980-bKcecaIBWe4.mp4
+```
+
+Plus 15+ archival photos at `cultural-content/bronx/Bronx_1970s_*.jpg` (the ones James added in `feat(bronx): feature-flagged Bronx photos for Postmodern era cutscene` `655f421`).
+
+### One-line fix
+
+In `index.html` around line 1455-1457, swap the cinematic source. From:
+```html
+<video id="cinematic-video" playsinline muted preload="metadata">
+  <source src="cultural-content/ellis-island-clips/ellis-island-1903-web.mp4" type="video/mp4">
+</video>
+```
+
+To:
+```html
+<video id="cinematic-video" playsinline muted preload="metadata">
+  <source src="cultural-content/Christie's - DJ Kool Herc and the birth of hip-hop ｜ Christie's [Jdb3MTz7xXg].mp4" type="video/mp4">
+</video>
+```
+
+(The filename has special chars — URL-encode it or rename the file to `cultural-content/kool-herc-christies.mp4` first. Renaming is cleaner.)
+
+Then update the cinematic location label at line 1453 from `Ellis Island · 40.6995°N 74.0391°W` to `1520 Sedgwick Avenue · 40.8488°N 73.9216°W`.
+
+And the caption title at line 1459 from `ARRIVAL` to `THE BREAKBEAT` or `AUGUST 11 1973`.
+
+**This single swap turns the cinematic-overlay widget from "off-message Ellis Island distraction" into "on-message Cross-Bronx wow beat."** 5 minutes including the file rename. **DO THIS BEFORE the panel rebind** if you only have 30 minutes total.
+
+---
+
+## 3. THE STATIC MIGRATION CONE — your existing assignment
+
+You already had this. Reminder of the core spec from `docs/MIGRATION_FLOW_PROTOTYPE.html`:
+
+**Where to drop assets:**
+```
+assets/migration-flows/
+  MANIFEST.json          ← committed, sibling to assets/ghosts/MANIFEST.json
+  cross-bronx-cone.glb   ← your file (gitignored, sync via shared storage)
+  cross-bronx-cone.preview.png  ← committed, for the manifest preview
+```
+
+**Cone parameters (from `docs/MIGRATION_FLOW_PROTOTYPE.html`):**
+- Position: Tremont area centroid `[40.8488, -73.9000]` (Cross-Bronx Expressway midpoint)
+- Height: intensity (60,000 = TALL)
+- Top width: spread (multi-block, ~0.5 units)
+- Tilt: direction (south, toward Sedgwick Avenue)
+- Era band color: 1950s-1960s = single muted ochre per the styleguide
+- Click panel: text "60,000 displaced (Caro, *The Power Broker*, 1974)" + a dataset citation
+
+**Anti-patterns** (these break the identity, do NOT cross):
+- ❌ red, orange, yellow (fire/smoke imagery)
+- ❌ fast turbulent motion
+- ❌ plume shape
+- ❌ PBR/photoreal
+- ❌ cone without click-panel
+- ❌ Three.js procedural shaders (we're glb-only)
+
+**The simplest version that ships**: one textured glb cone at `[-73.9000, 40.8488]`, vertex colors only, with a deck.gl `ScenegraphLayer` (or `SimpleMeshLayer`) and a click handler that fires the existing `#story-card` populated with the Caro citation. **One cone is enough. You don't need the multi-cone migration system tonight — that's v2.**
+
+---
+
+## 4. IMMERSION REFINEMENT — what to keep, what to scrap
+
+The PS2 mode is the identity. Don't break it. Specific things you can refine WITHOUT breaking identity:
+
+### KEEP and refine
+- **The PS2 palette** in `index.html` line ~899-1340 (`body.ps2-mode { --ps2-bone, --ps2-cream, --ps2-ink, --ps2-accent }`) — the bone/cream/ink color tokens. Marvens can adjust the accent color to a slightly more saturated Cross-Bronx ochre if it reads better against the Bronx 1970s photos.
+- **The vignette + Sobel edge detection** post-process — already shipped on sketch-overlay
+- **The hairline 1px borders, sharp right angles, block type** — Mode A constraint language
+- **The story card layout** at line 1416 — typography is fine, just needs Bug 3 from `docs/UX_AUDIT_SESSION_45.md` fixed (replace placeholder body with biography RAG output)
+
+### HIDE for Sun (already in the widget table above, repeating for clarity)
+- `#dev-toggle` + `#dev-panel` — judges should never see "FEATURE FLAGS"
+- `#photo-mode` — overlaps with `#lightbox`, kill the dupe
+
+### POSSIBLY SCRAP (decide in the room with James)
+- The cinematic-overlay if you can't swap the video source in time — better hidden than off-message
+- The play button on the timeline (already removed in `7e5dc13`)
+
+### DO NOT TOUCH
+- The deck.gl scene tilt (55° pitch, -20° bearing) — this is the identity 3D look
+- The year slider behavior — it's the demo verb
+- The 8-era taxonomy — James's territory, locked
+- Any of the load logic (lines 2620-2690 area) — fragile, James's territory
+
+---
+
+## 5. WHERE THE BIOGRAPHY RAG ENDPOINT IS (so you can wire the click handler)
+
+```
+src/biography/
+  __init__.py        — package marker
+  lookup.py          — structured retrieval over 5 borough JSONs + photos + landmarks + events
+  synthesize.py      — Nemotron prompt + httpx POST to local llama-server :8090
+  router.py          — POST /biography FastAPI route (mounted in main.py)
+
+src/orchestrator/
+  main.py            — FastAPI app, biography router mounted at line ~70
+                       (uvicorn :30001 on the GN100, NARRATION_MODE=real)
+```
+
+**Endpoint URL on the GN100 backend**: `POST http://127.0.0.1:30001/biography`
+
+**Request body** (any one of these):
+```json
+{"event_id": "bronx-1973-08-11-sedgwick"}
+{"bin": "2008286"}
+{"lat": 40.8378, "lon": -73.9202}
+```
+
+**Response shape** (snippets):
+```json
+{
+  "query": {"bin": null, "lat": null, "lon": null, "event_id": "bronx-1973-08-11-sedgwick"},
+  "structured_record": {
+    "building": {"bin": "2008286", "borough": "bronx", "height_m": 4.9, "year_built": 1920, "centroid_lat": 40.83777, "centroid_lon": -73.92037, "distance_m": 14.6, ...},
+    "anchor_event": {...},
+    "nearby_photos": [...up to 8 NYPL Milstein photos within 200m...],
+    "nearby_landmarks": [...up to 10 demolished within 1km...],
+    "nearby_events": [...up to 10 cultural events within 500m...]
+  },
+  "narrative": "## 1. Identification\nThe building with BIN 2008286 was constructed in 1920...",
+  "citations": ["NYC Open Data Building Footprints (5zhs-2jue) by lat/lon proximity (14.6 m)", ...],
+  "backend": "cache",   // or "real" on cache miss
+  "model": "Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL.gguf",
+  "tokens_in": 652,
+  "tokens_out": 4096
+}
+```
+
+**Cache hit returns in 11 ms.** Cache miss runs the full pipeline (~1m43s on warm GB10) and writes back. 19 events are being pre-baked right now in a `prebake` tmux session on the GN100.
+
+**Wire-up code for the story card** is documented in `docs/UX_AUDIT_SESSION_45.md` (Bug 3 fix section). 20 lines of fetch + render markdown. **The cache hit visualization** (footer says `⚡ cached` instead of `1024 tokens · Nemotron`) is a load-bearing pitch beat — judges see the local model proving itself in real time.
+
+---
+
+## 6. ALL THE DOCS YOU NEED IN ONE TABLE
+
+| If you need... | Read this |
+|---|---|
+| The locked pitch | `docs/DEMO_VIDEO_SCRIPT.CROSS_BRONX.md` (Session 45 anchor) |
+| Migration cone visual spec | `docs/MIGRATION_FLOW_PROTOTYPE.html` (open in browser) |
+| PS2 constraint language | `docs/VISUAL_DIRECTION.md` |
+| Architectural era taxonomy | `index.html` line 2538 (`getEra()` function) |
+| The 3 click-handler bugs to fix | `docs/UX_AUDIT_SESSION_45.md` |
+| Right-side widget keep/hide table | `docs/MARVENS_PREP.md` (this file, top section) |
+| Buyer segments (post-demo Q&A) | `docs/PRODUCT_WEDGES.md` |
+| The full rubric (100 pts) | `docs/EVENT_RULES.md` |
+| Hardware health snapshot | `docs/GN100_HEALTH_APR11.md` |
+| Build decisions log | `docs/DECISIONS.md` |
+| Branch playbook | `CONTRIBUTING.md` |
+
+---
+
+## 7. ORDER OF OPERATIONS — sharpened
+
+If you have **15 min**: do the cinematic swap (one-line fix, 5 min) + the migration cone (one glb at the Tremont centroid, 10 min). Ship those two.
+
+If you have **30 min**: above + immigration panel rebind (year-slider auto-pin, 15 min).
+
+If you have **60 min**: above + hide the 3 widgets (photo-mode, dev-panel, cinematic if you didn't swap) + finalize the panel content with the Caro citations.
+
+If you have **2 hours**: above + a second migration cone for "Puerto Rican migration to South Bronx 1965" (already in events-seed.json as `bronx-1965-puerto-rican-migration`) + the `assets/ghosts/MANIFEST.json` entry for one ghost mesh of the demolished Bronx Opera House (1968).
+
+**The 15-minute version is the must-ship. Everything beyond is bonus.**
