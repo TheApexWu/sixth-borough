@@ -12,6 +12,8 @@ Drafted Apr 12 ~02:30 UTC, Session 45.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -20,6 +22,43 @@ from pydantic import BaseModel, Field
 
 from src.biography.lookup import assemble_record
 from src.biography.synthesize import synthesize
+
+# Pre-baked biography cache. Mirrors data/narration_cache.json for the
+# /narrate endpoint. Same idea: a 30B model takes 1-2 min to produce a
+# 4-section forensic biography — fine for offline processing, painful
+# for a live demo click. We pre-bake hot keys (1520 Sedgwick + a handful
+# of canonical Cross-Bronx events) into this file at code freeze, then
+# the endpoint serves cache hits in <50 ms with backend tagged "cache".
+_REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+_CACHE_PATH = _REPO_ROOT / "data" / "biography_cache.json"
+
+
+def _cache_key(req: BiographyRequest) -> str:  # noqa: F821 — forward ref
+    """Deterministic cache key. Order of precedence matches lookup.py."""
+    if req.bin:
+        return f"bin:{req.bin.strip()}"
+    if req.event_id:
+        return f"event:{req.event_id.strip()}"
+    if req.lat is not None and req.lon is not None:
+        return f"latlon:{round(req.lat, 5)},{round(req.lon, 5)}"
+    return ""
+
+
+def _load_cache() -> dict[str, Any]:
+    if not _CACHE_PATH.exists():
+        return {}
+    try:
+        with open(_CACHE_PATH) as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else {}
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_cache(cache: dict[str, Any]) -> None:
+    _CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(_CACHE_PATH, "w") as f:
+        json.dump(cache, f, indent=2)
 
 router = APIRouter(tags=["biography"])
 
@@ -69,6 +108,16 @@ def post_biography(req: BiographyRequest) -> BiographyResponse:
             detail="Must provide one of: bin, event_id, or (lat, lon).",
         )
 
+    # Step 0: cache hit. Pre-baked biographies for canonical demo addresses
+    # (1520 Sedgwick, Cross-Bronx anchor events) live in data/biography_cache.json
+    # and return in <50 ms. Cache is keyed deterministically by request shape.
+    key = _cache_key(req)
+    cache = _load_cache()
+    if key and key in cache:
+        cached = dict(cache[key])
+        cached["backend"] = "cache"
+        return BiographyResponse(**cached)
+
     # Step 1: structured retrieval
     record = assemble_record(
         bin=req.bin,
@@ -94,7 +143,7 @@ def post_biography(req: BiographyRequest) -> BiographyResponse:
         )
 
     # Step 3: assemble the response envelope
-    return BiographyResponse(
+    response = BiographyResponse(
         query=record["query"],
         structured_record={
             k: v for k, v in record.items()
@@ -107,3 +156,13 @@ def post_biography(req: BiographyRequest) -> BiographyResponse:
         tokens_in=synth.get("tokens_in", 0),
         tokens_out=synth.get("tokens_out", 0),
     )
+
+    # Step 4: write back to cache so the next click on the same key is instant.
+    if key:
+        cache[key] = response.model_dump()
+        try:
+            _save_cache(cache)
+        except OSError:
+            pass  # cache write failure should not break the response
+
+    return response
