@@ -2593,11 +2593,25 @@ function updateLegendHighlight() {
   });
 }
 
-// ── Marquee sites (hand-curated, expand with James) ──
+// ── Marquee sites (hand-curated iconic buildings with photos) ──
 const MARQUEE = {
-  '1001389': { title: 'Empire State Building', year: 1931, body: 'Placeholder. James + Nemotron write the real narrative at the hackathon.' },
-  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Placeholder. Click any building to see this card. Carson/James: decide layout, animation, tone.' },
-  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Placeholder. The card system is scaffolded -- content, style, and interaction are open for the team.' },
+  // Manhattan icons
+  '1001389': { title: 'Empire State Building', year: 1931, body: 'Shreve, Lamb & Harmon. 1,454 ft to antenna. Built in 410 days during the Depression. Tallest building in the world 1931-1970. 102 floors, 73 elevators, 6,514 windows. Construction cost $41M ($700M today). The mooring mast for dirigibles was never actually used.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/440px-Empire_State_Building_%28aerial_view%29.jpg' },
+  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Daniel Burnham, 1902. 22 floors, 285 ft. Originally the Fuller Building. The triangular lot at Broadway and Fifth forced the wedge shape. Wind downdrafts at the narrow end were so strong that police had to shoo away men who gathered to watch women\'s skirts blow up. The phrase "23 skidoo" may originate here.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flatiron_Building_by_David_Shankbone.JPG/440px-Flatiron_Building_by_David_Shankbone.JPG' },
+  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Skidmore, Owings & Merrill. 1,776 ft (symbolic). Built on the northwest corner of the original WTC site. Construction began 2006, opened 2014. The spire height references the year of American independence. The base is a windowless 200-ft concrete fortress designed to withstand a truck bomb.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_World_Trade_Center_2022.jpg/440px-One_World_Trade_Center_2022.jpg' },
+  '1015862': { title: 'Chrysler Building', year: 1930, body: 'William Van Alen. 1,046 ft. Art Deco. Briefly the tallest building in the world (May-Nov 1930) before the Empire State surpassed it. The stainless steel crown with triangular windows and eagle gargoyles at the 61st floor is the most recognizable silhouette in NYC.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Chrysler_Building_2005_3.jpg/440px-Chrysler_Building_2005_3.jpg' },
+  '1001060': { title: '30 Rockefeller Plaza', year: 1933, body: 'Raymond Hood. 850 ft, 70 floors. Centerpiece of Rockefeller Center. Home of NBC Studios since 1933. The Rainbow Room on the 65th floor. Top of the Rock observation deck. The Christmas tree has been lit here every year since 1933.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/GE_Building_by_David_Shankbone.JPG/440px-GE_Building_by_David_Shankbone.JPG' },
+  '1006184': { title: 'Woolworth Building', year: 1913, body: 'Cass Gilbert. 792 ft. "Cathedral of Commerce." Tallest building in the world 1913-1930. Frank Woolworth paid the entire $13.5M construction cost in cash. The lobby mosaics include a caricature of Woolworth counting his nickels and dimes.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Woolworth_Building_-_New_York_City.jpg/440px-Woolworth_Building_-_New_York_City.jpg' },
+  '1086097': { title: 'Brooklyn Bridge', year: 1883, body: 'John and Washington Roebling. 1,595 ft main span. First steel-wire suspension bridge. Took 14 years to build. John Roebling died of tetanus during construction. His son Washington was paralyzed by caisson disease and supervised from his apartment via telescope. Emily Roebling managed the project day-to-day.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Brooklyn_Bridge_Postdlf.jpg/440px-Brooklyn_Bridge_Postdlf.jpg' },
+  '1007379': { title: 'Grand Central Terminal', year: 1913, body: 'Warren & Wetmore / Reed & Stem. 44 platforms, 67 tracks. The Main Concourse ceiling depicts 2,500 stars painted backwards (the constellations are reversed). A secret platform — Track 61 — was built for FDR to enter the Waldorf-Astoria without being seen in his wheelchair.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/GCT_Exterior.jpg/440px-GCT_Exterior.jpg' },
+  '1090534': { title: 'The Dakota', year: 1884, body: 'Henry Hardenbergh. First luxury apartment building on the Upper West Side. Named "The Dakota" because it was so far from the center of town it might as well be in the Dakotas. John Lennon lived here and was shot outside the entrance on December 8, 1980.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/The_Dakota%2C_November_2020.jpg/440px-The_Dakota%2C_November_2020.jpg' },
+  '1008528': { title: 'United Nations Headquarters', year: 1952, body: 'International committee led by Le Corbusier and Oscar Niemeyer. The 39-floor Secretariat was the first glass curtain wall skyscraper in NYC. The site is international territory, not technically part of the United States. Rockefeller donated the $8.5M land.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/United_Nations_Headquarters_in_New_York_City%2C_view_from_Roosevelt_Island.jpg/440px-United_Nations_Headquarters_in_New_York_City%2C_view_from_Roosevelt_Island.jpg' },
+  '1015600': { title: 'The Plaza Hotel', year: 1907, body: 'Henry Hardenbergh. 20 floors, French Renaissance chateau style. $12.5M construction cost. NYC landmark since 1969. The Oak Room, the Palm Court, the Eloise suite. Owned at various points by Conrad Hilton and Donald Trump. Converted partly to condos 2005.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/The_Plaza_Hotel_in_New_York_%2851241097122%29.jpg/440px-The_Plaza_Hotel_in_New_York_%2851241097122%29.jpg' },
+  '1001739': { title: 'MetLife Building (Pan Am)', year: 1963, body: 'Emery Roth & Sons, with Bauhaus founders Walter Gropius and Pietro Belluschi. 808 ft, 59 floors. Built over Grand Central Terminal. Originally the Pan Am Building. A helicopter rooftop service ran 1965-1977 until an accident killed 5 people. The largest commercial office building in the world when completed.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/MetLife_Building_in_2023.jpg/440px-MetLife_Building_in_2023.jpg' },
+  // Bronx
+  '2000100': { title: 'Yankee Stadium', year: 2009, body: 'Populous architects. Replaced the original 1923 Yankee Stadium (demolished 2010) across the street. 54,251 capacity. Cost $2.3 billion, the most expensive stadium ever built at the time. The original House That Ruth Built hosted 6,581 regular season games over 85 years.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/New_Yankee_Stadium.jpg/440px-New_Yankee_Stadium.jpg' },
+  // Brooklyn
+  '3327837': { title: 'Coney Island Cyclone', year: 1927, body: 'Vernon Keenan, designer. 2,640 ft of track, 85 ft first drop, top speed 60 mph. Cost $175,000 to build. NYC landmark since 1988. One of the oldest operating wooden roller coasters in America. Charles Lindbergh reportedly said it was scarier than flying.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Cyclone_roller_coaster.jpg/440px-Cyclone_roller_coaster.jpg' },
 };
 // Load Bronx MARQUEE expansion (8 BIN-keyed hip-hop birth chain entries)
 fetch('cultural-content/marquee-bronx.json')
@@ -4993,19 +5007,20 @@ function showCard(building) {
         bioBody.textContent = marquee ? marquee.body : `${building.h}m tall. ${era.label.toLowerCase()} construction.`;
       }
     });
-  // Attach nearby oldnyc photos, if any. Primary: within ±8y and 140m.
-  // Fallback: nearest in space regardless of year, within 800m — so a click
-  // never surfaces an empty gallery when the user is off a photo's exact year.
+  // Attach photos: MARQUEE photo first (if set), then nearby oldnyc photos.
   _cardPhotos = [];
   _cardPhotoBuildingYear = building.y || currentYear;
   _cardPhotoIdx = 0;
+  if (marquee && marquee.photo) {
+    _cardPhotos.push({ thumb: marquee.photo, nypl_url: '', title: marquee.title, year: marquee.year });
+  }
   if (featureFlags.oldnycPhotos && building.p && oldnycPhotos.length) {
     const [clng, clat] = polygonCentroid(building.p);
     let hits = findPhotosNear(clng, clat, currentYear);
     if (!hits.length) {
       hits = findNearestPhotosSpatial(clng, clat, currentYear);
     }
-    _cardPhotos = hits.slice(0, 6).map(h => h.photo);
+    _cardPhotos = _cardPhotos.concat(hits.slice(0, 5).map(h => h.photo));
   }
   renderCardPhotos();
   card.style.display = 'block';
