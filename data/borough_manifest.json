@@ -1,0 +1,61 @@
+{
+  "_meta": {
+    "source_dataset": "5zhs-2jue (NYC Building Footprints)",
+    "source_owner": "NYC Office of Technology & Innovation",
+    "schema": "{p: polygon coords, h: roof height meters, y: construction year, b: BIN}",
+    "min_height_filter_ft": 0.0,
+    "generator": "scripts/export_buildings_all_boroughs.py"
+  },
+  "boroughs": {
+    "bronx": {
+      "count": 104277,
+      "size_mb": 28.9,
+      "height_coverage_pct": 99.8,
+      "year_coverage_pct": 98.4,
+      "height_min_m": 0.3,
+      "height_max_m": 137.2,
+      "year_min": 1758,
+      "year_max": 2026
+    },
+    "brooklyn": {
+      "count": 330097,
+      "size_mb": 73.7,
+      "height_coverage_pct": 99.9,
+      "year_coverage_pct": 99.1,
+      "height_min_m": 0.9,
+      "height_max_m": 315.5,
+      "year_min": 1652,
+      "year_max": 2026
+    },
+    "manhattan": {
+      "count": 45194,
+      "size_mb": 15.6,
+      "height_coverage_pct": 99.8,
+      "year_coverage_pct": 98.2,
+      "height_min_m": 0.3,
+      "height_max_m": 472.4,
+      "year_min": 1719,
+      "year_max": 2026
+    },
+    "queens": {
+      "count": 460952,
+      "size_mb": 99.5,
+      "height_coverage_pct": 100.0,
+      "year_coverage_pct": 99.4,
+      "height_min_m": 0.7,
+      "height_max_m": 242.0,
+      "year_min": 1661,
+      "year_max": 2026
+    },
+    "staten": {
+      "count": 142311,
+      "size_mb": 33.1,
+      "height_coverage_pct": 99.9,
+      "year_coverage_pct": 98.8,
+      "height_min_m": 0.9,
+      "height_max_m": 64.6,
+      "year_min": 1680,
+      "year_max": 2026
+    }
+  }
+}
