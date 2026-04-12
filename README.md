@@ -4,61 +4,90 @@ NYC's cultural memory infrastructure, localized in one box.
 
 ## What It Does
 
-3D map of 1,082,831 buildings across all five boroughs. Temporal slider spans 1700-2026 -- drag it and watch the city grow. Click any building for an AI-generated biography: who built it, who lived there, what happened. Ghost buildings (demolished structures like the original Penn Station and the Twin Towers) reappear as you scroll back in time. 750 archival photos from the NYPL overlay the map at their original locations.
+3D map of 1,082,831 buildings across all five boroughs of New York City, extruded to real LiDAR roof heights, scrubbable year by year from 1700 to 2026. Click any building and a 30-billion-parameter NVIDIA Nemotron model generates a forensic biography from four public NYC datasets. No cloud. No internet at runtime.
+
+Ghost buildings (Twin Towers, Penn Station, Singer Building) reappear and vanish at their real construction and demolition years. 117 demolished tenements along the Cross-Bronx Expressway corridor glow green and disappear as you drag 1948 to 1972, replaced by the expressway road surface. 750 archival photos from the NYPL Milstein Division overlay the map at their original locations.
+
+The demo traces one chain: Robert Moses displaced 60,000 South Bronx families onto Sedgwick Avenue. The density created the rec room party scene. DJ Kool Herc invented hip-hop at 1520 Sedgwick on August 11, 1973. Cultural memory is what survives the bulldozer.
 
 ## Key Numbers
 
 | Metric | Value |
 |--------|-------|
 | Buildings rendered | 1,082,831 |
-| Geometry data | 231 MB |
+| Geometry data | 231 MB (recompacted) |
 | Archival photos (NYPL) | 750 |
 | Demolished landmarks | 295 |
+| Cross-Bronx ghost buildings | 117 |
+| Model | Nemotron-3 Nano 30B (Q8_K_XL) |
 | Inference speed | 29 tok/sec |
 | Cache hit latency | 11 ms |
 | Hardware cost | $3,000 |
 
 ## Stack
 
-- **Frontend**: deck.gl + MapLibre GL (PolygonLayer, GeoJsonLayer, borough boundaries, lazy-loading)
-- **Inference**: NVIDIA Nemotron-3 Nano 30B on llama-server (llama.cpp, CUDA, sm_121)
-- **Orchestrator**: FastAPI (biography generation, caching, photo overlay)
-- **Runtime**: Zero network dependencies. Everything runs on-device.
+- **Frontend**: deck.gl + MapLibre GL (PolygonLayer, GeoJsonLayer, borough boundaries, year presets, fly-to navigation)
+- **Inference**: NVIDIA Nemotron-3 Nano 30B (A3B) on llama-server (llama.cpp, CUDA 12.8, cuBLAS, all 99 layers on GPU)
+- **Orchestrator**: FastAPI on :30001 (biography generation, caching, photo overlay)
+- **Data**: 5 borough compacted JSONs, ghost buildings (WTC + Cross-Bronx), MARQUEE cultural content, Bronx archival photos
+- **Runtime**: Zero network dependencies. 128 GB unified memory. Everything runs on-device.
 
 ## Hardware
 
-Acer GN100 / NVIDIA DGX Spark / GB10 Grace Blackwell Superchip / 128 GB unified LPDDR5X memory.
+Acer GN100 / NVIDIA DGX Spark / GB10 Grace Blackwell Superchip / 128 GB unified LPDDR5X memory. Model weights (38 GB), building geometry (231 MB), orchestrator, and renderer share one address space with zero contention.
 
 ## Quick Start
 
 ```bash
-python3 -m http.server 8090
-# open http://localhost:8090
+python3 -m http.server 8080
+# open http://localhost:8080/index.html
+```
+
+On the GN100, also start the inference backend:
+```bash
+# tmux session "llama"
+llama-server -m /path/to/nemotron-30b-q8.gguf -ngl 99 --port 8090
+
+# tmux session "orch"
+cd src && uvicorn orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
 ## Repo Structure
 
 ```
-index.html            -- deck.gl 3D visualization (all 5 boroughs)
-data/                 -- compacted building geometry JSONs
-cultural-content/     -- biography cache, archival photo metadata
-scripts/              -- data pipelines, export, curation
-src/                  -- orchestrator, inference wiring
-docs/                 -- hardware bible, operator briefs
-handouts/             -- demo teleprompter, recording runbook
+index.html              -- deck.gl 3D visualization (all boroughs, ghost buildings, year presets)
+data/                   -- compacted building geometry JSONs (5 boroughs)
+cultural-content/       -- archival photos, MARQUEE content, Bronx hip-hop assets
+cultural-content/bronx/ -- Kool Herc, Bronx River party, South Bronx fire photos
+scripts/                -- data pipelines, recompaction, export
+src/                    -- FastAPI orchestrator, biography RAG, inference wiring
+docs/                   -- hardware bible, pitch framings, operator briefs
+handouts/               -- demo script, pitch bible, recording runbook
 ```
+
+## Demo Flow
+
+1. Map opens at 2026 showing Manhattan + Bronx
+2. Year presets: click 1948, 1970, 1973, 2001, 2026
+3. SEDGWICK button flies to Cross-Bronx Expressway corridor (green ghost buildings)
+4. Drag 1948 to 1972: green tenements vanish, grey expressway appears
+5. Click any green building: hip-hop displacement story + archival photos
+6. WTC button flies to Lower Manhattan; towers rise at 1970, vanish past 2001
+7. Building click triggers Nemotron biography (30 sec generation, 11 ms cache hit)
 
 ## Team
 
-- Alex Wu
-- Carson Weeks
-- James Burke
-- Marvens Destine
+- Alex Wu (lead, architecture, frontend, orchestrator)
+- Carson Weeks (Rust/Bevy renderer, infrastructure)
+- James Burke (data curation, cultural content, guided tour)
+- Marvens Destine (3D visualization, point cloud pipeline)
 
 ## Track
 
-Cultural Impact
+Cultural Impact | Bounty: Most Likely to Become a Unicorn
 
 ## Links
 
-GitHub: [TheApexWu/sixth-borough](https://github.com/TheApexWu/sixth-borough)
+- GitHub: [TheApexWu/sixth-borough](https://github.com/TheApexWu/sixth-borough)
+- Hardware: NVIDIA DGX Spark (Acer GN100)
+- Model: NVIDIA Nemotron-3 Nano 30B (A3B variant)
