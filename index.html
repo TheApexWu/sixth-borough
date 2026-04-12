@@ -1369,9 +1369,6 @@
     <input type="range" id="slider" min="1719" max="2026" value="1925" step="1">
   </div>
   <div id="stats"><span id="visible-count">--</span> buildings visible</div>
-  <div id="controls-actions">
-    <button id="play-btn" title="Play / stop timeline scrub"></button>
-  </div>
 </div>
 
 <!-- Card-scoped lightbox: triggered from the story card's fullscreen button.
@@ -4812,10 +4809,16 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && cinematicPlaying) stopCinematic();
 });
 
-// ── Play button (GSAP-driven timeline scrub) ──
-const playBtn = document.getElementById('play-btn');
+// ── Playback state (GSAP-driven timeline scrub) ──
+// The play button was removed from the timeline UI — playback is now driven
+// only programmatically (legend clicks, era station jumps, dev panel, etc).
+// We keep a `playBtn` stub so legacy `.classList` / `.addEventListener` calls
+// don't crash, and so future UI could re-attach a button without refactoring.
+const playBtn = document.getElementById('play-btn') || {
+  classList: { add() {}, remove() {}, toggle() {}, contains() { return false; } },
+  addEventListener() {},
+};
 let playTween = null;
-
 
 function syncYear(year) {
   currentYear = Math.round(year);
