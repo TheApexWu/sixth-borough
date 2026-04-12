@@ -1504,7 +1504,7 @@
 <div id="map"></div>
 
 <script>
-const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer, LineLayer, PathLayer, HeatmapLayer, HexagonLayer, ColumnLayer, TextLayer, IconLayer } = deck;
+const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer, LineLayer, PathLayer, HeatmapLayer, HexagonLayer, ColumnLayer, TextLayer, IconLayer, GeoJsonLayer } = deck;
 
 // ── Sketch Overlay Feature Gate ──
 // Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
@@ -2599,15 +2599,21 @@ const MARQUEE = {
   '1013865': { title: 'Flatiron Building', year: 1902, body: 'Placeholder. Click any building to see this card. Carson/James: decide layout, animation, tone.' },
   '1066399': { title: 'One World Trade Center', year: 2014, body: 'Placeholder. The card system is scaffolded -- content, style, and interaction are open for the team.' },
 };
+// Load Bronx MARQUEE expansion (8 BIN-keyed hip-hop birth chain entries)
+fetch('cultural-content/marquee-bronx.json')
+  .then(r => r.json())
+  .then(data => { if (data.marquee) Object.assign(MARQUEE, data.marquee); })
+  .catch(err => console.warn('marquee-bronx.json failed to load:', err));
 
 // ── State ──
 let buildings = [];
 let currentYear = 1925;
 let playing = false;
 let deckgl = null;
+let boroughBoundaries = null;  // GeoJSON FeatureCollection for red borough outlines
 
 // ── oldnyc (NYPL Milstein) photo index — see cultural-content/comments.md ──
-let oldnycPhotos = [];             // filtered to Manhattan on load (matches buildings scope)
+let oldnycPhotos = [];             // all 5 boroughs now that all building data is loaded
 // Temporal tiers for pin rendering. Pins always show, but opacity/radius scale
 // by |year - currentYear| so scrubbing is continuous rather than binary.
 const PHOTO_TIER_LIVE = 3;         // ±N years: bright white + cyan ring
@@ -2616,16 +2622,28 @@ const PHOTO_YEAR_WINDOW_LOOKUP = 8; // building-hover/click prefer photos within
 const PHOTO_RADIUS_M = 140;        // building-to-photo max spatial distance for a match
 const PHOTO_FALLBACK_COUNT = 4;    // if no photos in window, show nearest N spatially
 
-// ── Load data ──
+// ── Load data (all 5 boroughs + borough boundaries) ──
 Promise.all([
   fetch('data/manhattan_compact.json').then(r => r.json()),
   fetch('data/bronx_compact.json').then(r => r.json()).catch(err => {
     console.warn('bronx_compact.json failed to load:', err);
     return [];
   }),
+  fetch('data/brooklyn_compact.json').then(r => r.json()).catch(err => {
+    console.warn('brooklyn_compact.json failed to load:', err);
+    return [];
+  }),
+  fetch('data/queens_compact.json').then(r => r.json()).catch(err => {
+    console.warn('queens_compact.json failed to load:', err);
+    return [];
+  }),
+  fetch('data/staten_compact.json').then(r => r.json()).catch(err => {
+    console.warn('staten_compact.json failed to load:', err);
+    return [];
+  }),
 ])
-  .then(([manhattan, bronx]) => {
-    buildings = manhattan.concat(bronx);
+  .then(([manhattan, bronx, brooklyn, queens, staten]) => {
+    buildings = manhattan.concat(bronx, brooklyn, queens, staten);
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
     initDeck();
@@ -2649,6 +2667,15 @@ fetch('data/demolished-landmarks.json')
     if (deckgl) deckgl.setProps({ layers: buildLayers() });
   })
   .catch(err => console.warn('demolished landmarks failed to load:', err));
+
+// ── Borough boundaries (red outline overlay, NYC DCP gthc-hcne) ──
+fetch('data/borough_boundaries.geojson')
+  .then(r => r.json())
+  .then(data => {
+    boroughBoundaries = data;
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  })
+  .catch(err => console.warn('borough_boundaries.geojson failed to load:', err));
 
 // ── Immigration flow (NYC annual arrivals, 1719–2026) ──
 // See data/immigration/README.md for source tiers and schema. We load once
@@ -3711,11 +3738,9 @@ let oldnycPhotosSorted = [];  // chronologically sorted for photo mode slideshow
 fetch('cultural-content/oldnyc/index.json')
   .then(r => r.json())
   .then(data => {
-    // Building footprints cover Manhattan + Bronx, so filter photo pins to match.
-    // Other borough records stay in the file for future branches.
-    oldnycPhotos = data.filter(p => p.boro === 'Manhattan' || p.boro === 'Bronx');
-    // Photo mode slideshow spans all 5 boroughs (750 photos) — the Manhattan
-    // filter only applies to map pins, which match the building footprint scope.
+    // All 5 boroughs of building footprints are loaded, so show all 750 photo pins.
+    oldnycPhotos = data;
+    // Photo mode slideshow also spans all 5 boroughs.
     oldnycPhotosSorted = [...data].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
     if (deckgl) deckgl.setProps({ layers: buildLayers() });
     if (featureFlags.photoMode) syncPhotoModeToYear();
@@ -4146,7 +4171,25 @@ function buildLayers() {
   pushLayer(buildImmigrationFlowLayer());
   pushLayer(buildImmigrationTransportLayer());
   pushLayer(buildBronxHotspotsLayer());
+  pushLayer(buildBoroughBoundariesLayer());
   return layers;
+}
+
+// ── Borough boundaries — red outline overlay (NYC DCP gthc-hcne) ──
+function buildBoroughBoundariesLayer() {
+  if (!boroughBoundaries) return null;
+  return new GeoJsonLayer({
+    id: 'borough-boundaries',
+    data: boroughBoundaries,
+    filled: false,
+    stroked: true,
+    getLineColor: [220, 40, 40, 180],
+    getLineWidth: 60,
+    lineWidthUnits: 'meters',
+    lineWidthMinPixels: 1,
+    lineWidthMaxPixels: 3,
+    pickable: false,
+  });
 }
 
 // Bronx video hotspots — three map markers at 1520 Sedgwick / Bronx River
@@ -4871,16 +4914,47 @@ function showCard(building) {
   if (!featureFlags.storyCards) return;
   const card = document.getElementById('story-card');
   const marquee = MARQUEE[building.b];
+  const era = getEra(building.y);
   if (marquee) {
     document.getElementById('card-title').textContent = marquee.title;
     document.getElementById('card-year').textContent = `Built ${marquee.year}`;
     document.getElementById('card-body').textContent = marquee.body;
   } else {
-    const era = getEra(building.y);
     document.getElementById('card-title').textContent = `BIN ${building.b}`;
     document.getElementById('card-year').textContent = building.y ? `Built ${building.y} / ${era.label}` : 'Construction year unknown';
-    document.getElementById('card-body').textContent = `${building.h}m tall. ${era.label.toLowerCase()} construction. At the hackathon, clicking any building triggers Nemotron to generate a site-specific narrative using the building's metadata + surrounding historical context.`;
+    document.getElementById('card-body').textContent = 'Loading biography from Nemotron...';
   }
+  // Fire biography RAG request to the local orchestrator (GN100 :30001 or localhost :30001)
+  const bioBody = document.getElementById('card-body');
+  const bioUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://127.0.0.1:30001/biography'
+    : 'http://192.168.0.207:30001/biography';
+  const centroid = building.p ? polygonCentroid(building.p) : null;
+  const bioReq = { bin: String(building.b) };
+  if (centroid) { bioReq.lat = centroid[1]; bioReq.lon = centroid[0]; }
+  fetch(bioUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bioReq),
+  })
+    .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
+    .then(data => {
+      if (data.biography) {
+        // Replace card body with the Nemotron-generated biography (plain text, strip markdown headers)
+        const plain = data.biography.replace(/^#{1,4}\s+.*$/gm, '').replace(/\n{3,}/g, '\n\n').trim();
+        bioBody.textContent = plain;
+        if (data.building_name) {
+          document.getElementById('card-title').textContent = data.building_name;
+        }
+      }
+    })
+    .catch(err => {
+      console.warn('Biography fetch failed:', err);
+      // Keep whatever text is already showing (MARQUEE or fallback)
+      if (bioBody.textContent === 'Loading biography from Nemotron...') {
+        bioBody.textContent = marquee ? marquee.body : `${building.h}m tall. ${era.label.toLowerCase()} construction.`;
+      }
+    });
   // Attach nearby oldnyc photos, if any. Primary: within ±8y and 140m.
   // Fallback: nearest in space regardless of year, within 800m — so a click
   // never surfaces an empty gallery when the user is off a photo's exact year.
