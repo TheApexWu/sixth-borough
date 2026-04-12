@@ -1530,7 +1530,7 @@ const FLAGS = {
   libertyIsland:  { label: 'Liberty Island 3D', desc: 'Load photogrammetry mesh of Liberty Island into the harbor. Auto-flies camera when enabled.', group: 'effects', default: false },
   oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
   demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: false },
-  bronxContent:   { label: 'Bronx Content', desc: 'Swap the Postmodern era cutscene photos (42nd St / subway graffiti / CBGB) for Bronx-specific archival imagery — DJ Kool Herc, Bronx River Center hip-hop party, South Bronx fire. Staging ground for Bronx video hotspots in a later pass.', group: 'effects', default: false },
+  bronxContent:   { label: 'Bronx Hotspots', desc: 'Show the three Bronx video hotspots on the map (1520 Sedgwick, Bronx River Houses, Charlotte St) that play DJ Kool Herc, Bronx River Center hip-hop party, and South Bronx fire clips when clicked. The Bronx now has its own Guided Tour station (STATION 07 · 1970s) regardless of this flag.', group: 'effects', default: false },
   immigrationFlow: { label: 'Immigration Flow', desc: 'Garden-hose dot spray representing annual NYC immigration, 1719–2026. Pressure and spread scale with arrivals: colonial dribble, Ellis Island gusher (peak 1907), quota-era cliff, modern trickle. Origin moves with history: Battery → Castle Garden → Ellis Island.', group: 'effects', default: false },
   immigrationSettlers: { label: 'Immigration · Settlers', desc: 'Persistent dots where the wave lands. One dot ≈ 8k immigrants, placed in era-weighted neighborhoods (Five Points → LES → Harlem → Washington Heights). Scrubbing forward visibly crusts over Manhattan; scrubbing back uncovers it. Alpha fades slowly with age.', group: 'effects', default: false },
   immigrationHeatmap: { label: 'Immigration · Heatmap', desc: 'Cumulative density heatmap fed by the settler atlas up to the current year. Shows where the population grew over time without individual dots — cleanest spatial story, cheapest render.', group: 'effects', default: false },
@@ -5353,28 +5353,22 @@ const STATIONS = [
     }
   },
   {
-    id: 'postmodern',
-    label: 'POSTMODERN',
-    targetYear: 1985,
-    camera: { latitude: 40.7580, longitude: -73.9855, zoom: 14.6, pitch: 50, bearing: -10 },
-    bronxCamera: BRONX_CAMERA,
+    id: 'bronx',
+    label: 'BRONX BURNING',
+    targetYear: 1975,
+    camera: BRONX_CAMERA,
     vignette: [
-      { icon: '🎤', label: 'Boombox Mic', year: '1979' },
-      { icon: '🎨', label: 'Spray Can', year: '1981' },
-      { icon: '🎸', label: 'CBGB Guitar', year: '1977' },
-      { icon: '🚇', label: 'Tagged Subway', year: '1982' },
+      { icon: '🎤', label: 'Boombox Mic', year: '1973' },
+      { icon: '🔥', label: 'Abandoned Lot', year: '1975' },
+      { icon: '🎨', label: 'First Tag', year: '1971' },
+      { icon: '🛣', label: 'Cross-Bronx Expy', year: '1972' },
     ],
     cutscene: {
       era: 'STATION 07',
-      title: 'Postmodern New York',
-      years: '1970 – 2000',
-      eraColor: '#5a6e5a',
-      photos: [
-        { src: 'data/photos/postmodern/1.jpg', caption: '42nd Street, NARA, 1970s' },
-        { src: 'data/photos/postmodern/2.jpg', caption: 'Subway Graffiti, NARA, 1973' },
-        { src: 'data/photos/postmodern/3.jpg', caption: 'CBGB, Bowery' },
-      ],
-      bronxPhotos: BRONX_CLIPS.map(c => ({
+      title: 'The Bronx is Burning',
+      years: '1970 – 1979',
+      eraColor: '#b04828',
+      photos: BRONX_CLIPS.map(c => ({
         src: c.photo,
         caption: c.caption,
         video: c.video,
@@ -5382,7 +5376,33 @@ const STATIONS = [
       })),
       quote: 'The South Bronx is burning.',
       attribution: '— Howard Cosell, 1977 World Series broadcast',
-      body: 'New York nearly went bankrupt in 1975. The federal government told the city to drop dead. Landlords torched buildings for insurance. Subway cars were covered in graffiti. Times Square was a grindhouse district. But in the wreckage: hip-hop was born in the Bronx, the downtown art scene exploded in abandoned SoHo lofts, and punk carved itself into CBGB\'s walls. The city that almost died became the most creatively productive place on the planet.'
+      body: 'Robert Moses drove the Cross-Bronx Expressway straight through East Tremont in the 1950s and 60s, bulldozing 60,000 people out of thriving blocks and severing what was left. A decade later the fallout arrived: landlords torched buildings for insurance, 40 census tracts lost more than half their housing, and 250,000 people were displaced. In the rubble, a different city was being invented — Kool Herc\'s block party on 1520 Sedgwick Avenue in 1973 is the moment hip-hop clicks into place. The fires and the turntables are the same story: a borough abandoned by planning, reclaiming itself through culture.'
+    }
+  },
+  {
+    id: 'postmodern',
+    label: 'POSTMODERN',
+    targetYear: 1987,
+    camera: { latitude: 40.7580, longitude: -73.9855, zoom: 14.6, pitch: 50, bearing: -10 },
+    vignette: [
+      { icon: '🎨', label: 'Spray Can', year: '1981' },
+      { icon: '🎸', label: 'CBGB Guitar', year: '1977' },
+      { icon: '🚇', label: 'Tagged Subway', year: '1982' },
+      { icon: '💼', label: 'Wall St Boom', year: '1987' },
+    ],
+    cutscene: {
+      era: 'STATION 08',
+      title: 'Postmodern New York',
+      years: '1980 – 2000',
+      eraColor: '#5a6e5a',
+      photos: [
+        { src: 'data/photos/postmodern/1.jpg', caption: '42nd Street, NARA, 1970s' },
+        { src: 'data/photos/postmodern/2.jpg', caption: 'Subway Graffiti, NARA, 1973' },
+        { src: 'data/photos/postmodern/3.jpg', caption: 'CBGB, Bowery' },
+      ],
+      quote: 'In the 70s and 80s, New York was full of artists who couldn\'t afford to live anywhere else.',
+      attribution: '— Fran Lebowitz',
+      body: 'Through the 80s, New York lurched between extremes. Wall Street boomed under Reagan while AIDS tore through the Village and Chelsea. Times Square was a grindhouse district of peep shows and porn theaters. Downtown, SoHo lofts became studios for Basquiat, Haring, and Warhol; CBGB and the Mudd Club minted punk and no-wave. Crack fractured the outer boroughs. Koch ran the city. The tagged subway cars became the most recognizable image of the era — and the one the city worked hardest to erase.'
     }
   },
   {
@@ -5397,7 +5417,7 @@ const STATIONS = [
       { icon: '🛗', label: 'Supertall Elevator', year: '2021' },
     ],
     cutscene: {
-      era: 'STATION 08',
+      era: 'STATION 09',
       title: 'Glass Tower Era',
       years: '2000 – Present',
       eraColor: '#3cb4c8',
@@ -5415,18 +5435,11 @@ const STATIONS = [
 
 function getCutscenePhotos(station) {
   if (!station || !station.cutscene) return [];
-  const cs = station.cutscene;
-  if (featureFlags.bronxContent && station.id === 'postmodern' && cs.bronxPhotos && cs.bronxPhotos.length) {
-    return cs.bronxPhotos;
-  }
-  return cs.photos || [];
+  return station.cutscene.photos || [];
 }
 
 function getStationCamera(station) {
   if (!station) return null;
-  if (featureFlags.bronxContent && station.id === 'postmodern' && station.bronxCamera) {
-    return station.bronxCamera;
-  }
   return station.camera;
 }
 
@@ -5545,7 +5558,6 @@ function goToStation(index) {
   const proxy = { year: currentYear };
 
   // Camera fly-to (deck.gl handles its own interpolation).
-  // getStationCamera swaps in the Bronx overview when bronxContent is on.
   deckgl.setProps({
     initialViewState: {
       ...getStationCamera(station),
@@ -5585,7 +5597,6 @@ function openCutscene(station) {
   document.getElementById('cs-title').textContent = cs.title;
   document.getElementById('cs-years').textContent = cs.years;
 
-  // Photos (flag-aware: Bronx Content swaps the postmodern set).
   // Photos with a `video` field become clickable and play that video in the
   // cinematic overlay via playClipInOverlay().
   const photosEl = document.getElementById('cs-photos');
