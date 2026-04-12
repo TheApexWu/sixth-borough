@@ -2755,7 +2755,7 @@ Promise.all([
     // These appear at construction year and vanish at demolition year
     buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
-    setTimeout(loadOuterBoroughs, 800);
+    setTimeout(loadOuterBoroughs, 1500);
   });
 
 function loadOuterBoroughs() {
@@ -5019,18 +5019,33 @@ slider.addEventListener('input', () => {
   if (featureFlags.photoMode) syncPhotoModeToYear();
 });
 
+let _scrubAnim = null;
 function jumpToYear(y) {
   y = Math.max(1719, Math.min(2026, parseInt(y) || 2026));
-  currentYear = y;
-  slider.value = y;
-  yearDisplay.textContent = y;
-  yearInput.value = y;
-  eraLabel.textContent = getEra(y).label;
-  updateVisibleCount();
-  updateLegendHighlight();
-  updateImmigrationOriginsPanel();
-  if (deckgl) deckgl.setProps({ layers: buildLayers() });
-  if (featureFlags.photoMode) syncPhotoModeToYear();
+  if (_scrubAnim) cancelAnimationFrame(_scrubAnim);
+  const start = currentYear;
+  const dist = y - start;
+  if (dist === 0) return;
+  const duration = Math.min(2000, Math.max(400, Math.abs(dist) * 8));
+  const t0 = performance.now();
+  function step(now) {
+    const p = Math.min(1, (now - t0) / duration);
+    const ease = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    const yr = Math.round(start + dist * ease);
+    currentYear = yr;
+    slider.value = yr;
+    yearDisplay.textContent = yr;
+    yearInput.value = yr;
+    eraLabel.textContent = getEra(yr).label;
+    updateVisibleCount();
+    updateLegendHighlight();
+    updateImmigrationOriginsPanel();
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+    if (featureFlags.photoMode) syncPhotoModeToYear();
+    if (p < 1) _scrubAnim = requestAnimationFrame(step);
+    else _scrubAnim = null;
+  }
+  _scrubAnim = requestAnimationFrame(step);
 }
 
 yearInput.addEventListener('keydown', (e) => {
