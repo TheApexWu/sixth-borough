@@ -1372,6 +1372,13 @@
 <div id="layer-toggles" style="position:fixed; bottom:120px; left:24px; z-index:45; display:flex; flex-direction:column; gap:6px;">
   <button id="toggle-immigration" onclick="toggleImmigration()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#ffc870; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">IMMIGRATION: OFF</button>
   <button id="toggle-landmarks" onclick="toggleLandmarks()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#fff; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">LANDMARKS: ON</button>
+  <div style="display:flex; gap:4px; flex-wrap:wrap; max-width:200px;">
+    <button onclick="toggleBorough('manhattan')" id="tog-manhattan" style="background:rgba(0,0,0,0.85); border:1px solid #00b8d4; color:#00b8d4; font-family:'Courier New',monospace; font-size:9px; padding:3px 6px; cursor:pointer;">MAN</button>
+    <button onclick="toggleBorough('bronx')" id="tog-bronx" style="background:rgba(0,0,0,0.85); border:1px solid #00b8d4; color:#00b8d4; font-family:'Courier New',monospace; font-size:9px; padding:3px 6px; cursor:pointer;">BX</button>
+    <button onclick="toggleBorough('brooklyn')" id="tog-brooklyn" style="background:rgba(0,0,0,0.85); border:1px solid #00b8d4; color:#00b8d4; font-family:'Courier New',monospace; font-size:9px; padding:3px 6px; cursor:pointer;">BK</button>
+    <button onclick="toggleBorough('queens')" id="tog-queens" style="background:rgba(0,0,0,0.85); border:1px solid #00b8d4; color:#00b8d4; font-family:'Courier New',monospace; font-size:9px; padding:3px 6px; cursor:pointer;">QN</button>
+    <button onclick="toggleBorough('staten')" id="tog-staten" style="background:rgba(0,0,0,0.85); border:1px solid #00b8d4; color:#00b8d4; font-family:'Courier New',monospace; font-size:9px; padding:3px 6px; cursor:pointer;">SI</button>
+  </div>
 </div>
 
 <div id="landmark-nav" style="position:fixed; top:80px; left:24px; z-index:45; background:rgba(0,0,0,0.92); border:1px solid #282828; padding:12px 16px; font-family:'Courier New',monospace; width:260px; max-height:60vh; display:flex; flex-direction:column;">
@@ -2773,6 +2780,8 @@ Promise.all([
   fetch('data/bronx_compact.json').then(r => r.json()).catch(() => []),
 ])
   .then(([manhattan, bronx]) => {
+    manhattan.forEach(b => b._boro = 'manhattan');
+    bronx.forEach(b => b._boro = 'bronx');
     buildings = manhattan.concat(bronx);
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
@@ -2795,6 +2804,7 @@ function loadOuterBoroughs() {
       fetch(`data/${b}_compact.json`).then(r => r.json()).catch(() => [])
     )
   ).then(results => {
+    OUTER_BOROUGHS.forEach((name, i) => results[i].forEach(b => b._boro = name));
     const outer = results.flat();
     buildings = buildings.concat(outer);
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
@@ -4977,7 +4987,7 @@ function buildOldnycPhotosLayer() {
 function buildLayer() {
   return new PolygonLayer({
     id: 'buildings',
-    data: buildings,
+    data: buildings.filter(b => !b._boro || boroughVisible[b._boro]),
     getPolygon: d => d.p,
     // Height grow: buildings built after currentYear get 0 height.
     // Buildings built AT currentYear get partial height (grow effect within a 3-year window).
@@ -5126,6 +5136,20 @@ function toggleLandmarks() {
   btn.style.borderColor = featureFlags.demolishedLandmarks ? '#fff' : '#333';
   btn.style.color = featureFlags.demolishedLandmarks ? '#fff' : '#666';
   if (deckgl) deckgl.setProps({ layers: buildLayers() });
+}
+
+// ── Borough toggles ──
+const boroughVisible = { manhattan: true, bronx: true, brooklyn: true, queens: true, staten: true };
+
+function toggleBorough(name) {
+  boroughVisible[name] = !boroughVisible[name];
+  const btn = document.getElementById('tog-' + name);
+  if (btn) {
+    btn.style.borderColor = boroughVisible[name] ? '#00b8d4' : '#333';
+    btn.style.color = boroughVisible[name] ? '#00b8d4' : '#555';
+  }
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  updateVisibleCount();
 }
 
 // ── Landmark navigation list ──
