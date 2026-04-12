@@ -16,8 +16,12 @@ from typing import Any
 import httpx
 
 LLAMA_SERVER_URL = os.environ.get("LLAMA_SERVER_URL", "http://127.0.0.1:8090")
-LLAMA_TIMEOUT_S = float(os.environ.get("BIOGRAPHY_LLAMA_TIMEOUT_S", "120"))
-LLAMA_MAX_TOKENS = int(os.environ.get("BIOGRAPHY_MAX_TOKENS", "1024"))
+LLAMA_TIMEOUT_S = float(os.environ.get("BIOGRAPHY_LLAMA_TIMEOUT_S", "180"))
+# Nemotron-3-Nano is a reasoning model that eats tokens internally before
+# producing output. 1024 was too tight: the model finished its reasoning
+# trace and never wrote the 4-section markdown. 4096 gives reasoning + output
+# both room to land. Cost: ~25-50 sec per biography on warm-loaded GB10.
+LLAMA_MAX_TOKENS = int(os.environ.get("BIOGRAPHY_MAX_TOKENS", "4096"))
 
 
 SYSTEM_PROMPT = """You are a forensic building historian for the Sixth Borough project, a local NYC cultural memory engine. You write structured biographies of New York City buildings using ONLY the public-record data provided in the user message. You never speculate, never predict, never invent owners or events that are not in the record. If a field is null or empty, you say "no record." Every claim is grounded in the structured data shown to you.

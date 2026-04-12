@@ -191,15 +191,20 @@ def find_nearby_demolished_landmarks(lat: float, lon: float, radius_m: float = 1
 
 
 def find_nearby_events(lat: float, lon: float, radius_m: float = 500.0, limit: int = 10) -> list[dict[str, Any]]:
-    """Cultural events within radius_m. The events-seed.json events have
-    coordinates already."""
+    """Cultural events within radius_m. The events-seed.json events use
+    `coordinate: [lat, lon]` as their primary schema."""
     out = []
     for e in _load_events():
-        elat = e.get("lat") or e.get("latitude")
-        elon = e.get("lon") or e.get("lng") or e.get("longitude")
-        if elat is None or elon is None:
-            continue
-        d = _haversine_m(lat, lon, float(elat), float(elon))
+        coord = e.get("coordinate")
+        if isinstance(coord, (list, tuple)) and len(coord) >= 2:
+            elat, elon = float(coord[0]), float(coord[1])
+        else:
+            elat = e.get("lat") or e.get("latitude")
+            elon = e.get("lon") or e.get("lng") or e.get("longitude")
+            if elat is None or elon is None:
+                continue
+            elat, elon = float(elat), float(elon)
+        d = _haversine_m(lat, lon, elat, elon)
         if d > radius_m:
             continue
         out.append({**e, "distance_m": round(d, 1)})
@@ -235,10 +240,17 @@ def assemble_record(*, bin: str | None = None, lat: float | None = None, lon: fl
         ev = find_event_by_id(event_id)
         if ev:
             record["anchor_event"] = ev
-            elat = ev.get("lat") or ev.get("latitude")
-            elon = ev.get("lon") or ev.get("lng") or ev.get("longitude")
-            if elat and elon:
-                lat, lon = float(elat), float(elon)
+            # events-seed.json uses {"coordinate": [lat, lon]} as the primary
+            # schema; tolerate the alternate {lat, lon} / {latitude, longitude}
+            # forms in case downstream callers post raw rows.
+            coord = ev.get("coordinate")
+            if isinstance(coord, (list, tuple)) and len(coord) >= 2:
+                lat, lon = float(coord[0]), float(coord[1])
+            else:
+                elat = ev.get("lat") or ev.get("latitude")
+                elon = ev.get("lon") or ev.get("lng") or ev.get("longitude")
+                if elat and elon:
+                    lat, lon = float(elat), float(elon)
             record["data_sources"].append(f"data/events-seed.json event '{event_id}'")
 
     if not building and lat is not None and lon is not None:
