@@ -273,6 +273,116 @@ for k in PREBAKE_KEYS:
 
 ---
 
+## Bug 4 — biography lookup matches buildings without temporal filter
+
+**Discovered while reading the prebake cache output (Session 45, Apr 12 ~03:45 ET).**
+
+The structured retrieval in `src/biography/lookup.py` `find_building_near()` returns the spatially closest building to a query point regardless of when that building was constructed. So an event from 1974 can match a building constructed in 2008 — the lookup says "this is the nearest building to the event coordinates," not "this is the building that existed when the event happened."
+
+**Concrete examples from the prebake cache:**
+
+| Event | Year | Matched BIN | year_built | Distance | Verdict |
+|---|---|---|---|---|---|
+| `bronx-1973-08-11-sedgwick` | 1973 | 2008286 | **1920** | 14.6 m | ✓ correct |
+| `bronx-1974-cedar-park` | 1974 | 2114829 | **2008** | 15.3 m | ✗ didn't exist in 1974 |
+| `bronx-1978-disco-fever` | 1978 | 2115819 | **1992** | 29.9 m | ✗ didn't exist in 1978 |
+| `bronx-1980-cold-crush-brothers` | 1980 | 2116225 | **2007** | 33.4 m | ✗ didn't exist in 1980 |
+| `bronx-1979-rappers-delight` | 1979 | (none) | — | — | ✗ no spatial match within radius |
+
+**Why this matters:** the biography RAG returns text like "the building with BIN 2114829 was constructed in 2008 (NYC Open Data Building Footprints, 5zhs-2jue) ... the anchor event Kool Herc moves outside to Cedar Park is recorded August 1974." The model dutifully cites 2008 as the construction year for a building it then ties to a 1974 event. **A judge reads this and concludes the data spine is broken.** The forensic posture demands these be temporally consistent.
+
+### The fix (~10 min, two edits in `src/biography/lookup.py`)
+
+`find_building_near()` should accept an optional `year` parameter and prefer buildings whose `year_built ≤ year`. Add a soft preference (don't hard-filter — sometimes the building was built shortly after and is still the right historical reference):
+
+```python
+def find_building_near(
+    lat: float,
+    lon: float,
+    radius_m: float = 50.0,
+    year: int | None = None,
+) -> dict[str, Any] | None:
+    """Find the nearest building polygon by centroid within radius_m. If
+    a `year` is provided, soft-prefer buildings whose `year_built` is
+    less than or equal to that year — anachronistic matches (a 2008
+    building tied to a 1974 event) are pushed down the ranking even
+    when they are spatially closest."""
+    candidates = []
+    for rec in _load_buildings_by_bin().values():
+        d = _haversine_m(lat, lon, rec["centroid_lat"], rec["centroid_lon"])
+        if d > radius_m:
+            continue
+        # Penalty for anachronistic matches: a building built AFTER the
+        # event year is geometrically closer but historically wrong.
+        # Score = distance + 100m penalty per decade of anachronism.
+        anachronism_penalty = 0.0
+        if year is not None and rec.get("year_built"):
+            yb = rec["year_built"]
+            if yb > year:
+                anachronism_penalty = ((yb - year) / 10.0) * 100.0
+        candidates.append((d + anachronism_penalty, d, rec))
+
+    if not candidates:
+        return None
+    candidates.sort()
+    _, true_d, best = candidates[0]
+    return {**best, "distance_m": round(true_d, 1)}
+```
+
+Then in `assemble_record()` pass the event year through:
+
+```python
+if not building and lat is not None and lon is not None:
+    # Pass the event year if we have one, so the lookup prefers
+    # historically-consistent buildings over the spatially-nearest one.
+    event_year = None
+    if record.get("anchor_event"):
+        event_year = record["anchor_event"].get("year") or record["anchor_event"].get("start_year")
+    building = find_building_near(lat, lon, radius_m=80.0, year=event_year)
+```
+
+**After this fix**, re-run `scripts/prebake_biographies.py` to refresh the cache with temporally-consistent matches. The Sedgwick result stays the same (1920 ≤ 1973). The Cedar Park / Disco Fever / Cold Crush matches will either flip to older buildings nearby OR fall through to "no record" if no historically-consistent building is within radius — both more honest than the current ahistorical match.
+
+---
+
+## Bug 5 — MARQUEE table is 3 placeholders, not load-bearing copy
+
+**Where:** `index.html` line 2597.
+
+**The code:**
+```js
+const MARQUEE = {
+  '1001389': { title: 'Empire State Building', year: 1931, body: 'Placeholder. James + Nemotron write the real narrative at the hackathon.' },
+  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Placeholder. Click any building to see this card. Carson/James: decide layout, animation, tone.' },
+  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Placeholder. The card system is scaffolded -- content, style, and interaction are open for the team.' },
+};
+```
+
+**The bug:** even the 3 hand-curated marquee buildings have body text "Placeholder. James + Nemotron write the real narrative at the hackathon." A judge clicks the Empire State Building expecting to see the demo's killer feature and reads dev-team meta-commentary. **And 1520 Sedgwick — the entire pitch's anchor address — is NOT in the table at all.**
+
+### Fix shipped (Session 45, Apr 12 ~03:45 ET)
+
+Generated `cultural-content/marquee-bronx.json` with 8 BIN-keyed Bronx hip-hop birth chain entries (will expand to all 19 once the prebake batch completes). Each entry has a hand-written 1-2 sentence body in the forensic posture, not a placeholder. The Sedgwick anchor is included with BIN `2008286`.
+
+**For James to wire (one fetch + merge into MARQUEE at startup):**
+
+```js
+// In the existing Promise.all data load block around line 2620:
+fetch('cultural-content/marquee-bronx.json')
+  .then(r => r.json())
+  .then(data => {
+    Object.assign(MARQUEE, data.marquee || {});
+    console.log(`marquee: merged ${Object.keys(data.marquee || {}).length} hand-curated Bronx entries`);
+  })
+  .catch(err => console.warn('marquee-bronx.json failed to load:', err));
+```
+
+That's the entire integration. The Bronx hip-hop birth chain BINs now show real titles and forensic body copy. The 3 Manhattan placeholders (Empire State, Flatiron, One WTC) still show their placeholder text — replace them by hand if there's time, or let them fall back to the new biography RAG output (Bug 3 fix) when those BINs are clicked.
+
+**File location:** `cultural-content/marquee-bronx.json` (sibling to `cultural-content/oldnyc/index.json`, on the same `feature/sketch-overlay` load path). Schema: `{_meta: {...}, marquee: {<bin>: {title, year, body, event_id, narration_seed, niche_tags, matched_year_built, distance_m}}}`.
+
+---
+
 ## Optimization summary — using NYC Open Data better
 
 Right now we have 4 datasets joined in `src/biography/lookup.py`:
