@@ -1575,8 +1575,8 @@ const FLAGS = {
   radialBurn:   { label: 'Radial Burn', desc: 'Shader transition between overlay cutscenes on next/prev era.', group: 'effects', default: false },
   ghostPointCloud:{ label: 'Ghost Point Cloud', desc: 'Penn Station (demolished 1963) as a point-cloud ghost after its demolition year.', group: 'effects', default: false },
   libertyIsland:  { label: 'Liberty Island 3D', desc: 'Load photogrammetry mesh of Liberty Island into the harbor. Auto-flies camera when enabled.', group: 'effects', default: false },
-  oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
-  demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: true },
+  oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: false },
+  demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: false },
   bronxContent:   { label: 'Bronx Hotspots', desc: 'Show the three Bronx video hotspots on the map (1520 Sedgwick, Bronx River Houses, Charlotte St) that play DJ Kool Herc, Bronx River Center hip-hop party, and South Bronx fire clips when clicked. The Bronx now has its own Guided Tour station (STATION 07 · 1970s) regardless of this flag.', group: 'effects', default: false },
   immigrationFlow: { label: 'Immigration Flow', desc: 'Garden-hose dot spray representing annual NYC immigration, 1719–2026. Pressure and spread scale with arrivals: colonial dribble, Ellis Island gusher (peak 1907), quota-era cliff, modern trickle. Origin moves with history: Battery → Castle Garden → Ellis Island.', group: 'effects', default: false },
   immigrationSettlers: { label: 'Immigration · Settlers', desc: 'Persistent dots where the wave lands. One dot ≈ 8k immigrants, placed in era-weighted neighborhoods (Five Points → LES → Harlem → Washington Heights). Scrubbing forward visibly crusts over Manhattan; scrubbing back uncovers it. Alpha fades slowly with age.', group: 'effects', default: false },
@@ -2806,7 +2806,8 @@ Promise.all([
     // These appear at construction year and vanish at demolition year
     buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
-    setTimeout(loadOuterBoroughs, 1500);
+    // Outer boroughs disabled by default for laptop perf. Toggle BK/QN/SI buttons to load.
+    // setTimeout(loadOuterBoroughs, 1500);
   });
 
 function loadOuterBoroughs() {
@@ -5036,19 +5037,12 @@ function buildLayer() {
     wireframe: false,
     pickable: true,
     elevationScale: 1,
-    material: {
-      ambient: 0.4,
-      diffuse: 0.6,
-      shininess: 10,
-      specularColor: [30, 30, 30],
-    },
+    material: false,
     updateTriggers: {
       getElevation: currentYear,
       getFillColor: currentYear,
     },
-    transitions: {
-      getElevation: { duration: 200, easing: t => t },
-    },
+    // transitions disabled for laptop perf
   });
 }
 
