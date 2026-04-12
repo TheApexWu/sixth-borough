@@ -24,3 +24,4 @@ cultural-content/oldnyc/raw/
 # Project submission renders — stay local, too large for GitHub bandwidth.
 # Share via Drive / Release assets instead.
 project-submission/
+renderer-rust-v2/target/
