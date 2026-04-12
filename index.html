@@ -72,8 +72,23 @@
   #controls {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 45;
     background: rgba(0,0,0,0.92); border: 1px solid #282828; padding: 18px 44px;
-    text-align: center; min-width: 520px;
+    text-align: center; min-width: 80vw;
   }
+  #year-input {
+    background: transparent; border: 1px solid transparent; color: #fff;
+    font-size: 56px; font-weight: bold; font-family: 'Courier New', monospace;
+    font-variant-numeric: tabular-nums; text-align: center; width: 5ch;
+    outline: none; padding: 0; margin: 6px 0;
+  }
+  #year-input:hover { border-color: #00b8d4; }
+  #year-input:focus { border-color: #00b8d4; background: rgba(0,184,212,0.08); }
+  .year-presets { display: flex; gap: 8px; justify-content: center; margin: 6px 0 2px; }
+  .year-presets button {
+    background: rgba(255,255,255,0.06); border: 1px solid #333; color: #aaa;
+    font-family: 'Courier New', monospace; font-size: 11px; padding: 4px 10px;
+    cursor: pointer; letter-spacing: 1px;
+  }
+  .year-presets button:hover { border-color: #00b8d4; color: #fff; }
 
   /* ── Lightbox (card-scoped fullscreen photo viewer) ── */
   /* Fully immersive: pure black, image fills the entire viewport, nav + caption
@@ -812,10 +827,11 @@
 
   /* ── Story card (scaffold) ── */
   #story-card {
-    position: fixed; bottom: 120px; right: 24px; z-index: 10;
+    position: fixed; top: 80px; right: 24px; z-index: 40;
     background: rgba(0,0,0,0.92); border: 1px solid #282828;
-    width: 320px; display: none;
+    width: 320px; display: none; cursor: grab; max-height: 70vh; overflow-y: auto;
   }
+  #story-card.dragging { cursor: grabbing; }
   #story-card .card-header {
     padding: 12px 16px; border-bottom: 1px solid #1a1a1a;
     font-size: 10px; letter-spacing: 3px; color: #00b8d4;
@@ -1350,23 +1366,33 @@
 
 <div id="title-bar">
   <h1>SIXTH BOROUGH</h1>
-  <div class="sub">MANHATTAN / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
+  <div class="sub">NYC / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
 </div>
 
 <div id="legend"></div>
 
 <div id="immigration-origins-panel">
   <h3>ORIGINS</h3>
-  <div class="year-row"><span id="immigration-origins-header">HOVER A DENSITY HEX</span> · <span id="immigration-origins-year">1925</span></div>
+  <div class="year-row"><span id="immigration-origins-header">HOVER A DENSITY HEX</span> · <span id="immigration-origins-year">2026</span></div>
   <ul id="immigration-origins-list"></ul>
 </div>
 
 <div id="controls">
   <div class="label">TIMELINE</div>
-  <div id="year-display">1925</div>
-  <div id="era-label">GOLDEN AGE</div>
+  <input type="text" id="year-input" value="2026" maxlength="4" inputmode="numeric">
+  <div id="year-display" style="display:none;">2026</div>
+  <div id="era-label">MODERN</div>
+  <div class="year-presets">
+    <button onclick="jumpToYear(1948)">1948</button>
+    <button onclick="jumpToYear(1970)">1970</button>
+    <button onclick="jumpToYear(1973)">1973</button>
+    <button onclick="jumpToYear(2001)">2001</button>
+    <button onclick="jumpToYear(2026)">2026</button>
+    <button onclick="flyToSedgwick()" style="border-color:#f5c842;color:#f5c842;">SEDGWICK</button>
+    <button onclick="flyToWTC()" style="border-color:#f55;color:#f55;">WTC</button>
+  </div>
   <div id="slider-wrap">
-    <input type="range" id="slider" min="1719" max="2026" value="1925" step="1">
+    <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
   </div>
   <div id="stats"><span id="visible-count">--</span> buildings visible</div>
 </div>
@@ -1405,7 +1431,7 @@
   </div>
   <div id="photo-mode-year-scrubber">
     <span id="photo-mode-year-label">1925</span>
-    <input type="range" id="photo-mode-year-slider" min="1719" max="2026" step="1" value="1925"
+    <input type="range" id="photo-mode-year-slider" min="1719" max="2026" step="1" value="2026"
            oninput="onPhotoModeYearScrub(this.value)"
            onclick="event.stopPropagation()">
   </div>
@@ -2596,22 +2622,22 @@ function updateLegendHighlight() {
 // ── Marquee sites (hand-curated iconic buildings with photos) ──
 const MARQUEE = {
   // Manhattan icons
-  '1001389': { title: 'Empire State Building', year: 1931, body: 'Shreve, Lamb & Harmon. 1,454 ft to antenna. Built in 410 days during the Depression. Tallest building in the world 1931-1970. 102 floors, 73 elevators, 6,514 windows. Construction cost $41M ($700M today). The mooring mast for dirigibles was never actually used.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Empire_State_Building_%28aerial_view%29.jpg/440px-Empire_State_Building_%28aerial_view%29.jpg' },
-  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Daniel Burnham, 1902. 22 floors, 285 ft. Originally the Fuller Building. The triangular lot at Broadway and Fifth forced the wedge shape. Wind downdrafts at the narrow end were so strong that police had to shoo away men who gathered to watch women\'s skirts blow up. The phrase "23 skidoo" may originate here.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flatiron_Building_by_David_Shankbone.JPG/440px-Flatiron_Building_by_David_Shankbone.JPG' },
-  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Skidmore, Owings & Merrill. 1,776 ft (symbolic). Built on the northwest corner of the original WTC site. Construction began 2006, opened 2014. The spire height references the year of American independence. The base is a windowless 200-ft concrete fortress designed to withstand a truck bomb.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_World_Trade_Center_2022.jpg/440px-One_World_Trade_Center_2022.jpg' },
-  '1015862': { title: 'Chrysler Building', year: 1930, body: 'William Van Alen. 1,046 ft. Art Deco. Briefly the tallest building in the world (May-Nov 1930) before the Empire State surpassed it. The stainless steel crown with triangular windows and eagle gargoyles at the 61st floor is the most recognizable silhouette in NYC.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Chrysler_Building_2005_3.jpg/440px-Chrysler_Building_2005_3.jpg' },
-  '1001060': { title: '30 Rockefeller Plaza', year: 1933, body: 'Raymond Hood. 850 ft, 70 floors. Centerpiece of Rockefeller Center. Home of NBC Studios since 1933. The Rainbow Room on the 65th floor. Top of the Rock observation deck. The Christmas tree has been lit here every year since 1933.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/GE_Building_by_David_Shankbone.JPG/440px-GE_Building_by_David_Shankbone.JPG' },
-  '1006184': { title: 'Woolworth Building', year: 1913, body: 'Cass Gilbert. 792 ft. "Cathedral of Commerce." Tallest building in the world 1913-1930. Frank Woolworth paid the entire $13.5M construction cost in cash. The lobby mosaics include a caricature of Woolworth counting his nickels and dimes.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Woolworth_Building_-_New_York_City.jpg/440px-Woolworth_Building_-_New_York_City.jpg' },
-  '1086097': { title: 'Brooklyn Bridge', year: 1883, body: 'John and Washington Roebling. 1,595 ft main span. First steel-wire suspension bridge. Took 14 years to build. John Roebling died of tetanus during construction. His son Washington was paralyzed by caisson disease and supervised from his apartment via telescope. Emily Roebling managed the project day-to-day.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Brooklyn_Bridge_Postdlf.jpg/440px-Brooklyn_Bridge_Postdlf.jpg' },
-  '1007379': { title: 'Grand Central Terminal', year: 1913, body: 'Warren & Wetmore / Reed & Stem. 44 platforms, 67 tracks. The Main Concourse ceiling depicts 2,500 stars painted backwards (the constellations are reversed). A secret platform — Track 61 — was built for FDR to enter the Waldorf-Astoria without being seen in his wheelchair.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/GCT_Exterior.jpg/440px-GCT_Exterior.jpg' },
-  '1090534': { title: 'The Dakota', year: 1884, body: 'Henry Hardenbergh. First luxury apartment building on the Upper West Side. Named "The Dakota" because it was so far from the center of town it might as well be in the Dakotas. John Lennon lived here and was shot outside the entrance on December 8, 1980.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/The_Dakota%2C_November_2020.jpg/440px-The_Dakota%2C_November_2020.jpg' },
-  '1008528': { title: 'United Nations Headquarters', year: 1952, body: 'International committee led by Le Corbusier and Oscar Niemeyer. The 39-floor Secretariat was the first glass curtain wall skyscraper in NYC. The site is international territory, not technically part of the United States. Rockefeller donated the $8.5M land.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/United_Nations_Headquarters_in_New_York_City%2C_view_from_Roosevelt_Island.jpg/440px-United_Nations_Headquarters_in_New_York_City%2C_view_from_Roosevelt_Island.jpg' },
-  '1015600': { title: 'The Plaza Hotel', year: 1907, body: 'Henry Hardenbergh. 20 floors, French Renaissance chateau style. $12.5M construction cost. NYC landmark since 1969. The Oak Room, the Palm Court, the Eloise suite. Owned at various points by Conrad Hilton and Donald Trump. Converted partly to condos 2005.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/The_Plaza_Hotel_in_New_York_%2851241097122%29.jpg/440px-The_Plaza_Hotel_in_New_York_%2851241097122%29.jpg' },
-  '1001739': { title: 'MetLife Building (Pan Am)', year: 1963, body: 'Emery Roth & Sons, with Bauhaus founders Walter Gropius and Pietro Belluschi. 808 ft, 59 floors. Built over Grand Central Terminal. Originally the Pan Am Building. A helicopter rooftop service ran 1965-1977 until an accident killed 5 people. The largest commercial office building in the world when completed.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/MetLife_Building_in_2023.jpg/440px-MetLife_Building_in_2023.jpg' },
+  '1001389': { title: 'Empire State Building', year: 1931, body: 'Shreve, Lamb & Harmon. 1,454 ft to antenna. Built in 410 days during the Depression. Tallest building in the world 1931-1970. 102 floors, 73 elevators, 6,514 windows. Construction cost $41M ($700M today). The mooring mast for dirigibles was never actually used.' },
+  '1013865': { title: 'Flatiron Building', year: 1902, body: 'Daniel Burnham, 1902. 22 floors, 285 ft. Originally the Fuller Building. The triangular lot at Broadway and Fifth forced the wedge shape. Wind downdrafts at the narrow end were so strong that police had to shoo away men who gathered to watch women\'s skirts blow up. The phrase "23 skidoo" may originate here.' },
+  '1066399': { title: 'One World Trade Center', year: 2014, body: 'Skidmore, Owings & Merrill. 1,776 ft (symbolic). Built on the northwest corner of the original WTC site. Construction began 2006, opened 2014. The spire height references the year of American independence. The base is a windowless 200-ft concrete fortress designed to withstand a truck bomb.' },
+  '1015862': { title: 'Chrysler Building', year: 1930, body: 'William Van Alen. 1,046 ft. Art Deco. Briefly the tallest building in the world (May-Nov 1930) before the Empire State surpassed it. The stainless steel crown with triangular windows and eagle gargoyles at the 61st floor is the most recognizable silhouette in NYC.' },
+  '1001060': { title: '30 Rockefeller Plaza', year: 1933, body: 'Raymond Hood. 850 ft, 70 floors. Centerpiece of Rockefeller Center. Home of NBC Studios since 1933. The Rainbow Room on the 65th floor. Top of the Rock observation deck. The Christmas tree has been lit here every year since 1933.' },
+  '1006184': { title: 'Woolworth Building', year: 1913, body: 'Cass Gilbert. 792 ft. "Cathedral of Commerce." Tallest building in the world 1913-1930. Frank Woolworth paid the entire $13.5M construction cost in cash. The lobby mosaics include a caricature of Woolworth counting his nickels and dimes.' },
+  '1086097': { title: 'Brooklyn Bridge', year: 1883, body: 'John and Washington Roebling. 1,595 ft main span. First steel-wire suspension bridge. Took 14 years to build. John Roebling died of tetanus during construction. His son Washington was paralyzed by caisson disease and supervised from his apartment via telescope. Emily Roebling managed the project day-to-day.' },
+  '1007379': { title: 'Grand Central Terminal', year: 1913, body: 'Warren & Wetmore / Reed & Stem. 44 platforms, 67 tracks. The Main Concourse ceiling depicts 2,500 stars painted backwards (the constellations are reversed). A secret platform — Track 61 — was built for FDR to enter the Waldorf-Astoria without being seen in his wheelchair.' },
+  '1090534': { title: 'The Dakota', year: 1884, body: 'Henry Hardenbergh. First luxury apartment building on the Upper West Side. Named "The Dakota" because it was so far from the center of town it might as well be in the Dakotas. John Lennon lived here and was shot outside the entrance on December 8, 1980.' },
+  '1008528': { title: 'United Nations Headquarters', year: 1952, body: 'International committee led by Le Corbusier and Oscar Niemeyer. The 39-floor Secretariat was the first glass curtain wall skyscraper in NYC. The site is international territory, not technically part of the United States. Rockefeller donated the $8.5M land.' },
+  '1015600': { title: 'The Plaza Hotel', year: 1907, body: 'Henry Hardenbergh. 20 floors, French Renaissance chateau style. $12.5M construction cost. NYC landmark since 1969. The Oak Room, the Palm Court, the Eloise suite. Owned at various points by Conrad Hilton and Donald Trump. Converted partly to condos 2005.' },
+  '1001739': { title: 'MetLife Building (Pan Am)', year: 1963, body: 'Emery Roth & Sons, with Bauhaus founders Walter Gropius and Pietro Belluschi. 808 ft, 59 floors. Built over Grand Central Terminal. Originally the Pan Am Building. A helicopter rooftop service ran 1965-1977 until an accident killed 5 people. The largest commercial office building in the world when completed.' },
   // Bronx
-  '2000100': { title: 'Yankee Stadium', year: 2009, body: 'Populous architects. Replaced the original 1923 Yankee Stadium (demolished 2010) across the street. 54,251 capacity. Cost $2.3 billion, the most expensive stadium ever built at the time. The original House That Ruth Built hosted 6,581 regular season games over 85 years.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/New_Yankee_Stadium.jpg/440px-New_Yankee_Stadium.jpg' },
+  '2000100': { title: 'Yankee Stadium', year: 2009, body: 'Populous architects. Replaced the original 1923 Yankee Stadium (demolished 2010) across the street. 54,251 capacity. Cost $2.3 billion, the most expensive stadium ever built at the time. The original House That Ruth Built hosted 6,581 regular season games over 85 years.' },
   // Brooklyn
-  '3327837': { title: 'Coney Island Cyclone', year: 1927, body: 'Vernon Keenan, designer. 2,640 ft of track, 85 ft first drop, top speed 60 mph. Cost $175,000 to build. NYC landmark since 1988. One of the oldest operating wooden roller coasters in America. Charles Lindbergh reportedly said it was scarier than flying.', photo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Cyclone_roller_coaster.jpg/440px-Cyclone_roller_coaster.jpg' },
+  '3327837': { title: 'Coney Island Cyclone', year: 1927, body: 'Vernon Keenan, designer. 2,640 ft of track, 85 ft first drop, top speed 60 mph. Cost $175,000 to build. NYC landmark since 1988. One of the oldest operating wooden roller coasters in America. Charles Lindbergh reportedly said it was scarier than flying.' },
 };
 // Load Bronx MARQUEE expansion (8 BIN-keyed hip-hop birth chain entries)
 fetch('cultural-content/marquee-bronx.json')
@@ -2622,6 +2648,48 @@ fetch('cultural-content/marquee-bronx.json')
 // ── Ghost buildings (demolished landmarks with synthetic footprints) ──
 // These appear at construction year and vanish at demolition year.
 // Approximate square footprints from known dimensions. d = demolition year.
+// Cross-Bronx Expressway demolished buildings (1948-1972)
+// Route: ~1.2 miles through East Tremont, lat ~40.840-40.845, lon ~-73.890 to -73.910
+// 159 buildings demolished, 60,000 displaced. Green-flagged for demo visibility.
+// Buildings placed along the actual expressway corridor with staggered demolition years.
+function crossBronxBlock(lonStart, latStart, cols, rows, demo_start, demo_end) {
+  const out = [];
+  const bw = 0.00025; // ~25m block width
+  const bh = 0.00020; // ~20m block depth
+  const gap = 0.00008;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const lo = lonStart + c * (bw + gap);
+      const la = latStart + r * (bh + gap);
+      // Stagger demolition across the construction period
+      const progress = (c + r * cols) / (cols * rows);
+      const demoYear = Math.round(demo_start + progress * (demo_end - demo_start));
+      // Random-ish height 12-25m (4-8 story tenements)
+      const h = 12 + ((c * 7 + r * 13) % 14);
+      out.push({
+        p: [[lo, la+bh], [lo+bw, la+bh], [lo+bw, la], [lo, la], [lo, la+bh]],
+        h: h, y: 1910 + ((c + r) % 20), d: demoYear, b: `CBX_${out.length}`, moses: true
+      });
+    }
+  }
+  return out;
+}
+
+const CROSS_BRONX_GHOSTS = [
+  // Section 1: West end near Grand Concourse (first demolished ~1948-1953)
+  ...crossBronxBlock(-73.9105, 40.8420, 6, 3, 1948, 1953),
+  // Section 2: Vyse Ave / East Tremont core (1953-1958)
+  ...crossBronxBlock(-73.9040, 40.8415, 7, 3, 1953, 1958),
+  // Section 3: Southern Blvd area (1956-1962)
+  ...crossBronxBlock(-73.8975, 40.8410, 6, 3, 1956, 1962),
+  // Section 4: East Tremont Ave / Mapes Ave (1960-1965)
+  ...crossBronxBlock(-73.8910, 40.8405, 7, 3, 1960, 1965),
+  // Section 5: Crotona Park East (1963-1968)
+  ...crossBronxBlock(-73.8845, 40.8400, 6, 3, 1963, 1968),
+  // Section 6: East end near Bruckner (1966-1972)
+  ...crossBronxBlock(-73.8780, 40.8395, 7, 3, 1966, 1972),
+];
+
 const GHOST_BUILDINGS = [
   // WTC North Tower (1 WTC) — 63m×63m, 417m tall, 1970-2001
   { p: [[-74.01365,40.71268],[-74.01295,40.71268],[-74.01295,40.71212],[-74.01365,40.71212],[-74.01365,40.71268]], h: 417, y: 1970, d: 2001, b: 'WTC1' },
@@ -2635,19 +2703,23 @@ const GHOST_BUILDINGS = [
   { p: [[-73.99420,40.75080],[-73.99260,40.75080],[-73.99260,40.74970],[-73.99420,40.74970],[-73.99420,40.75080]], h: 46, y: 1910, d: 1963, b: 'PENN_ORIG' },
   // Singer Building — tallest building ever demolished, 1908-1968, 187m
   { p: [[-74.00990,40.70920],[-74.00960,40.70920],[-74.00960,40.70895],[-74.00990,40.70895],[-74.00990,40.70920]], h: 187, y: 1908, d: 1968, b: 'SINGER' },
+  // Cross-Bronx Expressway corridor — 117 tenements demolished 1948-1972
+  ...CROSS_BRONX_GHOSTS,
 ];
 
 // Add WTC to MARQUEE so clicks show real content
 Object.assign(MARQUEE, {
-  'WTC1': { title: 'One World Trade Center (North Tower)', year: 1970, body: 'Completed 1972. 110 floors, 1,368 ft. Destroyed September 11, 2001. 2,763 people killed across both towers and the surrounding area. The tallest building in the world from 1970 to 1973. Designed by Minoru Yamasaki. The current One World Trade Center (2014) stands at the same site.' },
-  'WTC2': { title: 'Two World Trade Center (South Tower)', year: 1971, body: 'Completed 1973. 110 floors, 1,362 ft. Destroyed September 11, 2001. Second tower hit, first to collapse at 9:59 AM. The observation deck on the 107th floor was the highest public viewing platform in NYC.' },
-  'PENN_ORIG': { title: 'Pennsylvania Station (Original)', year: 1910, body: 'McKim, Mead & White Beaux-Arts masterpiece. Opened 1910. Demolished 1963 to build Madison Square Garden. The destruction of Penn Station directly led to the NYC Landmarks Preservation Law of 1965. The most consequential demolition in American architectural history.' },
-  'SINGER': { title: 'Singer Building', year: 1908, body: 'Ernest Flagg, 1908. 612 feet, 41 floors. Tallest building ever peacefully demolished (1968) to make way for One Liberty Plaza. Stood at 149 Broadway in Lower Manhattan.' },
+  'WTC1': { title: 'One World Trade Center (North Tower)', year: 1970, body: 'Completed 1972. 110 floors, 1,368 ft. Destroyed September 11, 2001. 2,763 people killed across both towers and the surrounding area. The tallest building in the world from 1970 to 1973. Designed by Minoru Yamasaki. The current One World Trade Center (2014) stands at the same site.', photo: 'cultural-content/Bronx_1970s_60.jpg' },
+  'WTC2': { title: 'Two World Trade Center (South Tower)', year: 1971, body: 'Completed 1973. 110 floors, 1,362 ft. Destroyed September 11, 2001. Second tower hit, first to collapse at 9:59 AM. The observation deck on the 107th floor was the highest public viewing platform in NYC.', photo: 'cultural-content/Bronx_1970s_60.jpg' },
+  'PENN_ORIG': { title: 'Pennsylvania Station (Original)', year: 1910, body: 'McKim, Mead & White Beaux-Arts masterpiece. Opened 1910. Demolished 1963 to build Madison Square Garden. The destruction of Penn Station directly led to the NYC Landmarks Preservation Law of 1965. The most consequential demolition in American architectural history.', photo: 'cultural-content/Bronx_1970s_4.jpg' },
+  'SINGER': { title: 'Singer Building', year: 1908, body: 'Ernest Flagg, 1908. 612 feet, 41 floors. Tallest building ever peacefully demolished (1968) to make way for One Liberty Plaza. Stood at 149 Broadway in Lower Manhattan.', photo: 'cultural-content/Bronx_1970s_11.jpg' },
+  // 1520 Sedgwick Ave — birthplace of hip-hop
+  '2008286': { title: '1520 Sedgwick Avenue', year: 1967, body: 'August 11, 1973. DJ Kool Herc throws a back-to-school party in the rec room of this building. He isolates the break — the percussion-only section — and loops it between two turntables. The crowd goes off. Hip-hop is born. The building was full of displaced families from the Cross-Bronx Expressway demolitions. The density created the culture.', photo: 'cultural-content/bronx/kool-herc.jpg' },
 });
 
 // ── State ──
 let buildings = [];
-let currentYear = 1925;
+let currentYear = 2026;
 let playing = false;
 let deckgl = null;
 let boroughBoundaries = null;  // GeoJSON FeatureCollection for red borough outlines
@@ -2682,7 +2754,7 @@ Promise.all([
     // These appear at construction year and vanish at demolition year
     buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
-    setTimeout(loadOuterBoroughs, 800);
+    // setTimeout(loadOuterBoroughs, 800); // DISABLED FOR DEMO RECORDING - Manhattan+Bronx only
   });
 
 function loadOuterBoroughs() {
@@ -3842,9 +3914,9 @@ function initDeck() {
   deckgl = new Deck({
     parent: document.getElementById('map'),
     initialViewState: {
-      latitude: 40.758,
-      longitude: -73.985,
-      zoom: 14,
+      latitude: 40.78,
+      longitude: -73.95,
+      zoom: 11.5,
       pitch: 55,
       bearing: -20,
       maxZoom: 18,
@@ -4198,8 +4270,39 @@ function getControllerConfig() {
   return true;
 }
 
+// Cross-Bronx Expressway road surface — appears 1972 after demolitions complete
+// Dark grey flat road that replaces the green tenements
+const CROSS_BRONX_EXPRESSWAY = {
+  p: [
+    [-73.9120, 40.8428], [-73.9105, 40.8425], [-73.9040, 40.8420],
+    [-73.8975, 40.8415], [-73.8910, 40.8410], [-73.8845, 40.8405],
+    [-73.8780, 40.8400], [-73.8720, 40.8395],
+    // Return path (south edge of expressway, ~40m wide)
+    [-73.8720, 40.8391], [-73.8780, 40.8396], [-73.8845, 40.8401],
+    [-73.8910, 40.8406], [-73.8975, 40.8411], [-73.9040, 40.8416],
+    [-73.9105, 40.8421], [-73.9120, 40.8424],
+    [-73.9120, 40.8428],
+  ],
+  h: 3, y: 1972, b: 'CBX_ROAD'
+};
+
+function buildExpresswayLayer() {
+  if (currentYear < 1972) return null;
+  return new deck.PolygonLayer({
+    id: 'cross-bronx-expressway',
+    data: [CROSS_BRONX_EXPRESSWAY],
+    getPolygon: d => d.p,
+    getElevation: 3,
+    getFillColor: [60, 60, 60, 200],
+    extruded: true,
+    pickable: false,
+  });
+}
+
 function buildLayers() {
   const layers = [buildLayer()];
+  const expressway = buildExpresswayLayer();
+  if (expressway) layers.push(expressway);
   const ghost = buildGhostLayer();
   if (ghost) layers.push(ghost);
   const liberty = buildLibertyLayer();
@@ -4847,6 +4950,8 @@ function buildLayer() {
     getFillColor: d => {
       if (d.y > currentYear && d.y !== 0) return [0, 0, 0, 0]; // invisible future
       if (d.d && currentYear > d.d) return [0, 0, 0, 0]; // demolished — invisible after demolition
+      // Cross-Bronx Moses demolitions: bright green so they pop in demo
+      if (d.moses) return [40, 220, 80, 220];
       const era = getEra(d.y || 1800);
       // Fade in during grow window
       let alpha = 200;
@@ -4883,9 +4988,12 @@ const slider = document.getElementById('slider');
 const yearDisplay = document.getElementById('year-display');
 const eraLabel = document.getElementById('era-label');
 
+const yearInput = document.getElementById('year-input');
+
 slider.addEventListener('input', () => {
   currentYear = parseInt(slider.value);
   yearDisplay.textContent = currentYear;
+  yearInput.value = currentYear;
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
@@ -4893,6 +5001,45 @@ slider.addEventListener('input', () => {
   if (deckgl) deckgl.setProps({ layers: buildLayers() });
   if (featureFlags.photoMode) syncPhotoModeToYear();
 });
+
+function jumpToYear(y) {
+  y = Math.max(1719, Math.min(2026, parseInt(y) || 2026));
+  currentYear = y;
+  slider.value = y;
+  yearDisplay.textContent = y;
+  yearInput.value = y;
+  eraLabel.textContent = getEra(y).label;
+  updateVisibleCount();
+  updateLegendHighlight();
+  updateImmigrationOriginsPanel();
+  if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  if (featureFlags.photoMode) syncPhotoModeToYear();
+}
+
+yearInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { jumpToYear(yearInput.value); yearInput.blur(); }
+});
+yearInput.addEventListener('blur', () => { jumpToYear(yearInput.value); });
+
+function flyToSedgwick() {
+  if (!deckgl) return;
+  deckgl.setProps({
+    initialViewState: {
+      latitude: 40.8410, longitude: -73.8950, zoom: 14.5, pitch: 50, bearing: -10,
+      transitionDuration: 1800, transitionInterpolator: new deck.FlyToInterpolator(),
+    },
+  });
+}
+
+function flyToWTC() {
+  if (!deckgl) return;
+  deckgl.setProps({
+    initialViewState: {
+      latitude: 40.7118, longitude: -74.0131, zoom: 15.5, pitch: 50, bearing: 20,
+      transitionDuration: 1800, transitionInterpolator: new deck.FlyToInterpolator(),
+    },
+  });
+}
 
 function updateVisibleCount() {
   const count = buildings.filter(b => b.y === 0 || b.y <= currentYear).length;
@@ -4919,6 +5066,7 @@ function syncYear(year) {
   currentYear = Math.round(year);
   slider.value = currentYear;
   yearDisplay.textContent = currentYear;
+  if (yearInput) yearInput.value = currentYear;
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
@@ -4967,7 +5115,19 @@ function showCard(building) {
   const card = document.getElementById('story-card');
   const marquee = MARQUEE[building.b];
   const era = getEra(building.y);
-  if (marquee) {
+  if (building.moses) {
+    // Cross-Bronx Expressway demolished building — show the displacement/hip-hop story
+    document.getElementById('card-title').textContent = 'Cross-Bronx Expressway — Demolished Tenement';
+    document.getElementById('card-year').textContent = `Built ~${building.y} / Demolished ${building.d} by Robert Moses`;
+    document.getElementById('card-body').textContent = 'This building was one of hundreds demolished between 1948 and 1972 to make way for the Cross-Bronx Expressway. Robert Moses pushed a 7-mile highway through the heart of East Tremont, displacing 60,000 residents. The displaced families crowded into nearby apartment buildings on Sedgwick Avenue. That density created the rec room party scene. On August 11, 1973, DJ Kool Herc threw a back-to-school party at 1520 Sedgwick Ave and invented hip-hop. The birth of the most influential music genre of the 20th century happened inside the trauma of urban renewal.';
+    _cardPhotos = [
+      { thumb: 'cultural-content/bronx/kool-herc.jpg', nypl_url: '', title: 'DJ Kool Herc at the birth of hip-hop', year: 1973 },
+      { thumb: 'cultural-content/bronx/bronx-river-party.jpg', nypl_url: '', title: 'Bronx River Center hip-hop party', year: 1980 },
+      { thumb: 'cultural-content/bronx/south-bronx-fire.jpg', nypl_url: '', title: 'South Bronx apartment fire', year: 1980 },
+    ];
+    _cardPhotoIdx = 0;
+    renderCardPhotos();
+  } else if (marquee) {
     document.getElementById('card-title').textContent = marquee.title;
     document.getElementById('card-year').textContent = `Built ${marquee.year}`;
     document.getElementById('card-body').textContent = marquee.body;
@@ -5008,6 +5168,8 @@ function showCard(building) {
       }
     });
   // Attach photos: MARQUEE photo first (if set), then nearby oldnyc photos.
+  // Skip if moses building (photos already set above)
+  if (!building.moses) {
   _cardPhotos = [];
   _cardPhotoBuildingYear = building.y || currentYear;
   _cardPhotoIdx = 0;
@@ -5022,6 +5184,7 @@ function showCard(building) {
     }
     _cardPhotos = _cardPhotos.concat(hits.slice(0, 5).map(h => h.photo));
   }
+  } // end if (!building.moses)
   renderCardPhotos();
   card.style.display = 'block';
 }
@@ -5118,6 +5281,23 @@ function closeCard() {
   _cardPhotoIdx = 0;
   _cardPhotoBuildingYear = null;
 }
+
+// Draggable story card
+(function() {
+  const card = document.getElementById('story-card');
+  let dragging = false, ox = 0, oy = 0;
+  card.addEventListener('mousedown', e => {
+    if (e.target.closest('button, a, input, .photo-nav')) return;
+    dragging = true; ox = e.clientX - card.offsetLeft; oy = e.clientY - card.offsetTop;
+    card.classList.add('dragging');
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    card.style.left = (e.clientX - ox) + 'px'; card.style.top = (e.clientY - oy) + 'px';
+    card.style.right = 'auto'; card.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; card.classList.remove('dragging'); });
+})();
 
 // ── Lightbox (fullscreen viewer; navigates the full Manhattan archive) ──
 // Opens anchored to whichever photo the user clicked on the card, but nav
