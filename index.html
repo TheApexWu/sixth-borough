@@ -26,6 +26,40 @@
     background: rgba(0,0,0,0.85); border: 1px solid #282828; padding: 14px 16px;
   }
   #legend h3 { font-size: 11px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 10px; }
+  #immigration-origins-panel {
+    display: none;
+    position: fixed; top: 24px; right: 240px; z-index: 25;
+    background: rgba(0,0,0,0.85); border: 1px solid #282828;
+    border-left: 2px solid #ffc870;
+    padding: 14px 16px; min-width: 210px;
+    font-family: 'Courier New', monospace; color: #ddd;
+  }
+  #immigration-origins-panel h3 {
+    font-size: 11px; letter-spacing: 3px; color: #ffc870;
+    margin: 0 0 4px; font-weight: normal;
+  }
+  #immigration-origins-panel .year-row {
+    font-size: 10px; color: #888; margin-bottom: 10px; letter-spacing: 1px;
+  }
+  #immigration-origins-panel ul { list-style: none; padding: 0; margin: 0; }
+  #immigration-origins-panel li {
+    display: grid; grid-template-columns: 1fr 60px 46px;
+    align-items: center; gap: 8px;
+    font-size: 11px; color: #bbb; margin: 3px 0;
+  }
+  #immigration-origins-panel li .name { color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #immigration-origins-panel li .bar {
+    height: 4px; background: rgba(255,200,112,0.18); position: relative; border-radius: 1px;
+  }
+  #immigration-origins-panel li .bar::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    background: #ffc870; width: var(--fill, 0%); border-radius: 1px;
+  }
+  #immigration-origins-panel li .count { color: #ffc870; text-align: right; font-size: 10px; }
+  #immigration-origins-panel li.hint {
+    display: block; color: #888; font-size: 10px; line-height: 1.5;
+    padding: 4px 0; font-style: italic;
+  }
   .leg {
     display: flex; align-items: center; margin: 3px 0; font-size: 11px; color: #888;
     cursor: pointer;
@@ -471,6 +505,26 @@
     background: linear-gradient(transparent, rgba(0,0,0,0.8));
     font-size: 9px; color: #666; letter-spacing: 1px;
   }
+  /* Clickable cutscene photos (Bronx Content) — play icon overlay + pointer */
+  .cs-photo.has-video { cursor: pointer; }
+  .cs-photo.has-video::after {
+    content: '▶';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1.5px solid rgba(255, 200, 112, 0.9);
+    color: #ffc870;
+    font-size: 14px;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .cs-photo.has-video:hover::after {
+    background: rgba(255, 200, 112, 0.25);
+    transform: translate(-50%, -50%) scale(1.08);
+  }
 
   .cs-body {
     font-size: 12px; color: #666; line-height: 1.85; max-width: 440px;
@@ -845,6 +899,451 @@
     position: fixed; inset: 0; z-index: 29;
     pointer-events: none; display: none;
   }
+
+  /* ══════════════════════════════════════════════════════════
+     PS2 MODE — feature-flagged UI restyle
+     Palette: washed bone / cream / ink / single cold-blue accent.
+     Grammar: hairline 1px rules, sharp right angles, block type,
+     no blur, no translucency, no gradients. Styleguide Mode A
+     (overworld) "constraint language for memory".
+     ══════════════════════════════════════════════════════════ */
+  body.ps2-mode {
+    --ps2-bone:    #e8e3d4;
+    --ps2-cream:   #f2ede0;
+    --ps2-paper:   #fbf8ee;
+    --ps2-ink:     #141414;
+    --ps2-rule:    #141414;
+    --ps2-muted:   #6b6a60;
+    --ps2-dim:     #9a9890;
+    --ps2-accent:  #2a4d6b;
+    --ps2-hot:     #8a3a2a;
+    --ps2-shadow:  rgba(20,20,20,0.08);
+  }
+  body.ps2-mode { font-family: 'Courier New', monospace; color: var(--ps2-ink); }
+
+  /* Title — stark block treatment */
+  body.ps2-mode #title-bar h1 {
+    color: var(--ps2-ink); letter-spacing: 3px; font-size: 22px;
+    text-shadow: none;
+  }
+  body.ps2-mode #title-bar .sub {
+    color: var(--ps2-muted); letter-spacing: 2px;
+  }
+
+  /* ── Era panel (legend) ── bone card, hairline rules */
+  body.ps2-mode #legend {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-rule);
+    padding: 0;
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+    min-width: 200px;
+  }
+  body.ps2-mode #legend h3 {
+    color: var(--ps2-paper);
+    background: var(--ps2-ink);
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 10px;
+    letter-spacing: 4px;
+    border-bottom: 1px solid var(--ps2-ink);
+  }
+  body.ps2-mode #legend .leg,
+  body.ps2-mode .leg {
+    color: var(--ps2-ink);
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 7px 14px;
+    margin: 0;
+    border-bottom: 1px dashed var(--ps2-rule);
+    text-transform: uppercase;
+  }
+  body.ps2-mode #legend .leg:last-child { border-bottom: none; }
+  body.ps2-mode .leg:hover { color: var(--ps2-accent); background: var(--ps2-paper); }
+  body.ps2-mode .leg.active { color: var(--ps2-accent); background: var(--ps2-paper); }
+  body.ps2-mode .leg .sw {
+    width: 9px; height: 9px; margin-right: 10px;
+    border: 1px solid var(--ps2-ink);
+    box-shadow: none;
+  }
+
+  /* ── Timeline controls ── cream ribbon with hairline rail */
+  body.ps2-mode #controls {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-rule);
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+    padding: 8px 22px 10px;
+    min-width: 440px;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  body.ps2-mode #controls .label {
+    color: var(--ps2-muted);
+    font-size: 8px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  body.ps2-mode #year-display {
+    color: var(--ps2-ink);
+    font-size: 22px;
+    font-weight: bold;
+    margin: 0;
+    letter-spacing: 2px;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+  }
+  body.ps2-mode #era-label {
+    color: var(--ps2-accent);
+    font-size: 8px;
+    letter-spacing: 3px;
+    margin: 2px 0 6px;
+    text-transform: uppercase;
+  }
+  body.ps2-mode #stats {
+    color: var(--ps2-dim);
+    font-size: 8px;
+    letter-spacing: 2px;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  body.ps2-mode #controls-actions { right: 10px; }
+  body.ps2-mode #slider-wrap { height: 14px; margin-top: 2px; }
+
+  /* Compact: tighter still, hide secondary labels */
+  body.ps2-mode.ps2-compact #controls {
+    padding: 6px 18px 8px;
+    min-width: 360px;
+  }
+  body.ps2-mode.ps2-compact #controls .label { display: none; }
+  body.ps2-mode.ps2-compact #stats { display: none; }
+  body.ps2-mode.ps2-compact #year-display {
+    font-size: 16px;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  body.ps2-mode.ps2-compact #era-label {
+    display: inline-block;
+    margin: 0;
+    font-size: 8px;
+    vertical-align: 3px;
+  }
+  body.ps2-mode.ps2-compact #slider-wrap { height: 12px; margin-top: 4px; }
+  body.ps2-mode.ps2-compact #play-btn { width: 24px; height: 24px; }
+  body.ps2-mode.ps2-compact #play-btn::before {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid currentColor;
+  }
+  body.ps2-mode.ps2-compact .era-dot { width: 6px; height: 10px; top: 0; }
+  body.ps2-mode.ps2-compact .era-dot-label { display: none; }
+  body.ps2-mode.ps2-compact .era-dot:hover .era-dot-label { display: block; }
+
+  /* Dark theme — invert palette */
+  body.ps2-mode.ps2-dark {
+    --ps2-bone:    #1a1814;
+    --ps2-cream:   #100f0c;
+    --ps2-paper:   #080806;
+    --ps2-ink:     #e8e3d4;
+    --ps2-rule:    #3a382f;
+    --ps2-muted:   #7a776c;
+    --ps2-dim:     #4a4840;
+    --ps2-accent:  #6fa3c8;
+    --ps2-hot:     #c87a5a;
+    --ps2-shadow:  rgba(0,0,0,0.6);
+  }
+  body.ps2-mode.ps2-dark #controls,
+  body.ps2-mode.ps2-dark #legend,
+  body.ps2-mode.ps2-dark #station-bar,
+  body.ps2-mode.ps2-dark #story-card {
+    border-color: var(--ps2-rule);
+    box-shadow: 3px 3px 0 var(--ps2-rule);
+  }
+  body.ps2-mode.ps2-dark #slider { background: var(--ps2-ink); }
+  body.ps2-mode.ps2-dark #slider::-webkit-slider-thumb,
+  body.ps2-mode.ps2-dark #slider::-moz-range-thumb {
+    background: var(--ps2-paper);
+    border-color: var(--ps2-ink);
+    box-shadow: 2px 2px 0 var(--ps2-rule);
+  }
+  body.ps2-mode.ps2-dark .era-dot { background: var(--ps2-paper); border-color: var(--ps2-ink); box-shadow: 1px 1px 0 var(--ps2-rule); }
+  body.ps2-mode.ps2-dark #play-btn,
+  body.ps2-mode.ps2-dark #mode-toggle,
+  body.ps2-mode.ps2-dark .cs-btn,
+  body.ps2-mode.ps2-dark #story-card .photo-nav button {
+    background: var(--ps2-cream);
+    border-color: var(--ps2-ink);
+    color: var(--ps2-ink);
+    box-shadow: 2px 2px 0 var(--ps2-rule);
+  }
+  body.ps2-mode.ps2-dark #play-btn:hover,
+  body.ps2-mode.ps2-dark #mode-toggle:hover,
+  body.ps2-mode.ps2-dark .cs-btn:hover { color: var(--ps2-accent); }
+  body.ps2-mode.ps2-dark #legend h3,
+  body.ps2-mode.ps2-dark #story-card .card-header,
+  body.ps2-mode.ps2-dark #story-card .card-footer,
+  body.ps2-mode.ps2-dark #dev-panel-header {
+    background: var(--ps2-paper);
+    color: var(--ps2-ink);
+    border-color: var(--ps2-rule);
+  }
+  body.ps2-mode.ps2-dark .leg { border-bottom-color: var(--ps2-rule); }
+  body.ps2-mode.ps2-dark .leg:hover,
+  body.ps2-mode.ps2-dark .leg.active { background: var(--ps2-bone); color: var(--ps2-accent); }
+  body.ps2-mode.ps2-dark #dev-toggle {
+    background: var(--ps2-cream);
+    border-color: var(--ps2-ink);
+    color: var(--ps2-ink);
+    box-shadow: 2px 2px 0 var(--ps2-rule);
+  }
+
+  /* Slider rail — hard hairline, sharp square thumb */
+  body.ps2-mode #slider-wrap { height: 18px; margin-top: 6px; }
+  body.ps2-mode #slider {
+    background: var(--ps2-ink);
+    height: 1px;
+  }
+  body.ps2-mode #slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #slider::-moz-range-thumb {
+    width: 12px; height: 12px;
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+  }
+
+  /* Era dots become square tick pylons — styleguide "low-poly pylons as markers" */
+  body.ps2-mode .era-dot {
+    width: 8px; height: 14px;
+    top: -1px;
+    border-radius: 0;
+    border: 1px solid var(--ps2-ink);
+    background: var(--ps2-paper);
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+  body.ps2-mode .era-dot:hover {
+    width: 10px; height: 18px;
+    top: -3px;
+    border-color: var(--ps2-accent);
+    background: var(--ps2-accent);
+  }
+  body.ps2-mode .era-dot-label {
+    top: 20px;
+    color: var(--ps2-muted);
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  body.ps2-mode .era-dot:hover .era-dot-label { color: var(--ps2-ink); }
+
+  /* Play button — square, punched-paper feel */
+  body.ps2-mode #play-btn {
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    color: var(--ps2-ink);
+    width: 30px; height: 30px;
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  body.ps2-mode #play-btn:hover {
+    color: var(--ps2-accent);
+    border-color: var(--ps2-ink);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #play-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+
+  /* ── Generic buttons: mode toggle, cs-btn ── */
+  body.ps2-mode #mode-toggle,
+  body.ps2-mode .cs-btn {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-ink);
+    color: var(--ps2-ink);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    padding: 10px 18px;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+    border-radius: 0;
+    backdrop-filter: none;
+  }
+  body.ps2-mode #mode-toggle:hover,
+  body.ps2-mode .cs-btn:hover {
+    color: var(--ps2-accent);
+    background: var(--ps2-paper);
+    border-color: var(--ps2-ink);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #mode-toggle:active,
+  body.ps2-mode .cs-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #mode-toggle.active,
+  body.ps2-mode .cs-btn.primary {
+    background: var(--ps2-ink);
+    color: var(--ps2-paper);
+    border-color: var(--ps2-ink);
+  }
+
+  /* ── Station bar (guided tour) ── */
+  body.ps2-mode #station-bar {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-ink);
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+    padding: 16px 36px;
+  }
+  body.ps2-mode #station-bar .label {
+    color: var(--ps2-muted);
+    letter-spacing: 5px;
+  }
+  body.ps2-mode .station-line { background: var(--ps2-ink); height: 1px; }
+  body.ps2-mode .station-dot {
+    width: 12px; height: 12px;
+    border: 1px solid var(--ps2-ink);
+    background: var(--ps2-paper);
+    border-radius: 0;
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+  body.ps2-mode .station-dot:hover { border-color: var(--ps2-accent); background: var(--ps2-accent); }
+  body.ps2-mode .station-dot.active { background: var(--ps2-ink); border-color: var(--ps2-ink); }
+  body.ps2-mode .station-label {
+    color: var(--ps2-muted);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  body.ps2-mode #station-nav { color: var(--ps2-muted); }
+
+  /* ── Story card ── */
+  body.ps2-mode #story-card {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-ink);
+    box-shadow: 4px 4px 0 var(--ps2-ink);
+    color: var(--ps2-ink);
+  }
+  body.ps2-mode #story-card .card-header,
+  body.ps2-mode #story-card .card-footer {
+    background: var(--ps2-ink);
+    color: var(--ps2-paper);
+    letter-spacing: 3px;
+    padding: 8px 14px;
+  }
+  body.ps2-mode #story-card .card-title { color: var(--ps2-ink); }
+  body.ps2-mode #story-card .card-year { color: var(--ps2-accent); letter-spacing: 2px; }
+  body.ps2-mode #story-card .card-body,
+  body.ps2-mode #story-card .card-body * { color: var(--ps2-ink); }
+  body.ps2-mode #story-card .card-close {
+    color: var(--ps2-paper);
+    background: transparent;
+    border: none;
+  }
+  body.ps2-mode #story-card .photo-nav button {
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    color: var(--ps2-ink);
+    letter-spacing: 2px;
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #story-card .photo-nav button:hover:not(:disabled) {
+    color: var(--ps2-accent); border-color: var(--ps2-ink);
+  }
+
+  /* ── Cutscene — solid paper backdrop so dark ink reads ── */
+  body.ps2-mode #cutscene.active {
+    background-color: var(--ps2-cream) !important;
+  }
+  body.ps2-mode #cutscene-inner {
+    padding: 48px 56px 32px;
+  }
+  body.ps2-mode .cs-era { color: var(--ps2-muted); letter-spacing: 8px; font-size: 11px; }
+  body.ps2-mode .cs-title { color: var(--ps2-ink); font-weight: bold; letter-spacing: 1px; }
+  body.ps2-mode .cs-years { color: var(--ps2-muted); letter-spacing: 4px; }
+  body.ps2-mode .cs-quote {
+    color: var(--ps2-ink);
+    border-left: 2px solid var(--ps2-accent);
+    background: var(--ps2-paper);
+    padding: 14px 20px;
+  }
+  body.ps2-mode .cs-attribution { color: var(--ps2-muted); }
+  body.ps2-mode .cs-body { color: var(--ps2-ink); opacity: 0.85; }
+  body.ps2-mode .cs-photo {
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+  }
+  body.ps2-mode .cs-photo img { filter: grayscale(0.35) contrast(1.05); }
+  body.ps2-mode .cs-photo .photo-caption {
+    background: linear-gradient(transparent, rgba(20,20,20,0.85));
+    color: var(--ps2-paper);
+  }
+
+  /* Dark-theme cutscene */
+  body.ps2-mode.ps2-dark #cutscene.active {
+    background-color: var(--ps2-cream) !important;
+  }
+  body.ps2-mode.ps2-dark .cs-photo {
+    border-color: var(--ps2-ink);
+    box-shadow: 2px 2px 0 var(--ps2-rule);
+  }
+  body.ps2-mode.ps2-dark .cs-quote { background: var(--ps2-paper); }
+
+  /* ── Dev panel — keep it readable in PS2 mode too ── */
+  body.ps2-mode #dev-panel {
+    background: var(--ps2-cream);
+    border-left: 1px solid var(--ps2-ink);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  body.ps2-mode #dev-panel-header {
+    background: var(--ps2-ink);
+    border-bottom: 1px solid var(--ps2-ink);
+  }
+  body.ps2-mode #dev-panel-header h4 { color: var(--ps2-paper); letter-spacing: 4px; }
+  body.ps2-mode #dev-close { color: var(--ps2-paper); }
+  body.ps2-mode .flag-section { border-bottom: 1px solid var(--ps2-rule); }
+  body.ps2-mode .flag-section-title {
+    color: var(--ps2-ink);
+    background: var(--ps2-bone);
+    padding: 10px 14px;
+    letter-spacing: 3px;
+    border-bottom: 1px dashed var(--ps2-rule);
+  }
+  body.ps2-mode .flag-label { color: var(--ps2-ink); }
+  body.ps2-mode .flag-desc { color: var(--ps2-muted); }
+  body.ps2-mode .flag-slider {
+    background: var(--ps2-paper);
+    border: 1px solid var(--ps2-ink);
+    border-radius: 0;
+    box-shadow: 1px 1px 0 var(--ps2-ink);
+  }
+  body.ps2-mode .flag-slider::before {
+    background: var(--ps2-ink);
+    border-radius: 0;
+  }
+  body.ps2-mode .flag-toggle input:checked + .flag-slider { background: var(--ps2-accent); }
+  body.ps2-mode .flag-toggle input:checked + .flag-slider::before { background: var(--ps2-paper); }
+  body.ps2-mode #dev-toggle {
+    background: var(--ps2-cream);
+    border: 1px solid var(--ps2-ink);
+    color: var(--ps2-ink);
+    border-radius: 0;
+    box-shadow: 2px 2px 0 var(--ps2-ink);
+  }
+  body.ps2-mode #dev-toggle:hover {
+    color: var(--ps2-accent);
+    border-color: var(--ps2-ink);
+    box-shadow: 3px 3px 0 var(--ps2-ink);
+  }
 </style>
 </head>
 <body>
@@ -855,6 +1354,12 @@
 </div>
 
 <div id="legend"></div>
+
+<div id="immigration-origins-panel">
+  <h3>ORIGINS</h3>
+  <div class="year-row"><span id="immigration-origins-header">HOVER A DENSITY HEX</span> · <span id="immigration-origins-year">1925</span></div>
+  <ul id="immigration-origins-list"></ul>
+</div>
 
 <div id="controls">
   <div class="label">TIMELINE</div>
@@ -1002,7 +1507,7 @@
 <div id="map"></div>
 
 <script>
-const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer } = deck;
+const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer, LineLayer, PathLayer, HeatmapLayer, HexagonLayer, ColumnLayer, TextLayer, IconLayer } = deck;
 
 // ── Sketch Overlay Feature Gate ──
 // Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
@@ -1013,6 +1518,7 @@ const FEATURES = {
 
 // ── Feature Flags ──
 const FLAGS = {
+  timeline:     { label: 'Timeline', desc: 'Bottom controls strip with year display, era label, slider, and play button. Hide for screenshots or clean framing.', group: 'ui', default: true },
   eraDots:      { label: 'Era Dots', desc: 'Clickable dots on timeline rail', group: 'ui', default: true },
   guidedMode:   { label: 'Guided Tour Mode', desc: 'Station bar with sequential navigation', group: 'ui', default: true },
   storyCards:   { label: 'Story Cards', desc: 'Info card on building click', group: 'ui', default: true },
@@ -1025,8 +1531,17 @@ const FLAGS = {
   oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
   demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: false },
   bronxContent:   { label: 'Bronx Content', desc: 'Swap the Postmodern era cutscene photos (42nd St / subway graffiti / CBGB) for Bronx-specific archival imagery — DJ Kool Herc, Bronx River Center hip-hop party, South Bronx fire. Staging ground for Bronx video hotspots in a later pass.', group: 'effects', default: false },
+  immigrationFlow: { label: 'Immigration Flow', desc: 'Garden-hose dot spray representing annual NYC immigration, 1719–2026. Pressure and spread scale with arrivals: colonial dribble, Ellis Island gusher (peak 1907), quota-era cliff, modern trickle. Origin moves with history: Battery → Castle Garden → Ellis Island.', group: 'effects', default: false },
+  immigrationSettlers: { label: 'Immigration · Settlers', desc: 'Persistent dots where the wave lands. One dot ≈ 8k immigrants, placed in era-weighted neighborhoods (Five Points → LES → Harlem → Washington Heights). Scrubbing forward visibly crusts over Manhattan; scrubbing back uncovers it. Alpha fades slowly with age.', group: 'effects', default: false },
+  immigrationHeatmap: { label: 'Immigration · Heatmap', desc: 'Cumulative density heatmap fed by the settler atlas up to the current year. Shows where the population grew over time without individual dots — cleanest spatial story, cheapest render.', group: 'effects', default: false },
+  immigrationGlow: { label: 'Immigration · Density Hexes', desc: 'Hex-binned population density rising from the boroughs as settlers accumulate. Each hex extrudes upward by its local settler count through the current year, so the pitched view shows immigrant neighborhoods literally growing out of the city. Population counts are labeled above each hex.', group: 'effects', default: false },
+  immigrationTransport: { label: 'Immigration · Transport Icons', desc: 'Steamship icon at Castle Garden / Ellis Island when era-appropriate; airplane icons at LaGuardia (1939+), JFK (1948+), and Newark (1928+) for the air-arrivals era. Conveys how the mode of arrival changed over three centuries.', group: 'effects', default: false },
+  immigrationOrigins: { label: 'Immigration · Origin Countries', desc: 'Side panel listing the top source countries for the current year, largest group at the top, with a bar chart of relative share and an approximate headcount. Updates live as the timeline scrubs: Ireland/Germany → Italy/Russia → Dominican Republic/China.', group: 'ui', default: false },
   photoMode:      { label: 'Photo Mode', desc: 'Fullscreen archival-photo viewer. Timeline slider and era dots scrub through ~150 Manhattan photos in chronological order. Hit PLAY for a timed slideshow, ← → to step manually, ESC to exit.', group: 'ui', default: false },
   freeCamera:     { label: 'Free Camera', desc: 'Unlock pitch and enable drag-rotate. Right-click + drag (or ctrl+drag) to orbit. Drag to pan, scroll to zoom.', group: 'ui', default: false },
+  ps2Mode:        { label: 'PS2 Mode', desc: 'Restyle the entire UI (timeline, era panel, buttons, cards) with a minimal PS2 washed-bone palette and hairline typographic layout. Matches the styleguide overworld constraint language.', group: 'ui', default: false },
+  ps2Dark:        { label: 'PS2 Dark Theme', desc: 'Dark variant of PS2 mode — inverted palette with ink background and bone text. Only applies when PS2 Mode is on.', group: 'ui', default: false },
+  ps2Compact:     { label: 'PS2 Compact Timeline', desc: 'Shrink the timeline component: smaller year, tighter padding, hide secondary labels. Only applies when PS2 Mode is on.', group: 'ui', default: true },
 };
 
 // Cutscene modes — only one active at a time
@@ -1200,12 +1715,17 @@ function clearAllOverlays() {
 }
 
 function applyFlags() {
+  document.body.classList.toggle('ps2-mode', featureFlags.ps2Mode);
+  document.body.classList.toggle('ps2-dark', featureFlags.ps2Mode && featureFlags.ps2Dark);
+  document.body.classList.toggle('ps2-compact', featureFlags.ps2Mode && featureFlags.ps2Compact);
+  document.getElementById('controls').style.display = featureFlags.timeline ? '' : 'none';
   document.querySelectorAll('.era-dot').forEach(d => d.style.display = featureFlags.eraDots ? '' : 'none');
   document.getElementById('mode-toggle').style.display = featureFlags.guidedMode ? '' : 'none';
   if (!featureFlags.guidedMode && guidedMode) toggleMode();
   document.getElementById('legend').style.display = featureFlags.legend ? '' : 'none';
   if (!featureFlags.radialBurn) hideRadialBurnOverlay();
   if (featureFlags.photoMode) showPhotoMode(); else hidePhotoMode();
+  updateImmigrationOriginsPanel();
   if (deckgl) deckgl.setProps({ layers: buildLayers(), controller: getControllerConfig() });
   if (featureFlags.libertyIsland && !_libertyFlewThisToggle) {
     _libertyFlewThisToggle = true;
@@ -1371,9 +1891,48 @@ function stopCinematic() {
   updateCinematicButton();
 }
 
+// Generic cinematic overlay trigger. Used by the Bronx cutscene photo clicks
+// and the Bronx map hotspots — swaps the video source + caption labels and
+// shows the existing #cinematic-overlay element. Does NOT fly the camera
+// (unlike startCinematic); the caller is responsible for positioning.
+function playClipInOverlay(clip) {
+  if (!clip || !clip.video) return;
+  const overlay = document.getElementById('cinematic-overlay');
+  const video = document.getElementById('cinematic-video');
+  if (!overlay || !video) return;
+
+  const locationEl = overlay.querySelector('.cinematic-location');
+  const titleEl = overlay.querySelector('.cinematic-caption-title');
+  const subEl = overlay.querySelector('.cinematic-caption-sub');
+  if (locationEl) locationEl.textContent = clip.location || '';
+  if (titleEl) titleEl.textContent = clip.title || '';
+  if (subEl) subEl.textContent = clip.sub || '';
+
+  const source = video.querySelector('source');
+  if (source) source.src = clip.video;
+  video.load();
+
+  cinematicPlaying = true;
+  updateCinematicButton();
+  overlay.classList.add('active');
+  video.currentTime = 0;
+  video.onended = () => stopCinematic();
+  video.play().catch(err => console.error('Cinematic clip play failed:', err));
+}
+
+
 function toggleCinematic() {
   if (cinematicPlaying) stopCinematic();
   else startCinematic();
+}
+
+// Playback speed state — declared here (before buildDevPanel) because the
+// Playback section inside buildDevPanel reads it during initialization.
+// Moving it any later triggers a TDZ ReferenceError at first boot.
+let playbackSpeed = 1;
+function setPlaybackSpeed(next) {
+  playbackSpeed = Math.max(0.02, Math.min(4, Number(next) || 1));
+  if (typeof playTween !== 'undefined' && playTween) playTween.timeScale(playbackSpeed);
 }
 
 function buildDevPanel() {
@@ -1595,6 +2154,199 @@ function buildDevPanel() {
 
   body.appendChild(libertySection);
 
+  // Playback speed — applies to the GSAP timeline play tween and to the
+  // immigration particle sim dt. Lives here in the dev panel instead of the
+  // main timeline control strip to keep the in-world UI minimal.
+  const { section: speedSection, body: speedBody } = makeSection('Playback', true);
+  {
+    const row = document.createElement('div');
+    row.className = 'tweak-row';
+    const head = document.createElement('div');
+    head.className = 'tweak-head';
+    const label = document.createElement('div');
+    label.className = 'tweak-label';
+    label.textContent = 'Speed';
+    const value = document.createElement('div');
+    value.className = 'tweak-value';
+    const formatSpeed = v => (v < 0.1 ? v.toFixed(2) : v.toFixed(1)) + '×';
+    value.textContent = formatSpeed(playbackSpeed);
+    head.appendChild(label);
+    head.appendChild(value);
+    const input = document.createElement('input');
+    input.className = 'tweak-slider';
+    input.type = 'range';
+    input.min = '0.02';
+    input.max = '4';
+    input.step = '0.02';
+    input.value = String(playbackSpeed);
+    input.addEventListener('input', () => {
+      const next = Number(input.value);
+      setPlaybackSpeed(next);
+      value.textContent = formatSpeed(playbackSpeed);
+    });
+    row.appendChild(head);
+    row.appendChild(input);
+    speedBody.appendChild(row);
+
+    const hint = document.createElement('div');
+    hint.className = 'tweak-status';
+    hint.textContent = '0.02× ≈ frozen · 1× ≈ 20 yrs/sec · 4× fast overview';
+    speedBody.appendChild(hint);
+  }
+  body.appendChild(speedSection);
+
+  // Immigration Flow tuning — per-intensity-bucket sliders
+  const { section: immSection, body: immBody } = makeSection('Immigration Flow Tuning', true);
+
+  const bucketRow = document.createElement('div');
+  bucketRow.className = 'tweak-row';
+  const bucketHead = document.createElement('div');
+  bucketHead.className = 'tweak-head';
+  const bucketLabel = document.createElement('div');
+  bucketLabel.className = 'tweak-label';
+  bucketLabel.textContent = 'Editing bucket';
+  const bucketValue = document.createElement('div');
+  bucketValue.className = 'tweak-value';
+  bucketValue.id = 'imm-bucket-current';
+  bucketValue.textContent = immigrationEditBucket.toUpperCase() + (immigrationEditBucketPinned ? ' (PINNED)' : ' (LIVE)');
+  bucketHead.appendChild(bucketLabel);
+  bucketHead.appendChild(bucketValue);
+  bucketRow.appendChild(bucketHead);
+
+  const bucketPicker = document.createElement('div');
+  bucketPicker.className = 'imm-bucket-picker';
+  bucketPicker.style.cssText = 'display:flex; gap:4px; margin-top:6px;';
+  for (const bucket of IMMIGRATION_BUCKETS) {
+    const btn = document.createElement('button');
+    btn.className = 'tweak-btn';
+    btn.textContent = bucket.toUpperCase();
+    btn.style.flex = '1';
+    btn.dataset.immBucket = bucket;
+    if (bucket === immigrationEditBucket) btn.classList.add('playing');
+    btn.addEventListener('click', () => {
+      immigrationEditBucket = bucket;
+      immigrationEditBucketPinned = true;
+      bucketPicker.querySelectorAll('button').forEach(b => b.classList.toggle('playing', b.dataset.immBucket === bucket));
+      bucketValue.textContent = bucket.toUpperCase() + ' (PINNED)';
+      refreshImmigrationTuningUI();
+    });
+    bucketPicker.appendChild(btn);
+  }
+  bucketRow.appendChild(bucketPicker);
+  immBody.appendChild(bucketRow);
+
+  // Live status — which bucket the current year falls into, so the user
+  // knows whether the sliders they're moving match what they're seeing.
+  const autoStatus = document.createElement('div');
+  autoStatus.className = 'tweak-status';
+  autoStatus.id = 'immigration-auto-status';
+  autoStatus.textContent = '…';
+  immBody.appendChild(autoStatus);
+
+  // Live data readout — raw NYC arrivals count for the current year, so
+  // the user sees the number the spray is visualizing in real time.
+  const dataReadout = document.createElement('div');
+  dataReadout.className = 'tweak-status';
+  dataReadout.id = 'immigration-data-readout';
+  dataReadout.style.cssText = 'font-size:11px; letter-spacing:1px; color:#ffd27a;';
+  dataReadout.textContent = '…';
+  immBody.appendChild(dataReadout);
+
+  // Shape picker — dot / line / trail. Not a slider because shape is a
+  // string. Buttons mirror the bucket-picker style above.
+  const shapeRow = document.createElement('div');
+  shapeRow.className = 'tweak-row';
+  const shapeHead = document.createElement('div');
+  shapeHead.className = 'tweak-head';
+  const shapeLabel = document.createElement('div');
+  shapeLabel.className = 'tweak-label';
+  shapeLabel.textContent = 'Shape';
+  const shapeValue = document.createElement('div');
+  shapeValue.className = 'tweak-value';
+  shapeValue.dataset.immShapeDisplay = 'true';
+  shapeValue.textContent = (immigrationTuning[immigrationEditBucket].shape || 'dot').toUpperCase();
+  shapeHead.appendChild(shapeLabel);
+  shapeHead.appendChild(shapeValue);
+  shapeRow.appendChild(shapeHead);
+
+  const shapePicker = document.createElement('div');
+  shapePicker.style.cssText = 'display:flex; gap:4px; margin-top:6px;';
+  for (const shape of IMMIGRATION_SHAPES) {
+    const btn = document.createElement('button');
+    btn.className = 'tweak-btn';
+    btn.textContent = shape.toUpperCase();
+    btn.style.flex = '1';
+    btn.dataset.immShape = shape;
+    if (shape === immigrationTuning[immigrationEditBucket].shape) btn.classList.add('playing');
+    btn.addEventListener('click', () => {
+      setImmigrationShape(immigrationEditBucket, shape);
+      shapePicker.querySelectorAll('button').forEach(b => b.classList.toggle('playing', b.dataset.immShape === shape));
+      shapeValue.textContent = shape.toUpperCase();
+    });
+    shapePicker.appendChild(btn);
+  }
+  shapeRow.appendChild(shapePicker);
+  immBody.appendChild(shapeRow);
+
+  // Sliders — one per tunable param. Each is tagged with data-imm-key /
+  // data-imm-display so refreshImmigrationTuningUI can re-sync them when
+  // the user switches buckets.
+  for (const [key, def] of Object.entries(IMMIGRATION_PARAM_DEFS)) {
+    const row = document.createElement('div');
+    row.className = 'tweak-row';
+    const head = document.createElement('div');
+    head.className = 'tweak-head';
+    const label = document.createElement('div');
+    label.className = 'tweak-label';
+    label.textContent = def.label;
+    const value = document.createElement('div');
+    value.className = 'tweak-value';
+    value.dataset.immDisplay = key;
+    value.textContent = def.format(immigrationTuning[immigrationEditBucket][key]);
+    head.appendChild(label);
+    head.appendChild(value);
+
+    const input = document.createElement('input');
+    input.className = 'tweak-slider';
+    input.type = 'range';
+    input.min = def.min;
+    input.max = def.max;
+    input.step = def.step;
+    input.dataset.immKey = key;
+    input.value = immigrationTuning[immigrationEditBucket][key];
+    input.addEventListener('input', () => {
+      const next = Number(input.value);
+      value.textContent = def.format(next);
+      setImmigrationTuning(immigrationEditBucket, key, next);
+    });
+
+    row.appendChild(head);
+    row.appendChild(input);
+    immBody.appendChild(row);
+  }
+
+  const immActions = document.createElement('div');
+  immActions.className = 'tweak-actions';
+  const immSaveBtn = document.createElement('button');
+  immSaveBtn.className = 'tweak-btn';
+  immSaveBtn.textContent = 'SAVE BUCKET';
+  immSaveBtn.addEventListener('click', () => saveImmigrationTuningAsDefault(immigrationEditBucket));
+  const immResetBtn = document.createElement('button');
+  immResetBtn.className = 'tweak-btn';
+  immResetBtn.textContent = 'RESET BUCKET';
+  immResetBtn.addEventListener('click', () => resetImmigrationTuning(immigrationEditBucket));
+  immActions.appendChild(immSaveBtn);
+  immActions.appendChild(immResetBtn);
+  immBody.appendChild(immActions);
+
+  const immStatus = document.createElement('div');
+  immStatus.className = 'tweak-status';
+  immStatus.id = 'immigration-tuning-status';
+  immStatus.textContent = immigrationTuningStatus;
+  immBody.appendChild(immStatus);
+
+  body.appendChild(immSection);
+
   // Immigration cinematic section
   const { section: cineSection, body: cineBody } = makeSection('Immigration Cinematic');
   const cineBtn = document.createElement('button');
@@ -1612,6 +2364,154 @@ function buildDevPanel() {
 
   body.appendChild(cineSection);
 }
+
+// ── Immigration flow tuning (declared here so buildDevPanel can read state) ──
+// Tunable parameters for the garden-hose animation. The shape of the
+// spray is driven by 6 values that the user can adjust live via the
+// dev panel. Each of the 3 intensity buckets (low / mid / high) holds
+// its own copy, so you can tune a gentle dribble separately from a
+// 1907 gusher and the runtime picks the right bucket per year.
+const IMMIGRATION_PARAM_DEFS = {
+  particleSize: { label: 'Size',     min: 1,     max: 14,    step: 0.5,   format: v => v.toFixed(1) + 'px' },
+  spawnAmount:  { label: 'Amount',   min: 1,     max: 80,    step: 1,     format: v => v + '/frame' },
+  pressure:     { label: 'Pressure', min: 0.002, max: 0.040, step: 0.001, format: v => v.toFixed(3) + ' °/s' },
+  spread:       { label: 'Spread',   min: 0.05,  max: 1.60,  step: 0.05,  format: v => v.toFixed(2) + ' rad' },
+  lifeMs:       { label: 'Life',     min: 1000,  max: 12000, step: 250,   format: v => (v / 1000).toFixed(1) + 's' },
+  outline:      { label: 'Outline',  min: 0,     max: 3,     step: 0.5,   format: v => v.toFixed(1) + 'px' },
+  tailSec:      { label: 'Tail',     min: 0.1,   max: 3.0,   step: 0.05,  format: v => v.toFixed(2) + 's' },
+  arcHeight:    { label: 'Arc',      min: 0.05,  max: 0.80,  step: 0.01,  format: v => v.toFixed(2) + '×' },
+  noise:        { label: 'Noise',    min: 0,     max: 1,     step: 0.05,  format: v => v.toFixed(2) },
+};
+
+// Thresholds on the intensity (0..1) scalar determine which preset
+// bucket a given year draws from. Peak year (1907) = 1.0, 1945 = ~0.03.
+const IMMIGRATION_BUCKETS = ['low', 'mid', 'high'];
+const IMMIGRATION_BUCKET_EDGES = { low: 0.15, mid: 0.50 };
+
+// Shape choices change which deck.gl layer renders the particles:
+//   dot   — ScatterplotLayer (original)
+//   line  — LineLayer, each particle draws a segment from (pos - vel*tail)
+//           to pos. Looks like a water streak; length = velocity * tailSec.
+//   trail — PathLayer, each particle keeps a short position history and
+//           renders as a multi-segment path. Most "comet-tail" feel.
+//   parabola — each particle follows a quadratic Bézier from its origin to a
+//           jittered Manhattan target, with a control point offset perpendicular
+//           to the origin→target line by `arcHeight × distance`. Reads as
+//           individual arcing journeys rather than a scatter.
+//   humans — each particle renders as a tiny vector stick figure (man / woman /
+//           child / baby) pulled from a canvas-generated icon atlas. Crisp at
+//           any zoom, tinted by the particle's age color so the wave still
+//           reads as a flow. The motion math is unchanged from the active
+//           shape — humans can ride the line, parabola, or dot paths.
+const IMMIGRATION_SHAPES = ['dot', 'line', 'trail', 'parabola', 'humans'];
+
+const IMMIGRATION_TUNING_DEFAULTS = {
+  low:  { particleSize: 3, spawnAmount: 6,  pressure: 0.009, spread: 0.30, lifeMs: 3500, outline: 0, tailSec: 0.8, arcHeight: 0.30, noise: 0.35, shape: 'line' },
+  mid:  { particleSize: 4, spawnAmount: 25, pressure: 0.013, spread: 0.55, lifeMs: 3500, outline: 0, tailSec: 1.0, arcHeight: 0.30, noise: 0.35, shape: 'line' },
+  high: { particleSize: 4, spawnAmount: 60, pressure: 0.016, spread: 0.90, lifeMs: 3500, outline: 0, tailSec: 1.2, arcHeight: 0.30, noise: 0.35, shape: 'line' },
+};
+
+const IMMIGRATION_STORAGE_PREFIX = 'immflow_';
+const IMMIGRATION_DEFAULT_PREFIX = 'immflowDefault_';
+
+function loadImmigrationTuning() {
+  const out = {};
+  for (const bucket of IMMIGRATION_BUCKETS) {
+    out[bucket] = {};
+    // Numeric slider params
+    for (const key of Object.keys(IMMIGRATION_PARAM_DEFS)) {
+      const stored = localStorage.getItem(IMMIGRATION_STORAGE_PREFIX + bucket + '_' + key);
+      const storedDefault = localStorage.getItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_' + key);
+      const base = storedDefault !== null ? Number(storedDefault) : IMMIGRATION_TUNING_DEFAULTS[bucket][key];
+      out[bucket][key] = stored !== null ? Number(stored) : base;
+    }
+    // Shape is a string, not a number — handled separately.
+    const storedShape = localStorage.getItem(IMMIGRATION_STORAGE_PREFIX + bucket + '_shape');
+    const storedDefaultShape = localStorage.getItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_shape');
+    out[bucket].shape = storedShape ?? storedDefaultShape ?? IMMIGRATION_TUNING_DEFAULTS[bucket].shape;
+  }
+  return out;
+}
+
+const immigrationTuning = loadImmigrationTuning();
+let immigrationEditBucket = 'mid';
+// When false, immigrationEditBucket auto-tracks the live (year-driven) bucket
+// so sliders always affect what's on screen. Clicking a bucket button pins it.
+let immigrationEditBucketPinned = false;
+let immigrationTuningStatus = '';
+
+function getImmigrationBucket(intensity) {
+  if (intensity < IMMIGRATION_BUCKET_EDGES.low) return 'low';
+  if (intensity < IMMIGRATION_BUCKET_EDGES.mid) return 'mid';
+  return 'high';
+}
+
+function setImmigrationTuning(bucket, key, val) {
+  immigrationTuning[bucket][key] = val;
+  localStorage.setItem(IMMIGRATION_STORAGE_PREFIX + bucket + '_' + key, String(val));
+}
+
+function setImmigrationShape(bucket, shape) {
+  // Apply across all buckets so the user's shape choice persists as the
+  // live bucket changes with the year — otherwise a DOT pick would revert
+  // to LINE the moment the timeline crosses a bucket edge.
+  for (const b of IMMIGRATION_BUCKETS) {
+    immigrationTuning[b].shape = shape;
+    localStorage.setItem(IMMIGRATION_STORAGE_PREFIX + b + '_shape', shape);
+  }
+}
+
+function saveImmigrationTuningAsDefault(bucket) {
+  for (const key of Object.keys(IMMIGRATION_PARAM_DEFS)) {
+    localStorage.setItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_' + key, String(immigrationTuning[bucket][key]));
+  }
+  localStorage.setItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_shape', immigrationTuning[bucket].shape);
+  setImmigrationTuningStatus(`saved ${bucket.toUpperCase()} as default`);
+}
+
+function resetImmigrationTuning(bucket) {
+  for (const key of Object.keys(IMMIGRATION_PARAM_DEFS)) {
+    const storedDefault = localStorage.getItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_' + key);
+    const base = storedDefault !== null ? Number(storedDefault) : IMMIGRATION_TUNING_DEFAULTS[bucket][key];
+    setImmigrationTuning(bucket, key, base);
+  }
+  const storedShape = localStorage.getItem(IMMIGRATION_DEFAULT_PREFIX + bucket + '_shape');
+  setImmigrationShape(bucket, storedShape ?? IMMIGRATION_TUNING_DEFAULTS[bucket].shape);
+  setImmigrationTuningStatus(`reset ${bucket.toUpperCase()} to default`);
+  refreshImmigrationTuningUI();
+}
+
+function setImmigrationTuningStatus(msg) {
+  immigrationTuningStatus = msg;
+  const el = document.getElementById('immigration-tuning-status');
+  if (el) el.textContent = msg;
+  if (msg) {
+    setTimeout(() => {
+      if (immigrationTuningStatus === msg) setImmigrationTuningStatus('');
+    }, 2500);
+  }
+}
+
+function refreshImmigrationTuningUI() {
+  const bucket = immigrationEditBucket;
+  document.querySelectorAll('[data-imm-key]').forEach(el => {
+    const key = el.dataset.immKey;
+    if (el.tagName === 'INPUT') el.value = immigrationTuning[bucket][key];
+  });
+  document.querySelectorAll('[data-imm-display]').forEach(el => {
+    const key = el.dataset.immDisplay;
+    const def = IMMIGRATION_PARAM_DEFS[key];
+    el.textContent = def.format(immigrationTuning[bucket][key]);
+  });
+  // Shape buttons + readout
+  const currentShape = immigrationTuning[bucket].shape || 'dot';
+  document.querySelectorAll('[data-imm-shape]').forEach(btn => {
+    btn.classList.toggle('playing', btn.dataset.immShape === currentShape);
+  });
+  const shapeDisplay = document.querySelector('[data-imm-shape-display]');
+  if (shapeDisplay) shapeDisplay.textContent = currentShape.toUpperCase();
+}
+
 buildDevPanel();
 
 // ── Era classification + colors ──
@@ -1720,10 +2620,15 @@ const PHOTO_RADIUS_M = 140;        // building-to-photo max spatial distance for
 const PHOTO_FALLBACK_COUNT = 4;    // if no photos in window, show nearest N spatially
 
 // ── Load data ──
-fetch('data/manhattan_compact.json')
-  .then(r => r.json())
-  .then(data => {
-    buildings = data;
+Promise.all([
+  fetch('data/manhattan_compact.json').then(r => r.json()),
+  fetch('data/bronx_compact.json').then(r => r.json()).catch(err => {
+    console.warn('bronx_compact.json failed to load:', err);
+    return [];
+  }),
+])
+  .then(([manhattan, bronx]) => {
+    buildings = manhattan.concat(bronx);
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
     initDeck();
@@ -1748,13 +2653,1070 @@ fetch('data/demolished-landmarks.json')
   })
   .catch(err => console.warn('demolished landmarks failed to load:', err));
 
+// ── Immigration flow (NYC annual arrivals, 1719–2026) ──
+// See data/immigration/README.md for source tiers and schema. We load once
+// and keep a Map year→intensity so the particle loop can cheap-lookup per
+// frame. The rAF loop below mutates `immigrationParticles` in place and
+// triggers a deck.gl re-render via setProps.
+let immigrationIntensityByYear = null;
+let immigrationRecordsByYear = null;
+const immigrationParticles = [];
+
+// ── Settler atlas ────────────────────────────────────────────────────────
+// The particle flow shows the *wave*; the settler layer shows where that
+// wave accumulates. We precompute a deterministic atlas at load time — one
+// tiny dot per ~SETTLERS_PER_ARRIVAL immigrants — placed in era-weighted
+// neighborhoods (Five Points → LES → Harlem → Washington Heights as history
+// moves). Each settler carries its arrival year, and the render step filters
+// by currentYear + decays alpha with age. Scrubbing forward makes Manhattan
+// visibly crust over; scrubbing back un-fills it. Deterministic seeding per
+// year means the atlas is stable across re-scrubs.
+const SETTLERS_PER_ARRIVAL = 3000;
+const immigrationSettlers = [];
+
+// Era → neighborhood weights. Hand-tuned historical approximation tracking
+// how immigrant settlement actually spread across NYC's five boroughs:
+//   pre-1855  Lower Manhattan only
+//   1855-1892 Manhattan LES dominant, Brooklyn seedlings along the waterfront
+//   1892-1924 Ellis Island peak — LES dense, Brooklyn booming, Bronx + Queens starting
+//   1924-1965 quota era — Great Migration fills Harlem, Brooklyn dominant for outer-borough
+//             settlement, Bronx explodes, Queens growing
+//   1965+     post-Hart-Celler — Queens becomes the immigrant capital (Jackson Heights,
+//             Flushing, Elmhurst, Corona), Brooklyn + Bronx + Caribbean communities,
+//             Staten Island begins to grow
+// Each anchor is a lon/lat point + spread radius (degrees) + relative weight.
+// Weights within an era should sum to ~1.
+const SETTLEMENT_ERAS = [
+  { maxYear: 1855, anchors: [
+    { lon: -74.003, lat: 40.714, spread: 0.006, weight: 1.00 }, // Five Points / Lower Manhattan
+  ]},
+  { maxYear: 1892, anchors: [
+    { lon: -73.988, lat: 40.717, spread: 0.008, weight: 0.55 }, // LES (Castle Garden era)
+    { lon: -74.002, lat: 40.714, spread: 0.005, weight: 0.25 }, // Five Points remnant
+    { lon: -73.956, lat: 40.714, spread: 0.010, weight: 0.12 }, // Williamsburg (Brooklyn seedling)
+    { lon: -74.003, lat: 40.655, spread: 0.008, weight: 0.05 }, // Sunset Park
+    { lon: -73.918, lat: 40.818, spread: 0.012, weight: 0.03 }, // South Bronx trickle
+  ]},
+  { maxYear: 1924, anchors: [
+    // Ellis Island peak — LES dense, Brooklyn booming, outer boroughs awakening.
+    { lon: -73.988, lat: 40.716, spread: 0.009, weight: 0.30 }, // LES peak density
+    { lon: -73.996, lat: 40.720, spread: 0.004, weight: 0.07 }, // Little Italy
+    { lon: -73.994, lat: 40.762, spread: 0.008, weight: 0.07 }, // Hell's Kitchen
+    { lon: -73.939, lat: 40.795, spread: 0.010, weight: 0.08 }, // East Harlem / Italian Harlem
+    { lon: -73.956, lat: 40.714, spread: 0.012, weight: 0.13 }, // Williamsburg
+    { lon: -73.912, lat: 40.663, spread: 0.012, weight: 0.09 }, // Brownsville
+    { lon: -74.003, lat: 40.655, spread: 0.010, weight: 0.06 }, // Sunset Park
+    { lon: -73.918, lat: 40.818, spread: 0.014, weight: 0.09 }, // South Bronx
+    { lon: -73.898, lat: 40.862, spread: 0.012, weight: 0.04 }, // Fordham
+    { lon: -73.920, lat: 40.772, spread: 0.010, weight: 0.04 }, // Astoria (Queens early)
+    { lon: -73.883, lat: 40.755, spread: 0.010, weight: 0.03 }, // Jackson Heights (early)
+  ]},
+  { maxYear: 1965, anchors: [
+    // Quota era — Great Migration fills Harlem, Brooklyn + Bronx dominate.
+    { lon: -73.945, lat: 40.810, spread: 0.012, weight: 0.18 }, // Harlem (Great Migration)
+    { lon: -73.940, lat: 40.845, spread: 0.010, weight: 0.08 }, // Washington Heights
+    { lon: -73.988, lat: 40.718, spread: 0.008, weight: 0.06 }, // LES remnant
+    { lon: -73.961, lat: 40.578, spread: 0.010, weight: 0.09 }, // Brighton Beach
+    { lon: -73.912, lat: 40.663, spread: 0.012, weight: 0.09 }, // Brownsville
+    { lon: -73.995, lat: 40.602, spread: 0.012, weight: 0.08 }, // Bensonhurst
+    { lon: -73.956, lat: 40.714, spread: 0.012, weight: 0.05 }, // Williamsburg
+    { lon: -73.950, lat: 40.669, spread: 0.012, weight: 0.05 }, // Crown Heights
+    { lon: -73.918, lat: 40.818, spread: 0.014, weight: 0.10 }, // South Bronx
+    { lon: -73.915, lat: 40.835, spread: 0.012, weight: 0.06 }, // Grand Concourse
+    { lon: -73.898, lat: 40.862, spread: 0.012, weight: 0.04 }, // Fordham
+    { lon: -73.920, lat: 40.772, spread: 0.010, weight: 0.05 }, // Astoria
+    { lon: -73.883, lat: 40.755, spread: 0.010, weight: 0.04 }, // Jackson Heights
+    { lon: -74.078, lat: 40.643, spread: 0.012, weight: 0.03 }, // Staten Island North Shore
+  ]},
+  { maxYear: 9999, anchors: [
+    // Post-1965 — Queens is the immigrant capital; boroughs now carry most weight.
+    { lon: -73.883, lat: 40.755, spread: 0.012, weight: 0.13 }, // Jackson Heights
+    { lon: -73.830, lat: 40.765, spread: 0.014, weight: 0.12 }, // Flushing
+    { lon: -73.880, lat: 40.736, spread: 0.010, weight: 0.09 }, // Elmhurst
+    { lon: -73.865, lat: 40.749, spread: 0.008, weight: 0.06 }, // Corona
+    { lon: -73.920, lat: 40.772, spread: 0.010, weight: 0.04 }, // Astoria
+    { lon: -73.961, lat: 40.578, spread: 0.012, weight: 0.07 }, // Brighton Beach
+    { lon: -74.003, lat: 40.655, spread: 0.012, weight: 0.07 }, // Sunset Park (Chinese/Latino)
+    { lon: -73.950, lat: 40.669, spread: 0.012, weight: 0.06 }, // Crown Heights (Caribbean)
+    { lon: -73.956, lat: 40.714, spread: 0.012, weight: 0.04 }, // Williamsburg
+    { lon: -73.918, lat: 40.818, spread: 0.014, weight: 0.07 }, // South Bronx (PR/Dominican)
+    { lon: -73.898, lat: 40.862, spread: 0.012, weight: 0.05 }, // Fordham
+    { lon: -73.930, lat: 40.852, spread: 0.012, weight: 0.06 }, // Washington Heights / Inwood
+    { lon: -73.997, lat: 40.716, spread: 0.006, weight: 0.05 }, // Chinatown
+    { lon: -73.939, lat: 40.795, spread: 0.010, weight: 0.03 }, // East Harlem
+    { lon: -74.078, lat: 40.643, spread: 0.012, weight: 0.04 }, // Staten Island North Shore
+    { lon: -74.140, lat: 40.580, spread: 0.015, weight: 0.02 }, // Staten Island Mid-Island
+  ]},
+];
+
+function getSettlementAnchors(year) {
+  for (const era of SETTLEMENT_ERAS) {
+    if (year < era.maxYear) return era.anchors;
+  }
+  return SETTLEMENT_ERAS[SETTLEMENT_ERAS.length - 1].anchors;
+}
+
+function sampleSettlerLocation(year, rand) {
+  const anchors = getSettlementAnchors(year);
+  const r = rand();
+  let acc = 0;
+  for (const a of anchors) {
+    acc += a.weight;
+    if (r < acc) {
+      return [
+        a.lon + (rand() - 0.5) * a.spread,
+        a.lat + (rand() - 0.5) * a.spread,
+      ];
+    }
+  }
+  const last = anchors[anchors.length - 1];
+  return [last.lon, last.lat];
+}
+
+// ── Neighborhood origins (hand-coded historical shares) ────────────────
+// Per-neighborhood breakdown of dominant immigrant groups by era. Keyed by
+// GLOW_ANCHORS key so the hover handler can look up the chart for whichever
+// density hex the user is mousing. Shares are approximate but capture the
+// real story: who actually settled where, and when it flipped. Each
+// neighborhood has 2-4 era bands sorted ascending by maxYear.
+const NEIGHBORHOOD_ORIGINS = {
+  'five-points': { label: 'Five Points', eras: [
+    { maxYear: 1880, countries: [
+      { name: 'Ireland',        share: 0.60 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'United Kingdom', share: 0.10 },
+      { name: 'Other Europe',   share: 0.10 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Italy',          share: 0.50 },
+      { name: 'Ireland',        share: 0.25 },
+      { name: 'China',          share: 0.15 },
+      { name: 'Other',          share: 0.10 },
+    ]},
+  ]},
+  'lower-manhattan': { label: 'Lower Manhattan', eras: [
+    { maxYear: 1880, countries: [
+      { name: 'Ireland',        share: 0.45 },
+      { name: 'Germany',        share: 0.25 },
+      { name: 'United Kingdom', share: 0.15 },
+      { name: 'Other Europe',   share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Mixed European', share: 0.45 },
+      { name: 'China',          share: 0.25 },
+      { name: 'Dominican Rep.', share: 0.15 },
+      { name: 'Other',          share: 0.15 },
+    ]},
+  ]},
+  'les': { label: 'Lower East Side', eras: [
+    { maxYear: 1880, countries: [
+      { name: 'Germany',         share: 0.55 },
+      { name: 'Ireland',         share: 0.25 },
+      { name: 'United Kingdom',  share: 0.10 },
+      { name: 'Other Europe',    share: 0.10 },
+    ]},
+    { maxYear: 1924, countries: [
+      { name: 'Russia (Jewish)', share: 0.45 },
+      { name: 'Austria-Hungary', share: 0.25 },
+      { name: 'Italy',           share: 0.15 },
+      { name: 'Germany',         share: 0.08 },
+      { name: 'Other',           share: 0.07 },
+    ]},
+    { maxYear: 1970, countries: [
+      { name: 'Puerto Rico',     share: 0.35 },
+      { name: 'Eastern European Jewish', share: 0.30 },
+      { name: 'Italy',           share: 0.15 },
+      { name: 'Other',           share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China',           share: 0.30 },
+      { name: 'Dominican Rep.',  share: 0.20 },
+      { name: 'Bangladesh',      share: 0.15 },
+      { name: 'Puerto Rico',     share: 0.10 },
+      { name: 'Other',           share: 0.25 },
+    ]},
+  ]},
+  'chinatown': { label: 'Chinatown', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'China (Guangdong)', share: 0.85 },
+      { name: 'Other Asia',        share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China (Mainland)',  share: 0.55 },
+      { name: 'China (Fujian)',    share: 0.25 },
+      { name: 'Vietnam',           share: 0.10 },
+      { name: 'Other',             share: 0.10 },
+    ]},
+  ]},
+  'little-italy': { label: 'Little Italy', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Italy (South)',  share: 0.80 },
+      { name: 'Other Europe',   share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Italy',          share: 0.35 },
+      { name: 'China',          share: 0.35 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+  ]},
+  'hells-kitchen': { label: "Hell's Kitchen", eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Ireland',        share: 0.55 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Italy',          share: 0.15 },
+      { name: 'Other',          share: 0.10 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Ireland',        share: 0.30 },
+      { name: 'Puerto Rico',    share: 0.30 },
+      { name: 'Italy',          share: 0.20 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Puerto Rico',    share: 0.25 },
+      { name: 'Dominican Rep.', share: 0.20 },
+      { name: 'Mexico',         share: 0.15 },
+      { name: 'Mixed',          share: 0.40 },
+    ]},
+  ]},
+  'east-harlem': { label: 'East Harlem', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Italy (South)',  share: 0.60 },
+      { name: 'Ireland',        share: 0.15 },
+      { name: 'Germany',        share: 0.10 },
+      { name: 'Other',          share: 0.15 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Puerto Rico',    share: 0.60 },
+      { name: 'Italy',          share: 0.15 },
+      { name: 'Other',          share: 0.25 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Puerto Rico',    share: 0.35 },
+      { name: 'Dominican Rep.', share: 0.20 },
+      { name: 'Mexico',         share: 0.15 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+  ]},
+  'harlem': { label: 'Harlem', eras: [
+    { maxYear: 1890, countries: [
+      { name: 'Germany',         share: 0.45 },
+      { name: 'Ireland',         share: 0.30 },
+      { name: 'Russia (Jewish)', share: 0.15 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+    { maxYear: 1965, countries: [
+      { name: 'African American (US South)', share: 0.70 },
+      { name: 'West Indies',     share: 0.15 },
+      { name: 'Other',           share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'African American', share: 0.45 },
+      { name: 'Dominican Rep.',   share: 0.20 },
+      { name: 'West Africa',      share: 0.15 },
+      { name: 'Other',            share: 0.20 },
+    ]},
+  ]},
+  'washington-heights': { label: 'Washington Heights', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Germany (Jewish)', share: 0.40 },
+      { name: 'Ireland',          share: 0.20 },
+      { name: 'Greek',            share: 0.10 },
+      { name: 'Other Europe',     share: 0.30 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Dominican Rep.',   share: 0.65 },
+      { name: 'Cuba',             share: 0.05 },
+      { name: 'Other',            share: 0.30 },
+    ]},
+  ]},
+  'inwood': { label: 'Inwood', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Ireland',        share: 0.50 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Other Europe',   share: 0.30 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Dominican Rep.', share: 0.70 },
+      { name: 'Puerto Rico',    share: 0.10 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+  ]},
+  'williamsburg': { label: 'Williamsburg', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Germany',         share: 0.40 },
+      { name: 'Russia (Jewish)', share: 0.25 },
+      { name: 'Italy',           share: 0.15 },
+      { name: 'Ireland',         share: 0.10 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Hasidic (Hungary/Poland)', share: 0.35 },
+      { name: 'Puerto Rico',     share: 0.30 },
+      { name: 'Italy',           share: 0.15 },
+      { name: 'Other',           share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Hasidic',         share: 0.30 },
+      { name: 'Dominican Rep.',  share: 0.15 },
+      { name: 'Puerto Rico',     share: 0.15 },
+      { name: 'Mexico',          share: 0.10 },
+      { name: 'Other',           share: 0.30 },
+    ]},
+  ]},
+  'brownsville': { label: 'Brownsville', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Russia (Jewish)', share: 0.65 },
+      { name: 'Austria-Hungary', share: 0.20 },
+      { name: 'Other',           share: 0.15 },
+    ]},
+    { maxYear: 1965, countries: [
+      { name: 'African American (US South)', share: 0.55 },
+      { name: 'Russia (Jewish)', share: 0.30 },
+      { name: 'Caribbean',       share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'African American',share: 0.50 },
+      { name: 'Caribbean',       share: 0.30 },
+      { name: 'Dominican Rep.',  share: 0.10 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+  ]},
+  'sunset-park': { label: 'Sunset Park', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Scandinavia (Norway)', share: 0.45 },
+      { name: 'Ireland',        share: 0.25 },
+      { name: 'Poland',         share: 0.15 },
+      { name: 'Other',          share: 0.15 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Puerto Rico',    share: 0.45 },
+      { name: 'Scandinavia',    share: 0.20 },
+      { name: 'Other',          share: 0.35 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China',          share: 0.40 },
+      { name: 'Mexico',         share: 0.25 },
+      { name: 'Dominican Rep.', share: 0.10 },
+      { name: 'Other',          share: 0.25 },
+    ]},
+  ]},
+  'brighton-beach': { label: 'Brighton Beach', eras: [
+    { maxYear: 1970, countries: [
+      { name: 'Eastern European Jewish', share: 0.70 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Russia / Ukraine', share: 0.65 },
+      { name: 'Other Soviet',    share: 0.15 },
+      { name: 'Other',           share: 0.20 },
+    ]},
+  ]},
+  'crown-heights': { label: 'Crown Heights', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Russia (Jewish)', share: 0.35 },
+      { name: 'Ireland',         share: 0.25 },
+      { name: 'Germany',         share: 0.20 },
+      { name: 'Italy',           share: 0.10 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Jamaica',         share: 0.30 },
+      { name: 'Haiti',           share: 0.15 },
+      { name: 'Trinidad',        share: 0.10 },
+      { name: 'Hasidic (Lubavitch)', share: 0.15 },
+      { name: 'Other',           share: 0.30 },
+    ]},
+  ]},
+  'bensonhurst': { label: 'Bensonhurst', eras: [
+    { maxYear: 1990, countries: [
+      { name: 'Italy',          share: 0.70 },
+      { name: 'Other Europe',   share: 0.20 },
+      { name: 'Other',          share: 0.10 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China',          share: 0.30 },
+      { name: 'Italy',          share: 0.25 },
+      { name: 'Russia (Jewish)',share: 0.15 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+  ]},
+  'south-bronx': { label: 'South Bronx', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Ireland',         share: 0.35 },
+      { name: 'Italy',           share: 0.25 },
+      { name: 'Germany',         share: 0.20 },
+      { name: 'Russia (Jewish)', share: 0.10 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Puerto Rico',     share: 0.55 },
+      { name: 'Italy',           share: 0.15 },
+      { name: 'African American',share: 0.15 },
+      { name: 'Other',           share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Dominican Rep.',  share: 0.35 },
+      { name: 'Puerto Rico',     share: 0.30 },
+      { name: 'Mexico',          share: 0.15 },
+      { name: 'West Africa',     share: 0.05 },
+      { name: 'Other',           share: 0.15 },
+    ]},
+  ]},
+  'fordham': { label: 'Fordham', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Italy',          share: 0.35 },
+      { name: 'Ireland',        share: 0.30 },
+      { name: 'Germany',        share: 0.15 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Italy',          share: 0.30 },
+      { name: 'Puerto Rico',    share: 0.25 },
+      { name: 'Ireland',        share: 0.15 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Dominican Rep.', share: 0.30 },
+      { name: 'Albania',        share: 0.15 },
+      { name: 'Mexico',         share: 0.10 },
+      { name: 'Italy',          share: 0.10 },
+      { name: 'Other',          share: 0.35 },
+    ]},
+  ]},
+  'grand-concourse': { label: 'Grand Concourse', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Russia (Jewish)', share: 0.45 },
+      { name: 'Austria-Hungary', share: 0.20 },
+      { name: 'Germany',         share: 0.15 },
+      { name: 'Ireland',         share: 0.10 },
+      { name: 'Other',           share: 0.10 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Dominican Rep.',  share: 0.35 },
+      { name: 'Puerto Rico',     share: 0.25 },
+      { name: 'West Africa',     share: 0.15 },
+      { name: 'Other',           share: 0.25 },
+    ]},
+  ]},
+  'astoria': { label: 'Astoria', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Italy',          share: 0.40 },
+      { name: 'Ireland',        share: 0.20 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 1990, countries: [
+      { name: 'Greece',         share: 0.45 },
+      { name: 'Italy',          share: 0.25 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Bangladesh',     share: 0.15 },
+      { name: 'Greece',         share: 0.12 },
+      { name: 'Egypt',          share: 0.10 },
+      { name: 'Mexico',         share: 0.10 },
+      { name: 'Brazil',         share: 0.05 },
+      { name: 'Other',          share: 0.48 },
+    ]},
+  ]},
+  'jackson-heights': { label: 'Jackson Heights', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Ireland',        share: 0.35 },
+      { name: 'Italy',          share: 0.25 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Colombia',       share: 0.15 },
+      { name: 'Ecuador',        share: 0.12 },
+      { name: 'India',          share: 0.10 },
+      { name: 'Bangladesh',     share: 0.10 },
+      { name: 'Mexico',         share: 0.10 },
+      { name: 'Dominican Rep.', share: 0.08 },
+      { name: 'Other',          share: 0.35 },
+    ]},
+  ]},
+  'flushing': { label: 'Flushing', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Ireland',        share: 0.30 },
+      { name: 'Italy',          share: 0.25 },
+      { name: 'Germany',        share: 0.25 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China',          share: 0.40 },
+      { name: 'Korea',          share: 0.20 },
+      { name: 'Taiwan',         share: 0.10 },
+      { name: 'India',          share: 0.05 },
+      { name: 'Other',          share: 0.25 },
+    ]},
+  ]},
+  'elmhurst': { label: 'Elmhurst', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Italy',          share: 0.35 },
+      { name: 'Germany',        share: 0.25 },
+      { name: 'Ireland',        share: 0.20 },
+      { name: 'Other',          share: 0.20 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'China',          share: 0.20 },
+      { name: 'Ecuador',        share: 0.12 },
+      { name: 'Mexico',         share: 0.10 },
+      { name: 'Philippines',    share: 0.08 },
+      { name: 'Korea',          share: 0.08 },
+      { name: 'Other',          share: 0.42 },
+    ]},
+  ]},
+  'corona': { label: 'Corona', eras: [
+    { maxYear: 1965, countries: [
+      { name: 'Italy',          share: 0.55 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Other',          share: 0.25 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Mexico',         share: 0.30 },
+      { name: 'Ecuador',        share: 0.20 },
+      { name: 'Dominican Rep.', share: 0.15 },
+      { name: 'Italy',          share: 0.05 },
+      { name: 'Other',          share: 0.30 },
+    ]},
+  ]},
+  'north-shore-si': { label: 'North Shore, Staten Island', eras: [
+    { maxYear: 1924, countries: [
+      { name: 'Italy',          share: 0.40 },
+      { name: 'Ireland',        share: 0.25 },
+      { name: 'Germany',        share: 0.20 },
+      { name: 'Other',          share: 0.15 },
+    ]},
+    { maxYear: 9999, countries: [
+      { name: 'Mexico',         share: 0.20 },
+      { name: 'Liberia',        share: 0.15 },
+      { name: 'Sri Lanka',      share: 0.10 },
+      { name: 'Albania',        share: 0.08 },
+      { name: 'Other',          share: 0.47 },
+    ]},
+  ]},
+};
+
+function getNeighborhoodOrigins(key, year) {
+  const n = NEIGHBORHOOD_ORIGINS[key];
+  if (!n) return null;
+  for (const era of n.eras) {
+    if (year < era.maxYear) return { label: n.label, countries: era.countries };
+  }
+  const last = n.eras[n.eras.length - 1];
+  return { label: n.label, countries: last.countries };
+}
+
+// Currently-hovered neighborhood key (set by the density-hex onHover at the
+// Deck level). null = nothing hovered → panel shows a hint. Any key from
+// GLOW_ANCHORS maps to a NEIGHBORHOOD_ORIGINS entry.
+let selectedNeighborhoodKey = null;
+
+// Updates the origins side panel. Called from slider / syncYear / applyFlags
+// callbacks AND from the density-hex hover handler. If nothing is hovered,
+// the panel shows a "hover a hex" prompt instead of the bar chart.
+function updateImmigrationOriginsPanel() {
+  const panel = document.getElementById('immigration-origins-panel');
+  if (!panel) return;
+  if (!featureFlags.immigrationOrigins) {
+    panel.style.display = 'none';
+    return;
+  }
+  panel.style.display = 'block';
+  const year = Math.round(currentYear);
+  const yearEl = document.getElementById('immigration-origins-year');
+  if (yearEl) yearEl.textContent = year;
+  const list = document.getElementById('immigration-origins-list');
+  const headerEl = document.getElementById('immigration-origins-header');
+  if (!list) return;
+
+  const hoveredOrigins = selectedNeighborhoodKey
+    ? getNeighborhoodOrigins(selectedNeighborhoodKey, year)
+    : null;
+
+  if (!hoveredOrigins) {
+    if (headerEl) headerEl.textContent = 'HOVER A DENSITY HEX';
+    list.innerHTML = '<li class="hint">Enable Immigration · Density Hexes and mouse over a neighborhood to see its historical immigrant groups for year <span style="color:#ffc870">' + year + '</span>.</li>';
+    return;
+  }
+
+  if (headerEl) headerEl.textContent = hoveredOrigins.label.toUpperCase();
+
+  // Approximate per-group headcount for this neighborhood and year. We don't
+  // have real per-neighborhood totals, so estimate: a hex under the hovered
+  // anchor contributes (settlers in that anchor cluster) × SETTLERS_PER_ARRIVAL
+  // cumulative arrivals across history. Share × cumulative ≈ group size.
+  let neighborhoodTotal = 0;
+  if (immigrationSettlers && immigrationSettlers.length) {
+    const anchorIdx = GLOW_ANCHORS.findIndex(a => a.key === selectedNeighborhoodKey);
+    if (anchorIdx >= 0) {
+      const k = visibleSettlerCount(year);
+      for (let i = 0; i < k; i++) {
+        if (immigrationSettlers[i].anchorIdx === anchorIdx) neighborhoodTotal++;
+      }
+      neighborhoodTotal *= SETTLERS_PER_ARRIVAL;
+    }
+  }
+
+  const countries = hoveredOrigins.countries;
+  const maxShare = Math.max(...countries.map(c => c.share), 0.01);
+  list.innerHTML = '';
+  for (const c of countries) {
+    const li = document.createElement('li');
+    const pct = Math.round((c.share / maxShare) * 100);
+    const count = neighborhoodTotal > 0 ? Math.round(neighborhoodTotal * c.share) : 0;
+    li.innerHTML =
+      '<span class="name">' + c.name + '</span>' +
+      '<span class="bar" style="--fill:' + pct + '%"></span>' +
+      '<span class="count">' + (count > 0 ? formatPopulation(count) : Math.round(c.share * 100) + '%') + '</span>';
+    list.appendChild(li);
+  }
+}
+
+// Format large population counts for on-map labels and the origins panel:
+// 1,250,000 → "1.3M", 48,000 → "48K", 820 → "820". Keeps labels terse.
+function formatPopulation(n) {
+  if (!Number.isFinite(n) || n <= 0) return '0';
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(n >= 10_000_000 ? 0 : 1) + 'M';
+  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
+  return String(Math.round(n));
+}
+
+// Coarse square-grid bin for rendering Density Hexes. We do our own binning
+// (instead of HexagonLayer) so we can read cell counts back for label text.
+// Cell size ~330m at 40.7°N — resolves individual neighborhoods without
+// flattening into blobs. Not actually hex-shaped under the hood, but rendered
+// via ColumnLayer(diskResolution: 6) which gives hexagonal prisms regardless.
+function binSettlersToGrid(settlers, cellSizeDeg = 0.003) {
+  const bins = new Map();
+  for (const s of settlers) {
+    const cx = Math.round(s.lon / cellSizeDeg) * cellSizeDeg;
+    const cy = Math.round(s.lat / cellSizeDeg) * cellSizeDeg;
+    const key = cx.toFixed(4) + '|' + cy.toFixed(4);
+    let b = bins.get(key);
+    if (!b) { b = { lon: cx, lat: cy, count: 0 }; bins.set(key, b); }
+    b.count++;
+  }
+  return Array.from(bins.values());
+}
+
+// ── Vector stick-figure atlas for the "humans" shape ──────────────────────
+// Generated once at load time on a hidden canvas: four crisp 64×64 glyphs
+// (man / woman / child / baby) drawn white so IconLayer's getColor can tint
+// them per particle. Scales cleanly at any zoom and stays ~1-2 KB as a PNG
+// data URI. The motion paths (line/parabola/etc) are unchanged — this is
+// purely a render swap for the wave.
+function generateHumanIconAtlas() {
+  const W = 256, H = 64;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#fff';
+  ctx.fillStyle = '#fff';
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  function drawMan(cx, cy) {
+    ctx.beginPath(); ctx.arc(cx, cy - 18, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 12); ctx.lineTo(cx, cy + 6);            // torso
+    ctx.moveTo(cx, cy + 6);  ctx.lineTo(cx - 8, cy + 22);       // L leg (stride)
+    ctx.moveTo(cx, cy + 6);  ctx.lineTo(cx + 8, cy + 22);       // R leg
+    ctx.moveTo(cx, cy - 8);  ctx.lineTo(cx - 10, cy + 2);       // L arm
+    ctx.moveTo(cx, cy - 8);  ctx.lineTo(cx + 10, cy + 2);       // R arm
+    ctx.stroke();
+  }
+  function drawWoman(cx, cy) {
+    ctx.beginPath(); ctx.arc(cx, cy - 18, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 12); ctx.lineTo(cx, cy + 2); ctx.stroke();
+    // A-line dress as filled triangle
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + 2);
+    ctx.lineTo(cx - 10, cy + 22);
+    ctx.lineTo(cx + 10, cy + 22);
+    ctx.closePath();
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 8);  ctx.lineTo(cx - 11, cy + 2);
+    ctx.moveTo(cx, cy - 8);  ctx.lineTo(cx + 11, cy + 2);
+    ctx.stroke();
+  }
+  function drawChild(cx, cy) {
+    ctx.beginPath(); ctx.arc(cx, cy - 10, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - 5); ctx.lineTo(cx, cy + 6);
+    ctx.moveTo(cx, cy + 6); ctx.lineTo(cx - 6, cy + 18);
+    ctx.moveTo(cx, cy + 6); ctx.lineTo(cx + 6, cy + 18);
+    ctx.moveTo(cx, cy - 2); ctx.lineTo(cx - 8, cy + 3);
+    ctx.moveTo(cx, cy - 2); ctx.lineTo(cx + 8, cy + 3);
+    ctx.stroke();
+  }
+  function drawBaby(cx, cy) {
+    ctx.beginPath(); ctx.arc(cx, cy - 4, 6, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + 2); ctx.lineTo(cx, cy + 10);
+    ctx.moveTo(cx, cy + 10); ctx.lineTo(cx - 5, cy + 18);
+    ctx.moveTo(cx, cy + 10); ctx.lineTo(cx + 5, cy + 18);
+    ctx.moveTo(cx, cy + 4);  ctx.lineTo(cx - 7, cy + 8);
+    ctx.moveTo(cx, cy + 4);  ctx.lineTo(cx + 7, cy + 8);
+    ctx.stroke();
+  }
+
+  drawMan(32, 32);
+  drawWoman(96, 32);
+  drawChild(160, 32);
+  drawBaby(224, 32);
+  return canvas.toDataURL('image/png');
+}
+
+const HUMAN_ICON_ATLAS = generateHumanIconAtlas();
+const HUMAN_ICON_MAPPING = {
+  man:   { x: 0,   y: 0, width: 64, height: 64, mask: true },
+  woman: { x: 64,  y: 0, width: 64, height: 64, mask: true },
+  child: { x: 128, y: 0, width: 64, height: 64, mask: true },
+  baby:  { x: 192, y: 0, width: 64, height: 64, mask: true },
+};
+// Weighted distribution: more adults than children, a few babies. Each
+// particle samples once at spawn via colorIdx so the same particle stays
+// the same "person" over its lifespan.
+const HUMAN_TYPES = ['man', 'woman', 'man', 'woman', 'man', 'woman', 'child', 'child', 'baby'];
+
+// Glow anchors are the fixed set of "neighborhood bloom" points used by the
+// Neighborhood Glow layer. We assign each settler to its nearest anchor at
+// atlas-build time so the glow layer can aggregate cumulative counts in O(N).
+const GLOW_ANCHORS = [
+  { key: 'five-points',      lon: -74.003, lat: 40.714 },
+  { key: 'lower-manhattan',  lon: -74.005, lat: 40.720 },
+  { key: 'les',              lon: -73.988, lat: 40.717 },
+  { key: 'chinatown',        lon: -73.997, lat: 40.716 },
+  { key: 'little-italy',     lon: -73.996, lat: 40.720 },
+  { key: 'hells-kitchen',    lon: -73.994, lat: 40.762 },
+  { key: 'east-harlem',      lon: -73.939, lat: 40.795 },
+  { key: 'harlem',           lon: -73.945, lat: 40.810 },
+  { key: 'washington-heights', lon: -73.940, lat: 40.845 },
+  { key: 'inwood',           lon: -73.930, lat: 40.852 },
+];
+
+function nearestGlowAnchor(lon, lat) {
+  let best = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < GLOW_ANCHORS.length; i++) {
+    const a = GLOW_ANCHORS[i];
+    const dx = a.lon - lon;
+    const dy = a.lat - lat;
+    const d = dx * dx + dy * dy;
+    if (d < bestDist) { bestDist = d; best = i; }
+  }
+  return best;
+}
+
+// Seeded PRNG so buildSettlersAtlas is deterministic — scrubbing and toggling
+// the flag always regenerate the same dots instead of a new random set.
+function mulberry32(seed) {
+  let s = seed >>> 0;
+  return function() {
+    s = (s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function buildSettlersAtlas(records) {
+  immigrationSettlers.length = 0;
+  for (const rec of records) {
+    const arrivals = rec.nyc_arrivals || 0;
+    const count = Math.floor(arrivals / SETTLERS_PER_ARRIVAL);
+    if (count <= 0) continue;
+    const rand = mulberry32(rec.year * 2654435761);
+    for (let i = 0; i < count; i++) {
+      const [lon, lat] = sampleSettlerLocation(rec.year, rand);
+      immigrationSettlers.push({
+        year: rec.year,
+        lon, lat,
+        colorIdx: Math.floor(rand() * IMMIGRATION_PALETTE.length),
+        anchorIdx: nearestGlowAnchor(lon, lat),
+      });
+    }
+  }
+  immigrationSettlers.sort((a, b) => a.year - b.year);
+  console.log('[immigration-settlers] atlas built: %d dots (%d arrivals each)',
+    immigrationSettlers.length, SETTLERS_PER_ARRIVAL);
+}
+
+fetch('data/immigration/nyc_immigration_timeline.json')
+  .then(r => r.json())
+  .then(data => {
+    immigrationIntensityByYear = new Map(data.records.map(r => [r.year, r.intensity]));
+    immigrationRecordsByYear = new Map(data.records.map(r => [r.year, r]));
+    buildSettlersAtlas(data.records);
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+  })
+  .catch(err => console.warn('immigration timeline failed to load:', err));
+
+// Origins of the spray. Each origin has a `target` coord — particles
+// launch aimed at that target, not straight north — so Ellis Island
+// fires northeast into Manhattan, JFK fires northwest, etc. The effect
+// is a garden hose actually aimed at the city rather than an upward
+// geyser. Cone spread widens with intensity so a 1907 peak covers all
+// of Manhattan while a dribble year traces a narrow line.
+//
+// Manhattan center is roughly (-73.965, 40.780).
+function immigrationOriginsFor(year) {
+  const target = { lon: -73.965, lat: 40.780 };   // Midtown Manhattan
+  if (year < 1855)  return [{ lon: -74.0170, lat: 40.7033, label: 'Battery',       target }];
+  if (year < 1892)  return [{ lon: -74.0170, lat: 40.7033, label: 'Castle Garden', target }];
+  if (year < 1955)  return [{ lon: -74.0397, lat: 40.6994, label: 'Ellis Island',  target }];
+  return [
+    { lon: -73.7781, lat: 40.6413, label: 'JFK',       target },
+    { lon: -73.8740, lat: 40.7769, label: 'LaGuardia', target },
+    { lon: -74.1745, lat: 40.6895, label: 'Newark',    target },
+  ];
+}
+
+// Particle simulation — CPU-side, ~60fps. A continuous flow: particles
+// spawn every frame while the flag is on, aimed at Manhattan from their
+// historical origin, with a cone spread that widens with intensity.
+// All dynamic params come from the intensity-bucket tuning object, so
+// sliders adjust the spray live.
+//
+// Cap is intentionally high (20k). The previous 2.5k limit was hitting
+// steady-state under high-spawn configs, which starved new spawns and
+// caused a visible pulse/gap as the active crop aged out together. 20k
+// gives headroom for spawn=80 × life=12s without ever hitting the wall.
+const IMMIGRATION_MAX_PARTICLES = 20000;
+const IMMIGRATION_TRAIL_HISTORY = 10;    // positions remembered per particle for trail shape
+let immigrationLastTick = 0;
+
+let immigrationDebugLogged = false;
+function tickImmigrationParticles(nowMs) {
+  // playbackSpeed (0.1 – 4×) scales the effective simulation step so the
+  // wave slows or speeds up with the timeline play speed slider. Spawn rate
+  // is intentionally left at its raw per-frame value so density doesn't
+  // collapse when the user drops to 0.25× — only motion through space /
+  // Bézier progress scales down.
+  const rawDt = Math.min(0.05, (nowMs - immigrationLastTick) / 1000 || 0);
+  const dtSec = rawDt * playbackSpeed;
+  immigrationLastTick = nowMs;
+
+  if (!featureFlags.immigrationFlow || !immigrationIntensityByYear) {
+    if (immigrationParticles.length) immigrationParticles.length = 0;
+    immigrationDebugLogged = false;
+    return false;
+  }
+
+  const intensity = immigrationIntensityByYear.get(Math.round(currentYear)) ?? 0;
+  const bucket = getImmigrationBucket(intensity);
+  const tune = immigrationTuning[bucket];
+  const shape = tune.shape || 'dot';
+  const origins = immigrationOriginsFor(Math.round(currentYear));
+  if (!immigrationDebugLogged) {
+    console.log('[immigration-flow] on. year=%d intensity=%f bucket=%s origins=%o',
+      Math.round(currentYear), intensity, bucket, origins.map(o => o.label));
+    immigrationDebugLogged = true;
+  }
+
+  // Spawn rate, pressure, and cone all come straight from the bucket's
+  // tuning. No intensity multiplier inside this loop — the bucket IS
+  // the per-intensity calibration.
+  const spawnCount = Math.max(0, Math.floor(tune.spawnAmount));
+
+  for (let i = 0; i < spawnCount; i++) {
+    if (immigrationParticles.length >= IMMIGRATION_MAX_PARTICLES) break;
+    const origin = origins[i % origins.length];
+
+    if (shape === 'parabola') {
+      // Bézier journey: origin → jittered Manhattan target, curved via a
+      // control point offset perpendicular to the origin→target line. Each
+      // particle traces its own arc independently rather than riding a
+      // velocity-driven cone. `noise` ∈ [0,1] knob widens spawn randomness
+      // (target jitter, arc-height variance, control-point drift) and is
+      // also stored on the particle so the render step can add a small
+      // perpendicular wobble along the curve.
+      const noiseAmt = tune.noise ?? 0;
+      const cone = tune.spread;
+      const tgtJitter = cone * 0.08 + noiseAmt * 0.012;
+      const tgtLon = origin.target.lon + (Math.random() - 0.5) * tgtJitter;
+      const tgtLat = origin.target.lat + (Math.random() - 0.5) * tgtJitter;
+      const originJitter = 0.001 + noiseAmt * 0.004;
+      const lon0 = origin.lon + (Math.random() - 0.5) * originJitter;
+      const lat0 = origin.lat + (Math.random() - 0.5) * originJitter;
+
+      const dxT = tgtLon - lon0;
+      const dyT = tgtLat - lat0;
+      const distT = Math.hypot(dxT, dyT) || 1;
+      // Perpendicular unit vector, forced to point in the +lat direction so
+      // arcs always bulge "upward" in screen space regardless of origin side.
+      let perpLon = -dyT / distT;
+      let perpLat = dxT / distT;
+      if (perpLat < 0) { perpLon = -perpLon; perpLat = -perpLat; }
+
+      // Arc-height variance scales with noise: at 0 all arcs cluster near the
+      // slider value, at 1 they range ~±60% of it. Control point also drifts
+      // along the origin→target axis so the apex isn't always at the midpoint.
+      const heightVariance = 0.25 + noiseAmt * 0.6;
+      const arcMag = distT * tune.arcHeight * (1 - heightVariance + Math.random() * heightVariance * 2);
+      const axisDrift = (Math.random() - 0.5) * noiseAmt * 0.35;
+      const midLon = (lon0 + tgtLon) / 2 + (dxT / distT) * distT * axisDrift;
+      const midLat = (lat0 + tgtLat) / 2 + (dyT / distT) * distT * axisDrift;
+      const cpJitter = noiseAmt * distT * 0.18;
+      const cpLon = midLon + perpLon * arcMag + (Math.random() - 0.5) * cpJitter;
+      const cpLat = midLat + perpLat * arcMag + (Math.random() - 0.5) * cpJitter;
+
+      // Per-particle wobble: amplitude proportional to noise × distance,
+      // random frequency/phase so neighbors don't move in lockstep. Applied
+      // perpendicular to the curve at render time so the Bézier math stays
+      // clean and noise costs nothing in the integrate loop.
+      const wobbleAmp = noiseAmt * distT * 0.05;
+      const wobbleFreq = 3 + Math.random() * 6;
+      const wobblePhase = Math.random() * Math.PI * 2;
+
+      // tRate = progress-per-second along the curve. Scale off pressure so
+      // the Pressure slider still governs "how fast the flow moves" for
+      // parabola, just like it sets speed for the velocity shapes. Lifetime
+      // still caps how long the particle renders — a slow arc may die mid-
+      // flight and a fast one will clamp at t=1 and hold at the target.
+      const tRate = tune.pressure * 55 * (0.8 + Math.random() * 0.4);
+
+      immigrationParticles.push({
+        isArc: true,
+        lon: lon0,
+        lat: lat0,
+        vLon: 0,
+        vLat: 0,
+        p0x: lon0, p0y: lat0,
+        p1x: cpLon, p1y: cpLat,
+        p2x: tgtLon, p2y: tgtLat,
+        perpLon, perpLat,
+        wobbleAmp, wobbleFreq, wobblePhase,
+        t: 0,
+        tRate,
+        colorIdx: Math.floor(Math.random() * IMMIGRATION_PALETTE.length),
+        lifeMs: tune.lifeMs,
+        born: nowMs,
+        history: [[lon0, lat0]],
+      });
+      continue;
+    }
+
+    // Aim vector from this origin toward Manhattan.
+    const dx = origin.target.lon - origin.lon;
+    const dy = origin.target.lat - origin.lat;
+    const dist = Math.hypot(dx, dy) || 1;
+    const aimLon = dx / dist;
+    const aimLat = dy / dist;
+
+    const thrust = tune.pressure;
+    const cone   = tune.spread;
+    const angle  = (Math.random() - 0.5) * 2 * cone;
+    const speed  = thrust * (0.75 + Math.random() * 0.5);
+    const ca = Math.cos(angle), sa = Math.sin(angle);
+    const vLon = (aimLon * ca - aimLat * sa) * speed;
+    const vLat = (aimLon * sa + aimLat * ca) * speed;
+
+    const lon0 = origin.lon + (Math.random() - 0.5) * 0.001;
+    const lat0 = origin.lat + (Math.random() - 0.5) * 0.001;
+    immigrationParticles.push({
+      lon: lon0,
+      lat: lat0,
+      vLon,
+      vLat,
+      colorIdx: Math.floor(Math.random() * IMMIGRATION_PALETTE.length),
+      lifeMs: tune.lifeMs,     // lifeMs locked at spawn so mid-flight bucket changes don't kill particles
+      born: nowMs,
+      // Trail shape uses this short history ring-buffer. We always
+      // record regardless of current shape so switching shapes mid-
+      // flight is instant instead of waiting for particles to catch up.
+      history: [[lon0, lat0]],
+    });
+  }
+
+  // Integrate + cull expired. No drag — fade happens via alpha in the
+  // layer, velocity holds so particles reach Manhattan.
+  let writeIdx = 0;
+  for (let i = 0; i < immigrationParticles.length; i++) {
+    const p = immigrationParticles[i];
+    if (nowMs - p.born > p.lifeMs) continue;
+    if (p.isArc) {
+      p.t = Math.min(1, p.t + p.tRate * dtSec);
+      const u = 1 - p.t;
+      const baseLon = u * u * p.p0x + 2 * u * p.t * p.p1x + p.t * p.t * p.p2x;
+      const baseLat = u * u * p.p0y + 2 * u * p.t * p.p1y + p.t * p.t * p.p2y;
+      // Wobble fades in and out so arcs start cleanly at origin and land
+      // cleanly at target — sin(πt) peaks at mid-flight, zero at endpoints.
+      const envelope = Math.sin(Math.PI * p.t);
+      const wob = p.wobbleAmp * envelope * Math.sin(p.wobbleFreq * p.t + p.wobblePhase);
+      p.lon = baseLon + p.perpLon * wob;
+      p.lat = baseLat + p.perpLat * wob;
+    } else {
+      p.lon += p.vLon * dtSec;
+      p.lat += p.vLat * dtSec;
+    }
+    // Trail history: push every ~2 frames so a 10-slot buffer covers
+    // ~0.33s of recent motion. Cheap enough at 20k particles.
+    if (p.history.length < IMMIGRATION_TRAIL_HISTORY) {
+      p.history.push([p.lon, p.lat]);
+    } else {
+      p.history.shift();
+      p.history.push([p.lon, p.lat]);
+    }
+    immigrationParticles[writeIdx++] = p;
+  }
+  immigrationParticles.length = writeIdx;
+  return true;
+}
+
+function immigrationAnimationLoop(nowMs) {
+  const alive = tickImmigrationParticles(nowMs);
+  if (alive && deckgl) {
+    deckgl.setProps({ layers: buildLayers() });
+    // Live readout in the dev panel so you can see which bucket is
+    // currently active without checking the console.
+    const statusEl = document.getElementById('immigration-auto-status');
+    const readoutEl = document.getElementById('immigration-data-readout');
+    if (statusEl || readoutEl) {
+      const year = Math.round(currentYear);
+      const intensity = immigrationIntensityByYear?.get(year) ?? 0;
+      const bucket = getImmigrationBucket(intensity);
+      // Auto-track live bucket so the sliders always edit what's on screen,
+      // unless the user has pinned a specific bucket.
+      if (!immigrationEditBucketPinned && bucket !== immigrationEditBucket) {
+        immigrationEditBucket = bucket;
+        const bucketValueEl = document.getElementById('imm-bucket-current');
+        if (bucketValueEl) bucketValueEl.textContent = bucket.toUpperCase() + ' (LIVE)';
+        document.querySelectorAll('[data-imm-bucket]').forEach(b => {
+          b.classList.toggle('playing', b.dataset.immBucket === bucket);
+        });
+        refreshImmigrationTuningUI();
+      }
+      if (statusEl) {
+        statusEl.textContent = `year ${year} · intensity ${intensity.toFixed(3)} · → ${bucket.toUpperCase()} bucket`;
+      }
+      if (readoutEl && immigrationRecordsByYear) {
+        const rec = immigrationRecordsByYear.get(year);
+        if (rec) {
+          const nyc = rec.nyc_arrivals.toLocaleString();
+          const us = rec.us_arrivals.toLocaleString();
+          readoutEl.textContent = `⧖ ${nyc} NYC arrivals  (US ${us} · ${(rec.nyc_share * 100).toFixed(0)}%)`;
+        }
+      }
+    }
+  }
+  requestAnimationFrame(immigrationAnimationLoop);
+}
+requestAnimationFrame(immigrationAnimationLoop);
+
 let oldnycPhotosSorted = [];  // chronologically sorted for photo mode slideshow
 fetch('cultural-content/oldnyc/index.json')
   .then(r => r.json())
   .then(data => {
-    // manhattan_compact.json is Manhattan-only, so filter to match.
+    // Building footprints cover Manhattan + Bronx, so filter photo pins to match.
     // Other borough records stay in the file for future branches.
-    oldnycPhotos = data.filter(p => p.boro === 'Manhattan');
+    oldnycPhotos = data.filter(p => p.boro === 'Manhattan' || p.boro === 'Bronx');
     // Photo mode slideshow spans all 5 boroughs (750 photos) — the Manhattan
     // filter only applies to map pins, which match the building footprint scope.
     oldnycPhotosSorted = [...data].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
@@ -1819,9 +3781,83 @@ function initDeck() {
     controller: getControllerConfig(),
     glOptions: { preserveDrawingBuffer: true },
     layers: buildLayers(),
-    getTooltip: ({object, layer}) => {
-      if (!object) return null;
+    onHover: ({object, layer}) => {
+      // Density hex hover → update origins side panel to the neighborhood
+      // under the cursor. Any other hover (or empty) clears the selection so
+      // the panel reverts to its "hover a hex" hint.
+      if (!featureFlags.immigrationOrigins) return;
+      let nextKey = null;
+      if (object && layer && layer.id === 'immigration-density-hexes') {
+        const idx = nearestGlowAnchor(object.lon, object.lat);
+        nextKey = GLOW_ANCHORS[idx]?.key ?? null;
+      }
+      if (nextKey !== selectedNeighborhoodKey) {
+        selectedNeighborhoodKey = nextKey;
+        updateImmigrationOriginsPanel();
+      }
+    },
+    getTooltip: ({object, layer, coordinate}) => {
       const tooltipStyle = { backgroundColor: 'rgba(0,0,0,0.9)', color: '#ddd', fontFamily: "'Courier New', monospace", fontSize: '11px', padding: '8px 12px', borderLeft: '2px solid #00b8d4' };
+
+      // Build the Bronx/tenement-style origins tooltip for a given (anchor, year, pop).
+      // Shares render as a compact inline bar chart so the dominant group reads at a glance.
+      const buildOriginsTooltipHtml = (anchorKey, year, popLabel) => {
+        const neigh = getNeighborhoodOrigins(anchorKey, year);
+        if (!neigh) return null;
+        const top = neigh.countries.slice(0, 5);
+        const rows = top.map(c => {
+          const pct = Math.round(c.share * 100);
+          const barW = Math.max(2, Math.round(c.share * 80));
+          return (
+            '<div style="display:flex;align-items:center;gap:6px;margin-top:2px">' +
+              '<span style="flex:0 0 110px;color:#ddd;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+                escapeHtml(c.name) + '</span>' +
+              '<span style="flex:0 0 80px;height:5px;background:rgba(255,255,255,0.08);position:relative">' +
+                '<span style="position:absolute;left:0;top:0;bottom:0;width:' + barW + 'px;background:#ffc870"></span>' +
+              '</span>' +
+              '<span style="flex:0 0 28px;color:#ffc870;text-align:right">' + pct + '%</span>' +
+            '</div>'
+          );
+        }).join('');
+        const popLine = popLabel
+          ? '~' + popLabel + ' residents · ' + year
+          : 'Year ' + year;
+        return (
+          '<b style="color:#ffc870">' + escapeHtml(neigh.label) + '</b><br>' +
+          '<span style="color:#aaa;font-size:10px">' + popLine + '</span>' +
+          '<div style="margin-top:6px;min-width:230px">' + rows + '</div>'
+        );
+      };
+
+      // Density hex hover → neighborhood origins with inline bar chart.
+      if (layer && layer.id === 'immigration-density-hexes' && object) {
+        const anchorIdx = nearestGlowAnchor(object.lon, object.lat);
+        const anchor = GLOW_ANCHORS[anchorIdx];
+        const pop = formatPopulation(object.count * SETTLERS_PER_ARRIVAL);
+        const html = buildOriginsTooltipHtml(anchor?.key, Math.round(currentYear), pop);
+        if (html) {
+          return { html, style: { ...tooltipStyle, borderLeft: '2px solid #ffc870' } };
+        }
+      }
+
+      if (!object) return null;
+
+      // When Density Hexes is on, hovering anywhere on the city (even if the pick
+      // resolved to a building on top of a hex) shows the underlying neighborhood's
+      // origins — this is the primary use case and should not be occluded by the
+      // building hover tooltip. Explicit layer-specific handlers below still win.
+      const preferOrigins = featureFlags.immigrationGlow && coordinate && coordinate.length >= 2
+        && !(layer && (layer.id === 'oldnyc-photos' || layer.id === 'demolished-landmarks'));
+      if (preferOrigins) {
+        const anchorIdx = nearestGlowAnchor(coordinate[0], coordinate[1]);
+        const anchor = GLOW_ANCHORS[anchorIdx];
+        if (anchor) {
+          const html = buildOriginsTooltipHtml(anchor.key, Math.round(currentYear), null);
+          if (html) {
+            return { html, style: { ...tooltipStyle, borderLeft: '2px solid #ffc870' } };
+          }
+        }
+      }
       // oldnyc photo pin hover → title + year + attribution
       if (layer && layer.id === 'oldnyc-photos') {
         const yearTag = object.year === currentYear ? `${object.year}` : `${object.year} (${Math.abs(object.year - currentYear)}y off)`;
@@ -1859,6 +3895,10 @@ function initDeck() {
     },
     onClick: ({object, layer}) => {
       if (!object) return;
+      if (layer && layer.id === 'bronx-hotspot-glyph') {
+        playClipInOverlay(object);
+        return;
+      }
       if (layer && layer.id === 'oldnyc-photos') {
         if (featureFlags.oldnycPhotos) showPhotoCard(object);
         return;
@@ -2098,7 +4138,518 @@ function buildLayers() {
   if (photos) layers.push(photos);
   const demolished = buildDemolishedLandmarksLayer();
   if (demolished) layers.push(demolished);
+  const pushLayer = (l) => {
+    if (!l) return;
+    if (Array.isArray(l)) layers.push(...l);
+    else layers.push(l);
+  };
+  pushLayer(buildImmigrationGlowLayer());
+  pushLayer(buildImmigrationHeatmapLayer());
+  pushLayer(buildImmigrationSettlersLayer());
+  pushLayer(buildImmigrationFlowLayer());
+  pushLayer(buildImmigrationTransportLayer());
+  pushLayer(buildBronxHotspotsLayer());
   return layers;
+}
+
+// Bronx video hotspots — three map markers at 1520 Sedgwick / Bronx River
+// Houses / Charlotte St. Click to play the matching clip in the cinematic
+// overlay. Visible only when bronxContent is on. Rendered as stacked
+// TextLayers (▶ glyph + title) so we don't need a custom icon atlas.
+function buildBronxHotspotsLayer() {
+  if (!featureFlags.bronxContent) return null;
+  const data = BRONX_CLIPS;
+  const glyphs = new TextLayer({
+    id: 'bronx-hotspot-glyph',
+    data,
+    getPosition: d => [d.lon, d.lat],
+    getText: () => '▶',
+    getSize: 26,
+    sizeUnits: 'pixels',
+    getColor: [255, 200, 112, 235],
+    getTextAnchor: 'middle',
+    getAlignmentBaseline: 'center',
+    fontFamily: "'Courier New', monospace",
+    fontWeight: 'bold',
+    billboard: true,
+    background: true,
+    getBackgroundColor: [0, 0, 0, 200],
+    backgroundPadding: [9, 6],
+    pickable: true,
+    parameters: { depthTest: false },
+  });
+  const labels = new TextLayer({
+    id: 'bronx-hotspot-label',
+    data,
+    getPosition: d => [d.lon, d.lat],
+    getText: d => d.title,
+    getSize: 10,
+    sizeUnits: 'pixels',
+    getColor: [255, 240, 200, 220],
+    getTextAnchor: 'middle',
+    getAlignmentBaseline: 'top',
+    fontFamily: "'Courier New', monospace",
+    fontWeight: 'bold',
+    billboard: true,
+    background: true,
+    getBackgroundColor: [0, 0, 0, 160],
+    backgroundPadding: [4, 2],
+    getPixelOffset: [0, 26],
+    pickable: false,
+    parameters: { depthTest: false },
+  });
+  return [glyphs, labels];
+}
+
+// Live garden-hose particle render. Not a pre-baked animation — every dot
+// you see is a CPU-tracked particle spawned this frame by the rAF loop
+// above. The layer is rebuilt each frame (cheap, ≤800 particles) so
+// deck.gl picks up the new positions.
+// PS2 pixel palette for the spray — limited cream/amber/white swatches
+// that match the PS2 bone-and-ink vibe used elsewhere in the app. No
+// smooth color gradients; each particle picks a swatch at birth and
+// stays there. Alpha is stepped (4 levels) rather than continuous so
+// the fade reads as chunky pixel dithering instead of photographic blur.
+const IMMIGRATION_PALETTE = [
+  [255, 240, 200],   // bone cream
+  [255, 220, 140],   // warm amber
+  [245, 200, 110],   // rust amber
+  [255, 255, 230],   // off-white
+];
+const IMMIGRATION_ALPHA_STEPS = [255, 200, 130, 60];
+
+// Shape dispatcher. Builds whatever deck.gl layer matches the current
+// bucket's shape choice. Each branch re-snapshots the particle array in
+// a format tailored to the layer (positions + alpha for dot, segments
+// for line, paths for trail) — deck.gl caches data arrays by reference
+// so a fresh snapshot each frame is the simplest way to guarantee
+// attribute re-upload.
+function buildImmigrationFlowLayer() {
+  if (!featureFlags.immigrationFlow) return null;
+  if (!immigrationIntensityByYear) return null;
+  if (!immigrationParticles.length) return null;
+  const now = performance.now();
+  const intensity = immigrationIntensityByYear.get(Math.round(currentYear)) ?? 0;
+  const tune = immigrationTuning[getImmigrationBucket(intensity)];
+  const shape = tune.shape || 'dot';
+
+  if (shape === 'line') return buildImmigrationLineLayer(tune, now);
+  if (shape === 'trail') return buildImmigrationTrailLayer(tune, now);
+  if (shape === 'parabola') return buildImmigrationParabolaLayer(tune, now);
+  if (shape === 'humans') return buildImmigrationHumansLayer(tune, now);
+  return buildImmigrationDotLayer(tune, now);
+}
+
+// Humans shape — same particle positions as the other shapes, rendered as
+// vector stick figures from the pre-generated icon atlas. Tinted per particle
+// via getColor so the wave still carries the age-based fade. Lightweight: one
+// IconLayer call, one 256×64 texture, no per-frame canvas work.
+function buildImmigrationHumansLayer(tune, now) {
+  const snapshot = immigrationParticles.map(p => ({
+    position: [p.lon, p.lat],
+    icon: HUMAN_TYPES[(p.colorIdx ?? 0) % HUMAN_TYPES.length],
+    color: immigrationParticleColor(p, now),
+  }));
+  return new IconLayer({
+    id: 'immigration-flow-humans',
+    data: snapshot,
+    iconAtlas: HUMAN_ICON_ATLAS,
+    iconMapping: HUMAN_ICON_MAPPING,
+    getIcon: d => d.icon,
+    getPosition: d => d.position,
+    getSize: tune.particleSize * 6,
+    sizeUnits: 'pixels',
+    sizeMinPixels: 8,
+    getColor: d => d.color,
+    billboard: true,
+    pickable: false,
+    updateTriggers: {
+      getSize: tune.particleSize,
+    },
+  });
+}
+
+function immigrationParticleColor(p, now) {
+  const age = (now - p.born) / p.lifeMs;
+  const stepIdx = Math.min(IMMIGRATION_ALPHA_STEPS.length - 1, Math.floor(age * IMMIGRATION_ALPHA_STEPS.length));
+  const swatch = IMMIGRATION_PALETTE[p.colorIdx ?? 0];
+  return [swatch[0], swatch[1], swatch[2], IMMIGRATION_ALPHA_STEPS[stepIdx]];
+}
+
+function buildImmigrationDotLayer(tune, now) {
+  const snapshot = immigrationParticles.map(p => ({
+    position: [p.lon, p.lat],
+    color: immigrationParticleColor(p, now),
+  }));
+  return new ScatterplotLayer({
+    id: 'immigration-flow-dot',
+    data: snapshot,
+    getPosition: p => p.position,
+    radiusUnits: 'pixels',
+    getRadius: tune.particleSize,
+    getFillColor: p => p.color,
+    stroked: tune.outline > 0,
+    lineWidthMinPixels: Math.max(0.5, tune.outline),
+    getLineColor: [40, 30, 10, 220],
+    pickable: false,
+    updateTriggers: {
+      getRadius: tune.particleSize,
+      getLineColor: tune.outline,
+    },
+  });
+}
+
+// Each particle becomes a short line segment behind its current position,
+// extending backward along its velocity vector by `tailSec` seconds of
+// motion. Length reflects speed — faster particles = longer streaks.
+// This is what reads as "water shooting out of a hose."
+function buildImmigrationLineLayer(tune, now) {
+  const tail = tune.tailSec;
+  const segments = immigrationParticles.map(p => ({
+    source: [p.lon - p.vLon * tail, p.lat - p.vLat * tail],
+    target: [p.lon, p.lat],
+    color: immigrationParticleColor(p, now),
+  }));
+  return new LineLayer({
+    id: 'immigration-flow-line',
+    data: segments,
+    getSourcePosition: s => s.source,
+    getTargetPosition: s => s.target,
+    getColor: s => s.color,
+    getWidth: tune.particleSize,
+    widthUnits: 'pixels',
+    widthMinPixels: 1,
+    pickable: false,
+    updateTriggers: { getWidth: tune.particleSize },
+  });
+}
+
+// Each particle renders as a short multi-segment path from its position
+// history. Gives a more comet-like trail than the straight-line version,
+// because the path follows any curvature in the particle's motion.
+function buildImmigrationTrailLayer(tune, now) {
+  const paths = immigrationParticles
+    .filter(p => p.history && p.history.length >= 2)
+    .map(p => ({
+      path: p.history,
+      color: immigrationParticleColor(p, now),
+    }));
+  return new PathLayer({
+    id: 'immigration-flow-trail',
+    data: paths,
+    getPath: p => p.path,
+    getColor: p => p.color,
+    getWidth: tune.particleSize,
+    widthUnits: 'pixels',
+    widthMinPixels: 1,
+    capRounded: true,
+    jointRounded: true,
+    pickable: false,
+    updateTriggers: { getWidth: tune.particleSize },
+  });
+}
+
+// Parabola shape: each particle carries its own quadratic Bézier (origin,
+// control point, target) and advances a `t ∈ [0,1]` cursor per frame. The
+// rendered path is a short tail sampled along the curve from (t - tailSpan)
+// to t — tailSec reuses its "seconds of travel" meaning via tRate. Once
+// lifeMs elapses the particle is culled; if it reaches t=1 first it clamps
+// and holds at the Manhattan target until it dies, which reads as "arrived."
+function buildImmigrationParabolaLayer(tune, now) {
+  const SAMPLES = 12;
+  const paths = [];
+  for (const p of immigrationParticles) {
+    if (!p.isArc) continue;
+    const tailSpan = Math.min(p.t, p.tRate * tune.tailSec);
+    const t0 = Math.max(0, p.t - tailSpan);
+    const span = p.t - t0;
+    const pts = [];
+    if (span <= 1e-6) {
+      pts.push([p.lon, p.lat], [p.lon, p.lat]);
+    } else {
+      for (let i = 0; i <= SAMPLES; i++) {
+        const tt = t0 + (span * i) / SAMPLES;
+        const u = 1 - tt;
+        const bx = u * u * p.p0x + 2 * u * tt * p.p1x + tt * tt * p.p2x;
+        const by = u * u * p.p0y + 2 * u * tt * p.p1y + tt * tt * p.p2y;
+        const envelope = Math.sin(Math.PI * tt);
+        const wob = p.wobbleAmp * envelope * Math.sin(p.wobbleFreq * tt + p.wobblePhase);
+        pts.push([bx + p.perpLon * wob, by + p.perpLat * wob]);
+      }
+    }
+    paths.push({ path: pts, color: immigrationParticleColor(p, now) });
+  }
+  return new PathLayer({
+    id: 'immigration-flow-parabola',
+    data: paths,
+    getPath: p => p.path,
+    getColor: p => p.color,
+    getWidth: tune.particleSize,
+    widthUnits: 'pixels',
+    widthMinPixels: 1,
+    capRounded: true,
+    jointRounded: true,
+    pickable: false,
+    updateTriggers: { getWidth: tune.particleSize },
+  });
+}
+
+// ── Immigration accumulation layers ────────────────────────────────────
+// All three below read from the same precomputed `immigrationSettlers`
+// atlas (built once when the timeline JSON loads). Each is independently
+// toggleable so they can be layered or compared: settlers = individual
+// dots, heatmap = aggregate density gradient, glow = neighborhood blooms.
+//
+// Binary-search helper: returns the cutoff index `k` such that the first
+// `k` settlers in the year-sorted atlas are visible at `year`. Called by
+// each of the three layers every frame, which is fine for ~2-3k atlas size.
+function visibleSettlerCount(year) {
+  let lo = 0, hi = immigrationSettlers.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (immigrationSettlers[mid].year <= year) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+}
+
+// Settlers layer — one tiny dot per atlas entry whose year <= currentYear.
+// Alpha blooms in during the first simulated year after arrival (so scrubbing
+// forward sees each cohort fade up cleanly) then slowly decays over ~200
+// years. Never fully invisible — there's a 30-alpha floor so colonial settlers
+// are still faintly present in 2026.
+function buildImmigrationSettlersLayer() {
+  if (!featureFlags.immigrationSettlers) return null;
+  if (!immigrationSettlers.length) return null;
+  const year = Math.round(currentYear);
+  const k = visibleSettlerCount(year);
+  if (k === 0) return null;
+  const visible = immigrationSettlers.slice(0, k);
+  return new ScatterplotLayer({
+    id: 'immigration-settlers',
+    data: visible,
+    getPosition: s => [s.lon, s.lat],
+    radiusUnits: 'pixels',
+    getRadius: 1.6,
+    radiusMinPixels: 1,
+    getFillColor: s => {
+      const age = year - s.year;
+      let alpha;
+      if (age < 1) alpha = 80 + age * 120;            // bloom in
+      else alpha = Math.max(30, 200 - age * 0.85);    // slow decay
+      const swatch = IMMIGRATION_PALETTE[s.colorIdx];
+      return [swatch[0], swatch[1], swatch[2], alpha];
+    },
+    pickable: false,
+    updateTriggers: {
+      getPosition: year,   // force re-eval on every integer year change
+      getFillColor: year,  // alpha depends on (year - s.year), must re-run per scrub
+      getRadius: year,
+    },
+  });
+}
+
+// Heatmap layer — cumulative density fed by the visible slice of the atlas.
+// HeatmapLayer handles aggregation internally; we just hand it the positions.
+// Intensity scales roughly with cumulative arrivals so late-era Manhattan
+// reads as saturated while 1820 is a faint spot around Five Points.
+function buildImmigrationHeatmapLayer() {
+  if (!featureFlags.immigrationHeatmap) return null;
+  if (!HeatmapLayer) {
+    console.warn('[immigration-heatmap] HeatmapLayer not available in this deck.gl bundle');
+    return null;
+  }
+  if (!immigrationSettlers.length) return null;
+  const year = Math.round(currentYear);
+  const k = visibleSettlerCount(year);
+  if (k === 0) return null;
+  const visible = immigrationSettlers.slice(0, k);
+  return new HeatmapLayer({
+    id: 'immigration-heatmap',
+    data: visible,
+    getPosition: s => [s.lon, s.lat],
+    getWeight: 1,
+    radiusPixels: 40,
+    intensity: 1.2,
+    threshold: 0.04,
+    colorRange: [
+      [255, 240, 200, 0],
+      [255, 220, 140, 60],
+      [245, 200, 110, 120],
+      [255, 180, 90,  170],
+      [255, 140, 60,  210],
+      [255, 100, 40,  240],
+    ],
+    aggregation: 'SUM',
+    pickable: false,
+    updateTriggers: {
+      getPosition: year,  // HeatmapLayer pre-aggregates into a texture; force re-upload on scrub
+      getWeight: year,
+    },
+  });
+}
+
+// Density hexes — custom-binned, rendered as thin extruded hex prisms with
+// a floating population-count label above each cell. We bin the visible
+// settlers into a coarse grid (see binSettlersToGrid), then emit a
+// ColumnLayer for geometry and a TextLayer for labels in the same pass so
+// they stay in sync. Thinner radius + reduced opacity keeps the city
+// underneath readable, while 3D extrusion gives the pitch-view the "rising
+// population" feel. Returns an ARRAY of layers — buildLayers flattens it.
+function buildImmigrationGlowLayer() {
+  if (!featureFlags.immigrationGlow) return null;
+  if (!immigrationSettlers.length) return null;
+  const year = Math.round(currentYear);
+  const k = visibleSettlerCount(year);
+  if (k === 0) return null;
+
+  const visible = immigrationSettlers.slice(0, k);
+  const bins = binSettlersToGrid(visible, 0.003);
+  if (!bins.length) return null;
+
+  // Max count drives the color ramp normalization — a percentile cap would
+  // be fancier, but max works fine for hand-scaled data.
+  let maxCount = 1;
+  for (const b of bins) if (b.count > maxCount) maxCount = b.count;
+
+  // Elevation math: getElevation returns raw settler count (1..~150) so
+  // elevationScale converts directly to meters. At scale=4 a 100-settler
+  // hex reads ~400m tall — taller than most NYC buildings but not the
+  // kilometers-high skyspike that count × SETTLERS_PER_ARRIVAL × 14 was
+  // producing before.
+  const DENSITY_HEX_ELEVATION_SCALE = 4;
+  const columns = new ColumnLayer({
+    id: 'immigration-density-hexes',
+    data: bins,
+    diskResolution: 6,             // hexagonal prism
+    radius: 150,                   // thinner than before (was ~240)
+    extruded: true,
+    elevationScale: DENSITY_HEX_ELEVATION_SCALE,
+    getElevation: b => b.count,
+    getPosition: b => [b.lon, b.lat],
+    getFillColor: b => {
+      const t = Math.min(1, b.count / maxCount);
+      // Warm ramp ember → hot amber, lower alpha so hexes don't occlude city.
+      return [
+        Math.floor(80  + t * 175),
+        Math.floor(50  + t * 160),
+        Math.floor(25  + t * 80),
+        Math.floor(120 + t * 100),
+      ];
+    },
+    material: {
+      ambient: 0.55,
+      diffuse: 0.7,
+      shininess: 40,
+      specularColor: [255, 220, 160],
+    },
+    opacity: 0.88,
+    pickable: true,  // enables neighborhood origins hover chart
+    updateTriggers: {
+      getElevation: year,
+      getFillColor: year,
+    },
+  });
+
+  // Label threshold: only surface hexes above ~30k locals so we don't spam
+  // tiny numbers across low-density years. Text positioned slightly above
+  // the top of each column in world-space z so it floats cleanly.
+  const MIN_LABEL_POP = 30_000;
+  const labeled = bins.filter(b => b.count * SETTLERS_PER_ARRIVAL >= MIN_LABEL_POP);
+  const labels = new TextLayer({
+    id: 'immigration-density-labels',
+    data: labeled,
+    // Anchor labels at the top of each column so they float above the hex
+    // instead of sitting at ground level. Z is in meters, matches the
+    // column elevation calc (count × DENSITY_HEX_ELEVATION_SCALE).
+    getPosition: b => [b.lon, b.lat, b.count * DENSITY_HEX_ELEVATION_SCALE + 20],
+    getText: b => formatPopulation(b.count * SETTLERS_PER_ARRIVAL),
+    getSize: 13,
+    sizeUnits: 'pixels',
+    getColor: [255, 240, 200, 240],
+    getTextAnchor: 'middle',
+    getAlignmentBaseline: 'bottom',
+    fontFamily: "'Courier New', monospace",
+    fontWeight: 'bold',
+    billboard: true,
+    background: true,
+    getBackgroundColor: [0, 0, 0, 170],
+    backgroundPadding: [4, 2],
+    outlineWidth: 0,
+    pickable: false,
+    // Elevate label so it floats above its column. ColumnLayer elevations are
+    // in meters; getPixelOffset isn't enough once you scrub into a dense era.
+    getPixelOffset: [0, -6],
+    updateTriggers: {
+      getText: year,
+      getPosition: year,
+    },
+  });
+
+  return [columns, labels];
+}
+
+// Transport icons — era-appropriate mode-of-arrival markers. Steamship at
+// the active water gateway (Battery → Castle Garden → Ellis Island) and
+// airplane markers at LGA / JFK / EWR for the air-arrivals era. Uses a
+// TextLayer with Unicode symbols so we don't need an icon atlas; the symbols
+// (⛴ ✈) render as vector glyphs from system fonts. Tied to the current year
+// so scrubbing visibly hands off from ship to planes mid-20th century.
+function buildImmigrationTransportLayer() {
+  if (!featureFlags.immigrationTransport) return null;
+  const year = Math.round(currentYear);
+  const markers = [];
+
+  // Water arrivals — one active port icon per era
+  if (year < 1855) {
+    markers.push({ lon: -74.0170, lat: 40.7033, text: '⛵', label: 'Battery' });
+  } else if (year < 1892) {
+    markers.push({ lon: -74.0170, lat: 40.7033, text: '⛴', label: 'Castle Garden' });
+  } else if (year < 1955) {
+    markers.push({ lon: -74.0397, lat: 40.6994, text: '⛴', label: 'Ellis Island' });
+  }
+
+  // Air arrivals — each airport appears at its opening year
+  if (year >= 1928) markers.push({ lon: -74.1745, lat: 40.6895, text: '✈', label: 'Newark' });
+  if (year >= 1939) markers.push({ lon: -73.8740, lat: 40.7769, text: '✈', label: 'LaGuardia' });
+  if (year >= 1948) markers.push({ lon: -73.7781, lat: 40.6413, text: '✈', label: 'JFK' });
+
+  if (!markers.length) return null;
+
+  return [
+    new TextLayer({
+      id: 'immigration-transport-icons',
+      data: markers,
+      getPosition: d => [d.lon, d.lat],
+      getText: d => d.text,
+      getSize: 34,
+      sizeUnits: 'pixels',
+      getColor: [255, 240, 200, 255],
+      billboard: true,
+      background: true,
+      getBackgroundColor: [0, 0, 0, 180],
+      backgroundPadding: [6, 4],
+      pickable: false,
+      updateTriggers: {
+        getText: year,
+        getPosition: year,
+      },
+    }),
+    new TextLayer({
+      id: 'immigration-transport-labels',
+      data: markers,
+      getPosition: d => [d.lon, d.lat],
+      getText: d => d.label,
+      getSize: 10,
+      sizeUnits: 'pixels',
+      getColor: [255, 220, 160, 200],
+      getPixelOffset: [0, 24],
+      fontFamily: "'Courier New', monospace",
+      billboard: true,
+      pickable: false,
+      updateTriggers: { getText: year, getPosition: year },
+    }),
+  ];
 }
 
 // Demolished landmarks from Wikidata. A pin is "alive" while the building
@@ -2246,6 +4797,7 @@ slider.addEventListener('input', () => {
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
+  updateImmigrationOriginsPanel();
   if (deckgl) deckgl.setProps({ layers: buildLayers() });
   if (featureFlags.photoMode) syncPhotoModeToYear();
 });
@@ -2264,6 +4816,7 @@ window.addEventListener('keydown', (e) => {
 const playBtn = document.getElementById('play-btn');
 let playTween = null;
 
+
 function syncYear(year) {
   currentYear = Math.round(year);
   slider.value = currentYear;
@@ -2271,6 +4824,7 @@ function syncYear(year) {
   eraLabel.textContent = getEra(currentYear).label;
   updateVisibleCount();
   updateLegendHighlight();
+  updateImmigrationOriginsPanel();
   if (deckgl) deckgl.setProps({ layers: buildLayers() });
   if (featureFlags.photoMode) syncPhotoModeToYear();
 }
@@ -2295,8 +4849,9 @@ playBtn.addEventListener('click', () => {
       onComplete: () => {
         playBtn.classList.remove('playing');
         playing = false;
-      }
+      },
     });
+    playTween.timeScale(playbackSpeed);
   }
 });
 
@@ -2588,6 +5143,57 @@ function buildEraDots() {
   });
 }
 
+// ── Bronx Content (feature-flagged) ──
+// Shared metadata for the Postmodern-era Bronx story: cutscene photos,
+// map hotspots, and the cinematic video trigger all read from this array.
+// Coordinates: 1520 Sedgwick Ave (Kool Herc), Bronx River Houses, Charlotte St.
+const BRONX_CLIPS = [
+  {
+    key: 'kool-herc',
+    photo: 'cultural-content/bronx/kool-herc.jpg',
+    video: 'cultural-content/bronx/kool-herc.mp4',
+    caption: 'DJ Kool Herc at the birth of hip-hop, 1973',
+    title: 'HIP-HOP BORN',
+    sub: '1520 Sedgwick Ave · 1973 · Christie\'s',
+    location: '◉ 1520 Sedgwick Ave · 40.8301°N 73.9225°W',
+    lon: -73.9225,
+    lat: 40.8301,
+  },
+  {
+    key: 'bronx-river-party',
+    photo: 'cultural-content/bronx/bronx-river-party.jpg',
+    video: 'cultural-content/bronx/bronx-river-party.mp4',
+    caption: 'Hip-hop party, Bronx River Center, 1980s',
+    title: 'BRONX RIVER CENTER',
+    sub: '1980s · Kinolibrary',
+    location: '◉ Bronx River Houses · 40.8231°N 73.8782°W',
+    lon: -73.8782,
+    lat: 40.8231,
+  },
+  {
+    key: 'south-bronx-fire',
+    photo: 'cultural-content/bronx/south-bronx-fire.jpg',
+    video: 'cultural-content/bronx/south-bronx-fire.mp4',
+    caption: 'South Bronx apartment fire, ThamesTV, 1980',
+    title: 'SOUTH BRONX BURNING',
+    sub: 'Charlotte St · 1980 · ThamesTV',
+    location: '◉ Charlotte St · 40.8290°N 73.8940°W',
+    lon: -73.8940,
+    lat: 40.8290,
+  },
+];
+
+// Overview camera centered on the three hotspots — used when Bronx Content is on.
+const BRONX_CAMERA = {
+  latitude: 40.827,
+  longitude: -73.898,
+  zoom: 13.4,
+  pitch: 50,
+  bearing: -10,
+};
+
+const BRONX_CLIPS_BY_KEY = Object.fromEntries(BRONX_CLIPS.map(c => [c.key, c]));
+
 // ── Guided Tour Mode ──
 const STATIONS = [
   {
@@ -2751,6 +5357,7 @@ const STATIONS = [
     label: 'POSTMODERN',
     targetYear: 1985,
     camera: { latitude: 40.7580, longitude: -73.9855, zoom: 14.6, pitch: 50, bearing: -10 },
+    bronxCamera: BRONX_CAMERA,
     vignette: [
       { icon: '🎤', label: 'Boombox Mic', year: '1979' },
       { icon: '🎨', label: 'Spray Can', year: '1981' },
@@ -2767,11 +5374,12 @@ const STATIONS = [
         { src: 'data/photos/postmodern/2.jpg', caption: 'Subway Graffiti, NARA, 1973' },
         { src: 'data/photos/postmodern/3.jpg', caption: 'CBGB, Bowery' },
       ],
-      bronxPhotos: [
-        { src: 'cultural-content/bronx/kool-herc.jpg', caption: 'DJ Kool Herc at the birth of hip-hop, 1973' },
-        { src: 'cultural-content/bronx/bronx-river-party.jpg', caption: 'Hip-hop party, Bronx River Center, 1980s' },
-        { src: 'cultural-content/bronx/south-bronx-fire.jpg', caption: 'South Bronx apartment fire, ThamesTV, 1980' },
-      ],
+      bronxPhotos: BRONX_CLIPS.map(c => ({
+        src: c.photo,
+        caption: c.caption,
+        video: c.video,
+        clipKey: c.key,
+      })),
       quote: 'The South Bronx is burning.',
       attribution: '— Howard Cosell, 1977 World Series broadcast',
       body: 'New York nearly went bankrupt in 1975. The federal government told the city to drop dead. Landlords torched buildings for insurance. Subway cars were covered in graffiti. Times Square was a grindhouse district. But in the wreckage: hip-hop was born in the Bronx, the downtown art scene exploded in abandoned SoHo lofts, and punk carved itself into CBGB\'s walls. The city that almost died became the most creatively productive place on the planet.'
@@ -2812,6 +5420,14 @@ function getCutscenePhotos(station) {
     return cs.bronxPhotos;
   }
   return cs.photos || [];
+}
+
+function getStationCamera(station) {
+  if (!station) return null;
+  if (featureFlags.bronxContent && station.id === 'postmodern' && station.bronxCamera) {
+    return station.bronxCamera;
+  }
+  return station.camera;
 }
 
 function getStationHeroSrc(station) {
@@ -2928,10 +5544,11 @@ function goToStation(index) {
   const flyDuration = 2.5;
   const proxy = { year: currentYear };
 
-  // Camera fly-to (deck.gl handles its own interpolation)
+  // Camera fly-to (deck.gl handles its own interpolation).
+  // getStationCamera swaps in the Bronx overview when bronxContent is on.
   deckgl.setProps({
     initialViewState: {
-      ...station.camera,
+      ...getStationCamera(station),
       transitionDuration: flyDuration * 1000,
       transitionInterpolator: new deck.FlyToInterpolator(),
     }
@@ -2968,22 +5585,33 @@ function openCutscene(station) {
   document.getElementById('cs-title').textContent = cs.title;
   document.getElementById('cs-years').textContent = cs.years;
 
-  // Photos (flag-aware: Bronx Content swaps the postmodern set)
+  // Photos (flag-aware: Bronx Content swaps the postmodern set).
+  // Photos with a `video` field become clickable and play that video in the
+  // cinematic overlay via playClipInOverlay().
   const photosEl = document.getElementById('cs-photos');
   photosEl.innerHTML = '';
   getCutscenePhotos(station).forEach(photo => {
+    const isObj = typeof photo !== 'string';
     const div = document.createElement('div');
-    div.className = 'cs-photo';
+    div.className = 'cs-photo' + (isObj && photo.video ? ' has-video' : '');
     const img = document.createElement('img');
-    img.src = typeof photo === 'string' ? '' : photo.src;
-    img.alt = typeof photo === 'string' ? photo : photo.caption;
+    img.src = isObj ? photo.src : '';
+    img.alt = isObj ? photo.caption : photo;
     img.loading = 'eager';
     img.decoding = 'async';
     const cap = document.createElement('div');
     cap.className = 'photo-caption';
-    cap.textContent = typeof photo === 'string' ? photo : photo.caption;
+    cap.textContent = isObj ? photo.caption : photo;
     div.appendChild(img);
     div.appendChild(cap);
+    if (isObj && photo.video) {
+      div.addEventListener('click', () => {
+        const clip = photo.clipKey
+          ? BRONX_CLIPS_BY_KEY[photo.clipKey]
+          : { video: photo.video, title: photo.caption || '', sub: '', location: '' };
+        playClipInOverlay(clip);
+      });
+    }
     photosEl.appendChild(div);
   });
 
