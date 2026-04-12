@@ -2750,7 +2750,7 @@ Promise.all([
     // These appear at construction year and vanish at demolition year
     buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
-    // setTimeout(loadOuterBoroughs, 800); // DISABLED FOR DEMO RECORDING - Manhattan+Bronx only
+    setTimeout(loadOuterBoroughs, 800);
   });
 
 function loadOuterBoroughs() {
@@ -4046,6 +4046,18 @@ function initDeck() {
       if (layer && layer.id === 'demolished-landmarks') {
         showDemolishedCard(object);
         return;
+      }
+      // Check if a demolished landmark is very close to the clicked building
+      // (building polygons intercept clicks meant for landmark dots)
+      if (featureFlags.demolishedLandmarks && demolishedLandmarks.length && object.p) {
+        const [cx, cy] = polygonCentroid(object.p);
+        const nearLandmark = demolishedLandmarks.find(l =>
+          Math.abs(l.lon - cx) < 0.0008 && Math.abs(l.lat - cy) < 0.0008
+        );
+        if (nearLandmark) {
+          showDemolishedCard(nearLandmark);
+          return;
+        }
       }
       showCard(object);
     },
