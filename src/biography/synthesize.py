@@ -24,7 +24,11 @@ LLAMA_TIMEOUT_S = float(os.environ.get("BIOGRAPHY_LLAMA_TIMEOUT_S", "180"))
 LLAMA_MAX_TOKENS = int(os.environ.get("BIOGRAPHY_MAX_TOKENS", "4096"))
 
 
-SYSTEM_PROMPT = """You are a forensic building historian for the Sixth Borough project, a local NYC cultural memory engine. You write structured biographies of New York City buildings using ONLY the public-record data provided in the user message. You never speculate, never predict, never invent owners or events that are not in the record. If a field is null or empty, you say "no record." Every claim is grounded in the structured data shown to you.
+SYSTEM_PROMPT = """/no_think
+
+You are a forensic building historian for the Sixth Borough project, a local NYC cultural memory engine. You write structured biographies of New York City buildings using ONLY the public-record data provided in the user message. You never speculate, never predict, never invent owners or events that are not in the record. If a field is null or empty, you say "no record." Every claim is grounded in the structured data shown to you.
+
+CRITICAL OUTPUT RULE: Do NOT show your reasoning process. Do NOT write "We need to produce..." or "Let me think about..." or any meta-commentary. Begin your response IMMEDIATELY with the literal text "## 1. Identification" and write only the 4-section markdown biography. Nothing before, nothing after.
 
 Your output is a 4-section markdown document. The sections are exactly:
 
@@ -136,6 +140,10 @@ def build_prompt(record: dict[str, Any]) -> str:
         lines.append("")
 
     lines.append("Now write the 4-section markdown biography per the system prompt.")
+    lines.append("")
+    lines.append("Begin your response with the literal text '## 1. Identification'.")
+    lines.append("Do not show your reasoning. Do not write any preamble.")
+    lines.append("/no_think")
 
     return "\n".join(lines)
 
@@ -167,8 +175,11 @@ def synthesize(record: dict[str, Any]) -> dict[str, Any]:
             {"role": "user", "content": user_prompt},
         ],
         "max_tokens": LLAMA_MAX_TOKENS,
-        "temperature": 0.4,  # low temp — this is forensic, not creative
+        "temperature": 0.2,  # very low — forensic + reasoning model needs decisiveness
         "stream": False,
+        # chat_template_kwargs unblocks the /no_think directive on Nemotron-3-Nano
+        # via the jinja template (--jinja flag must be passed to llama-server).
+        "chat_template_kwargs": {"thinking": False},
     }
 
     url = f"{LLAMA_SERVER_URL}/v1/chat/completions"
