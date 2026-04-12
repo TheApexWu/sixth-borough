@@ -1024,6 +1024,7 @@ const FLAGS = {
   libertyIsland:  { label: 'Liberty Island 3D', desc: 'Load photogrammetry mesh of Liberty Island into the harbor. Auto-flies camera when enabled.', group: 'effects', default: false },
   oldnycPhotos:   { label: 'oldnyc Photos', desc: 'NYPL Milstein archival photo pins — dots appear as the slider crosses each photo\'s year (±5y). Building clicks also surface nearby photos in the story card.', group: 'ui', default: true },
   demolishedLandmarks: { label: 'Demolished Landmarks', desc: 'Wikidata pins (~295) for NYC buildings that no longer exist — Penn Station, Singer, Polo Grounds, etc. Show white while the building existed, amber ghost after demolition.', group: 'effects', default: false },
+  bronxContent:   { label: 'Bronx Content', desc: 'Swap the Postmodern era cutscene photos (42nd St / subway graffiti / CBGB) for Bronx-specific archival imagery — DJ Kool Herc, Bronx River Center hip-hop party, South Bronx fire. Staging ground for Bronx video hotspots in a later pass.', group: 'effects', default: false },
   photoMode:      { label: 'Photo Mode', desc: 'Fullscreen archival-photo viewer. Timeline slider and era dots scrub through ~150 Manhattan photos in chronological order. Hit PLAY for a timed slideshow, ← → to step manually, ESC to exit.', group: 'ui', default: false },
   freeCamera:     { label: 'Free Camera', desc: 'Unlock pitch and enable drag-rotate. Right-click + drag (or ctrl+drag) to orbit. Drag to pan, scroll to zoom.', group: 'ui', default: false },
 };
@@ -2766,6 +2767,11 @@ const STATIONS = [
         { src: 'data/photos/postmodern/2.jpg', caption: 'Subway Graffiti, NARA, 1973' },
         { src: 'data/photos/postmodern/3.jpg', caption: 'CBGB, Bowery' },
       ],
+      bronxPhotos: [
+        { src: 'cultural-content/bronx/kool-herc.jpg', caption: 'DJ Kool Herc at the birth of hip-hop, 1973' },
+        { src: 'cultural-content/bronx/bronx-river-party.jpg', caption: 'Hip-hop party, Bronx River Center, 1980s' },
+        { src: 'cultural-content/bronx/south-bronx-fire.jpg', caption: 'South Bronx apartment fire, ThamesTV, 1980' },
+      ],
       quote: 'The South Bronx is burning.',
       attribution: '— Howard Cosell, 1977 World Series broadcast',
       body: 'New York nearly went bankrupt in 1975. The federal government told the city to drop dead. Landlords torched buildings for insurance. Subway cars were covered in graffiti. Times Square was a grindhouse district. But in the wreckage: hip-hop was born in the Bronx, the downtown art scene exploded in abandoned SoHo lofts, and punk carved itself into CBGB\'s walls. The city that almost died became the most creatively productive place on the planet.'
@@ -2799,9 +2805,19 @@ const STATIONS = [
   }
 ];
 
+function getCutscenePhotos(station) {
+  if (!station || !station.cutscene) return [];
+  const cs = station.cutscene;
+  if (featureFlags.bronxContent && station.id === 'postmodern' && cs.bronxPhotos && cs.bronxPhotos.length) {
+    return cs.bronxPhotos;
+  }
+  return cs.photos || [];
+}
+
 function getStationHeroSrc(station) {
-  if (!station || !station.cutscene || !station.cutscene.photos || !station.cutscene.photos.length) return '';
-  const hero = station.cutscene.photos[0];
+  const photos = getCutscenePhotos(station);
+  if (!photos.length) return '';
+  const hero = photos[0];
   return typeof hero === 'string' ? '' : (hero.src || '');
 }
 
@@ -2952,10 +2968,10 @@ function openCutscene(station) {
   document.getElementById('cs-title').textContent = cs.title;
   document.getElementById('cs-years').textContent = cs.years;
 
-  // Photos
+  // Photos (flag-aware: Bronx Content swaps the postmodern set)
   const photosEl = document.getElementById('cs-photos');
   photosEl.innerHTML = '';
-  cs.photos.forEach(photo => {
+  getCutscenePhotos(station).forEach(photo => {
     const div = document.createElement('div');
     div.className = 'cs-photo';
     const img = document.createElement('img');
