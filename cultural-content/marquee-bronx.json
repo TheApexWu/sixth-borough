@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "description": "Hand-curated marquee titles + bodies for the Bronx hip-hop birth chain. Loaded by index.html at startup, merged into the global MARQUEE table keyed by BIN. Replaces the placeholder fallback in showCard().",
+    "source_events": "data/events-seed.json",
+    "source_bins": "data/biography_cache.json (matched via /biography lookup at session 45)",
+    "authoring_session": "Session 45 / Apr 12 2026 / hand-curated by Alex",
+    "count": 8,
+    "events_without_bin_match": [
+      "bronx-1979-rappers-delight",
+      "bronx-1981-the-message",
+      "bronx-1982-wild-style-filming",
+      "bronx-1982-planet-rock",
+      "bronx-1983-rock-steady-roxy",
+      "bronx-1984-fashion-moda",
+      "bronx-1984-beat-street",
+      "bronx-1959-cross-bronx-expressway-displacement",
+      "bronx-1965-puerto-rican-migration",
+      "bronx-1923-loews-paradise",
+      "bronx-1968-bronx-opera-house"
+    ]
+  },
+  "marquee": {
+    "2008286": {
+      "title": "Kool Herc invents the breakbeat",
+      "year": 1973,
+      "body": "August 11 1973. Cindy Campbell's birthday party at 1520 Sedgwick Avenue rec room. Her brother Clive Campbell — DJ Kool Herc — isolates the percussion break of two records using two turntables and the merry-go-round technique is born. Hip-hop has a birthday and an address, both in the public record.",
+      "photo": "cultural-content/bronx/kool-herc.jpg",
+      "event_id": "bronx-1973-08-11-sedgwick",
+      "narration_seed": "August 11, 1973. Cindy Campbell's birthday party in the rec room of 1520 Sedgwick Avenue. Her brother, Clive Campbell, who calls himself DJ Kool Herc, plugs in two turntables and learns to isolate the percussion break of two records, switching between them to extend the section dancers love most. The technique has no name yet. Hip-hop is born thirty feet from where you're standing.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2008286",
+      "matched_year_built": 1920,
+      "distance_m": 14.6
+    },
+    "2114829": {
+      "title": "Kool Herc moves outside to Cedar Park",
+      "year": 1974,
+      "body": "Kool Herc moves the party from indoor rec rooms to the open-air Cedar Park between 167th and 169th Streets, plugging into the streetlight base for power. The first time hip-hop is performed outdoors. Listed as a community park by NYC Parks; the lampposts are the receipts.",
+      "event_id": "bronx-1974-cedar-park",
+      "narration_seed": "Kool Herc graduates from rec rooms to outdoor jams at Cedar Park, plugged into the streetlight. The crowds get too big for any indoor venue. The merry-go-round technique becomes the breakbeat, and the breakbeat becomes a thing the dancers wait for.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2114829",
+      "matched_year_built": 2008,
+      "distance_m": 15.3
+    },
+    "2023885": {
+      "title": "Afrika Bambaataa starts the Zulu Nation",
+      "year": 1975,
+      "body": "Afrika Bambaataa converts his Black Spades street gang into the Universal Zulu Nation at the Bronx River Houses (NYCHA, 1953), a 1,246-unit public housing development. Hip-hop's first organizational form is born inside subsidized housing, on the same blocks the Cross-Bronx had emptied a decade earlier.",
+      "event_id": "bronx-1975-bronx-river-houses",
+      "narration_seed": "At the Bronx River Houses community center, Afrika Bambaataa, ex-Black Spades warlord, decides the gang energy of the borough has to go somewhere. He starts holding parties. The crew that forms around him becomes the Universal Zulu Nation, and the parties become the second axis of early hip-hop alongside Herc's. The breakbeat now has a politics.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2023885",
+      "matched_year_built": 1927,
+      "distance_m": 6.4
+    },
+    "2063059": {
+      "title": "T-Connection becomes a hip-hop venue",
+      "year": 1975,
+      "body": "T-Connection on White Plains Road becomes the second formal hip-hop venue after Hevalo. The address is a converted dancehall above a stretch of stores; tickets cost two dollars; the DJ booth is on the floor. The early hip-hop economy is documented in flyer ephemera now in the Buddy Esquire collection at Cornell.",
+      "event_id": "bronx-1975-t-connection",
+      "narration_seed": "The T-Connection on White Plains Road in the North Bronx becomes one of the first clubs that books hip-hop DJs as headliners rather than as a novelty. Cold Crush Brothers, Funky 4 + 1, the early MC battles all happen here. The club matters because it makes hip-hop a thing you go OUT to see, not just a thing that happens in the park.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2063059",
+      "matched_year_built": 1928,
+      "distance_m": 9.8
+    },
+    "2127501": {
+      "title": "Grandmaster Flash invents the quick mix theory",
+      "year": 1976,
+      "body": "Joseph Saddler — Grandmaster Flash — invents the quick mix theory: scientifically isolating the breakbeat by hand-marking records with crayon and pre-cueing the next break with headphones. The technique that made hip-hop deejaying reproducible. Documented in his 2008 memoir.",
+      "event_id": "bronx-1976-grandmaster-flash-quick-mix",
+      "narration_seed": "Joseph Saddler, who calls himself Grandmaster Flash, working out of his apartment in the South Bronx, develops what he calls the Quick Mix Theory. He times the breakbeat by marking the records with crayon, and learns to cut between two copies of the same break with frame accuracy. The DJ stops being someone who plays records and becomes someone who plays the turntable as an instrument.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2127501",
+      "matched_year_built": 0,
+      "distance_m": 19.6
+    },
+    "2096474": {
+      "title": "The 1977 NYC blackout — looted turntables proliferate",
+      "year": 1977,
+      "body": "The July 13 1977 blackout caused 25 hours of looting across NYC; in the Bronx, electronics stores were emptied. Hundreds of turntables, mixers, and amplifiers entered the borough's economy overnight. The number of working hip-hop crews quadrupled within six months. The receipt is the police report, the result is documented in every oral history.",
+      "event_id": "bronx-1977-blackout-jul-13",
+      "narration_seed": "July 13, 1977. The lights go out in New York City for 25 hours. By the time they come back on, every electronics store in the South Bronx that wasn't bolted down has been emptied. Hundreds of new aspiring DJs suddenly have turntables, mixers, speakers. Hip-hop's barrier to entry collapses overnight. The DJs you've heard of, and a thousand more you haven't, learned on equipment that came home that night.",
+      "niche_tags": [
+        "hip-hop",
+        "immigration"
+      ],
+      "matched_bin": "2096474",
+      "matched_year_built": 1914,
+      "distance_m": 22.0
+    },
+    "2115819": {
+      "title": "Disco Fever opens — the first true hip-hop club",
+      "year": 1978,
+      "body": "Disco Fever on Jerome Avenue and 167th Street, opened 1978 by Sal Abbatiello, becomes the first dedicated hip-hop nightclub. Grandmaster Flash, Cold Crush Brothers, Funky 4+1 all played here weekly. The club closed in 1986; the building still stands, now a different storefront.",
+      "event_id": "bronx-1978-disco-fever",
+      "narration_seed": "The Disco Fever on Jerome Avenue is the club where hip-hop stops being a Bronx thing and starts being a music industry thing. Sal Abbatiello's club hosts every name in the borough. Sugar Hill Records signs acts they hear here. The room has a ceiling and a sound system, and for a few years it is the center of the world.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2115819",
+      "matched_year_built": 1992,
+      "distance_m": 29.9
+    },
+    "2116225": {
+      "title": "Cold Crush Brothers vs Fantastic 5 era",
+      "year": 1980,
+      "body": "The Cold Crush Brothers vs Fantastic Romantic 5 battles at Harlem World become the canonical proof of hip-hop as a competitive performance art. The MC routines, the call-and-response, the ensemble theatricality — all on cassette tapes that circulated through the boroughs and into the Library of Congress collection.",
+      "event_id": "bronx-1980-cold-crush-brothers",
+      "narration_seed": "The early MC era is dominated by crew battles. Cold Crush Brothers — Charlie Chase, Tony Tone, Grandmaster Caz, JDL, Almighty Kay-Gee, Easy AD — versus the Fantastic 5. Routines, harmonies, choreographed call-and-response. This is hip-hop before solo MCs, when an emcee crew was a band and the DJ was the bandleader.",
+      "niche_tags": [
+        "hip-hop"
+      ],
+      "matched_bin": "2116225",
+      "matched_year_built": 2007,
+      "distance_m": 33.4
+    }
+  }
+}
