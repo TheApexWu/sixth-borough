@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIXTH BOROUGH — Demo Teleprompter</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0a; color: #ddd;
+    font-family: 'Courier New', monospace;
+    padding: 40px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { color: #00b8d4; font-size: 18px; letter-spacing: 4px; margin-bottom: 8px; }
+  .meta { color: #555; font-size: 11px; letter-spacing: 2px; margin-bottom: 40px; }
+
+  .beat {
+    border: 1px solid #222;
+    margin-bottom: 24px;
+    padding: 24px 28px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .beat:hover { border-color: #00b8d4; }
+  .beat.active { border-color: #00b8d4; background: rgba(0,184,212,0.04); }
+
+  .beat-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .beat-label {
+    font-size: 10px; letter-spacing: 3px; color: #00b8d4;
+    text-transform: uppercase;
+  }
+  .beat-time {
+    font-size: 10px; color: #555; letter-spacing: 1px;
+  }
+
+  .stage-direction {
+    color: #666; font-size: 12px; line-height: 1.6;
+    margin-bottom: 12px; font-style: italic;
+  }
+
+  .spoken {
+    color: #fff; font-size: 18px; line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .spoken .sponsor { color: #00b8d4; font-weight: bold; }
+  .spoken .emphasis { color: #f5c842; }
+
+  .silent {
+    color: #888; font-size: 13px; line-height: 1.5;
+    border-left: 2px solid #333; padding-left: 16px;
+    margin: 12px 0;
+  }
+
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(10,10,10,0.95);
+    border-top: 1px solid #222;
+    padding: 12px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+  }
+  .nav button {
+    background: none; border: 1px solid #333; color: #ddd;
+    font-family: 'Courier New', monospace; font-size: 12px;
+    padding: 8px 20px; cursor: pointer; letter-spacing: 2px;
+  }
+  .nav button:hover { border-color: #00b8d4; color: #00b8d4; }
+  .nav .timer { font-size: 24px; color: #00b8d4; letter-spacing: 2px; }
+
+  .checklist {
+    margin-top: 40px; border-top: 1px solid #222; padding-top: 24px;
+  }
+  .checklist h2 { font-size: 12px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 16px; }
+  .checklist label {
+    display: block; font-size: 13px; color: #888; margin: 6px 0;
+    cursor: pointer;
+  }
+  .checklist label:hover { color: #ddd; }
+  .checklist input[type="checkbox"] { margin-right: 10px; }
+
+  .oneliner {
+    margin-top: 32px; border-top: 1px solid #222; padding-top: 24px;
+  }
+  .oneliner h2 { font-size: 12px; letter-spacing: 3px; color: #00b8d4; margin-bottom: 12px; }
+  .oneliner p { font-size: 13px; color: #888; line-height: 1.6; margin: 8px 0; }
+  .oneliner .for { font-size: 10px; color: #555; letter-spacing: 2px; }
+
+  .buytime {
+    margin-top: 24px; border: 1px solid #553300; padding: 16px 20px;
+    background: rgba(85,51,0,0.1);
+  }
+  .buytime h3 { font-size: 10px; letter-spacing: 3px; color: #f5c842; margin-bottom: 8px; }
+  .buytime p { font-size: 14px; color: #ddd; line-height: 1.6; }
+
+  @media print {
+    body { background: #fff; color: #111; padding: 20px; }
+    .beat { border-color: #ccc; page-break-inside: avoid; }
+    .spoken { color: #000; }
+    .sponsor { color: #006; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<h1>SIXTH BOROUGH</h1>
+<div class="meta">DEMO TELEPROMPTER — SUN APR 12 2026 — TARGET 110 SEC — CROSS-BRONX ANCHOR</div>
+
+<!-- BEAT 1 -->
+<div class="beat" id="beat1">
+  <div class="beat-header">
+    <span class="beat-label">Beat 1 — Opening</span>
+    <span class="beat-time">~12 sec | 33 words</span>
+  </div>
+  <div class="stage-direction">Stand next to the GN100. Tap the case on the second sentence. Hand touches metal.</div>
+  <div class="spoken">
+    "Sixth Borough is New York City's memory, localized in one box. One <span class="sponsor">DGX Spark</span>. One <span class="sponsor">GB10 Grace Blackwell Superchip</span>. <span class="sponsor">128 gigabytes of unified memory</span>. <span class="sponsor">Running locally</span>. <span class="sponsor">No internet connection at runtime</span>."
+  </div>
+</div>
+
+<!-- BEAT 2 -->
+<div class="beat" id="beat2">
+  <div class="beat-header">
+    <span class="beat-label">Beat 2 — The Map</span>
+    <span class="beat-time">~18 sec | 35 words + 5 sec silent drag</span>
+  </div>
+  <div class="stage-direction">Walk to the screen. Map is already on display, year slider at 2026.</div>
+  <div class="spoken">
+    "This is every building in New York City, extruded to its real LiDAR-measured height, color-coded by architectural era. The slider at the bottom is the year. Drag it back to 1948."
+  </div>
+  <div class="silent">
+    SILENT: Drag year slider 2026 &rarr; 1948 in ONE continuous motion, ~5 sec. Buildings appear/disappear. Don't narrate during drag. Let the map do the work.
+  </div>
+</div>
+
+<!-- BEAT 3 -->
+<div class="beat" id="beat3">
+  <div class="beat-header">
+    <span class="beat-label">Beat 3 — The Cross-Bronx</span>
+    <span class="beat-time">~22 sec | 50 words + 6 sec silent</span>
+  </div>
+  <div class="stage-direction">Eye contact on the displacement number. This is where they stop thinking "cool viz."</div>
+  <div class="spoken">
+    "1948. Robert Moses begins demolishing 159 buildings to push the Cross-Bronx Expressway through the South Bronx. Watch."
+  </div>
+  <div class="silent">
+    SILENT: Drag slider 1948 &rarr; 1972 slowly, ~6 sec. Cross-Bronx corridor empties. Migration cone fires. Pure visual.
+  </div>
+  <div class="spoken">
+    "<span class="emphasis">Sixty thousand people displaced over twenty-four years.</span> Every particle is a documented person. Real DOB demolition records. Real ACS census data. They were pushed onto a few blocks of Sedgwick Avenue."
+  </div>
+</div>
+
+<!-- BEAT 4 -->
+<div class="beat" id="beat4">
+  <div class="beat-header">
+    <span class="beat-label">Beat 4 — The Click</span>
+    <span class="beat-time">~25 sec | 60 words + 8-12 sec silent read</span>
+  </div>
+  <div class="stage-direction">Move closer to screen. Don't narrate the click. The silence IS the demo.</div>
+  <div class="spoken">
+    "August 11, 1973. 1520 Sedgwick. The rec room of the building that was full because of the displacement you just watched."
+  </div>
+  <div class="silent">
+    SILENT: Click bronx-1973-08-11-sedgwick pin. Nemotron narration streams in. STAY SILENT 8-12 sec while judges read. Most important silence of the demo.
+  </div>
+  <div class="spoken">
+    "That text was just generated by a 30-billion-parameter model from <span class="sponsor">NVIDIA's Nemotron model family</span>, running on this box, ten feet from you, in the last 30 seconds. The map you scrubbed, the cone you watched, the photo of the rec room, the model that wrote the narration — all local. <span class="emphasis">Nothing left the room.</span>"
+  </div>
+</div>
+
+<!-- BEAT 5 -->
+<div class="beat" id="beat5">
+  <div class="beat-header">
+    <span class="beat-label">Beat 5 — Close</span>
+    <span class="beat-time">~13 sec | 32 words</span>
+  </div>
+  <div class="stage-direction">Tap the GN100 case again. Eye contact. Slow down. Land it.</div>
+  <div class="spoken">
+    "We don't predict gentrification. We trace it from the receipts. Hip-hop was born inside the trauma of urban renewal. Cultural memory is what survives the bulldozer.<br><br>
+    <span class="emphasis">Computational ghosts need local hardware.</span>"
+  </div>
+</div>
+
+<!-- BUY TIME -->
+<div class="buytime">
+  <h3>If Nemotron hangs at click time</h3>
+  <p>"While that loads, this runs on the same hardware NVIDIA built for exactly this category of work. Local-first inference is the whole claim, and local-first means we own the latency too."</p>
+</div>
+
+<!-- ONE-LINERS -->
+<div class="oneliner">
+  <h2>One-Liners (by audience)</h2>
+  <div class="for">NVIDIA JUDGES (all magic words):</div>
+  <p>"NVIDIA Nemotron-3 Nano 30B from the NVIDIA Nemotron model family, running locally on a 128 GB DGX Spark with the ethernet cable on the floor, writing forensic biographies of any NYC building from public records, zero cloud calls."</p>
+  <div class="for">TECHNICAL:</div>
+  <p>"30 billion parameter local reasoning model joining four NYC public datasets via zero-dependency RAG, on a single DGX Spark, cable unplugged."</p>
+  <div class="for">NON-TECHNICAL:</div>
+  <p>"Click any building in New York City and a 30-billion-parameter AI writes its biography from public records, running on the box at my feet, internet cable on the floor."</p>
+  <div class="for">NAMING DEFENSE:</div>
+  <p>"Sixth Borough is like a sixth sense. A metaphysical borough that lives in the hardware and preserves the city as a whole."</p>
+</div>
+
+<!-- SPONSOR CHECKLIST -->
+<div class="checklist">
+  <h2>Sponsor Verbatim Checklist (15 pts at stake)</h2>
+  <label><input type="checkbox"> "DGX Spark"</label>
+  <label><input type="checkbox"> "GB10 Grace Blackwell Superchip"</label>
+  <label><input type="checkbox"> "128 gigabytes of unified memory"</label>
+  <label><input type="checkbox"> "Running locally"</label>
+  <label><input type="checkbox"> "No internet connection at runtime"</label>
+  <label><input type="checkbox"> "NVIDIA Nemotron" (model family attribution)</label>
+  <label><input type="checkbox"> "Computational ghosts need local hardware"</label>
+  <label><input type="checkbox"> Hardware tap (hand touches GN100)</label>
+  <label><input type="checkbox"> Slider drag (one continuous motion)</label>
+  <label><input type="checkbox"> Silent read (8-12 sec, don't talk)</label>
+  <label><input type="checkbox"> Cable pull (if ethernet is plugged back in)</label>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="prev()">PREV BEAT</button>
+  <span class="timer" id="timer">0:00</span>
+  <button onclick="toggleTimer()" id="timerBtn">START TIMER</button>
+  <button onclick="next()">NEXT BEAT</button>
+</div>
+
+<div style="height: 80px;"></div>
+
+<script>
+  let current = 0;
+  const beats = document.querySelectorAll('.beat');
+  let timerInterval = null;
+  let seconds = 0;
+
+  function highlight(i) {
+    beats.forEach(b => b.classList.remove('active'));
+    if (beats[i]) {
+      beats[i].classList.add('active');
+      beats[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function next() { if (current < beats.length - 1) { current++; highlight(current); } }
+  function prev() { if (current > 0) { current--; highlight(current); } }
+
+  function toggleTimer() {
+    const btn = document.getElementById('timerBtn');
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      btn.textContent = 'RESUME';
+    } else {
+      timerInterval = setInterval(() => {
+        seconds++;
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        document.getElementById('timer').textContent = m + ':' + String(s).padStart(2, '0');
+      }, 1000);
+      btn.textContent = 'PAUSE';
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 's' || e.key === 'S') toggleTimer();
+    if (e.key === 'r' || e.key === 'R') {
+      seconds = 0;
+      document.getElementById('timer').textContent = '0:00';
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      document.getElementById('timerBtn').textContent = 'START TIMER';
+      current = 0;
+      highlight(0);
+    }
+  });
+
+  highlight(0);
+</script>
+
+</body>
+</html>

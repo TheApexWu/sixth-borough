@@ -2622,35 +2622,42 @@ const PHOTO_YEAR_WINDOW_LOOKUP = 8; // building-hover/click prefer photos within
 const PHOTO_RADIUS_M = 140;        // building-to-photo max spatial distance for a match
 const PHOTO_FALLBACK_COUNT = 4;    // if no photos in window, show nearest N spatially
 
-// ── Load data (all 5 boroughs + borough boundaries) ──
+// ── Load data (Manhattan + Bronx first for fast startup, outer boroughs lazy) ──
+const OUTER_BOROUGHS = ['brooklyn', 'queens', 'staten'];
+let outerLoaded = false;
+
 Promise.all([
   fetch('data/manhattan_compact.json').then(r => r.json()),
-  fetch('data/bronx_compact.json').then(r => r.json()).catch(err => {
-    console.warn('bronx_compact.json failed to load:', err);
-    return [];
-  }),
-  fetch('data/brooklyn_compact.json').then(r => r.json()).catch(err => {
-    console.warn('brooklyn_compact.json failed to load:', err);
-    return [];
-  }),
-  fetch('data/queens_compact.json').then(r => r.json()).catch(err => {
-    console.warn('queens_compact.json failed to load:', err);
-    return [];
-  }),
-  fetch('data/staten_compact.json').then(r => r.json()).catch(err => {
-    console.warn('staten_compact.json failed to load:', err);
-    return [];
-  }),
+  fetch('data/bronx_compact.json').then(r => r.json()).catch(() => []),
 ])
-  .then(([manhattan, bronx, brooklyn, queens, staten]) => {
-    buildings = manhattan.concat(bronx, brooklyn, queens, staten);
+  .then(([manhattan, bronx]) => {
+    buildings = manhattan.concat(bronx);
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
     initDeck();
     buildEraDots();
     buildLegend();
     applyFlags();
+    // Lazy-load outer boroughs after initial render is interactive
+    setTimeout(loadOuterBoroughs, 800);
   });
+
+function loadOuterBoroughs() {
+  if (outerLoaded) return;
+  outerLoaded = true;
+  Promise.all(
+    OUTER_BOROUGHS.map(b =>
+      fetch(`data/${b}_compact.json`).then(r => r.json()).catch(() => [])
+    )
+  ).then(results => {
+    const outer = results.flat();
+    buildings = buildings.concat(outer);
+    document.getElementById('total-count').textContent = buildings.length.toLocaleString();
+    updateVisibleCount();
+    if (deckgl) deckgl.setProps({ layers: buildLayers() });
+    console.log(`Loaded ${outer.length.toLocaleString()} outer borough buildings`);
+  });
+}
 
 // ── Demolished landmarks (Wikidata) — loaded once, filtered at render time by flag ──
 let demolishedLandmarks = [];
