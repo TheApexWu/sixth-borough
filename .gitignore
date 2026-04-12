@@ -6,6 +6,9 @@ __pycache__/
 CLAUDE.md
 plan.md
 .claude/
+updates.md
+scripts/comfy-pipeline/
+styleguide.md
 
 # Large assets hosted externally (Google Drive, etc.)
 cultural-content/liberty-island.zip
