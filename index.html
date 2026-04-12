@@ -2605,6 +2605,32 @@ fetch('cultural-content/marquee-bronx.json')
   .then(data => { if (data.marquee) Object.assign(MARQUEE, data.marquee); })
   .catch(err => console.warn('marquee-bronx.json failed to load:', err));
 
+// ── Ghost buildings (demolished landmarks with synthetic footprints) ──
+// These appear at construction year and vanish at demolition year.
+// Approximate square footprints from known dimensions. d = demolition year.
+const GHOST_BUILDINGS = [
+  // WTC North Tower (1 WTC) — 63m×63m, 417m tall, 1970-2001
+  { p: [[-74.01365,40.71268],[-74.01295,40.71268],[-74.01295,40.71212],[-74.01365,40.71212],[-74.01365,40.71268]], h: 417, y: 1970, d: 2001, b: 'WTC1' },
+  // WTC South Tower (2 WTC) — 63m×63m, 415m tall, 1971-2001
+  { p: [[-74.01348,40.71158],[-74.01278,40.71158],[-74.01278,40.71102],[-74.01348,40.71102],[-74.01348,40.71158]], h: 415, y: 1971, d: 2001, b: 'WTC2' },
+  // Marriott WTC (3 WTC) — hotel, ~73m tall, 1981-2001
+  { p: [[-74.01445,40.71168],[-74.01395,40.71168],[-74.01395,40.71128],[-74.01445,40.71128],[-74.01445,40.71168]], h: 73, y: 1981, d: 2001, b: 'WTC3' },
+  // 7 WTC — 174m tall, 1987-2001
+  { p: [[-74.01265,40.71365],[-74.01175,40.71365],[-74.01175,40.71315],[-74.01265,40.71315],[-74.01265,40.71365]], h: 174, y: 1987, d: 2001, b: 'WTC7' },
+  // Original Penn Station — 1910-1963, Beaux-Arts masterpiece demolished for MSG
+  { p: [[-73.99420,40.75080],[-73.99260,40.75080],[-73.99260,40.74970],[-73.99420,40.74970],[-73.99420,40.75080]], h: 46, y: 1910, d: 1963, b: 'PENN_ORIG' },
+  // Singer Building — tallest building ever demolished, 1908-1968, 187m
+  { p: [[-74.00990,40.70920],[-74.00960,40.70920],[-74.00960,40.70895],[-74.00990,40.70895],[-74.00990,40.70920]], h: 187, y: 1908, d: 1968, b: 'SINGER' },
+];
+
+// Add WTC to MARQUEE so clicks show real content
+Object.assign(MARQUEE, {
+  'WTC1': { title: 'One World Trade Center (North Tower)', year: 1970, body: 'Completed 1972. 110 floors, 1,368 ft. Destroyed September 11, 2001. 2,763 people killed across both towers and the surrounding area. The tallest building in the world from 1970 to 1973. Designed by Minoru Yamasaki. The current One World Trade Center (2014) stands at the same site.' },
+  'WTC2': { title: 'Two World Trade Center (South Tower)', year: 1971, body: 'Completed 1973. 110 floors, 1,362 ft. Destroyed September 11, 2001. Second tower hit, first to collapse at 9:59 AM. The observation deck on the 107th floor was the highest public viewing platform in NYC.' },
+  'PENN_ORIG': { title: 'Pennsylvania Station (Original)', year: 1910, body: 'McKim, Mead & White Beaux-Arts masterpiece. Opened 1910. Demolished 1963 to build Madison Square Garden. The destruction of Penn Station directly led to the NYC Landmarks Preservation Law of 1965. The most consequential demolition in American architectural history.' },
+  'SINGER': { title: 'Singer Building', year: 1908, body: 'Ernest Flagg, 1908. 612 feet, 41 floors. Tallest building ever peacefully demolished (1968) to make way for One Liberty Plaza. Stood at 149 Broadway in Lower Manhattan.' },
+});
+
 // ── State ──
 let buildings = [];
 let currentYear = 1925;
@@ -2638,6 +2664,9 @@ Promise.all([
     buildEraDots();
     buildLegend();
     applyFlags();
+    // Inject ghost buildings for demolished landmarks that have known footprints
+    // These appear at construction year and vanish at demolition year
+    buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
     setTimeout(loadOuterBoroughs, 800);
   });
@@ -4792,6 +4821,7 @@ function buildLayer() {
     getElevation: d => {
       if (d.y === 0) return d.h;  // unknown year, always show
       if (d.y > currentYear) return 0;
+      if (d.d && currentYear > d.d) return 0;  // demolished — gone after demolition year
       // Grow over a 3-year window ending at construction year
       const growStart = d.y - 3;
       if (currentYear < growStart) return 0;
@@ -4802,6 +4832,7 @@ function buildLayer() {
     },
     getFillColor: d => {
       if (d.y > currentYear && d.y !== 0) return [0, 0, 0, 0]; // invisible future
+      if (d.d && currentYear > d.d) return [0, 0, 0, 0]; // demolished — invisible after demolition
       const era = getEra(d.y || 1800);
       // Fade in during grow window
       let alpha = 200;
