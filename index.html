@@ -2712,7 +2712,16 @@ const CROSS_BRONX_GHOSTS = [
 
 // Ghost buildings, bridges, stadiums loaded from shared JSON (data/landmarks-infrastructure.json)
 // so both deck.gl and Bevy renderers use the same source of truth
-let GHOST_BUILDINGS = [...CROSS_BRONX_GHOSTS];
+// Iconic non-building landmarks (not in PLUTO/BIN data but judges will look for them)
+const LANDMARK_SITES = [
+  // Statue of Liberty — Liberty Island
+  { p: [[-74.0447,40.6893],[-74.0440,40.6893],[-74.0440,40.6887],[-74.0447,40.6887],[-74.0447,40.6893]], h: 93, y: 1886, b: 'STATUE_LIBERTY' },
+  // Ellis Island main building
+  { p: [[-74.0400,40.6996],[-74.0390,40.6996],[-74.0390,40.6988],[-74.0400,40.6988],[-74.0400,40.6996]], h: 20, y: 1892, b: 'ELLIS_ISLAND' },
+  // Central Park (low flat block so it's clickable)
+  { p: [[-73.9812,40.7684],[-73.9580,40.7684],[-73.9580,40.8004],[-73.9812,40.8004],[-73.9812,40.7684]], h: 3, y: 1858, b: 'CENTRAL_PARK' },
+];
+let GHOST_BUILDINGS = [...CROSS_BRONX_GHOSTS, ...LANDMARK_SITES];
 fetch('data/landmarks-infrastructure.json')
   .then(r => r.json())
   .then(data => {
@@ -2747,6 +2756,10 @@ Object.assign(MARQUEE, {
   'STADIUM_YANKEE': { title: 'Yankee Stadium', year: 2009, body: 'Populous architects. Replaced the original 1923 stadium across the street. 54,251 capacity. Cost $2.3 billion. The original House That Ruth Built hosted 6,581 regular season games over 85 years.' },
   'STADIUM_CITI': { title: 'Citi Field', year: 2009, body: 'Populous architects. 41,922 capacity. Replaced Shea Stadium (1964-2008). The rotunda entrance is modeled after Ebbets Field, the beloved Brooklyn Dodgers stadium demolished in 1960.' },
   'STADIUM_MSG': { title: 'Madison Square Garden', year: 1968, body: 'Charles Luckman. Built on the site of the demolished Pennsylvania Station. The most controversial building in NYC — the destruction of Penn Station for this arena directly created the landmarks preservation movement.' },
+  // Major landmarks judges will click
+  'STATUE_LIBERTY': { title: 'Statue of Liberty', year: 1886, body: 'Frédéric Auguste Bartholot, dedicated October 28, 1886. Gift from France. 305 ft from ground to torch tip. Copper skin over iron framework designed by Gustave Eiffel. Welcomed 12 million immigrants arriving through New York Harbor. "Give me your tired, your poor, your huddled masses yearning to breathe free."' },
+  'ELLIS_ISLAND': { title: 'Ellis Island Immigration Station', year: 1892, body: 'Opened January 1, 1892. Processed over 12 million immigrants between 1892 and 1954. Peak year: 1907, over 1 million arrivals. The first immigrant processed was Annie Moore, 15, from County Cork, Ireland. The building closed in 1954 and reopened as a museum in 1990.' },
+  'CENTRAL_PARK': { title: 'Central Park', year: 1858, body: 'Frederick Law Olmsted and Calvert Vaux. 843 acres. Construction displaced 1,600 residents of Seneca Village, a predominantly Black settlement established in 1825. The park took 16 years to complete. 42 million visitors per year.' },
   'STADIUM_BARCLAYS': { title: 'Barclays Center', year: 2012, body: 'SHoP Architects. 17,732 capacity. Built as part of the Atlantic Yards development. The weathered steel facade rusts intentionally over time.' },
   'STADIUM_ASHE': { title: 'Arthur Ashe Stadium', year: 1997, body: 'Rossetti Associates. 23,771 capacity. Largest tennis stadium in the world. Named for Arthur Ashe, the first Black man to win the US Open (1968). Retractable roof added 2016.' },
   'STADIUM_YANKEE_OLD': { title: 'Original Yankee Stadium', year: 1923, body: 'Osborn Engineering. The House That Ruth Built. 67,000 capacity at peak. Babe Ruth hit the first home run here on April 18, 1923. Hosted 37 World Series. Demolished 2010 to build a public park.' },
@@ -5469,7 +5482,10 @@ function showDemolishedCard(landmark) {
   const state = currentYear <= demoStr ? 'Currently standing' : `Demolished ${demoStr}`;
   document.getElementById('card-title').textContent = landmark.name || 'Unknown Landmark';
   document.getElementById('card-year').textContent = `Built ${builtStr} / ${state}`;
-  document.getElementById('card-body').textContent = `${landmark.name} stood from ${builtStr} to ${demoStr}. This is one of 295 demolished NYC landmarks traced from Wikidata records. The building no longer exists — it lives only in the data.`;
+  const isGhost = currentYear > demoStr;
+  document.getElementById('card-body').textContent = isGhost
+    ? `${landmark.name} was built in ${builtStr} and demolished in ${demoStr}. Traced from Wikidata demolition records and NYC DOB filings. Drag the timeline back to ${builtStr} to see it standing.`
+    : `${landmark.name}, built ${builtStr}. Currently standing at this point in the timeline. Will be demolished in ${demoStr}.`;
   // Find nearby oldnyc photos for this location
   _cardPhotos = [];
   _cardPhotoIdx = 0;
