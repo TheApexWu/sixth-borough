@@ -60,3 +60,5 @@ NARRATION_MODE=real LLAMA_SERVER_URL=http://127.0.0.1:8090 \
 - Acer GN100 / NVIDIA DGX Spark / GB10 Grace Blackwell
 
 Built at Spark Hack Series NYC, Apr 2026. Cultural Impact track winner + Most Likely to Become a Unicorn bounty.
+
+Special thanks to [Carson Weeks](https://github.com/Cheatcodesam) (Rust renderer), [James Burke](https://github.com/lifesized) (cultural content), and Marvens Destine (hackathon networking).
