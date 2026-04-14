@@ -1,123 +1,62 @@
 # Sixth Borough
 
-**Cultural memory infrastructure that runs on the community's own hardware instead of someone else's cloud.** Built for Spark Hack Series NYC, Apr 10–12 2026.
+Cultural memory infrastructure for New York City, running entirely on local hardware.
 
-Every building in New York City has a birthday, a biography, and (sometimes) a death record — all of it in open data. Sixth Borough renders the city as it was, layer by layer, year by year, on local hardware. Click any building to see when it went up, what stood there before, who was displaced, what the photo from 1925 looked like. A 30-billion-parameter NVIDIA Nemotron model narrates the moment, live, from a box ten feet from the user with the ethernet cable on the floor.
+## What It Does
 
-**We don't predict gentrification. We trace it from the receipts.** Every particle on screen is a person who moved, on the record, in NYC Open Data. See `docs/PRODUCT_WEDGES.md` for the five buyer segments and the non-ML data thesis.
+A 3D time machine for every building in NYC. 1,082,831 structures across all five boroughs, extruded to real LiDAR roof heights, with a year scrubber from 1700 to 2026. Click any building and a 30B language model generates a biography from public NYC datasets. No cloud, no internet at runtime.
 
-**Track:** Cultural Impact
-**Hardware:** Acer Veriton GN100 (NVIDIA DGX Spark / GB10 Grace Blackwell Superchip, 128 GB unified memory, runs entirely offline)
-**Narration:** **NVIDIA Nemotron-3 Nano 30B (A3B variant)** from the NVIDIA Nemotron model family, served via llama.cpp on the GB10. 29 tokens/sec sustained.
-**Renderer (native, primary):** Bevy 0.18.1 (Rust + wgpu) with PS2-era post-process for the encounter mode.
-**Renderer (web, breadth surface):** deck.gl + maplibre prototype with year slider, 8 architectural eras, and 750 georeferenced NYPL Milstein photos across all 5 boroughs (`feature/sketch-overlay`).
-**Asset authoring:** Blender → glb (low-poly ghost meshes for demolished buildings).
-**Data spine:** NYC Open Data — Building Footprints (LiDAR roof heights), MapPLUTO (yearbuilt/yearalter1/2), BUILDING_HISTORIC (demolitions), DOB Job Filings, ACS tract decennial 1970-2020, NYPL Milstein collection, LPC landmarks crosswalk.
+Ghost buildings remember what the city demolished: the Twin Towers rise in 1970 and vanish in 2001, Penn Station disappears in 1963, 117 Cross-Bronx tenements collapse year by year as Robert Moses displaces 60,000 people. 750 archival photos from the NYPL Milstein Division are pinned to the map. Immigration flows animate across centuries.
 
----
+## Architecture
 
-## Quick start (any laptop, no GPU required)
+Two renderers consuming one shared data spine (building polygons, landmarks, ghost manifests, cultural content).
 
-The orchestrator has two modes. **Stub mode** runs templated narration on any laptop with no GPU and no model download — this is how teammates develop their slice without depending on the GN100. **Real mode** swaps in the actual NVIDIA Nemotron-3 Nano 30B (A3B variant, Q8 GGUF) via llama.cpp on the GN100 box at the venue. Both modes serve the same `/narrate` HTTP contract, so the renderer code never has to know which is wired.
+**Native renderer (this branch)** -- Bevy 0.18.1 + wgpu in Rust. Real 3D scene with directional lighting and shadows. Demolished buildings loaded as artist-authored .glb meshes via an ECS manifest system (each ghost is a Bevy entity with coordinate, era window, and niche tags). PS2-era post-process as GPU shaders. Shares 128 GB unified memory with a 30B language model on the DGX Spark. Includes a FastAPI orchestrator for biography generation via NVIDIA Nemotron-3 Nano 30B.
+
+**Browser demo ([feature/sketch-overlay](https://github.com/TheApexWu/sixth-borough/tree/feature/sketch-overlay))** -- deck.gl + MapLibre in a single `index.html`. Extruded polygons on a flat map, 8 era color bands, immigration particle simulation, NYPL photo pins, Sobel sketch overlay. Runs on any laptop with a browser.
+
+## Numbers
+
+| | |
+|---|---|
+| Buildings | 1,082,831 |
+| Ghost structures | 117 Cross-Bronx + WTC + Penn Station + Singer Building |
+| Archival photos | 750 (NYPL Milstein Division) |
+| Bridges / Stadiums | 8 / 8 (3 ghost) |
+| Demolished landmarks | 295 (Wikidata) |
+| Language model | NVIDIA Nemotron-3 Nano 30B (A3B, Q8_K_XL) |
+| Inference | 29 tok/sec sustained on DGX Spark |
+| Hardware | NVIDIA DGX Spark, 128 GB unified memory |
+
+## Quick Start
 
 ```bash
-git clone https://github.com/TheApexWu/sixth-borough.git
-cd sixth-borough
+# Browser demo (any machine)
+git checkout feature/sketch-overlay
+python3 -m http.server 8080
+# open http://localhost:8080/index.html
+
+# Native renderer + orchestrator (requires Rust toolchain)
+cd renderer-rust && cargo run
+
+# Orchestrator in stub mode (any laptop, no GPU)
 pip install -r requirements.txt
 ./scripts/dev-stub.sh
-```
+# live on http://localhost:30000
 
-The orchestrator is now live on `http://localhost:30000`. Endpoints:
-
-```
-GET  /health      sanity check + which backend is wired
-GET  /events      filtered list of cultural events (year, niche)
-GET  /niches      niche taxonomy with display metadata
-POST /narrate     generate a 2-3 sentence narration for one event
-```
-
-Run the test suite with `./scripts/dev-test.sh` (15 tests cover the schema, the loader, and the stub backend).
-
----
-
-## On the GN100 (real mode)
-
-Only one machine in the world runs Sixth Borough at full fidelity: the Acer Veriton GN100 box at the venue. After checking out the box:
-
-```bash
-./scripts/start-llama-nano.sh                # idempotent llama-server launcher (Nemotron 30B Q8 on :8090)
+# On the DGX Spark (real inference)
+./scripts/start-llama-nano.sh
 NARRATION_MODE=real LLAMA_SERVER_URL=http://127.0.0.1:8090 \
   python -m uvicorn src.orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
-The real backend runs the model on `:8090` and the orchestrator on `:30001`. The stub orchestrator on `:30000` stays alive as fallback. Verified live Apr 11 ~14:45 ET via `ssh gn100 curl :30001/narrate` — returns `backend:"real"` in ~23 seconds for the canonical Sedgwick event.
+## Stack
 
-A pre-baked cache of all 19 events lives at `data/narration_cache.json` as venue-WiFi insurance: 19/19 events, ~15 sec average per generation, all `backend:"real"`. See `docs/GN100_HEALTH_APR11.md` for the standup-ready health snapshot.
+- Bevy 0.18.1 + wgpu (native renderer, Rust)
+- deck.gl 9.1.4 + MapLibre GL 3.6.2 (browser demo)
+- NVIDIA Nemotron-3 Nano 30B via llama.cpp
+- FastAPI orchestrator (biography RAG, caching)
+- Acer GN100 / NVIDIA DGX Spark / GB10 Grace Blackwell
 
----
-
-## Repository layout
-
-```
-sixth-borough/
-├── README.md                          this file
-├── ARCHITECTURE.md                    system diagram + asset pipeline
-├── CONTRIBUTING.md                    branch playbook + collaboration model
-├── requirements.txt                   Python dependencies
-├── pyproject.toml                     Python project metadata
-├── docs/
-│   ├── DEMO_VIDEO_SCRIPT.md           90s pitch script (locked)
-│   ├── PRODUCT_WEDGES.md              receipts-not-predictions thesis + 5 buyer segments
-│   ├── VISUAL_DIRECTION.md            PS2 as constraint language for memory
-│   ├── MIGRATION_FLOW_PROTOTYPE.html  Cross-Bronx canonical static cone sample
-│   ├── PITCH_FRAMINGS.md              5 framings explored before lock
-│   ├── GN100_HEALTH_APR11.md          standup-ready hardware snapshot
-│   ├── STACK.md                       pinned tech stack
-│   ├── DECISIONS.md                   append-only decision log
-│   ├── DATA_SOURCES.md                NYC Open Data references
-│   ├── EVENT_RULES.md                 Spark Hack rules + judging rubric
-│   └── refs/visual/                   SMT3 reference images + NOTICE.md
-├── cultural-content/
-│   └── oldnyc/index.json              750 NYPL Milstein photos × 5 boroughs
-├── data/
-│   ├── events-seed.json               19 hand-curated cultural events
-│   ├── narration_cache.json           pre-baked narrations (venue WiFi insurance)
-│   └── manhattan_compact.json         building polygons {p,h,y,b} schema
-├── src/
-│   ├── data/
-│   │   ├── schema.py                  Pydantic models
-│   │   ├── niches.py                  niche taxonomy
-│   │   ├── narration_prompts.py       prompt template
-│   │   └── loader.py                  seed JSON loader
-│   ├── orchestrator/
-│   │   ├── main.py                    FastAPI app
-│   │   ├── narration_stub.py          templated narration
-│   │   └── narration_real.py          NVIDIA Nemotron via llama.cpp (GN100 only)
-│   └── renderer/                      Carson's Bevy 0.18.1 + WGSL renderer
-├── assets/
-│   └── ghosts/
-│       └── MANIFEST.json              low-poly Blender ghost mesh registry
-├── scripts/
-│   ├── dev-stub.sh                    start orchestrator in stub mode
-│   ├── dev-test.sh                    run pytest suite
-│   ├── start-llama-nano.sh            idempotent llama-server launcher (GN100 only)
-│   ├── export_buildings.py            Building Footprints → compact JSON compactor
-│   └── build_oldnyc_index.py          NYPL Milstein → georeferenced index
-└── tests/                             pytest suite
-```
-
----
-
-## For teammates
-
-- **Branch playbook:** [`CONTRIBUTING.md`](CONTRIBUTING.md) — what each teammate works on, file ownership boundaries, the merge model
-- **Tech stack:** [`docs/STACK.md`](docs/STACK.md) — pinned versions, setup commands, dependency-age audit
-- **System architecture:** [`ARCHITECTURE.md`](ARCHITECTURE.md) — diagram, data flow, failure modes
-- **NYC Open Data references:** [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) — every dataset cited with field schemas and access notes
-- **Build decisions:** [`docs/DECISIONS.md`](docs/DECISIONS.md) — append-only log
-
----
-
-## License
-
-TBD before submission. Default placeholder: All Rights Reserved during the hackathon weekend; will be updated to a permissive license (likely MIT or Apache 2.0) before public release.
+Built at Spark Hack Series NYC, Apr 2026. Cultural Impact track winner + Most Likely to Become a Unicorn bounty.

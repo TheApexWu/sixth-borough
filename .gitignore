@@ -23,15 +23,25 @@ target/
 # Local notes
 NOTES.local.md
 
-# Asset files - these sync via shared storage, not git
-# Manifests + previews ARE committed (see assets/pointclouds/.gitignore)
+# Internal docs
+docs/
+ARCHITECTURE.md
+CONTRIBUTING.md
+.wrangler/
+.github/
+pointcloud-pipeline/
+CLAUDE.md
+plan.md
+.claude/
+
+# Asset files - manifests + previews committed, binaries synced externally
 assets/pointclouds/*.ply
 assets/pointclouds/*.glb
 assets/pointclouds/*.splat
 !assets/pointclouds/MANIFEST.json
 !assets/pointclouds/*.preview.png
 
-# Model weights (live on the GN100, not in git)
+# Model weights
 models/
 *.gguf
 
@@ -40,8 +50,6 @@ build/
 *.so
 *.dylib
 
-# Large assets hosted externally (Google Drive, etc.)
+# Large assets hosted externally
 cultural-content/liberty-island.zip
-
-# oldnyc (NYPL Milstein) raw dump — too large to commit, re-download with build script
 cultural-content/oldnyc/raw/
