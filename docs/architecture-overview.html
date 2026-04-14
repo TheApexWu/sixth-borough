@@ -258,50 +258,16 @@
 
 <h2>For the X Post</h2>
 
-<p>Here are framing options. Pick one or remix.</p>
-
 <div class="xpost">
-<div class="xpost-label">Option A -- Technical angle</div>
 We built a time machine for every building in NYC. 1M+ structures, 300 years, running on one local box with no internet.
 
 Two rendering paths: a browser demo (deck.gl) that proves the concept on any laptop, and a native Rust/Bevy renderer targeting NVIDIA's DGX Spark for real 3D ghost buildings with authored geometry, proper lighting, and a 30B language model narrating live from unified memory.
 
-The browser version ships. The native version is where demolished buildings get the volume they deserve.
+The browser demo is the proof of concept. The Rust/Bevy native renderer is the true product -- incomplete on assets, but architecturally designed for full 3D scene rendering with GPU shaders and live local inference on Blackwell silicon.
+
+Special thanks to @amadeusWoo for their direction/vision and leading our winning team.
 
 github.com/TheApexWu/sixth-borough</div>
-
-<div class="xpost">
-<div class="xpost-label">Option B -- Story angle</div>
-Robert Moses demolished 60,000 homes in the South Bronx. The density pushed families into rec rooms on Sedgwick Ave. DJ Kool Herc invented hip-hop there in 1973.
-
-We built software that renders every building in NYC from 1700 to today, including the ones that were torn down. Ghost buildings rise and vanish as you scrub the timeline. A 30B language model running on local hardware narrates what happened and why.
-
-Two renderers: a browser demo that works on any laptop, and a native Rust engine on NVIDIA silicon for real 3D geometry. Cultural memory infrastructure.
-
-github.com/TheApexWu/sixth-borough</div>
-
-<div class="xpost">
-<div class="xpost-label">Option C -- Engineering decision angle</div>
-The hardest engineering call on Sixth Borough: do we ship one renderer or two?
-
-The browser version (deck.gl + MapLibre) renders 1M buildings as extruded polygons on a flat map. Works anywhere. Great for demos.
-
-But demolished buildings aren't polygons. Penn Station needs to be a real 3D object, lit and shadowed, fading when the year crosses 1963. So we built a second renderer in Rust (Bevy + wgpu) targeting NVIDIA's Blackwell GPU, sharing 128 GB unified memory with a 30B local language model.
-
-One data spine. Two rendering paths. The browser demo ships today. The native renderer is the product.
-
-github.com/TheApexWu/sixth-borough</div>
-
-<p class="note">All three options are under 280 chars per paragraph for readability. Option C works best as a thread (one tweet per paragraph). The GitHub link should be included -- the README is now clean and forward-facing.</p>
-
-<h2>Team</h2>
-<table>
-  <tr><th>Name</th><th>Role</th></tr>
-  <tr><td>Alex Wu</td><td>Lead, architecture, frontend, orchestrator, demo</td></tr>
-  <tr><td>Carson Weeks</td><td>Rust/Bevy native renderer</td></tr>
-  <tr><td>James Burke</td><td>Data curation, cultural content, guided tour</td></tr>
-  <tr><td>Marvens Destine</td><td>3D visualization, point cloud pipeline</td></tr>
-</table>
 
 <p style="margin-top:2rem; font-size:0.75rem; color:#444;">Spark Hack Series NYC, Apr 10-12 2026 | Cultural Impact Track</p>
 

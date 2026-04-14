@@ -90,19 +90,6 @@ llama-server -m /path/to/nemotron-30b-q8.gguf -ngl 99 --port 8090
 cd src && uvicorn orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
-## Team
-
-- Alex Wu -- lead, architecture, frontend, orchestrator, demo
-- Carson Weeks -- Rust/Bevy native renderer
-- James Burke -- data curation, cultural content, guided tour
-- Marvens Destine -- 3D visualization, point cloud pipeline
-
 ## Track
 
 Cultural Impact | Spark Hack Series NYC, Apr 10-12 2026
-
-## Links
-
-- GitHub: [TheApexWu/sixth-borough](https://github.com/TheApexWu/sixth-borough)
-- Hardware: NVIDIA DGX Spark (Acer GN100)
-- Model: NVIDIA Nemotron-3 Nano 30B (A3B variant)
