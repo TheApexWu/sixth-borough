@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "description": "Hand-curated marquee titles + bodies for the Bronx hip-hop birth chain. Loaded by index.html at startup, merged into the global MARQUEE table keyed by BIN. Replaces the placeholder fallback in showCard().",
+    "description": "Hand-curated marquee titles + bodies for the Bronx hip-hop birth chain. Loaded by index.html at startup, merged into the global MARQUEE table keyed by BIN. Replaces the placeholder fallback in showCard(). | EXTENDED: Manhattan landmarks added Session 82 / May 6 2026 (6 entries spanning Antebellum -> Glass Tower). | EXTENDED-2: 6 primitive POI landmarks added (Battery Park, Central Park, Brooklyn Bridge towers + anchorage, Statue of Liberty, Vessel) Session 82 / May 6 2026.",
     "source_events": "data/events-seed.json",
     "source_bins": "data/biography_cache.json (matched via /biography lookup at session 45)",
     "authoring_session": "Session 45 / Apr 12 2026 / hand-curated by Alex",
-    "count": 8,
+    "count": 27,
     "events_without_bin_match": [
       "bronx-1979-rappers-delight",
       "bronx-1981-the-message",
@@ -20,20 +20,6 @@
     ]
   },
   "marquee": {
-    "2008286": {
-      "title": "Kool Herc invents the breakbeat",
-      "year": 1973,
-      "body": "August 11 1973. Cindy Campbell's birthday party at 1520 Sedgwick Avenue rec room. Her brother Clive Campbell — DJ Kool Herc — isolates the percussion break of two records using two turntables and the merry-go-round technique is born. Hip-hop has a birthday and an address, both in the public record.",
-      "photo": "cultural-content/bronx/kool-herc.jpg",
-      "event_id": "bronx-1973-08-11-sedgwick",
-      "narration_seed": "August 11, 1973. Cindy Campbell's birthday party in the rec room of 1520 Sedgwick Avenue. Her brother, Clive Campbell, who calls himself DJ Kool Herc, plugs in two turntables and learns to isolate the percussion break of two records, switching between them to extend the section dancers love most. The technique has no name yet. Hip-hop is born thirty feet from where you're standing.",
-      "niche_tags": [
-        "hip-hop"
-      ],
-      "matched_bin": "2008286",
-      "matched_year_built": 1920,
-      "distance_m": 14.6
-    },
     "2114829": {
       "title": "Kool Herc moves outside to Cedar Park",
       "year": 1974,
@@ -125,6 +111,358 @@
       "matched_bin": "2116225",
       "matched_year_built": 2007,
       "distance_m": 33.4
+    },
+    "1001020": {
+      "title": "Federal Hall — the second one",
+      "year": 1842,
+      "body": "Greek Revival Customs House on the site where Washington was inaugurated in 1789 and the Bill of Rights was ratified in 1789-91. The original Federal Hall was demolished in 1812; this Greek temple replacement, designed by Town & Davis with John Frazee, opened as the U.S. Custom House in 1842. The Doric portico was meant to project the new republic's borrowed dignity, granite over Manhattan schist. By the time the marble Sub-Treasury moved here in 1862, antebellum New York's tax dollars and tariffs were being counted on the floor where Washington had stood.",
+      "photo": "cultural-content/manhattan/federal-hall.jpg",
+      "event_id": "manhattan-1842-federal-hall",
+      "narration_seed": "Greek Revival temple at 26 Wall Street. The first Federal Hall on this exact spot was where Washington took the oath of office in 1789. That building was torn down in 1812. This replacement opened in 1842 as the Custom House — Doric columns, granite, the architectural language a young republic borrowed from Athens to look older than it was. Antebellum money flowed through these rooms.",
+      "niche_tags": [
+        "antebellum",
+        "greek-revival",
+        "federal",
+        "washington"
+      ],
+      "matched_bin": "1001020",
+      "matched_year_built": 1842,
+      "distance_m": 12
+    },
+    "1023449": {
+      "title": "Carnegie Hall opens",
+      "year": 1891,
+      "body": "Andrew Carnegie's 2,804-seat Music Hall on 57th and Seventh, designed by William Burnet Tuthill, opens May 5 1891 with Tchaikovsky conducting his own Marche Solennelle. Renaissance Revival brick over a steel frame — Tuthill, an amateur cellist, hand-tuned the acoustics by trial geometry, no electronic modeling. The Gilded Age built it for old money, but within a decade Mahler, Dvořák, and Caruso made it the room every classical career had to pass through. It nearly fell to a developer in 1960; Isaac Stern saved it.",
+      "photo": "cultural-content/manhattan/carnegie-hall.jpg",
+      "event_id": "manhattan-1891-carnegie-hall",
+      "narration_seed": "May 5 1891. Tchaikovsky conducts his Marche Solennelle to inaugurate Andrew Carnegie's Music Hall — 57th and Seventh, Renaissance Revival brick. The architect, William Tuthill, was an amateur cellist who tuned the acoustics by geometry alone, no computer models. Gilded Age money built it; Mahler, Dvořák, and Caruso made it the room every classical career had to enter.",
+      "niche_tags": [
+        "gilded-age",
+        "music",
+        "carnegie",
+        "renaissance-revival"
+      ],
+      "matched_bin": "1023449",
+      "matched_year_built": 1891,
+      "distance_m": 15
+    },
+    "1015862": {
+      "title": "Empire State Building tops out",
+      "year": 1931,
+      "body": "Shreve, Lamb & Harmon's 102-story limestone-and-aluminum Art Deco shaft rises in 410 days on a Depression-era budget — fifteen million below estimate, demolition of the Waldorf-Astoria included. The mooring mast on top was sold as a dirigible dock; only one Goodyear blimp ever tied up, and only briefly. For most of the 1930s the building was half-empty, nicknamed the Empty State. The setbacks obey the 1916 zoning resolution; the floodlit crown was retrofit in 1964. King Kong climbed the fictional version in 1933.",
+      "photo": "cultural-content/manhattan/empire-state.jpg",
+      "event_id": "manhattan-1931-empire-state",
+      "narration_seed": "350 Fifth Avenue. 102 stories, 410 days, fifteen million under budget — the demolition of the Waldorf-Astoria was already counted in the price. Art Deco limestone with aluminum spandrels, setbacks dictated by the 1916 zoning law. The tip was sold as a dirigible mooring; one blimp ever docked. For most of the 1930s the building was half-empty. The Empty State.",
+      "niche_tags": [
+        "art-deco",
+        "depression",
+        "skyscraper",
+        "shreve-lamb-harmon"
+      ],
+      "matched_bin": "1015862",
+      "matched_year_built": 1931,
+      "distance_m": 40
+    },
+    "1036465": {
+      "title": "Seagram Building — Mies's bronze",
+      "year": 1958,
+      "body": "Mies van der Rohe and Philip Johnson's 38-story bronze-and-amber-glass tower on Park Avenue, set back 90 feet behind a granite plaza — a New York real estate giveaway that rewrote zoning. Phyllis Lambert, Samuel Bronfman's daughter, hired Mies after rejecting her father's pick. The bronze I-beams welded onto the curtain wall are non-structural; they exist to express what the steel beneath is doing — Miesian truth-of-materials as decoration. The 1961 zoning amendment that traded floor area for plazas was directly inspired by this building, and produced a generation of bleak imitator plazas across Midtown.",
+      "photo": "cultural-content/manhattan/seagram.jpg",
+      "event_id": "manhattan-1958-seagram",
+      "narration_seed": "375 Park Avenue. Mies van der Rohe and Philip Johnson, 1958. 38 stories of bronze and amber glass, set back 90 feet behind a granite plaza — a giveaway of buildable land that rewrote New York zoning. Phyllis Lambert, the client's daughter, picked Mies over her father's choice. The non-structural bronze I-beams on the facade exist to express what the structural steel beneath is doing. Truth-of-materials as ornament.",
+      "niche_tags": [
+        "midcentury",
+        "modernism",
+        "mies",
+        "international-style",
+        "park-avenue"
+      ],
+      "matched_bin": "1036465",
+      "matched_year_built": 1958,
+      "distance_m": 65
+    },
+    "1035742": {
+      "title": "AT&T Building / Sony Tower — Postmodernism arrives",
+      "year": 1984,
+      "body": "Philip Johnson and John Burgee's 37-story pink granite tower at 550 Madison, completed 1984 — the building that put Postmodernism on the cover of Time. The split-pediment broken-top crown, openly cribbed from a Chippendale highboy, was the explicit middle finger to the modernist boxes Johnson himself had spent thirty years designing. The base loggia and oculus reference Brunelleschi. AT&T sold to Sony in 1992; Sony sold in 2016; Snøhetta's 2018 renovation took out the loggia, which preservationists fought and partly saved.",
+      "photo": "cultural-content/manhattan/att-sony.jpg",
+      "event_id": "manhattan-1984-att-sony",
+      "narration_seed": "550 Madison. Philip Johnson and John Burgee, 1984. 37 stories of pink granite with a split-pediment crown lifted from a Chippendale highboy — Johnson's middle finger to the modernist boxes he himself had been building for thirty years. Postmodernism on the cover of Time. The base loggia references Brunelleschi. AT&T sold to Sony, Sony sold to a developer, and Snøhetta's 2018 renovation took out the loggia.",
+      "niche_tags": [
+        "postmodern",
+        "philip-johnson",
+        "att",
+        "sony",
+        "chippendale"
+      ],
+      "matched_bin": "1035742",
+      "matched_year_built": 1991,
+      "distance_m": 50
+    },
+    "1088469": {
+      "title": "One World Trade Center opens",
+      "year": 2014,
+      "body": "1,776 feet — the figure in the building, not the ground floor — designed by SOM's David Childs after Daniel Libeskind's 2003 master plan and a long political fight over the cube-on-prism massing. The 200-foot reinforced concrete podium is unwindowed up to the 20th floor, blast-hardened in response to the 1993 and 2001 attacks. The cladding is laminated prismatic glass, the spire's beacon is a 60kW LED signal you can see from forty miles. It opened November 3 2014, thirteen years after the Twin Towers fell on this site.",
+      "photo": "cultural-content/manhattan/one-wtc.jpg",
+      "event_id": "manhattan-2014-one-wtc",
+      "narration_seed": "285 Fulton Street. 1,776 feet to the spire tip — the date in the height. SOM's David Childs after a long fight with Daniel Libeskind's 2003 master plan. The 200-foot concrete podium is windowless and blast-hardened, a direct response to 1993 and 2001. The spire beacon is a 60-kilowatt LED visible from forty miles out. Opened November 3 2014, thirteen years after the towers fell on this ground.",
+      "niche_tags": [
+        "glass-tower",
+        "wtc",
+        "som",
+        "post-9-11",
+        "freedom-tower"
+      ],
+      "matched_bin": "1088469",
+      "matched_year_built": 2009,
+      "distance_m": 28
+    },
+    "1016278": {
+      "title": "Flatiron Building",
+      "year": 1903,
+      "body": "Daniel Burnham's 22-story steel-framed wedge at the Broadway/Fifth Avenue/23rd Street collision — limestone and terracotta over a Beaux-Arts skeleton, originally the Fuller Building. Six feet wide at the prow. The 23rd Street wind-tunnel effect lifted skirts and drew crowds; the 1902 NYPD slang phrase '23 skidoo' described shooing them. Critics called the engineering reckless until it stayed up. The triangle was already the lot — the building just took the hint.",
+      "photo": "cultural-content/manhattan/flatiron.jpg",
+      "event_id": "manhattan-1903-flatiron",
+      "narration_seed": "175 Fifth Avenue. Daniel Burnham, 1903. Twenty-two stories of steel frame inside Beaux-Arts terracotta, six feet wide at the prow where Broadway crashes into Fifth. Critics said the engineering was reckless until it stayed up. The wind funneled by the corner used to lift women's skirts on 23rd Street; the cops shooing the crowds gave us the phrase 23 skidoo.",
+      "niche_tags": [
+        "beaux-arts",
+        "burnham",
+        "steel-frame",
+        "iconic"
+      ],
+      "matched_bin": "1016278",
+      "matched_year_built": 1903,
+      "distance_m": 30
+    },
+    "1087167": {
+      "title": "Woolworth Building — the Cathedral of Commerce",
+      "year": 1913,
+      "body": "Cass Gilbert's 60-story neo-Gothic spire at 233 Broadway opened April 24 1913 — President Wilson lit it from the White House by pressing a button. F.W. Woolworth paid the $13.5M construction cost in cash. At 792 feet it was the world's tallest building until the Bank of Manhattan in 1930. The terracotta is Gothic ornament on a steel cage; the lobby is Byzantine glass mosaic and Romanesque vaulting. Architect Cass Gilbert and client Frank Woolworth are both immortalized in lobby gargoyle caricatures — Gilbert holding a model of the building, Woolworth counting nickels and dimes.",
+      "photo": "cultural-content/manhattan/woolworth.jpg",
+      "event_id": "manhattan-1913-woolworth",
+      "narration_seed": "233 Broadway. Cass Gilbert, 1913. Sixty stories of neo-Gothic terracotta on a steel cage — the Cathedral of Commerce. F.W. Woolworth paid $13.5 million cash for it from the proceeds of his five-and-dimes. President Wilson lit the building from the White House by pressing a button on April 24, 1913. World's tallest until 1930. The lobby has gargoyles of Gilbert holding the building and Woolworth counting nickels.",
+      "niche_tags": [
+        "neo-gothic",
+        "cass-gilbert",
+        "tallest",
+        "cathedral-of-commerce"
+      ],
+      "matched_bin": "1087167",
+      "matched_year_built": 1913,
+      "distance_m": 10
+    },
+    "1036156": {
+      "title": "Chrysler Building — the spire race",
+      "year": 1930,
+      "body": "William Van Alen's 77-story Art Deco tower at 405 Lexington opened May 28 1930 — for 11 months the tallest building in the world before the Empire State took the crown. The stainless-steel crown of seven setback arches is American Métal pressed into Aztec geometry; the eagle gargoyles at the 61st floor were modeled on 1929 Chrysler hood ornaments. Van Alen secretly assembled the 185-foot vertex spire inside the building's fire shaft and raised it through the roof in 90 minutes on October 23 1929 — pre-empting H. Craig Severance's competing 40 Wall Street tower. Walter Chrysler refused to pay Van Alen's fee on suspicion of kickbacks; the case ended Van Alen's career.",
+      "photo": "cultural-content/manhattan/chrysler.jpg",
+      "event_id": "manhattan-1930-chrysler",
+      "narration_seed": "405 Lexington Avenue. William Van Alen, 1930. Seventy-seven stories of Art Deco — for eleven months the tallest building in the world. The stainless-steel crown is Aztec geometry pressed in American Métal; the eagle gargoyles are 1929 Chrysler hood ornaments. Van Alen secretly assembled the 185-foot spire inside the fire shaft and raised it through the roof in 90 minutes to beat his rival on Wall Street. Walter Chrysler then refused to pay him.",
+      "niche_tags": [
+        "art-deco",
+        "spire-race",
+        "chrysler",
+        "van-alen",
+        "supertall"
+      ],
+      "matched_bin": "1036156",
+      "matched_year_built": 1930,
+      "distance_m": 16
+    },
+    "1088817": {
+      "title": "432 Park Avenue — the pencil tower era",
+      "year": 2015,
+      "body": "Rafael Viñoly's 96-story 1,396-foot residential tower — concrete frame, 93 windowed cubes high, 28-foot square plan repeated up the spine. The slenderness ratio is 15:1, made tractable by the building's 1,200-ton tuned mass damper. The white painted-concrete exterior dirties; the cladding stains in streaks; class-action lawsuits from owners followed completion. Built on the air rights bought from the demolished Drake Hotel. The 432 Park silhouette plus the 220 Central Park South, 111 West 57th, and Central Park Tower forms Billionaires' Row — a typology produced specifically by the 2010s rezoning of midtown air rights.",
+      "photo": "cultural-content/manhattan/432-park.jpg",
+      "event_id": "manhattan-2015-432-park",
+      "narration_seed": "432 Park Avenue. Rafael Viñoly, 2015. Ninety-six stories, 1,396 feet, a concrete spine 28 feet square repeated 93 times. Slenderness ratio 15:1, only standing because of a 1,200-ton tuned mass damper. The painted concrete dirties; lawsuits followed. Built on the air rights of the demolished Drake Hotel. The first of the supertall residential pencils on Billionaires' Row, a typology the 2010s rezoning produced on purpose.",
+      "niche_tags": [
+        "glass-tower",
+        "supertall",
+        "billionaires-row",
+        "vinoly",
+        "pencil-tower"
+      ],
+      "matched_bin": "1088817",
+      "matched_year_built": 2016,
+      "distance_m": 16
+    },
+    "9000001": {
+      "title": "Battery Park",
+      "year": 1693,
+      "body": "Twenty-five acres at the southern tip of Manhattan, named for the colonial-era artillery battery that defended the harbor. Castle Clinton (1811) sits in the park as the West Battery — built for the War of 1812, never fired in anger, later the Castle Garden immigration depot from 1855 to 1890 (more than 8 million arrivals before Ellis Island took over). The Hope Garden, the East Coast Memorial, and The Sphere relocated from the World Trade Center plaza all live here. The shoreline is engineered: most of the park is landfill from successive 19th-century expansions.",
+      "photo": "cultural-content/manhattan/battery-park.jpg",
+      "event_id": "manhattan-1693-battery-park",
+      "narration_seed": "Twenty-five acres at the southern tip of Manhattan. Named for the colonial-era artillery battery that defended the harbor. Castle Clinton from 1811 sits inside the park, originally the West Battery, later the Castle Garden immigration depot from 1855 to 1890. Eight million arrivals before Ellis Island took over. Most of the park is landfill from 19th-century expansions.",
+      "niche_tags": [
+        "colonial",
+        "park",
+        "immigration",
+        "primitive-geometry"
+      ],
+      "matched_bin": "9000001",
+      "matched_year_built": 1693,
+      "distance_m": 0,
+      "_meta": "primitive POI representation (height 1.5m flat slab)"
+    },
+    "9000003": {
+      "title": "Brooklyn Bridge",
+      "year": 1883,
+      "body": "The first wire-suspension bridge across the East River, opened May 24 1883 after 14 years. John A. Roebling designed it and died of tetanus from a foot-crushing accident at the survey site weeks before construction began. His son Washington Roebling took over and was crippled by caisson disease. Emily Warren Roebling, Washington's wife, effectively ran the project for the final decade — learning structural engineering and bridge mechanics from her bedridden husband. The Manhattan tower stands on bedrock; the Brooklyn tower's pneumatic caisson sat on compacted sand 78 feet down. Tolls were one cent. The Manhattan-side anchorage chambers were leased as wine cellars from 1876 to 1933 (Luyties Brothers champagne and Riesling), and briefly converted to Cold War civil-defense shelters whose 1950s biscuit tins were found still sealed during a 2006 federal inspection.",
+      "photo": "cultural-content/manhattan/brooklyn-bridge.jpg",
+      "event_id": "ny-1883-brooklyn-bridge",
+      "narration_seed": "May 24 1883. The Brooklyn Bridge — first wire-suspension bridge across the East River. John Roebling designed it and died of tetanus before construction. His son Washington took over and was crippled by caisson disease. Emily Warren Roebling, Washington's wife, ran the project for the final decade — learning bridge engineering from her bedridden husband. Tolls were one cent.",
+      "niche_tags": [
+        "gilded-age",
+        "infrastructure",
+        "roebling",
+        "full-span"
+      ],
+      "matched_bin": "9000003",
+      "matched_year_built": 1883,
+      "distance_m": 0,
+      "_meta": "full-span polygon from landmarks-infrastructure.json (BRIDGE_BROOKLYN)"
+    },
+    "9000005": {
+      "title": "Statue of Liberty — Liberty Enlightening the World",
+      "year": 1886,
+      "body": "Frédéric Auguste Bartholdi's copper-plate-over-iron-armature statue, gift from France for the U.S. centennial (delivered late by ten years). Gustave Eiffel engineered the internal skeleton — the same year his tower was being commissioned. The pedestal was funded by a public penny-drive Joseph Pulitzer organized in The World after the project ran out of money. Emma Lazarus's 'The New Colossus' was written for an 1883 fundraising auction; it was not inscribed on the pedestal until 1903. The torch-arm and head were exhibited separately at the 1876 Centennial in Philadelphia and the 1878 Paris World's Fair to keep public interest alive while the rest was being built. Dedicated October 28 1886.",
+      "photo": "cultural-content/manhattan/statue-of-liberty.jpg",
+      "event_id": "ny-harbor-1886-statue-liberty",
+      "narration_seed": "Liberty Island. Bartholdi's copper statue on Eiffel's iron armature, gift from France, ten years late. Pedestal funded by a public penny-drive Joseph Pulitzer organized after the money ran out. Emma Lazarus's poem was written for an 1883 fundraising auction; it didn't go on the pedestal until 1903. The head and torch-arm were exhibited separately at the 1876 Philadelphia Centennial to keep public interest alive while the rest was being built.",
+      "niche_tags": [
+        "gilded-age",
+        "statue",
+        "bartholdi",
+        "eiffel",
+        "primitive-geometry"
+      ],
+      "matched_bin": "9000005",
+      "matched_year_built": 1886,
+      "distance_m": 0,
+      "_meta": "primitive POI at Liberty Island — outside Manhattan strictly, geographically meaningful"
+    },
+    "9000006": {
+      "title": "Vessel — Hudson Yards",
+      "year": 2019,
+      "body": "Thomas Heatherwick's 46-meter copper-clad climbable sculpture at the center of Hudson Yards' public plaza, opened March 15 2019. 154 interconnected staircase flights, 80 landings, 2,500 individual stairs, 16 stories — a self-described 'climbable centerpiece' for the largest private real-estate development in U.S. history. Closed indefinitely January 2021 after four suicides; reopened May 2021 with safety nets and partner-required entry; closed again July 2021 after a fifth death; remains closed to climbing as of 2026. The structure now reads as a memorial to the design assumption that public art can be safely abdicated to private security. Cost reportedly $200M.",
+      "photo": "cultural-content/manhattan/vessel.jpg",
+      "event_id": "manhattan-2019-vessel",
+      "narration_seed": "Thomas Heatherwick, 2019. Forty-six meters of copper-clad staircase, 154 flights, 2,500 individual stairs, sixteen stories. The climbable centerpiece of Hudson Yards. Closed in January 2021 after four suicides, reopened with safety nets, closed again after a fifth death, remains closed. The Vessel now reads as a memorial to the assumption that public art can be safely abdicated to private security.",
+      "niche_tags": [
+        "glass-tower",
+        "heatherwick",
+        "hudson-yards",
+        "memorial",
+        "primitive-geometry"
+      ],
+      "matched_bin": "9000006",
+      "matched_year_built": 2019,
+      "distance_m": 0,
+      "_meta": "primitive POI at Hudson Yards plaza"
+    },
+    "1079147": {
+      "title": "City Hall",
+      "year": 1812,
+      "body": "Joseph-François Mangin and John McComb Jr.'s Federal-style building at the southern end of City Hall Park, opened 1812 on the largest civic site in America. The original budget was so tight the Common Council ordered the back facade clad in cheaper brownstone instead of marble — assuming nothing important would be built north of it. Manhattan grew north anyway. Lincoln's body lay in state in the rotunda in 1865; Grant's in 1885. The cupola burned and was rebuilt three times (1858, 1917, 2002). The current Mayor's Office is on the second floor, west wing.",
+      "photo": "cultural-content/manhattan/city-hall.jpg",
+      "event_id": "manhattan-1812-city-hall",
+      "narration_seed": "City Hall, 1812. Mangin and McComb's Federal-style building at the south end of City Hall Park. The Common Council clad the back facade in cheap brownstone instead of marble — assuming nothing important would be built north of it. Manhattan grew north anyway. Lincoln's body lay in state here in 1865; Grant's in 1885. The cupola burned and was rebuilt three times.",
+      "niche_tags": [
+        "antebellum",
+        "federal-style",
+        "civic"
+      ],
+      "matched_bin": "1079147",
+      "matched_year_built": 1812,
+      "distance_m": 0
+    },
+    "9000010": {
+      "title": "The Skyline — over a million buildings",
+      "year": 2026,
+      "body": "The composite of 397 years of New York from 1626 (Dutch land purchase) to 2026 — every neighborhood, every borough, every era visible in this single panorama. The five boroughs hold 1,082,081 individually mapped building footprints in this dataset, plus the bridges, parks, and infrastructure that connect them. What started as a single Lenape island became the densest concentration of architectural eras in any city on earth: Federal Hall (1842) within walking distance of One World Trade Center (2014), Mies's Seagram (1958) across the avenue from Viñoly's pencil tower at 432 Park (2015). Sixth Borough is the dataset that makes this readable.",
+      "photo": "cultural-content/skyline-panorama.jpg",
+      "event_id": "nyc-2026-the-skyline",
+      "narration_seed": "The skyline. Three hundred ninety-seven years of New York in one panorama, from the Dutch land purchase of 1626 to 2026. The five boroughs hold over a million mapped building footprints. Federal Hall from 1842 within walking distance of One World Trade Center from 2014. Mies's Seagram from 1958 across the avenue from Viñoly's pencil tower at 432 Park from 2015. The densest concentration of architectural eras in any city on earth.",
+      "niche_tags": [
+        "finale",
+        "panorama",
+        "skyline"
+      ],
+      "matched_bin": "9000010",
+      "matched_year_built": 2026,
+      "distance_m": 0,
+      "_meta": "tour finale waypoint"
+    },
+    "1035381": {
+      "title": "Grand Central Terminal",
+      "year": 1913,
+      "body": "Reed and Stem with Warren and Wetmore, opened February 2 1913 — 33 platforms over two underground levels, the largest train terminal in the world by platform count. The Beaux-Arts headhouse hides the engineering: Wilgus's electrified loop track replaced the smoke-belching Park Avenue cut after the 1902 collision in the steam-era tunnel killed 17. The cerulean ceiling fresco by Paul Helleu shows the zodiac backwards — workers painted it from a medieval manuscript instead of a star chart. Penn Station was demolished in 1963; the public outcry saved Grand Central via the 1965 Landmarks Law and the 1978 Supreme Court ruling Penn Central v. New York City, which established that landmark designation is not a regulatory taking. The MetLife Building (1963, originally Pan Am) sits on top via air rights — a deal Robert Moses pushed through against the Terminal's preservation interests.",
+      "photo": "cultural-content/manhattan/grand-central.jpg",
+      "event_id": "manhattan-1913-grand-central",
+      "narration_seed": "February 2 1913. Grand Central Terminal — Reed and Stem with Warren and Wetmore. Thirty-three platforms, the largest train terminal in the world. Wilgus's electrified loop track replaced the steam-era Park Avenue cut after a 1902 collision killed seventeen people. Paul Helleu's cerulean ceiling fresco shows the zodiac backwards — painted from a medieval manuscript instead of a star chart. Penn Station was demolished in 1963; the outcry saved Grand Central, and the 1978 Penn Central v. New York City ruling established that landmark designation is not a regulatory taking.",
+      "niche_tags": [
+        "beaux-arts",
+        "infrastructure",
+        "landmarks-law",
+        "penn-central"
+      ],
+      "matched_bin": "1035381",
+      "matched_year_built": 0,
+      "distance_m": 12,
+      "_meta": "BIN 1035381 — actual Grand Central Terminal headhouse (year=0 in DOB; Terminal opened Feb 2 1913)"
+    },
+    "9000011": {
+      "title": "Lincoln Center for the Performing Arts",
+      "year": 1962,
+      "body": "Wallace Harrison (Met Opera), Philip Johnson (NY State Theater, now Koch), Max Abramovitz (Avery Fisher, now David Geffen) — the postwar establishment building a campus to consolidate the Met, the Philharmonic, City Opera, City Ballet, and Juilliard. Site cleared via Title I urban renewal that demolished San Juan Hill, a working-class Black, Puerto Rican, and Afro-Caribbean neighborhood of 7,000 displaced families. West Side Story (1961) was filmed on those streets weeks before the wrecking balls. The travertine plaza was Robert Moses's last great urban-renewal project before community organizing made his methods politically untenable.",
+      "photo": "cultural-content/manhattan/lincoln-center.jpg",
+      "event_id": "manhattan-1962-lincoln-center",
+      "narration_seed": "Lincoln Center, 1962. Harrison's Met Opera, Johnson's State Theater, Abramovitz's Avery Fisher Hall — the postwar establishment consolidating the Met, the Philharmonic, City Opera, City Ballet, and Juilliard onto one travertine campus. The site was cleared by Title I urban renewal that demolished San Juan Hill — a working-class Black, Puerto Rican, and Afro-Caribbean neighborhood of seven thousand displaced families. West Side Story was filmed on those streets weeks before the wrecking balls. Robert Moses's last great urban-renewal project before community organizing made his methods politically untenable.",
+      "niche_tags": [
+        "midcentury",
+        "urban-renewal",
+        "san-juan-hill",
+        "moses"
+      ],
+      "matched_bin": "9000011",
+      "matched_year_built": 1962,
+      "distance_m": 0,
+      "_meta": "synthetic POI primitive at Lincoln Center plaza (170m x 110m footprint, 35m height) — replaces real Met Opera BIN 1028831 which was visually too modest"
+    },
+    "1083875": {
+      "title": "United Nations Headquarters",
+      "year": 1952,
+      "body": "Le Corbusier's massing for an international design committee — Wallace Harrison led, with Oscar Niemeyer, Sven Markelius, and others — produced the 39-story green-glass Secretariat slab and the swooping low-rise General Assembly behind it. The site is 18 acres of international territory leased from the U.S. for $1, donated by John D. Rockefeller Jr. who bought a slaughterhouse and tenement block at Turtle Bay in 1946 specifically to give the UN a home and keep it in New York. Le Corbusier later disowned the project after Harrison's committee modified his vision; he never returned to the site after 1947.",
+      "photo": "cultural-content/manhattan/un.jpg",
+      "event_id": "manhattan-1952-un",
+      "narration_seed": "United Nations Secretariat, 1952. Le Corbusier's massing on a committee design led by Wallace Harrison. Thirty-nine stories of green glass on eighteen acres of international territory leased from the U.S. for one dollar. John D. Rockefeller Jr. bought a slaughterhouse and tenement block at Turtle Bay in 1946 specifically to give the UN a home and keep it in New York. Le Corbusier disowned the project after Harrison modified his vision; he never returned to the site.",
+      "niche_tags": [
+        "modernism",
+        "international-style",
+        "le-corbusier"
+      ],
+      "matched_bin": "1083875",
+      "matched_year_built": 1952,
+      "distance_m": 88,
+      "_meta": "BIN 1083875 — actual UN Secretariat tower (156m, 1952). Earlier 1083872 was a 21m outbuilding."
+    },
+    "1076262": {
+      "title": "Rockefeller Center — 30 Rock",
+      "year": 1933,
+      "body": "Raymond Hood and the Associated Architects' 14-building Art Deco complex on land John D. Rockefeller Jr. leased from Columbia University in 1928 — at the worst possible moment, just before the Crash. The Center employed 75,000 people during construction; it was the largest private real estate undertaking ever attempted at the time. José Maria Sert's lobby murals replaced Diego Rivera's 'Man at the Crossroads' (1934), which Rockefeller destroyed for including a portrait of Lenin. The Atlas statue (Lee Lawrie, 1937) faces the cathedral across Fifth Avenue. The skating rink opened 1936 as a temporary attraction; it never closed.",
+      "photo": "cultural-content/manhattan/rockefeller.jpg",
+      "event_id": "manhattan-1933-rockefeller",
+      "narration_seed": "Rockefeller Center, 30 Rock, 1933. Raymond Hood and the Associated Architects, fourteen Art Deco buildings on land John D. Rockefeller Jr. leased from Columbia in 1928 — just before the Crash. Seventy-five thousand people employed during construction. Diego Rivera's lobby mural was destroyed in 1934 for including a portrait of Lenin. The Atlas statue faces the cathedral across Fifth. The rink opened in 1936 as a temporary attraction; it never closed.",
+      "niche_tags": [
+        "art-deco",
+        "rockefeller",
+        "depression"
+      ],
+      "matched_bin": "1076262",
+      "matched_year_built": 1937,
+      "distance_m": 128,
+      "_meta": "BIN 1076262 — actual 30 Rockefeller Plaza (254m, 1937 in DOB; opened 1933)."
     }
   }
 }
