@@ -1571,7 +1571,7 @@ const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer, 
 // Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
 // ── Demo Mode ──
 // When true: no backend fetch, MARQUEE-only content, hide debug UI, clean localStorage
-const DEMO_MODE = true;
+const DEMO_MODE = false;
 
 const FEATURES = {
   sketchOverlay: false,  // Sobel edge-detection blueprint overlay
@@ -2843,7 +2843,7 @@ Promise.all([
     buildings.push(...GHOST_BUILDINGS);
     // Lazy-load outer boroughs after initial render is interactive
     // Outer boroughs disabled by default for laptop perf. Toggle BK/QN/SI buttons to load.
-    // setTimeout(loadOuterBoroughs, 1500);
+    setTimeout(loadOuterBoroughs, 1500);
   });
 
 function loadOuterBoroughs() {
