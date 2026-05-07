@@ -1360,6 +1360,17 @@
     border-color: var(--ps2-ink);
     box-shadow: 3px 3px 0 var(--ps2-ink);
   }
+
+  /* ── Livestream / Demo Mode ── */
+  .debug-shortcut { display: none; }
+  /* Bump legend + timeline fonts for Streamyard 1080p legibility */
+  #legend .leg { font-size: 13px; }
+  #legend h3 { font-size: 13px; }
+  #era-label { font-size: 14px; }
+  #stats { font-size: 13px; }
+  .year-presets button { font-size: 13px; padding: 5px 12px; }
+  #station-bar .label { font-size: 13px; }
+  .station-label { font-size: 12px; }
 </style>
 </head>
 <body>
@@ -1369,7 +1380,7 @@
   <div class="sub">NYC / <span id="total-count">--</span> BUILDINGS / 1719-2026</div>
 </div>
 
-<div id="layer-toggles" style="position:fixed; bottom:120px; left:24px; z-index:45; display:flex; flex-direction:column; gap:6px;">
+<div id="layer-toggles" style="position:fixed; bottom:120px; left:24px; z-index:45; display:flex; flex-direction:column; gap:6px; cursor:grab;">
   <button id="toggle-immigration" onclick="toggleImmigration()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#ffc870; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">IMMIGRATION: OFF</button>
   <button id="toggle-landmarks" onclick="toggleLandmarks()" style="background:rgba(0,0,0,0.85); border:1px solid #333; color:#fff; font-family:'Courier New',monospace; font-size:11px; padding:6px 12px; cursor:pointer; letter-spacing:1px;">LANDMARKS: ON</button>
   <div style="display:flex; gap:4px; flex-wrap:wrap; max-width:200px;">
@@ -1381,7 +1392,7 @@
   </div>
 </div>
 
-<div id="landmark-nav" style="position:fixed; top:80px; left:24px; z-index:45; background:rgba(0,0,0,0.92); border:1px solid #282828; padding:12px 16px; font-family:'Courier New',monospace; width:260px; max-height:60vh; display:flex; flex-direction:column;">
+<div id="landmark-nav" style="position:fixed; top:80px; left:24px; z-index:45; background:rgba(0,0,0,0.92); border:1px solid #282828; padding:12px 16px; font-family:'Courier New',monospace; width:260px; max-height:60vh; display:flex; flex-direction:column; cursor:grab;">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
     <span style="font-size:11px; letter-spacing:3px; color:#00b8d4;">LANDMARKS</span>
     <span id="landmark-counter" style="font-size:10px; color:#555;">0/0</span>
@@ -1412,8 +1423,8 @@
     <button onclick="jumpToYear(1973)">1973</button>
     <button onclick="jumpToYear(2001)">2001</button>
     <button onclick="jumpToYear(2026)">2026</button>
-    <button onclick="flyToSedgwick()" style="border-color:#f5c842;color:#f5c842;">SEDGWICK</button>
-    <button onclick="flyToWTC()" style="border-color:#f55;color:#f55;">WTC</button>
+    <button onclick="flyToSedgwick()" style="border-color:#f5c842;color:#f5c842;" class="debug-shortcut">SEDGWICK</button>
+    <button onclick="flyToWTC()" style="border-color:#f55;color:#f55;" class="debug-shortcut">WTC</button>
   </div>
   <div id="slider-wrap">
     <input type="range" id="slider" min="1719" max="2026" value="2026" step="1">
@@ -1481,7 +1492,7 @@
   </div>
   <div class="photo-attribution" id="card-photo-attr" style="display:none;">NYPL Milstein Division via oldnyc.org</div>
   <div class="card-body" id="card-body">--</div>
-  <div class="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
+  <div class="card-footer" id="card-footer">NARRATED BY NEMOTRON 3 NANO / GB10 BLACKWELL</div>
 </div>
 
 <button id="dev-toggle" aria-label="Toggle dev panel" title="Dev panel">
@@ -1558,6 +1569,10 @@ const { Deck, PolygonLayer, PointCloudLayer, ScenegraphLayer, ScatterplotLayer, 
 
 // ── Sketch Overlay Feature Gate ──
 // Synced from FLAGS/featureFlags system below; runtime-toggleable via dev panel
+// ── Demo Mode ──
+// When true: no backend fetch, MARQUEE-only content, hide debug UI, clean localStorage
+const DEMO_MODE = true;
+
 const FEATURES = {
   sketchOverlay: false,  // Sobel edge-detection blueprint overlay
 };
@@ -1597,6 +1612,24 @@ const CUTSCENE_MODES = {
   vignette: { label: '3D Vignette', desc: 'Floating artifact cards appear in-world over the map. No overlay — the city stays visible.' },
   off:      { label: 'Off', desc: 'No cutscene after flying to a station.' },
 };
+
+// In DEMO_MODE or with ?clean param, wipe stale localStorage flags
+if (DEMO_MODE || new URLSearchParams(location.search).has('clean')) {
+  Object.keys(FLAGS).forEach(k => localStorage.removeItem('ff_' + k));
+  localStorage.removeItem('ff_cutsceneMode');
+}
+
+// DEMO_MODE: hide debug UI, update footer, hide outer borough toggles
+if (DEMO_MODE) {
+  document.getElementById('dev-toggle').style.display = 'none';
+  document.getElementById('dev-panel').style.display = 'none';
+  document.getElementById('card-footer').textContent = 'DATA: NYC OPEN DATA / NYPL MILSTEIN DIVISION';
+  // Hide outer borough buttons (BK/QN/SI) -- MacBook can't handle all 5 boroughs during screen share
+  ['tog-brooklyn', 'tog-queens', 'tog-staten'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+}
 
 // Load from localStorage, fall back to defaults
 const featureFlags = {};
@@ -2718,8 +2751,8 @@ const LANDMARK_SITES = [
   { p: [[-74.0447,40.6893],[-74.0440,40.6893],[-74.0440,40.6887],[-74.0447,40.6887],[-74.0447,40.6893]], h: 93, y: 1886, b: 'STATUE_LIBERTY' },
   // Ellis Island main building
   { p: [[-74.0400,40.6996],[-74.0390,40.6996],[-74.0390,40.6988],[-74.0400,40.6988],[-74.0400,40.6996]], h: 20, y: 1892, b: 'ELLIS_ISLAND' },
-  // Central Park (low flat block so it's clickable)
-  { p: [[-73.9812,40.7684],[-73.9580,40.7684],[-73.9580,40.8004],[-73.9812,40.8004],[-73.9812,40.7684]], h: 3, y: 1858, b: 'CENTRAL_PARK' },
+  // Central Park — flat ground plane, not a building. _park flag for custom green color.
+  { p: [[-73.9812,40.7684],[-73.9580,40.7684],[-73.9580,40.8004],[-73.9812,40.8004],[-73.9812,40.7684]], h: 0.3, y: 1858, b: 'CENTRAL_PARK', _park: true },
 ];
 let GHOST_BUILDINGS = [...CROSS_BRONX_GHOSTS, ...LANDMARK_SITES];
 fetch('data/landmarks-infrastructure.json')
@@ -2789,7 +2822,10 @@ const OUTER_BOROUGHS = ['brooklyn', 'queens', 'staten'];
 let outerLoaded = false;
 
 Promise.all([
-  fetch('data/manhattan_compact.json').then(r => r.json()),
+  fetch('data/manhattan_compact.json').then(r => r.json()).catch(err => {
+    document.getElementById('map').innerHTML = '<div style="color:#f55;font-family:monospace;padding:40px;font-size:18px;">Failed to load building data. Serve from HTTP server: python3 -m http.server 8080</div>';
+    return [];
+  }),
   fetch('data/bronx_compact.json').then(r => r.json()).catch(() => []),
 ])
   .then(([manhattan, bronx]) => {
@@ -2824,7 +2860,7 @@ function loadOuterBoroughs() {
     document.getElementById('total-count').textContent = buildings.length.toLocaleString();
     updateVisibleCount();
     if (deckgl) deckgl.setProps({ layers: buildLayers() });
-    console.log(`Loaded ${outer.length.toLocaleString()} outer borough buildings`);
+    // outer borough load complete
   });
 }
 
@@ -3644,8 +3680,7 @@ function buildSettlersAtlas(records) {
     }
   }
   immigrationSettlers.sort((a, b) => a.year - b.year);
-  console.log('[immigration-settlers] atlas built: %d dots (%d arrivals each)',
-    immigrationSettlers.length, SETTLERS_PER_ARRIVAL);
+  // immigration settlers atlas built
 }
 
 fetch('data/immigration/nyc_immigration_timeline.json')
@@ -3715,8 +3750,6 @@ function tickImmigrationParticles(nowMs) {
   const shape = tune.shape || 'dot';
   const origins = immigrationOriginsFor(Math.round(currentYear));
   if (!immigrationDebugLogged) {
-    console.log('[immigration-flow] on. year=%d intensity=%f bucket=%s origins=%o',
-      Math.round(currentYear), intensity, bucket, origins.map(o => o.label));
     immigrationDebugLogged = true;
   }
 
@@ -3871,6 +3904,10 @@ function tickImmigrationParticles(nowMs) {
 }
 
 function immigrationAnimationLoop(nowMs) {
+  if (!featureFlags.immigrationFlow && !featureFlags.immigrationSettlers && !featureFlags.immigrationHeatmap && !featureFlags.immigrationGlow) {
+    requestAnimationFrame(immigrationAnimationLoop);
+    return;
+  }
   const alive = tickImmigrationParticles(nowMs);
   if (alive && deckgl) {
     deckgl.setProps({ layers: buildLayers() });
@@ -3967,6 +4004,7 @@ function findNearestPhotosSpatial(lng, lat, year, count = PHOTO_FALLBACK_COUNT, 
 function initDeck() {
   deckgl = new Deck({
     parent: document.getElementById('map'),
+    useDevicePixels: DEMO_MODE ? 1 : true,
     initialViewState: {
       latitude: 40.78,
       longitude: -73.95,
@@ -5022,6 +5060,8 @@ function buildLayer() {
       if (d.d && currentYear > d.d) return [0, 0, 0, 0]; // demolished — invisible after demolition
       // Cross-Bronx Moses demolitions: bright green so they pop in demo
       if (d.moses) return [40, 220, 80, 220];
+      // Parks: dark green ground plane
+      if (d._park) return [30, 80, 40, 180];
       const era = getEra(d.y || 1800);
       // Fade in during grow window
       let alpha = 200;
@@ -5321,39 +5361,41 @@ function showCard(building) {
   } else {
     document.getElementById('card-title').textContent = `BIN ${building.b}`;
     document.getElementById('card-year').textContent = building.y ? `Built ${building.y} / ${era.label}` : 'Construction year unknown';
-    document.getElementById('card-body').textContent = 'Loading biography from Nemotron...';
+    document.getElementById('card-body').textContent = DEMO_MODE
+      ? `${building.h ? building.h + 'm tall. ' : ''}${era.label} construction.`
+      : 'Loading biography from Nemotron...';
   }
   // Fire biography RAG request to the local orchestrator (GN100 :30001 or localhost :30001)
-  const bioBody = document.getElementById('card-body');
-  const bioUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-    ? 'http://127.0.0.1:30001/biography'
-    : 'http://192.168.0.207:30001/biography';
-  const centroid = building.p ? polygonCentroid(building.p) : null;
-  const bioReq = { bin: String(building.b) };
-  if (centroid) { bioReq.lat = centroid[1]; bioReq.lon = centroid[0]; }
-  fetch(bioUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(bioReq),
-  })
-    .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
-    .then(data => {
-      if (data.biography) {
-        // Replace card body with the Nemotron-generated biography (plain text, strip markdown headers)
-        const plain = data.biography.replace(/^#{1,4}\s+.*$/gm, '').replace(/\n{3,}/g, '\n\n').trim();
-        bioBody.textContent = plain;
-        if (data.building_name) {
-          document.getElementById('card-title').textContent = data.building_name;
-        }
-      }
+  // Skipped in DEMO_MODE — no backend available
+  if (!DEMO_MODE) {
+    const bioBody = document.getElementById('card-body');
+    const bioUrl = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+      ? 'http://127.0.0.1:30001/biography'
+      : 'http://192.168.0.207:30001/biography';
+    const centroid = building.p ? polygonCentroid(building.p) : null;
+    const bioReq = { bin: String(building.b) };
+    if (centroid) { bioReq.lat = centroid[1]; bioReq.lon = centroid[0]; }
+    fetch(bioUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bioReq),
     })
-    .catch(err => {
-      console.warn('Biography fetch failed:', err);
-      // Keep whatever text is already showing (MARQUEE or fallback)
-      if (bioBody.textContent === 'Loading biography from Nemotron...') {
-        bioBody.textContent = marquee ? marquee.body : `${building.h}m tall. ${era.label.toLowerCase()} construction.`;
-      }
-    });
+      .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
+      .then(data => {
+        if (data.biography) {
+          const plain = data.biography.replace(/^#{1,4}\s+.*$/gm, '').replace(/\n{3,}/g, '\n\n').trim();
+          bioBody.textContent = plain;
+          if (data.building_name) {
+            document.getElementById('card-title').textContent = data.building_name;
+          }
+        }
+      })
+      .catch(err => {
+        if (bioBody.textContent === 'Loading biography from Nemotron...') {
+          bioBody.textContent = marquee ? marquee.body : `${building.h}m tall. ${era.label.toLowerCase()} construction.`;
+        }
+      });
+  }
   // Attach photos: MARQUEE photo first (if set), then nearby oldnyc photos.
   // Skip if moses building (photos already set above)
   if (!building.moses) {
@@ -5508,6 +5550,40 @@ function showDemolishedCard(landmark) {
     card.style.right = 'auto'; card.style.bottom = 'auto';
   });
   document.addEventListener('mouseup', () => { dragging = false; card.classList.remove('dragging'); });
+})();
+
+// Draggable layer toggles
+(function() {
+  const panel = document.getElementById('layer-toggles');
+  let dragging = false, ox = 0, oy = 0;
+  panel.addEventListener('mousedown', e => {
+    if (e.target.closest('button')) return;
+    dragging = true; ox = e.clientX - panel.offsetLeft; oy = e.clientY - panel.offsetTop;
+    panel.style.cursor = 'grabbing';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    panel.style.left = (e.clientX - ox) + 'px'; panel.style.top = (e.clientY - oy) + 'px';
+    panel.style.right = 'auto'; panel.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; panel.style.cursor = 'grab'; });
+})();
+
+// Draggable landmark nav
+(function() {
+  const nav = document.getElementById('landmark-nav');
+  let dragging = false, ox = 0, oy = 0;
+  nav.addEventListener('mousedown', e => {
+    if (e.target.closest('button, a, input')) return;
+    dragging = true; ox = e.clientX - nav.offsetLeft; oy = e.clientY - nav.offsetTop;
+    nav.style.cursor = 'grabbing';
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    nav.style.left = (e.clientX - ox) + 'px'; nav.style.top = (e.clientY - oy) + 'px';
+    nav.style.right = 'auto'; nav.style.bottom = 'auto';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; nav.style.cursor = 'grab'; });
 })();
 
 // ── Lightbox (fullscreen viewer; navigates the full Manhattan archive) ──
@@ -6807,7 +6883,7 @@ window.generateSketchOverlay = function(eraColor) {
     // Debug: check if we got actual pixel data
     let nonZero = 0;
     for (let i = 0; i < Math.min(srcPixels.length, 40000); i++) { if (srcPixels[i] > 0) nonZero++; }
-    console.log('[sketch] canvas:', w, 'x', h, '| non-zero pixels sampled:', nonZero, '| preserveDrawingBuffer:', srcCtx.getContextAttributes().preserveDrawingBuffer);
+    // sketch overlay pixel debug
     // WebGL readPixels gives bottom-up rows; flip vertically
     const rowSize = w * 4;
     const tmp = new Uint8Array(rowSize);
