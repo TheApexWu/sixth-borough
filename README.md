@@ -1,64 +1,119 @@
 # Sixth Borough
 
-Cultural memory infrastructure for New York City, running entirely on local hardware.
+A 3D map of New York City's building footprints with a year slider. Move the slider and buildings appear by construction year; demolished landmarks show only for the years they stood. Narration comes from NVIDIA Nemotron-3 Nano 30B, served by llama.cpp on an Acer GN100 (NVIDIA DGX Spark, GB10), so the model and data run on local hardware.
 
-## What It Does
+Built at NVIDIA Spark Hack NYC, 10-12 April 2026. The repository description records the result as Cultural Impact Track winner and the Most Likely to Be Unicorn bounty.
 
-A 3D time machine for every building in NYC. 1,082,831 structures across all five boroughs, extruded to real LiDAR roof heights, with a year scrubber from 1700 to 2026. Click any building and a 30B language model generates a biography from public NYC datasets. No cloud, no internet at runtime.
+## Team
 
-Ghost buildings remember what the city demolished: the Twin Towers rise in 1970 and vanish in 2001, Penn Station disappears in 1963, 117 Cross-Bronx tenements collapse year by year as Robert Moses displaces 60,000 people. 750 archival photos from the NYPL Milstein Division are pinned to the map. Immigration flows animate across centuries.
+- **Alex Wu** ([TheApexWu](https://github.com/TheApexWu)): lead engineer and architect. Built the orchestrator and the GN100 llama.cpp setup, the `/biography` endpoint, the five-borough load, ghost buildings, bridges, stadiums and year scrub in the browser app, and the Bevy renderer on `risk`.
+- **Carson Weeks** ([Cheatcodesam](https://github.com/Cheatcodesam)): the Bevy renderer scaffold and WASM build on `main`, and the llama.cpp narration backend.
+- **James Burke** ([lifesized](https://github.com/lifesized)): the guided tour and Sobel sketch overlay in the browser app, the NYPL OldNYC photo index, the Wikidata demolished-landmark data, the immigration data and the cultural content.
+- **Marvens Destine** ([A12-AA](https://github.com/A12-AA)): hackathon networking.
 
-## Architecture
+## Which branch runs what
 
-Two renderers consuming one shared data spine (building polygons, landmarks, ghost manifests, cultural content).
+| Branch | What it holds | Last change |
+|---|---|---|
+| `main` (default) | FastAPI orchestrator with a stub backend and a llama.cpp backend, the shared data files, and a Bevy 0.18.1 scaffold in `renderer-rust/` (camera, light, a test cube and a ghost-manifest loader; the manifest is empty). | 14 Apr 2026 |
+| `feature/sketch-overlay` | The deck.gl + MapLibre browser app (`index.html`) as it stood at the end of the hackathon. | Code and data: 12 Apr 2026, 14:12 ET (`f788d18`). The 14 Apr commits only removed docs. |
+| `nvidia-livestream` | `feature/sketch-overlay` plus three commits for an NVIDIA livestream: a `DEMO_MODE` switch (committed off), Manhattan landmark content in `cultural-content/marquee-manhattan.json`, and outer-borough auto-load. The newest version of the browser app. | 6-7 May 2026 |
+| `risk` | A fuller Bevy renderer in `renderer-rust-v2/`: extrudes the five borough files, guided tour, biography lookups. | 12 Apr 2026, 11:31 ET (`de3604b`) |
+| `session-44/borough-expansion-bronx` | The orchestrator with `POST /biography`, which the browser app and the `risk` renderer call when a building is clicked. Not merged into `main`. | 11 Apr 2026, 23:49 ET |
 
-**Native renderer (this branch)** -- Bevy 0.18.1 + wgpu in Rust. Real 3D scene with directional lighting and shadows. Demolished buildings loaded as artist-authored .glb meshes via an ECS manifest system (each ghost is a Bevy entity with coordinate, era window, and niche tags). PS2-era post-process as GPU shaders. Shares 128 GB unified memory with a 30B language model on the DGX Spark. Includes a FastAPI orchestrator for biography generation via NVIDIA Nemotron-3 Nano 30B.
-
-**Browser demo ([feature/sketch-overlay](https://github.com/TheApexWu/sixth-borough/tree/feature/sketch-overlay))** -- deck.gl + MapLibre in a single `index.html`. Extruded polygons on a flat map, 8 era color bands, immigration particle simulation, NYPL photo pins, Sobel sketch overlay. Runs on any laptop with a browser.
+The repository does not record which renderer the judges saw. Commit dates put both the browser app and the `risk` renderer inside the event window. History on the browser-app branches starts on 8 Apr 2026 with a deck.gl prototype; `main` starts on 10 Apr.
 
 ## Numbers
 
-| | |
-|---|---|
-| Buildings | 1,082,831 |
-| Ghost structures | 117 Cross-Bronx + WTC + Penn Station + Singer Building |
-| Archival photos | 750 (NYPL Milstein Division) |
-| Bridges / Stadiums | 8 / 8 (3 ghost) |
-| Demolished landmarks | 295 (Wikidata) |
-| Language model | NVIDIA Nemotron-3 Nano 30B (A3B, Q8_K_XL) |
-| Inference | 29 tok/sec sustained on DGX Spark |
-| Hardware | NVIDIA DGX Spark, 128 GB unified memory |
+Each figure was read from committed files on 18 Nov 2026. The data smoke test (`tests/test_data_smoke.py`) asserts the counts and file sizes for the data on `main`.
 
-## Quick Start
+| | Value | Source |
+|---|---|---|
+| Building footprints | 1,082,831 across the five boroughs | record count of `data/*_compact.json` |
+| Geometry | 230.8 MB of JSON | size of the same five files |
+| Archival photos | 750 NYPL Milstein photos, via OldNYC | `cultural-content/oldnyc/index.json` and `thumbs/` |
+| Demolished-building pins | 286 Wikidata records | `data/demolished-landmarks.json` |
+| Ghost landmarks | WTC 1, 2, 3 and 7, the original Penn Station, the Singer Building | `data/landmarks-infrastructure.json` |
+| Bridges / stadiums | 8 / 8, of which 3 stadiums are demolished (Polo Grounds, Ebbets Field, old Yankee Stadium) | same file |
+| Cross-Bronx ghosts | 117 placeholder tenement blocks laid along the expressway route, removed between 1948 and 1972. Generated in code, not surveyed footprints. | `index.html` on `feature/sketch-overlay` |
+| Year slider | 1719 to 2026 | `index.html` |
+| Narrated events | 19, all pre-generated by the real backend on 11 Apr (292.5 s total, 0 failures) | `data/events-seed.json`, `data/narration_cache.json` |
+| Model | Nemotron-3-Nano-30B-A3B, Unsloth `UD-Q8_K_XL` GGUF, full GPU offload (`-ngl 99`) | `scripts/setup-gn100.sh`, `scripts/start-llama-nano.sh` |
+| Generation speed | About 29 tok/s in one recorded run (798 tokens in 27.4 s on 11 Apr) | GN100 health snapshot in commit `918a0d6`, since removed from the tree |
+
+Building heights come from the `height_roof` field of NYC Building Footprints (NYC Open Data `5zhs-2jue`).
+
+The model, the data and the photos are all local. The browser page loads deck.gl 9.1.4, MapLibre GL 3.6.2 and GSAP 3.12.5 from unpkg.com, so it needs internet the first time it loads unless those files are cached or vendored.
+
+## Run it
+
+A checkout of `main` is about 320 MB; `feature/sketch-overlay` is about 520 MB. Git LFS is not used.
+
+### Browser app (any machine with a browser)
 
 ```bash
-# Browser demo (any machine)
-git checkout feature/sketch-overlay
+git clone https://github.com/TheApexWu/sixth-borough.git
+cd sixth-borough
+git checkout feature/sketch-overlay   # or nvidia-livestream for the May 2026 version
 python3 -m http.server 8080
-# open http://localhost:8080/index.html
+# open http://localhost:8080/
+```
 
-# Native renderer + orchestrator (requires Rust toolchain)
-cd renderer-rust && cargo run
+- On `feature/sketch-overlay` only Manhattan and the Bronx load at start, to keep laptops responsive. The BK, QN and SI buttons load the other boroughs. Photo pins and Wikidata pins are off by default; turn them on from the Dev panel.
+- Clicking a building calls `POST http://127.0.0.1:30001/biography`. That endpoint lives on `session-44/borough-expansion-bronx`. Without it, the card falls back to its curated text.
+- Two optional layers, both off by default, need files that are not in the repo: the Liberty Island mesh (`cultural-content/liberty-island/`) and the three Bronx hotspot videos (`cultural-content/bronx/*.mp4`).
 
-# Orchestrator in stub mode (any laptop, no GPU)
+### Orchestrator, stub mode (no GPU, no model)
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate   # Python 3.11 or newer
 pip install -r requirements.txt
-./scripts/dev-stub.sh
-# live on http://localhost:30000
+./scripts/dev-stub.sh                           # serves :30000
+curl http://localhost:30000/health
+```
 
-# On the DGX Spark (real inference)
-./scripts/start-llama-nano.sh
+Endpoints: `GET /health`, `GET /events?year=&niche=`, `GET /niches`, `POST /narrate`.
+
+### Real narration (DGX Spark / GB10 only)
+
+`scripts/setup-gn100.sh` builds llama.cpp for CUDA architecture 121 and downloads `Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL.gguf` from `unsloth/Nemotron-3-Nano-30B-A3B-GGUF` on Hugging Face into `~/models/nemotron3-gguf/`. Then:
+
+```bash
+./scripts/start-llama-nano.sh                   # llama-server on 127.0.0.1:8090
 NARRATION_MODE=real LLAMA_SERVER_URL=http://127.0.0.1:8090 \
   python -m uvicorn src.orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
+Use `start-llama-nano.sh` rather than the older `start-gn100.sh`, which binds llama-server to :30000, the stub's port.
+
+### Native renderer (Rust toolchain required)
+
+From the repo root on `main`, the Bevy scaffold:
+
+```bash
+cd renderer-rust && cargo run
+```
+
+From the repo root on `risk`, the fuller renderer (run it from `renderer-rust-v2/` so it finds `../data`):
+
+```bash
+git checkout risk
+cd renderer-rust-v2 && cargo run --release
+```
+
+### Tests
+
+```bash
+pip install -r requirements.txt
+pytest                                                       # schema, loader, stub narration, data smoke test
+SIXTH_BOROUGH_FULL_DATA=1 pytest tests/test_data_smoke.py    # also parses the five borough files and counts buildings
+```
+
+The default run takes under a second. The full-data run parses 231 MB of JSON and peaked at about 1.25 GB of memory when measured.
+
 ## Stack
 
-- Bevy 0.18.1 + wgpu (native renderer, Rust)
-- deck.gl 9.1.4 + MapLibre GL 3.6.2 (browser demo)
-- NVIDIA Nemotron-3 Nano 30B via llama.cpp
-- FastAPI orchestrator (biography RAG, caching)
-- Acer GN100 / NVIDIA DGX Spark / GB10 Grace Blackwell
-
-Built at Spark Hack Series NYC, Apr 2026. Cultural Impact track winner + Most Likely to Become a Unicorn bounty.
-
-Special thanks to [Carson Weeks](https://github.com/Cheatcodesam) (Rust renderer), [James Burke](https://github.com/lifesized) (cultural content), and [Marvens Destine](https://github.com/A12-AA) (hackathon networking).
+- Bevy 0.18.1 (Rust) for the native renderer
+- deck.gl 9.1.4 and MapLibre GL 3.6.2 for the browser app
+- FastAPI orchestrator, llama.cpp, NVIDIA Nemotron-3 Nano 30B A3B
+- Data: NYC Building Footprints, NYPL Milstein photos via OldNYC, Wikidata
