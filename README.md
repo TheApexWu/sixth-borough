@@ -1,119 +1,84 @@
 # Sixth Borough
 
-A 3D map of New York City's building footprints with a year slider. Move the slider and buildings appear by construction year; demolished landmarks show only for the years they stood. Narration comes from NVIDIA Nemotron-3 Nano 30B, served by llama.cpp on an Acer GN100 (NVIDIA DGX Spark, GB10), so the model and data run on local hardware.
+A 3D map of New York City's building footprints with a year slider. Buildings appear by construction year; demolished landmarks show while they stood. NVIDIA Nemotron-3 Nano 30B narrates via llama.cpp on an Acer GN100 (NVIDIA DGX Spark, GB10).
 
-Built at NVIDIA Spark Hack NYC, 10-12 April 2026. The repository description records the result as Cultural Impact Track winner and the Most Likely to Be Unicorn bounty.
+Built at NVIDIA Spark Hack NYC, 10-12 April 2026. Per the repo description: Cultural Impact Track winner and the Most Likely to Be Unicorn bounty.
 
 ## Team
 
-- **Alex Wu** ([TheApexWu](https://github.com/TheApexWu)): lead engineer and architect. Built the orchestrator and the GN100 llama.cpp setup, the `/biography` endpoint, the five-borough load, ghost buildings, bridges, stadiums and year scrub in the browser app, and the Bevy renderer on `risk`.
-- **Carson Weeks** ([Cheatcodesam](https://github.com/Cheatcodesam)): the Bevy renderer scaffold and WASM build on `main`, and the llama.cpp narration backend.
-- **James Burke** ([lifesized](https://github.com/lifesized)): the guided tour and Sobel sketch overlay in the browser app, the NYPL OldNYC photo index, the Wikidata demolished-landmark data, the immigration data and the cultural content.
+- **Alex Wu** ([TheApexWu](https://github.com/TheApexWu)): lead engineer and architect. Orchestrator, GN100 llama.cpp setup, `/biography` endpoint, the browser app's five-borough load, ghost buildings, bridges, stadiums and year scrub, and the Bevy renderer on `risk`.
+- **Carson Weeks** ([Cheatcodesam](https://github.com/Cheatcodesam)): Bevy scaffold and WASM build on `main`, llama.cpp narration backend.
+- **James Burke** ([lifesized](https://github.com/lifesized)): guided tour, Sobel sketch overlay, NYPL OldNYC photo index, Wikidata demolished-landmark data, immigration data, cultural content.
 - **Marvens Destine** ([A12-AA](https://github.com/A12-AA)): hackathon networking.
 
-## Which branch runs what
+## Branches
 
-| Branch | What it holds | Last change |
+| Branch | Holds | Last change |
 |---|---|---|
-| `main` (default) | FastAPI orchestrator with a stub backend and a llama.cpp backend, the shared data files, and a Bevy 0.18.1 scaffold in `renderer-rust/` (camera, light, a test cube and a ghost-manifest loader; the manifest is empty). | 14 Apr 2026 |
-| `feature/sketch-overlay` | The deck.gl + MapLibre browser app (`index.html`) as it stood at the end of the hackathon. | Code and data: 12 Apr 2026, 14:12 ET (`f788d18`). The 14 Apr commits only removed docs. |
-| `nvidia-livestream` | `feature/sketch-overlay` plus three commits for an NVIDIA livestream: a `DEMO_MODE` switch (committed off), Manhattan landmark content in `cultural-content/marquee-manhattan.json`, and outer-borough auto-load. The newest version of the browser app. | 6-7 May 2026 |
-| `risk` | A fuller Bevy renderer in `renderer-rust-v2/`: extrudes the five borough files, guided tour, biography lookups. | 12 Apr 2026, 11:31 ET (`de3604b`) |
-| `session-44/borough-expansion-bronx` | The orchestrator with `POST /biography`, which the browser app and the `risk` renderer call when a building is clicked. Not merged into `main`. | 11 Apr 2026, 23:49 ET |
+| `main` | Orchestrator (stub and llama.cpp backends), data, Bevy 0.18.1 scaffold (test cube) | 14 Apr 2026 |
+| `feature/sketch-overlay` | deck.gl browser app at hackathon end | 12 Apr 2026, 14:12 ET (`f788d18`); 14 Apr removed docs only |
+| `nvidia-livestream` | Same app plus three livestream commits (`DEMO_MODE`, Manhattan content, outer-borough auto-load) | 6-7 May 2026 |
+| `risk` | Fuller Bevy renderer, `renderer-rust-v2/` | 12 Apr 2026, 11:31 ET (`de3604b`) |
+| `session-44/borough-expansion-bronx` | Orchestrator with `POST /biography`; not merged | 11 Apr 2026, 23:49 ET |
 
-The repository does not record which renderer the judges saw. Commit dates put both the browser app and the `risk` renderer inside the event window.
+The repo doesn't record which renderer the judges saw.
 
 ## Numbers
 
-Each figure was read from committed files on 18 Nov 2026. The data smoke test (`tests/test_data_smoke.py`) asserts the counts and file sizes for the data on `main`.
+Read from committed files on 18 Nov 2026; `tests/test_data_smoke.py` asserts the data figures on `main`.
 
 | | Value | Source |
 |---|---|---|
-| Building footprints | 1,082,831 across the five boroughs | record count of `data/*_compact.json` |
-| Geometry | 230.8 MB of JSON | size of the same five files |
-| Archival photos | 750 NYPL Milstein photos, via OldNYC | `cultural-content/oldnyc/index.json` and `thumbs/` |
-| Demolished-building pins | 286 Wikidata records | `data/demolished-landmarks.json` |
-| Ghost landmarks | WTC 1, 2, 3 and 7, the original Penn Station, the Singer Building | `data/landmarks-infrastructure.json` |
-| Bridges / stadiums | 8 / 8, of which 3 stadiums are demolished (Polo Grounds, Ebbets Field, old Yankee Stadium) | same file |
-| Cross-Bronx ghosts | 117 placeholder tenement blocks laid along the expressway route, removed between 1948 and 1972. Generated in code, not surveyed footprints. | `index.html` on `feature/sketch-overlay` |
+| Building footprints | 1,082,831 | `data/*_compact.json` |
+| Geometry | 230.8 MB | same files |
+| Archival photos | 750 (NYPL Milstein, via OldNYC) | `cultural-content/oldnyc/` |
+| Demolished-building pins | 286 (Wikidata) | `data/demolished-landmarks.json` |
+| Ghost landmarks | WTC 1, 2, 3 and 7; original Penn Station; Singer Building | `data/landmarks-infrastructure.json` |
+| Bridges / stadiums | 8 / 8, 3 stadiums demolished | same file |
+| Cross-Bronx ghosts | 117 placeholder blocks, removed 1948-1972 | generated in `index.html` |
 | Year slider | 1719 to 2026 | `index.html` |
-| Narrated events | 19, all pre-generated by the real backend on 11 Apr (292.5 s total, 0 failures) | `data/events-seed.json`, `data/narration_cache.json` |
-| Model | Nemotron-3-Nano-30B-A3B, Unsloth `UD-Q8_K_XL` GGUF, full GPU offload (`-ngl 99`) | `scripts/setup-gn100.sh`, `scripts/start-llama-nano.sh` |
-| Generation speed | About 29 tok/s in one recorded run (798 tokens in 27.4 s) | GN100 health snapshot from 11 Apr 2026, no longer in the tree |
+| Narrated events | 19, pre-generated 11 Apr (292.5 s, 0 failures) | `data/narration_cache.json` |
+| Model | Nemotron-3-Nano-30B-A3B `UD-Q8_K_XL` GGUF, `-ngl 99` | `scripts/start-llama-nano.sh` |
+| Generation speed | About 29 tok/s, one recorded run (798 tokens in 27.4 s) | GN100 snapshot, 11 Apr 2026 |
+| Building heights | `height_roof` | NYC Building Footprints (`5zhs-2jue`) |
 
-Building heights come from the `height_roof` field of NYC Building Footprints (NYC Open Data `5zhs-2jue`).
-
-The model, the data and the photos are all local. The browser page loads deck.gl 9.1.4, MapLibre GL 3.6.2 and GSAP 3.12.5 from unpkg.com, so it needs internet the first time it loads unless those files are cached or vendored.
+Model, data and photos are local. The page loads deck.gl 9.1.4, MapLibre GL 3.6.2 and GSAP 3.12.5 from unpkg.com, so the first load needs internet.
 
 ## Run it
 
-A checkout of `main` is about 320 MB; `feature/sketch-overlay` is about 520 MB. Git LFS is not used.
+Checkouts: `main` about 320 MB, `feature/sketch-overlay` about 520 MB.
 
-### Browser app (any machine with a browser)
+**Browser app**
 
 ```bash
-git clone https://github.com/TheApexWu/sixth-borough.git
-cd sixth-borough
-git checkout feature/sketch-overlay   # or nvidia-livestream for the May 2026 version
-python3 -m http.server 8080
-# open http://localhost:8080/
+git clone https://github.com/TheApexWu/sixth-borough.git && cd sixth-borough
+git checkout feature/sketch-overlay   # or nvidia-livestream
+python3 -m http.server 8080           # open http://localhost:8080/
 ```
 
-- On `feature/sketch-overlay` only Manhattan and the Bronx load at start, to keep laptops responsive. The BK, QN and SI buttons load the other boroughs. Photo pins and Wikidata pins are off by default; turn them on from the Dev panel.
-- Clicking a building calls `POST http://127.0.0.1:30001/biography`. That endpoint lives on `session-44/borough-expansion-bronx`. Without it, the card falls back to its curated text.
-- Two optional layers, both off by default, need files that are not in the repo: the Liberty Island mesh (`cultural-content/liberty-island/`) and the three Bronx hotspot videos (`cultural-content/bronx/*.mp4`).
+BK, QN and SI buttons load the outer boroughs; photo and Wikidata pins are in the Dev panel. Building clicks call `POST http://127.0.0.1:30001/biography` and fall back to curated text. The Liberty Island mesh and three Bronx hotspot videos are not in the repo.
 
-### Orchestrator, stub mode (no GPU, no model)
+**Orchestrator, stub mode** (no GPU, Python 3.11+)
 
 ```bash
-python3 -m venv .venv && . .venv/bin/activate   # Python 3.11 or newer
+python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
-./scripts/dev-stub.sh                           # serves :30000
-curl http://localhost:30000/health
+./scripts/dev-stub.sh                 # :30000; curl localhost:30000/health
 ```
 
-Endpoints: `GET /health`, `GET /events?year=&niche=`, `GET /niches`, `POST /narrate`.
-
-### Real narration (DGX Spark / GB10 only)
-
-`scripts/setup-gn100.sh` builds llama.cpp for CUDA architecture 121 and downloads `Nemotron-3-Nano-30B-A3B-UD-Q8_K_XL.gguf` from `unsloth/Nemotron-3-Nano-30B-A3B-GGUF` on Hugging Face into `~/models/nemotron3-gguf/`. Then:
+**Real narration** (GB10 only): `scripts/setup-gn100.sh` builds llama.cpp for CUDA architecture 121 and downloads the GGUF from `unsloth/Nemotron-3-Nano-30B-A3B-GGUF`. Then:
 
 ```bash
-./scripts/start-llama-nano.sh                   # llama-server on 127.0.0.1:8090
+./scripts/start-llama-nano.sh         # :8090 (start-gn100.sh collides with the stub on :30000)
 NARRATION_MODE=real LLAMA_SERVER_URL=http://127.0.0.1:8090 \
   python -m uvicorn src.orchestrator.main:app --host 0.0.0.0 --port 30001
 ```
 
-Use `start-llama-nano.sh` rather than the older `start-gn100.sh`, which binds llama-server to :30000, the stub's port.
+**Native renderer** (Rust): `cd renderer-rust && cargo run` on `main`; `cd renderer-rust-v2 && cargo run --release` on `risk`.
 
-### Native renderer (Rust toolchain required)
-
-From the repo root on `main`, the Bevy scaffold:
+**Tests**
 
 ```bash
-cd renderer-rust && cargo run
+pytest                                                     # under a second
+SIXTH_BOROUGH_FULL_DATA=1 pytest tests/test_data_smoke.py  # parses 231 MB; peaked at about 1.25 GB
 ```
-
-From the repo root on `risk`, the fuller renderer (run it from `renderer-rust-v2/` so it finds `../data`):
-
-```bash
-git checkout risk
-cd renderer-rust-v2 && cargo run --release
-```
-
-### Tests
-
-```bash
-pip install -r requirements.txt
-pytest                                                       # schema, loader, stub narration, data smoke test
-SIXTH_BOROUGH_FULL_DATA=1 pytest tests/test_data_smoke.py    # also parses the five borough files and counts buildings
-```
-
-The default run takes under a second. The full-data run parses 231 MB of JSON and peaked at about 1.25 GB of memory when measured.
-
-## Stack
-
-- Bevy 0.18.1 (Rust) for the native renderer
-- deck.gl 9.1.4 and MapLibre GL 3.6.2 for the browser app
-- FastAPI orchestrator, llama.cpp, NVIDIA Nemotron-3 Nano 30B A3B
-- Data: NYC Building Footprints, NYPL Milstein photos via OldNYC, Wikidata
